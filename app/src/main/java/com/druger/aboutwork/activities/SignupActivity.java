@@ -1,37 +1,47 @@
 package com.druger.aboutwork.activities;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.druger.aboutwork.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = SignupActivity.class.getSimpleName();
 
-    private EditText nameText;
     private EditText emailText;
     private EditText passwordText;
     private Button btnSignup;
     private TextView loginLink;
+    private ProgressBar progressBar;
+
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        nameText = (EditText) findViewById(R.id.input_name);
+        auth = FirebaseAuth.getInstance();
+
         emailText = (EditText) findViewById(R.id.input_email);
         passwordText = (EditText) findViewById(R.id.input_password);
         btnSignup = (Button) findViewById(R.id.btn_signup);
         loginLink = (TextView) findViewById(R.id.link_login);
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,32 +61,34 @@ public class SignupActivity extends AppCompatActivity {
     private void signup() {
         Log.d(TAG, "Signup");
 
-        if (!validate()) {
+        String email = emailText.getText().toString().trim();
+        String password = passwordText.getText().toString().trim();
+
+        if (!validate(email, password)) {
             onSignupFailed();
             return;
         }
 
         btnSignup.setEnabled(false);
+        progressBar.setVisibility(View.VISIBLE);
 
-        final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage(getString(R.string.creating_account));
-        progressDialog.show();
+        auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
 
-        String name = nameText.getText().toString().trim();
-        String email = emailText.getText().toString().trim();
-        String password = passwordText.getText().toString().trim();
+                        progressBar.setVisibility(View.GONE);
 
-        // TODO: Implement signup logic here.
+                        if (!task.isSuccessful()) {
+                            onSignupFailed();
+                        } else {
+                            onSignupSuccess();
+                        }
 
-        new android.os.Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                onSignupSuccess();
-//                onSignupFailed();
-                progressDialog.dismiss();
-            }
-        }, 3000);
+                    }
+                });
+
     }
 
     private void onSignupSuccess() {
@@ -91,33 +103,29 @@ public class SignupActivity extends AppCompatActivity {
         btnSignup.setEnabled(true);
     }
 
-    private boolean validate() {
+    private boolean validate(String email, String password) {
         boolean valid = true;
 
-        String name = nameText.getText().toString().trim();
-        String email = emailText.getText().toString().trim();
-        String password = passwordText.getText().toString().trim();
-
-        if (name.isEmpty() || name.length() < 3) {
-            nameText.setError(getString(R.string.error_name));
-            valid = false;
-        } else {
-            nameText.setError(null);
-        }
-
-        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (TextUtils.isEmpty(email) ||
+                !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailText.setError(getString(R.string.error_email));
             valid = false;
         } else {
             emailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4) {
-            passwordText.setError("at least 4 characters");
+        if (TextUtils.isEmpty(password) || password.length() < 6) {
+            passwordText.setError("at least 6 characters");
             valid = false;
         } else {
             passwordText.setError(null);
         }
         return valid;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        progressBar.setVisibility(View.GONE);
     }
 }

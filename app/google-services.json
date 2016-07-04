@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "603766486213",
+    "firebase_url": "https://about-work.firebaseio.com",
+    "project_id": "about-work",
+    "storage_bucket": "about-work.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:603766486213:android:c7f65d38581fb417",
+        "android_client_info": {
+          "package_name": "com.druger.aboutwork"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "603766486213-80lsitn6sq3hghu1fknibiq9nc7kvddd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZpS56SjQsNh7z4O5UZOgK9mDi4EcHDvQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
