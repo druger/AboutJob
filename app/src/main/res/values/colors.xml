@@ -6,4 +6,8 @@
 
     <color name="red900">#B71C1C</color>
     <color name="grey300">#E0E0E0</color>
+
+    <color name="tab1">#FF9800</color>
+    <color name="tab2">#009688</color>
+    <color name="tab3">#F63D2B</color>
 </resources>

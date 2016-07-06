@@ -12,4 +12,7 @@
     <string name="error_name">at least 3 characters</string>
     <string name="signup_failed">Signup failed</string>
     <string name="reset_password">Forgot password?</string>
+    <string name="companies">Companies</string>
+    <string name="ratings">Ratings</string>
+    <string name="account">Me</string>
 </resources>
