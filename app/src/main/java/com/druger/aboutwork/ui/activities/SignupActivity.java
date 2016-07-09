@@ -1,6 +1,5 @@
-package com.druger.aboutwork.activities;
+package com.druger.aboutwork.ui.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -20,15 +19,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginActivity extends AppCompatActivity {
-    private static final String TAG = LoginActivity.class.getSimpleName();
-    private static final int REQUEST_SIGNUP = 0;
+public class SignupActivity extends AppCompatActivity {
+    private static final String TAG = SignupActivity.class.getSimpleName();
 
     private EditText emailText;
     private EditText passwordText;
-    private Button btnLogin;
-    private TextView signupLink;
-    private TextView resetPassword;
+    private Button btnSignup;
+    private TextView loginLink;
     private ProgressBar progressBar;
 
     private FirebaseAuth auth;
@@ -36,96 +33,74 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_signup);
 
         auth = FirebaseAuth.getInstance();
 
-        if (auth.getCurrentUser() != null) {
-            finish();
-        }
-
-        setContentView(R.layout.activity_login);
-
         emailText = (EditText) findViewById(R.id.input_email);
         passwordText = (EditText) findViewById(R.id.input_password);
-        btnLogin = (Button) findViewById(R.id.btn_login);
-        signupLink = (TextView) findViewById(R.id.link_signup);
-        resetPassword = (TextView) findViewById(R.id.reset_password);
+        btnSignup = (Button) findViewById(R.id.btn_signup);
+        loginLink = (TextView) findViewById(R.id.link_login);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login();
+                signup();
             }
         });
 
-        signupLink.setOnClickListener(new View.OnClickListener() {
+        loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-                startActivityForResult(intent, REQUEST_SIGNUP);
-            }
-        });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SIGNUP) {
-            if (resultCode == RESULT_OK) {
-
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
                 finish();
             }
-        }
+        });
     }
 
-    @Override
-    public void onBackPressed() {
-        // Disable going back to the MainActivity
-        moveTaskToBack(true);
-    }
-
-    private void login() {
-        Log.d(TAG, "Login");
+    private void signup() {
+        Log.d(TAG, "Signup");
 
         String email = emailText.getText().toString().trim();
         String password = passwordText.getText().toString().trim();
 
         if (!validate(email, password)) {
-            onLoginFailed();
+            onSignupFailed();
             return;
         }
 
-        btnLogin.setEnabled(false);
+        btnSignup.setEnabled(false);
         progressBar.setVisibility(View.VISIBLE);
 
-        auth.signInWithEmailAndPassword(email, password)
+        auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+
                         progressBar.setVisibility(View.GONE);
 
                         if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithEmail", task.getException());
-                            onLoginFailed();
+                            onSignupFailed();
                         } else {
-                            onLoginSuccess();
+                            onSignupSuccess();
                         }
+
                     }
                 });
+
     }
 
-    private void onLoginSuccess() {
-        btnLogin.setEnabled(true);
+    private void onSignupSuccess() {
+        btnSignup.setEnabled(true);
+        setResult(RESULT_OK, null);
         finish();
     }
 
-    private void onLoginFailed() {
-        Toast.makeText(getBaseContext(), R.string.login_failed, Toast.LENGTH_SHORT).show();
+    private void onSignupFailed() {
+        Toast.makeText(getBaseContext(), R.string.signup_failed, Toast.LENGTH_SHORT).show();
 
-        btnLogin.setEnabled(true);
+        btnSignup.setEnabled(true);
     }
 
     private boolean validate(String email, String password) {
@@ -146,5 +121,11 @@ public class LoginActivity extends AppCompatActivity {
             passwordText.setError(null);
         }
         return valid;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        progressBar.setVisibility(View.GONE);
     }
 }

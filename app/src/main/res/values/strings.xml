@@ -15,4 +15,8 @@
     <string name="companies">Companies</string>
     <string name="ratings">Ratings</string>
     <string name="account">Me</string>
+    <string name="log_out">Log out</string>
+    <string name="name">Name</string>
+    <string name="my_reviews">My reviews</string>
+    <string name="settings">Settings</string>
 </resources>

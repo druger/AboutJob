@@ -1,4 +1,4 @@
-package com.druger.aboutwork.activities;
+package com.druger.aboutwork.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -42,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(2);
 
-        AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.companies, R.drawable.ic_company_white_24dp, R.color.tab1);
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.ratings, R.drawable.ic_star_white_24dp, R.color.tab2);
-        AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.account, R.drawable.ic_account_white_24dp, R.color.tab3);
+        AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.companies, R.drawable.ic_company, R.color.tab1);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.ratings, R.drawable.ic_star, R.color.tab2);
+        AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.account, R.drawable.ic_account, R.color.tab3);
 
         bottomNavigation.addItem(item1);
         bottomNavigation.addItem(item2);

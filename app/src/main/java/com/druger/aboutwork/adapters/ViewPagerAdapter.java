@@ -4,9 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.druger.aboutwork.fragments.AccountFragment;
-import com.druger.aboutwork.fragments.CompaniesFragment;
-import com.druger.aboutwork.fragments.RatingsFragment;
+import com.druger.aboutwork.ui.fragments.AccountFragment;
+import com.druger.aboutwork.ui.fragments.CompaniesFragment;
+import com.druger.aboutwork.ui.fragments.RatingsFragment;
 
 /**
  * Created by druger on 06.07.2016.
