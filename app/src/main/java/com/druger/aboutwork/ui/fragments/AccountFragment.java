@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.ui.activities.LoginActivity;
+import com.druger.aboutwork.ui.activities.SettingsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -102,6 +103,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     }
 
     private void openSettings() {
+        startActivity(new Intent(getActivity(), SettingsActivity.class));
 
     }
 

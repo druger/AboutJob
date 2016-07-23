@@ -115,7 +115,7 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         if (TextUtils.isEmpty(password) || password.length() < 6) {
-            passwordText.setError("at least 6 characters");
+            passwordText.setError(getString(R.string.pass_error));
             valid = false;
         } else {
             passwordText.setError(null);

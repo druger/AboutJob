@@ -40,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         if (auth.getCurrentUser() != null) {
+            startActivity(new Intent(this, MainActivity.class));
             finish();
         }
 
@@ -66,15 +67,20 @@ public class LoginActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQUEST_SIGNUP);
             }
         });
+
+        resetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
+            }
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
-
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
+                startActivity(new Intent(this, MainActivity.class));
                 finish();
             }
         }
@@ -119,6 +125,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void onLoginSuccess() {
         btnLogin.setEnabled(true);
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 
@@ -140,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (TextUtils.isEmpty(password) || password.length() < 6) {
-            passwordText.setError("at least 6 characters");
+            passwordText.setError(getString(R.string.pass_error));
             valid = false;
         } else {
             passwordText.setError(null);

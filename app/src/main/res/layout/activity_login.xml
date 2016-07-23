@@ -61,7 +61,7 @@
             android:layout_marginBottom="24dp"
             android:gravity="center"
             android:textSize="16sp"
-            android:text="@string/reset_password"/>
+            android:text="@string/forgot_password"/>
 
         <TextView
             android:id="@+id/link_signup"
