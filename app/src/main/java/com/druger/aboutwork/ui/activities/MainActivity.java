@@ -10,10 +10,12 @@ import android.support.v7.widget.Toolbar;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
+import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.adapters.ViewPagerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.leakcanary.RefWatcher;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,6 +48,13 @@ public class MainActivity extends AppCompatActivity {
         };
 
         initUI();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(this);
+        refWatcher.watch(this);
     }
 
     private void initUI() {

@@ -10,11 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.adapters.CatalogAdapter;
 import com.druger.aboutwork.model.CatalogCompanies;
 import com.druger.aboutwork.rest.ApiClient;
 import com.druger.aboutwork.rest.ApiService;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,6 +57,13 @@ public class CompaniesFragment extends Fragment {
         getCatalogCompanies();
 
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 
     /**

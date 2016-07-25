@@ -11,10 +11,12 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.leakcanary.RefWatcher;
 
 public class ResetPasswordActivity extends AppCompatActivity {
 
@@ -71,5 +73,12 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(this);
+        refWatcher.watch(this);
     }
 }

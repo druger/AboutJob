@@ -13,11 +13,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.leakcanary.RefWatcher;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = SignupActivity.class.getSimpleName();
@@ -127,5 +129,12 @@ public class SignupActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(this);
+        refWatcher.watch(this);
     }
 }

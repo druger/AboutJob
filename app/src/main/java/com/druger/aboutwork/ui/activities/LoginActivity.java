@@ -14,11 +14,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.leakcanary.RefWatcher;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
@@ -90,6 +92,13 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
         // Disable going back to the MainActivity
         moveTaskToBack(true);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(this);
+        refWatcher.watch(this);
     }
 
     private void login() {
