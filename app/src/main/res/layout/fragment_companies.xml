@@ -4,11 +4,10 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragments.CompaniesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:text="Companies"/>
+        android:layout_marginTop="?attr/actionBarSize" />
 
 </FrameLayout>
