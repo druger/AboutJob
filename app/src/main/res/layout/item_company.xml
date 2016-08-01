@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_company"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/logo_comapny"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:src="@drawable/default_company"/>
+
+    <TextView
+        android:id="@+id/name_company"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@android:color/black"
+        android:text="Company"/>
+
+</LinearLayout>

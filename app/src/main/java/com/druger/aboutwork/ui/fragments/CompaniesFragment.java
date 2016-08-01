@@ -5,21 +5,22 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
-import com.druger.aboutwork.adapters.CatalogAdapter;
-import com.druger.aboutwork.model.CatalogCompanies;
+import com.druger.aboutwork.model.Company;
+import com.druger.aboutwork.model.CompanyResponse;
 import com.druger.aboutwork.rest.ApiClient;
 import com.druger.aboutwork.rest.ApiService;
-import com.squareup.leakcanary.RefWatcher;
+import com.mikepenz.fastadapter.adapters.FastItemAdapter;
+import com.mikepenz.fastadapter.adapters.FooterAdapter;
+import com.mikepenz.fastadapter_extensions.items.ProgressItem;
+import com.mikepenz.fastadapter_extensions.scroll.EndlessRecyclerOnScrollListener;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -32,8 +33,12 @@ import retrofit2.Response;
 public class CompaniesFragment extends Fragment {
     private static final String TAG = CompaniesFragment.class.getSimpleName();
 
-    private CatalogAdapter adapter;
+    private FastItemAdapter<Company> adapter;
+    private FooterAdapter<ProgressItem> footerAdapter;
+
     private RecyclerView recyclerView;
+
+    private String query;
 
     public static CompaniesFragment newInstance(int index) {
         CompaniesFragment companies = new CompaniesFragment();
@@ -49,45 +54,70 @@ public class CompaniesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_companies, container, false);
 
+        adapter = new FastItemAdapter<>();
+        footerAdapter = new FooterAdapter<>();
+
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        SearchView searchView = (SearchView) getActivity().findViewById(R.id.search_view);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(footerAdapter.wrap(adapter));
 
-        getCatalogCompanies();
+        final EndlessRecyclerOnScrollListener scrollListener = new EndlessRecyclerOnScrollListener(footerAdapter) {
+            @Override
+            public void onLoadMore(int currentPage) {
+                footerAdapter.clear();
+                footerAdapter.add(new ProgressItem().withEnabled(false));
+                getCompanies(query, currentPage);
+            }
+        };
+        recyclerView.addOnScrollListener(scrollListener);
+
+        searchView.setQueryHint(getResources().getString(R.string.query_hint));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d(TAG, newText);
+                if (!newText.isEmpty()) {
+                    query = newText;
+                    adapter.clear();
+                    scrollListener.resetPageCount();
+                }
+                return true;
+            }
+        });
 
         return view;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(getActivity());
-        refWatcher.watch(this);
-    }
-
     /**
-     * Get list catalog companies from hh.ru
+     * Get list companies from search on hh.ru
      */
-    private void getCatalogCompanies() {
+    private void getCompanies(String query, int page) {
 
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
 
-        Call<ArrayList<CatalogCompanies>> call = apiService.getCatalogCompanies();
-        call.enqueue(new Callback<ArrayList<CatalogCompanies>>() {
+        Call<CompanyResponse> call = apiService.getCompanies(query, page);
+        call.enqueue(new Callback<CompanyResponse>() {
             @Override
-            public void onResponse(Call<ArrayList<CatalogCompanies>> call, Response<ArrayList<CatalogCompanies>> response) {
-                List<CatalogCompanies> companies = response.body();
-                Collections.sort(companies);
-                adapter = new CatalogAdapter(companies);
-                recyclerView.setAdapter(adapter);
+            public void onResponse(Call<CompanyResponse> call, Response<CompanyResponse> response) {
+                List<Company> companies = response.body().getItems();
+                footerAdapter.clear();
+                adapter.add(companies);
+                Log.d(TAG, "Companies size = " + companies.size());
             }
 
             @Override
-            public void onFailure(Call<ArrayList<CatalogCompanies>> call, Throwable t) {
+            public void onFailure(Call<CompanyResponse> call, Throwable t) {
                 Log.e(TAG, t.getMessage());
+                footerAdapter.clear();
             }
         });
     }
-
 }

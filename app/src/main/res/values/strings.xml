@@ -43,4 +43,5 @@
     <string name="back"><![CDATA[<< Back]]></string>
     <string name="sent_reset_pass">We have sent you instructions to reset your password!</string>
     <string name="failed_reset_pass">Failed to send reset email!</string>
+    <string name="query_hint">Search company</string>
 </resources>
