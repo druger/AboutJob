@@ -6,10 +6,9 @@
 
     <ImageView
         android:id="@+id/logo_comapny"
-        android:layout_width="60dp"
+        android:layout_width="120dp"
         android:layout_height="60dp"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:src="@drawable/default_company"/>
+        android:layout_margin="@dimen/activity_horizontal_margin"/>
 
     <TextView
         android:id="@+id/name_company"
@@ -19,6 +18,7 @@
         android:maxLines="1"
         android:ellipsize="end"
         android:textColor="@android:color/black"
-        android:text="Company"/>
+        android:text="Company"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 </LinearLayout>

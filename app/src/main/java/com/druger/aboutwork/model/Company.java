@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.R;
 import com.google.gson.annotations.SerializedName;
 import com.mikepenz.fastadapter.items.AbstractItem;
@@ -92,9 +94,18 @@ public class Company extends AbstractItem<Company, Company.CompanyVH> {
     public void bindView(CompanyVH holder) {
         super.bindView(holder);
         holder.name.setText(name);
+
+        Glide.with(holder.itemView.getContext())
+                .load(logo.logo_90)
+                .placeholder(R.drawable.default_company)
+                .error(R.drawable.default_company)
+                .fitCenter()
+                .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.logo);
     }
 
-    static class CompanyVH extends RecyclerView.ViewHolder {
+    protected static class CompanyVH extends RecyclerView.ViewHolder {
 
         ImageView logo;
         TextView name;
