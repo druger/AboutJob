@@ -15,7 +15,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
+import com.squareup.leakcanary.RefWatcher;
 
 public class CompanyDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -92,5 +94,12 @@ public class CompanyDetailActivity extends AppCompatActivity implements View.OnC
                 description.setVisibility(View.GONE);
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(this);
+        refWatcher.watch(this);
     }
 }
