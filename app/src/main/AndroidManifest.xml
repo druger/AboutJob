@@ -37,7 +37,15 @@
         </activity>
         <activity
             android:name=".ui.activities.ResetPasswordActivity"
-            android:theme="@style/AppTheme.Dark">
+            android:theme="@style/AppTheme.Dark"/>
+        <activity
+            android:name=".ui.activities.CompanyDetailActivity"
+            android:label="@string/title_activity_company_detail"
+            android:parentActivityName=".ui.activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.druger.aboutwork.ui.activities.MainActivity" />
         </activity>
     </application>
 

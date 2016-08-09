@@ -1,6 +1,7 @@
 package com.druger.aboutwork.ui.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,9 +14,13 @@ import android.view.ViewGroup;
 
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.model.Company;
+import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.CompanyResponse;
 import com.druger.aboutwork.rest.ApiClient;
 import com.druger.aboutwork.rest.ApiService;
+import com.druger.aboutwork.ui.activities.CompanyDetailActivity;
+import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.mikepenz.fastadapter.adapters.FooterAdapter;
 import com.mikepenz.fastadapter_extensions.items.ProgressItem;
@@ -32,6 +37,8 @@ import retrofit2.Response;
  */
 public class CompaniesFragment extends Fragment {
     private static final String TAG = CompaniesFragment.class.getSimpleName();
+
+    private ApiService apiService;
 
     private FastItemAdapter<Company> adapter;
     private FooterAdapter<ProgressItem> footerAdapter;
@@ -54,6 +61,8 @@ public class CompaniesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_companies, container, false);
 
+        apiService = ApiClient.getClient().create(ApiService.class);
+
         adapter = new FastItemAdapter<>();
         footerAdapter = new FooterAdapter<>();
 
@@ -73,6 +82,37 @@ public class CompaniesFragment extends Fragment {
             }
         };
         recyclerView.addOnScrollListener(scrollListener);
+
+        adapter.withSelectable(true);
+        adapter.withOnClickListener(new FastAdapter.OnClickListener<Company>() {
+            @Override
+            public boolean onClick(View v, IAdapter<Company> adapter, Company item, int position) {
+                Call<CompanyDetail> call = apiService.getCompanyDetail(item.getId());
+                call.enqueue(new Callback<CompanyDetail>() {
+                    @Override
+                    public void onResponse(Call<CompanyDetail> call, Response<CompanyDetail> response) {
+                        CompanyDetail detail = response.body();
+                        CompanyDetail.Logo logo = detail.getLogo();
+
+                        Intent intent = new Intent(getActivity(), CompanyDetailActivity.class);
+                        intent.putExtra("id", detail.getId());
+                        intent.putExtra("name", detail.getName());
+                        intent.putExtra("site", detail.getSite());
+                        intent.putExtra("description", detail.getDescription());
+                        if (logo != null) {
+                            intent.putExtra("logo", logo.getOriginal());
+                        }
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure(Call<CompanyDetail> call, Throwable t) {
+                        Log.e(TAG, t.getMessage());
+                    }
+                });
+                return true;
+            }
+        });
 
         searchView.setQueryHint(getResources().getString(R.string.query_hint));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -100,8 +140,6 @@ public class CompaniesFragment extends Fragment {
      * Get list companies from search on hh.ru
      */
     private void getCompanies(String query, int page) {
-
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
 
         Call<CompanyResponse> call = apiService.getCompanies(query, page);
         call.enqueue(new Callback<CompanyResponse>() {
