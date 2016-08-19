@@ -53,4 +53,21 @@
     <string name="career">Career</string>
     <string name="collective">Collective</string>
     <string name="social_package">Social package</string>
+    <string name="not_description">Company has not description</string>
+
+    <string name="pluses">Pluses</string>
+    <string name="minuses">Minuses</string>
+    <string name="company_rating">Company rating</string>
+    <string name="status">Status</string>
+    <string name="working">Working</string>
+    <string name="worked">Worked</string>
+    <string name="interview">Interview</string>
+    <string name="position">Position</string>
+    <string name="empoyment_date">Employment date</string>
+    <string name="dismissal_date">Dismissal date</string>
+    <string name="interview_date">Interview date</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="review_added">Review added</string>
+    <string name="error_review_add">Fill in the required fields</string>
 </resources>

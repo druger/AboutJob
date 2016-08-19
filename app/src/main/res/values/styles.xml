@@ -38,4 +38,9 @@
         <item name="android:background">@color/colorPrimary</item>
     </style>
 
+    <style name="reviewRating" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratingstars</item>
+        <item name="android:minHeight">35dp</item>
+    </style>
+
 </resources>
