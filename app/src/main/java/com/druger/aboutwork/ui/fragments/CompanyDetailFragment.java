@@ -9,6 +9,9 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -21,6 +24,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.db.DBHelper;
+import com.druger.aboutwork.model.Review;
+import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.squareup.leakcanary.RefWatcher;
 
 /**
@@ -35,6 +41,7 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
     private ImageView imgToolbar;
 
     private Toolbar toolbar;
+    private RecyclerView recyclerView;
 
     public CompanyDetailFragment() {
         // Required empty public constructor
@@ -61,6 +68,8 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
         downDrop = (ImageView) view.findViewById(R.id.down_drop);
         upDrop = (ImageView) view.findViewById(R.id.up_drop);
         imgToolbar = (ImageView) view.findViewById(R.id.img_toolbar);
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 
         description.setVisibility(View.GONE);
         downDrop.setOnClickListener(this);
@@ -95,7 +104,21 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgToolbar);
+
+        setReviews();
+
         return view;
+    }
+
+    private void setReviews() {
+        FastItemAdapter<Review> adapter = new FastItemAdapter<>();
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setNestedScrollingEnabled(false);
+
+        adapter.add(DBHelper.getReviews());
     }
 
 

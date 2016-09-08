@@ -10,4 +10,6 @@
     <color name="tab1">#FF9800</color>
     <color name="tab2">#009688</color>
     <color name="tab3">#F63D2B</color>
+
+    <color name="like_dislike">#9E9E9E</color>
 </resources>

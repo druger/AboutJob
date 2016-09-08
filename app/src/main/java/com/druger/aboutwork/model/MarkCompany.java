@@ -1,5 +1,7 @@
 package com.druger.aboutwork.model;
 
+import java.math.BigDecimal;
+
 /**
  * Created by druger on 10.08.2016.
  */
@@ -78,8 +80,13 @@ public class MarkCompany {
     public float getRating() {
         if (salary != 0 && chief != 0 && workplace != 0
                 && career != 0 && collective != 0 && socialPackage != 0) {
-            return (salary + chief + workplace + career + collective + socialPackage) / 6;
+            float rating = (salary + chief + workplace + career + collective + socialPackage) / 6;
+            return roundRating(rating, 2);
         }
         return 0;
+    }
+
+    private float roundRating(float rating, int scale) {
+        return BigDecimal.valueOf(rating).setScale(scale, BigDecimal.ROUND_HALF_UP).floatValue();
     }
 }

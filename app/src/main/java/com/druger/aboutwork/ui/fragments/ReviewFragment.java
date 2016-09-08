@@ -85,7 +85,7 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
         Calendar calendar = Calendar.getInstance();
         date = calendar.getTimeInMillis();
 
-        review = new Review(companyId, user.getUid(), date);
+        review = new Review(companyId, user.getUid(), user.getDisplayName(), date);
 
         etPluses = (TextInputEditText) view.findViewById(R.id.et_pluses);
         etMinuses = (TextInputEditText) view.findViewById(R.id.et_minuses);
