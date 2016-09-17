@@ -2,6 +2,7 @@ package com.druger.aboutwork.ui.fragments;
 
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,6 +27,8 @@ import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.db.DBHelper;
 import com.druger.aboutwork.model.Review;
+import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -39,6 +42,7 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
     private ImageView downDrop;
     private ImageView upDrop;
     private ImageView imgToolbar;
+    private TextView countReviews;
 
     private Toolbar toolbar;
     private RecyclerView recyclerView;
@@ -68,12 +72,15 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
         downDrop = (ImageView) view.findViewById(R.id.down_drop);
         upDrop = (ImageView) view.findViewById(R.id.up_drop);
         imgToolbar = (ImageView) view.findViewById(R.id.img_toolbar);
+        countReviews = (TextView) view.findViewById(R.id.count_reviews);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 
         description.setVisibility(View.GONE);
         downDrop.setOnClickListener(this);
         upDrop.setOnClickListener(this);
+
+        countReviews.setText(String.valueOf(DBHelper.getReviews().size()));
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +125,23 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
         recyclerView.setAdapter(adapter);
         recyclerView.setNestedScrollingEnabled(false);
 
+        adapter.withSelectable(true);
+        adapter.withOnClickListener(new FastAdapter.OnClickListener<Review>() {
+            @Override
+            public boolean onClick(View v, IAdapter<Review> adapter, Review item, int position) {
+                SelectedReviewFragment reviewFragment = new SelectedReviewFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("review", item);
+                reviewFragment.setArguments(bundle);
+
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.company_container, reviewFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+                return true;
+            }
+        });
         adapter.add(DBHelper.getReviews());
     }
 
@@ -125,7 +149,7 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
     private void addReview() {
         ReviewFragment review = new ReviewFragment();
 
-        android.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.company_container, review);
         transaction.addToBackStack(null);
         transaction.commit();

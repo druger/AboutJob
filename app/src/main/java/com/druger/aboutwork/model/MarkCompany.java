@@ -77,16 +77,16 @@ public class MarkCompany {
         this.socialPackage = socialPackage;
     }
 
-    public float getRating() {
+    public float getAverageMark() {
         if (salary != 0 && chief != 0 && workplace != 0
                 && career != 0 && collective != 0 && socialPackage != 0) {
             float rating = (salary + chief + workplace + career + collective + socialPackage) / 6;
-            return roundRating(rating, 2);
+            return roundMark(rating, 2);
         }
         return 0;
     }
 
-    private float roundRating(float rating, int scale) {
+    private float roundMark(float rating, int scale) {
         return BigDecimal.valueOf(rating).setScale(scale, BigDecimal.ROUND_HALF_UP).floatValue();
     }
 }

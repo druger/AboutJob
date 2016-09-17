@@ -37,7 +37,7 @@
             android:stepSize="0.5" />
 
         <TextView
-            android:id="@+id/num_reviews"
+            android:id="@+id/count_reviews"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rating_bar"
@@ -52,8 +52,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rating_bar"
-            android:layout_toEndOf="@+id/num_reviews"
-            android:layout_toRightOf="@+id/num_reviews"
+            android:layout_toEndOf="@+id/count_reviews"
+            android:layout_toRightOf="@+id/count_reviews"
             android:text="@string/reviews" />
 
         <TextView

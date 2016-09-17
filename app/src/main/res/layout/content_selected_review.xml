@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:text="Name"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/user_name"
+            android:layout_toRightOf="@+id/user_name"
+            android:text="Date"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/user_name"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="City"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_name"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:text="@string/position"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/tv_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/position"
+            android:layout_toEndOf="@+id/position"
+            android:layout_toRightOf="@+id/position"
+            android:textColor="@android:color/black"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/employment_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/position"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:text="@string/empoyment_date"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/tv_employment_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/employment_date"
+            android:layout_toEndOf="@+id/employment_date"
+            android:layout_toRightOf="@+id/employment_date"
+            android:textColor="@android:color/black"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/dismissal_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/employment_date"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:text="@string/dismissal_date"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/tv_dismissal_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/dismissal_date"
+            android:layout_toEndOf="@+id/dismissal_date"
+            android:layout_toRightOf="@+id/dismissal_date"
+            android:textColor="@android:color/black"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/interview_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dismissal_date"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:text="@string/interview_date"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/tv_interview_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/interview_date"
+            android:layout_toEndOf="@+id/interview_date"
+            android:layout_toRightOf="@+id/interview_date"
+            android:textColor="@android:color/black"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/pluses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/interview_date"
+            android:layout_marginBottom="5dp"
+            android:background="@android:color/holo_green_light"
+            android:padding="5dp"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/minuses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pluses"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:background="@color/colorPrimary"
+            android:padding="5dp"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/salary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ratingbar_salary"
+            android:text="@string/salary" />
+
+        <RatingBar
+            android:id="@+id/ratingbar_salary"
+            style="@style/reviewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/minuses"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:stepSize="1" />
+
+        <TextView
+            android:id="@+id/chief"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ratingbar_chief"
+            android:text="@string/chief" />
+
+        <RatingBar
+            android:id="@+id/ratingbar_chief"
+            style="@style/reviewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/ratingbar_salary"
+            android:isIndicator="true"
+            android:stepSize="1" />
+
+        <TextView
+            android:id="@+id/workplace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ratingbar_workplace"
+            android:text="@string/workplace" />
+
+        <RatingBar
+            android:id="@+id/ratingbar_workplace"
+            style="@style/reviewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/ratingbar_chief"
+            android:isIndicator="true"
+            android:stepSize="1" />
+
+        <TextView
+            android:id="@+id/career"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ratingbar_career"
+            android:text="@string/career" />
+
+        <RatingBar
+            android:id="@+id/ratingbar_career"
+            style="@style/reviewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/ratingbar_workplace"
+            android:isIndicator="true"
+            android:stepSize="1" />
+
+        <TextView
+            android:id="@+id/collective"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ratingbar_collective"
+            android:text="@string/collective" />
+
+        <RatingBar
+            android:id="@+id/ratingbar_collective"
+            style="@style/reviewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/ratingbar_career"
+            android:isIndicator="true"
+            android:stepSize="1" />
+
+        <TextView
+            android:id="@+id/social_package"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ratingbar_social_package"
+            android:text="@string/social_package" />
+
+        <RatingBar
+            android:id="@+id/ratingbar_social_package"
+            style="@style/reviewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/ratingbar_collective"
+            android:isIndicator="true"
+            android:stepSize="1" />
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>

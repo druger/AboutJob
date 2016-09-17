@@ -2,6 +2,7 @@ package com.druger.aboutwork.ui.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
@@ -32,5 +33,15 @@ public class CompanyDetailActivity extends AppCompatActivity{
         super.onDestroy();
         RefWatcher refWatcher = AboutWorkApp.getRefWatcher(this);
         refWatcher.watch(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

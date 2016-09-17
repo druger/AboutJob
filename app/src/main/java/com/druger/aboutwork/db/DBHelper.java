@@ -34,6 +34,7 @@ public class DBHelper {
         markCompany.setWorkplace(4f);
         review.setMarkCompany(markCompany);
         review.setLike(1);
+        review.setCity("Moscow");
 
         Review review2 = new Review(2, "2", "Slim", 123456789);
         MarkCompany markCompany2 = new MarkCompany("2", 2);
@@ -46,6 +47,7 @@ public class DBHelper {
         review2.setMarkCompany(markCompany2);
         review2.setLike(2);
         review2.setDislike(1);
+        review.setCity("Moscow");
 
         reviews.add(review);
         reviews.add(review2);

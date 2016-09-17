@@ -1,6 +1,8 @@
 package com.druger.aboutwork.model;
 
 import android.graphics.Color;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -14,7 +16,7 @@ import com.mikepenz.fastadapter.items.AbstractItem;
 /**
  * Created by druger on 10.08.2016.
  */
-public class Review extends AbstractItem<Review, Review.ViewHolder> {
+public class Review extends AbstractItem<Review, Review.ViewHolder> implements Parcelable {
 
     /**
      * Статусы работника
@@ -45,6 +47,35 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> {
         this.userName = userName;
         this.date = date;
     }
+
+    protected Review(Parcel in) {
+        companyId = in.readInt();
+        userId = in.readString();
+        userName = in.readString();
+        date = in.readLong();
+        pluses = in.readString();
+        minuses = in.readString();
+        status = in.readInt();
+        city = in.readString();
+        position = in.readString();
+        employmentDate = in.readLong();
+        dismissalDate = in.readLong();
+        interviewDate = in.readLong();
+        like = in.readInt();
+        dislike = in.readInt();
+    }
+
+    public static final Creator<Review> CREATOR = new Creator<Review>() {
+        @Override
+        public Review createFromParcel(Parcel in) {
+            return new Review(in);
+        }
+
+        @Override
+        public Review[] newArray(int size) {
+            return new Review[size];
+        }
+    };
 
     public int getCompanyId() {
         return companyId;
@@ -162,6 +193,10 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> {
         this.userName = userName;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
     @Override
     public int getType() {
         return R.id.item_review;
@@ -180,7 +215,7 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> {
         holder.city.setText(city);
         holder.pluses.setText(pluses);
         holder.minuses.setText(minuses);
-        holder.mark.setText(String.valueOf(markCompany.getRating()));
+        holder.mark.setText(String.valueOf(markCompany.getAverageMark()));
         holder.like.setText(String.valueOf(like));
         holder.dislike.setText(String.valueOf(dislike));
 
@@ -267,5 +302,28 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> {
             like = (TextView) itemView.findViewById(R.id.like);
             dislike = (TextView) itemView.findViewById(R.id.dislike);
         }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(companyId);
+        dest.writeString(userId);
+        dest.writeString(userName);
+        dest.writeLong(date);
+        dest.writeString(pluses);
+        dest.writeString(minuses);
+        dest.writeInt(status);
+        dest.writeString(city);
+        dest.writeString(position);
+        dest.writeLong(employmentDate);
+        dest.writeLong(dismissalDate);
+        dest.writeLong(interviewDate);
+        dest.writeInt(like);
+        dest.writeInt(dislike);
     }
 }

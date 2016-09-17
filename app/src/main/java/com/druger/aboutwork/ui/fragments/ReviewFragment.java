@@ -78,7 +78,11 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(intent.getStringExtra("name"));
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        String companyName = intent.getStringExtra("name");
+        if (companyName != null) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(companyName);
+        }
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -309,7 +313,7 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
         String position = etPosition.getText().toString().trim();
 
         if (!TextUtils.isEmpty(pluses) && !TextUtils.isEmpty(minuses) && status > -1
-                && mark.getRating() != 0) {
+                && mark.getAverageMark() != 0) {
             review.setPluses(pluses);
             review.setMinuses(minuses);
             review.setStatus(status);
