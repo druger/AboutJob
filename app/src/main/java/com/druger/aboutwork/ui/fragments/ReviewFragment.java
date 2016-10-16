@@ -1,9 +1,10 @@
 package com.druger.aboutwork.ui.fragments;
 
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -27,7 +28,6 @@ import com.druger.aboutwork.Utils;
 import com.druger.aboutwork.db.DBHelper;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
-import com.druger.aboutwork.ui.dialog.DatePickerFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.leakcanary.RefWatcher;
@@ -46,8 +46,9 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
     private MarkCompany mark;
 
     private int companyId;
-    private long date;
     private int status = -1;
+
+    static final Calendar c = Calendar.getInstance();
 
     private RatingBar salary;
     private RatingBar chief;
@@ -63,6 +64,8 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
     private EditText etEmploymentDate;
     private EditText etDismissalDate;
     private EditText etInterviewDate;
+
+    private DatePickerFragment datePicker;
 
     public ReviewFragment() {
         // Required empty public constructor
@@ -86,10 +89,7 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        Calendar calendar = Calendar.getInstance();
-        date = calendar.getTimeInMillis();
-
-        review = new Review(companyId, user.getUid(), user.getDisplayName(), date);
+        review = new Review(companyId, user.getUid(), user.getDisplayName(), c.getTimeInMillis());
 
         etPluses = (TextInputEditText) view.findViewById(R.id.et_pluses);
         etMinuses = (TextInputEditText) view.findViewById(R.id.et_minuses);
@@ -109,17 +109,21 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
         etDismissalDate = (EditText) view.findViewById(R.id.dismissal_date);
         etInterviewDate = (EditText) view.findViewById(R.id.interview_date);
 
+        datePicker = new DatePickerFragment();
+
         Button add = (Button) view.findViewById(R.id.btn_add);
         Button cancel = (Button) view.findViewById(R.id.btn_cancel);
         add.setOnClickListener(this);
         cancel.setOnClickListener(this);
 
+        etEmploymentDate.setOnClickListener(this);
+        etDismissalDate.setOnClickListener(this);
+        etInterviewDate.setOnClickListener(this);
         etEmploymentDate.setVisibility(View.GONE);
         etDismissalDate.setVisibility(View.GONE);
         etInterviewDate.setVisibility(View.GONE);
 
         setCompanyRating();
-        setDatePickerDialog();
 
         return view;
     }
@@ -171,80 +175,6 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
         });
 
         review.setMarkCompany(mark);
-    }
-
-    private void setDatePickerDialog() {
-        etEmploymentDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar c = Calendar.getInstance();
-                DialogFragment datePicker = new DatePickerFragment() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        c.set(Calendar.YEAR, year);
-                        c.set(Calendar.MONTH, monthOfYear);
-                        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        etEmploymentDate.setText(Utils.getDate(c.getTimeInMillis()));
-                        review.setEmploymentDate(c.getTimeInMillis());
-                    }
-
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        super.onCancel(dialog);
-                        etEmploymentDate.setText(null);
-                    }
-                };
-                datePicker.show(getFragmentManager(), "DatePickerDialog");
-            }
-        });
-
-        etDismissalDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar c = Calendar.getInstance();
-                DialogFragment datePicker = new DatePickerFragment() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        c.set(Calendar.YEAR, year);
-                        c.set(Calendar.MONTH, monthOfYear);
-                        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        etDismissalDate.setText(Utils.getDate(c.getTimeInMillis()));
-                        review.setDismissalDate(c.getTimeInMillis());
-                    }
-
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        super.onCancel(dialog);
-                        etDismissalDate.setText(null);
-                    }
-                };
-                datePicker.show(getFragmentManager(), "DatePickerDialog");
-            }
-        });
-
-        etInterviewDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar c = Calendar.getInstance();
-                DialogFragment datePicker = new DatePickerFragment() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        c.set(Calendar.YEAR, year);
-                        c.set(Calendar.MONTH, monthOfYear);
-                        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        etInterviewDate.setText(Utils.getDate(c.getTimeInMillis()));
-                        review.setInterviewDate(c.getTimeInMillis());
-                    }
-
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        super.onCancel(dialog);
-                        etInterviewDate.setText(null);
-                    }
-                };
-                datePicker.show(getFragmentManager(), "DatePickerDialog");
-            }
-        });
     }
 
     @Override
@@ -304,6 +234,21 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
             case R.id.btn_cancel:
                 getFragmentManager().popBackStackImmediate();
                 break;
+            case R.id.employment_date:
+                datePicker.flag = DatePickerFragment.EMPLOYMENT_DATE;
+                datePicker.show(getFragmentManager(), "DatePickerDialog");
+                datePicker.setData(etEmploymentDate, review);
+                break;
+            case R.id.dismissal_date:
+                datePicker.flag = DatePickerFragment.DISMISSAL_DATE;
+                datePicker.show(getFragmentManager(), "DatePickerDialog");
+                datePicker.setData(etDismissalDate, review);
+                break;
+            case R.id.interview_date:
+                datePicker.flag = DatePickerFragment.INTERVIEW_DATE;
+                datePicker.show(getFragmentManager(), "DatePickerDialog");
+                datePicker.setData(etInterviewDate, review);
+                break;
         }
     }
 
@@ -324,5 +269,55 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
             return true;
         }
         return false;
+    }
+
+    public static class DatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
+
+        public static final int EMPLOYMENT_DATE = 0;
+        public static final int DISMISSAL_DATE = 1;
+        public static final int INTERVIEW_DATE = 2;
+
+        private int flag = -1;
+
+        private EditText etDate;
+        private Review review;
+
+        public void setData(EditText date, Review review) {
+            this.etDate = date;
+            this.review = review;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            return new DatePickerDialog(getActivity(), this, year, month, day);
+        }
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            long date;
+
+            c.set(Calendar.YEAR, year);
+            c.set(Calendar.MONTH, monthOfYear);
+            c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            date = c.getTimeInMillis();
+            etDate.setText(Utils.getDate(date));
+
+            switch (flag) {
+                case EMPLOYMENT_DATE:
+                    review.setEmploymentDate(date);
+                    break;
+                case DISMISSAL_DATE:
+                    review.setDismissalDate(date);
+                    break;
+                case INTERVIEW_DATE:
+                    review.setInterviewDate(date);
+                    break;
+            }
+        }
     }
 }

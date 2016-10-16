@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
                     android:layout_marginEnd="5dp"
-                    android:src="@drawable/thumb_up"
+                    card_view:srcCompat="@drawable/thumb_up"
                     android:tint="@color/like_dislike"
                     android:clickable="true" />
 
@@ -111,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
                     android:layout_marginEnd="5dp"
-                    android:src="@drawable/thumb_down"
+                    card_view:srcCompat="@drawable/thumb_down"
                     android:tint="@color/like_dislike"
                     android:clickable="true" />
 

@@ -35,6 +35,7 @@ public class DBHelper {
         review.setMarkCompany(markCompany);
         review.setLike(1);
         review.setCity("Moscow");
+        review.setMyLike(true);
 
         Review review2 = new Review(2, "2", "Slim", 123456789);
         MarkCompany markCompany2 = new MarkCompany("2", 2);
@@ -47,9 +48,24 @@ public class DBHelper {
         review2.setMarkCompany(markCompany2);
         review2.setLike(2);
         review2.setDislike(1);
-        review.setCity("Moscow");
+        review2.setCity("Moscow");
+        review2.setMyDislike(true);
+
+        Review review3 = new Review(3, "3", "Oxxxymiron", 123456789);
+        MarkCompany markCompany3 = new MarkCompany("3", 3);
+        markCompany3.setSocialPackage(5f);
+        markCompany3.setCollective(4f);
+        markCompany3.setCareer(3f);
+        markCompany3.setChief(2f);
+        markCompany3.setSalary(3f);
+        markCompany3.setWorkplace(4f);
+        review3.setMarkCompany(markCompany3);
+        review3.setLike(3);
+        review3.setDislike(2);
+        review3.setCity("Piter");
 
         reviews.add(review);
         reviews.add(review2);
+        reviews.add(review3);
     }
 }

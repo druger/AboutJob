@@ -40,6 +40,8 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
     private long interviewDate;
     private int like;
     private int dislike;
+    private boolean myLike;
+    private boolean myDislike;
 
     public Review(int companyId, String userId, String userName, long date) {
         this.companyId = companyId;
@@ -197,6 +199,14 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
         return userName;
     }
 
+    public void setMyLike(boolean myLike) {
+        this.myLike = myLike;
+    }
+
+    public void setMyDislike(boolean myDislike) {
+        this.myDislike = myDislike;
+    }
+
     @Override
     public int getType() {
         return R.id.item_review;
@@ -219,9 +229,18 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
         holder.like.setText(String.valueOf(like));
         holder.dislike.setText(String.valueOf(dislike));
 
-        // TODO добавить поля Review состояний лайка/диза, а также в БД
-        holder.imgLike.setTag("likeInactive");
-        holder.imgDislike.setTag("dislikeInactive");
+        if (!myLike) {
+            holder.imgLike.setTag("likeInactive");
+        } else {
+            holder.imgLike.setTag("likeActive");
+            holder.imgLike.setColorFilter(Color.parseColor("#8BC34A"));
+        }
+        if (!myDislike) {
+            holder.imgDislike.setTag("dislikeInactive");
+        } else {
+            holder.imgDislike.setTag("dislikeActive");
+            holder.imgDislike.setColorFilter(Color.parseColor("#F44336"));
+        }
 
         holder.imgLike.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,18 +251,21 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
                     holder.imgLike.setTag("likeActive");
                     holder.imgLike.setColorFilter(Color.parseColor("#8BC34A"));
                     like++;
+                    myLike = true;
                     holder.like.setText(String.valueOf(like));
 
                     if (tagDislike.equalsIgnoreCase("dislikeActive")) {
                         holder.imgDislike.setTag("dislikeInactive");
                         holder.imgDislike.setColorFilter(Color.parseColor("#9E9E9E"));
                         dislike--;
+                        myDislike = false;
                         holder.dislike.setText(String.valueOf(dislike));
                     }
                 } else {
                     holder.imgLike.setTag("likeInactive");
                     holder.imgLike.setColorFilter(Color.parseColor("#9E9E9E"));
                     like--;
+                    myLike = false;
                     holder.like.setText(String.valueOf(like));
                 }
             }
@@ -257,18 +279,21 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
                     holder.imgDislike.setTag("dislikeActive");
                     holder.imgDislike.setColorFilter(Color.parseColor("#F44336"));
                     dislike++;
+                    myDislike = true;
                     holder.dislike.setText(String.valueOf(dislike));
 
                     if (tagLike.equalsIgnoreCase("likeActive")) {
                         holder.imgLike.setTag("likeInactive");
                         holder.imgLike.setColorFilter(Color.parseColor("#9E9E9E"));
                         like--;
+                        myLike = false;
                         holder.like.setText(String.valueOf(like));
                     }
                 } else {
                     holder.imgDislike.setTag("dislikeInactive");
                     holder.imgDislike.setColorFilter(Color.parseColor("#9E9E9E"));
                     dislike--;
+                    myDislike = false;
                     holder.dislike.setText(String.valueOf(dislike));
                 }
             }

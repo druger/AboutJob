@@ -86,7 +86,7 @@ public class MarkCompany {
         return 0;
     }
 
-    private float roundMark(float rating, int scale) {
+    public static float roundMark(float rating, int scale) {
         return BigDecimal.valueOf(rating).setScale(scale, BigDecimal.ROUND_HALF_UP).floatValue();
     }
 }
