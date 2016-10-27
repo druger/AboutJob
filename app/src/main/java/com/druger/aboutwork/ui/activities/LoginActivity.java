@@ -29,8 +29,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailText;
     private EditText passwordText;
     private Button btnLogin;
-    private TextView signupLink;
-    private TextView resetPassword;
     private ProgressBar progressBar;
 
     private FirebaseAuth auth;
@@ -51,8 +49,8 @@ public class LoginActivity extends AppCompatActivity {
         emailText = (EditText) findViewById(R.id.input_email);
         passwordText = (EditText) findViewById(R.id.input_password);
         btnLogin = (Button) findViewById(R.id.btn_login);
-        signupLink = (TextView) findViewById(R.id.link_signup);
-        resetPassword = (TextView) findViewById(R.id.reset_password);
+        TextView signupLink = (TextView) findViewById(R.id.link_signup);
+        TextView resetPassword = (TextView) findViewById(R.id.reset_password);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {

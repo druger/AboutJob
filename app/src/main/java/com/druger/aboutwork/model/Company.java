@@ -48,7 +48,7 @@ public class Company extends AbstractItem<Company, Company.CompanyVH> {
         this.logo = logo;
     }
 
-    class Logo {
+    static class Logo {
         @SerializedName("90")
         String logo_90;
         @SerializedName("240")

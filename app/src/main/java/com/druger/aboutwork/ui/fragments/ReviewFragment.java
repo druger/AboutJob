@@ -48,8 +48,6 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
     private int companyId;
     private int status = -1;
 
-    static final Calendar c = Calendar.getInstance();
-
     private RatingBar salary;
     private RatingBar chief;
     private RatingBar workplace;
@@ -89,7 +87,9 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        review = new Review(companyId, user.getUid(), user.getDisplayName(), c.getTimeInMillis());
+        if (user != null) {
+            review = new Review(companyId, user.getUid(), user.getDisplayName(), Calendar.getInstance().getTimeInMillis());
+        }
 
         etPluses = (TextInputEditText) view.findViewById(R.id.et_pluses);
         etMinuses = (TextInputEditText) view.findViewById(R.id.et_minuses);
@@ -282,6 +282,8 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
 
         private EditText etDate;
         private Review review;
+
+        Calendar c = Calendar.getInstance();
 
         public void setData(EditText date, Review review) {
             this.etDate = date;

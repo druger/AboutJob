@@ -58,7 +58,7 @@ public class CompanyDetail {
         this.logo = logo;
     }
 
-    public class Logo {
+    public static class Logo {
         String original;
 
         public String getOriginal() {

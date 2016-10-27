@@ -31,9 +31,6 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     private EditText editText;
     private Button changeEmail;
     private Button changePass;
-    private Button btnChangeEmail;
-    private Button btnChangePass;
-    private Button removeUser;
     private ProgressBar progressBar;
 
     private FirebaseAuth auth;
@@ -78,9 +75,9 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         editText = (EditText) findViewById(R.id.edit);
         changeEmail = (Button) findViewById(R.id.change_email);
         changePass = (Button) findViewById(R.id.change_pass);
-        btnChangeEmail = (Button) findViewById(R.id.btn_change_email);
-        btnChangePass = (Button) findViewById(R.id.btn_change_pass);
-        removeUser = (Button) findViewById(R.id.btn_remove_user);
+        Button btnChangeEmail = (Button) findViewById(R.id.btn_change_email);
+        Button btnChangePass = (Button) findViewById(R.id.btn_change_pass);
+        Button removeUser = (Button) findViewById(R.id.btn_remove_user);
 
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 

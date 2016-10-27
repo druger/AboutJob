@@ -45,8 +45,6 @@ public class CompaniesFragment extends Fragment {
     private FastItemAdapter<Company> adapter;
     private FooterAdapter<ProgressItem> footerAdapter;
 
-    private RecyclerView recyclerView;
-
     private String query;
 
     public static CompaniesFragment newInstance(int index) {
@@ -68,7 +66,7 @@ public class CompaniesFragment extends Fragment {
         adapter = new FastItemAdapter<>();
         footerAdapter = new FooterAdapter<>();
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         SearchView searchView = (SearchView) getActivity().findViewById(R.id.search_view);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());

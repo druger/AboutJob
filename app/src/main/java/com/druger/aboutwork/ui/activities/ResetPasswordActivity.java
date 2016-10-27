@@ -21,8 +21,6 @@ import com.squareup.leakcanary.RefWatcher;
 public class ResetPasswordActivity extends AppCompatActivity {
 
     private EditText inputEmail;
-    private Button resetPass;
-    private Button back;
     private ProgressBar progressBar;
 
     private FirebaseAuth auth;
@@ -33,8 +31,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reset_password);
 
         inputEmail = (EditText) findViewById(R.id.input_email);
-        resetPass = (Button) findViewById(R.id.btn_reset_pass);
-        back = (Button) findViewById(R.id.btn_back);
+        Button resetPass = (Button) findViewById(R.id.btn_reset_pass);
+        Button back = (Button) findViewById(R.id.btn_back);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         auth = FirebaseAuth.getInstance();

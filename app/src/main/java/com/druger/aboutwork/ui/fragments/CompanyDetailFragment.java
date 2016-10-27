@@ -41,12 +41,9 @@ import java.util.List;
  */
 public class CompanyDetailFragment extends Fragment implements View.OnClickListener{
 
-    private TextView site;
     private TextView description;
     private ImageView downDrop;
     private ImageView upDrop;
-    private ImageView imgToolbar;
-    private TextView countReviews;
     private TextView rating;
     private RatingBar ratingCompany;
 
@@ -74,12 +71,12 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
 
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) view.findViewById(R.id.collapsingToolbar);
 
-        site = (TextView) view.findViewById(R.id.site);
+        TextView site = (TextView) view.findViewById(R.id.site);
         description = (TextView) view.findViewById(R.id.content_description);
         downDrop = (ImageView) view.findViewById(R.id.down_drop);
         upDrop = (ImageView) view.findViewById(R.id.up_drop);
-        imgToolbar = (ImageView) view.findViewById(R.id.img_toolbar);
-        countReviews = (TextView) view.findViewById(R.id.count_reviews);
+        ImageView imgToolbar = (ImageView) view.findViewById(R.id.img_toolbar);
+        TextView countReviews = (TextView) view.findViewById(R.id.count_reviews);
         rating = (TextView) view.findViewById(R.id.rating);
         ratingCompany = (RatingBar) view.findViewById(R.id.rating_company);
 

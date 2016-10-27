@@ -20,10 +20,7 @@ import com.squareup.leakcanary.RefWatcher;
 public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton fab;
-    private AHBottomNavigation bottomNavigation;
     private AHBottomNavigationViewPager viewPager;
-
-    private ViewPagerAdapter pagerAdapter;
 
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
@@ -59,10 +56,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void initUI() {
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
+        AHBottomNavigation bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
         viewPager = (AHBottomNavigationViewPager) findViewById(R.id.view_pager);
 
-        pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        ViewPagerAdapter pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(2);
 
