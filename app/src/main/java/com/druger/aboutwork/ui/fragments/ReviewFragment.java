@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -65,6 +66,8 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
 
     private DatePickerFragment datePicker;
 
+    private View view;
+
     public ReviewFragment() {
         // Required empty public constructor
     }
@@ -72,7 +75,7 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_review, container, false);
+        view = inflater.inflate(R.layout.fragment_review, container, false);
 
         Intent intent = getActivity().getIntent();
         companyId = intent.getIntExtra("id", 0);
@@ -180,8 +183,21 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
     @Override
     public void onDestroy() {
         super.onDestroy();
+        unbindDrawables(view);
         RefWatcher refWatcher = AboutWorkApp.getRefWatcher(getActivity());
         refWatcher.watch(this);
+    }
+
+    private void unbindDrawables(View view) {
+        if (view.getBackground() != null) {
+            view.getBackground().setCallback(null);
+        }
+        if (view instanceof ViewGroup && !(view instanceof AdapterView)) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                unbindDrawables(((ViewGroup) view).getChildAt(i));
+            }
+            ((ViewGroup) view).removeAllViews();
+        }
     }
 
     @Override
