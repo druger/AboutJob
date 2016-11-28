@@ -2,20 +2,34 @@ package com.druger.aboutwork.db;
 
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by druger on 16.08.2016.
  */
-public class DBHelper {
+public class FirebaseHelper {
     // TODO: заменить логику на работу с Firebase
 
     private static List<Review> reviews = new ArrayList<>();
 
-    public static void addReview(Review review) {
-        reviews.add(review);
+    private DatabaseReference dbReference;
+
+    public FirebaseHelper() {
+        dbReference = FirebaseDatabase.getInstance().getReference();
+    }
+
+    public void addReview(Review review) {
+        ObjectMapper mapper = new ObjectMapper();;
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        Map<String, Object> map = mapper.convertValue(review, Map.class);
+        dbReference.child("reviews").push().setValue(map);
     }
 
     public static List<Review> getReviews() {

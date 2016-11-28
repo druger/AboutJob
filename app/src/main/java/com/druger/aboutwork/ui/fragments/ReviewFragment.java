@@ -26,7 +26,7 @@ import android.widget.Toast;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.Utils;
-import com.druger.aboutwork.db.DBHelper;
+import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
 import com.google.firebase.auth.FirebaseAuth;
@@ -237,8 +237,9 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
         switch (v.getId()) {
             case R.id.btn_add:
                 if (checkReview()) {
-                    DBHelper.addReview(review);
-                    Log.d(TAG, "Review list size = " + DBHelper.getReviews().size());
+                    FirebaseHelper firebaseHelper = new FirebaseHelper();
+                    firebaseHelper.addReview(review);
+                    Log.d(TAG, "Review list size = " + FirebaseHelper.getReviews().size());
                     Toast.makeText(getActivity().getApplicationContext(), R.string.review_added,
                             Toast.LENGTH_SHORT).show();
                     getFragmentManager().popBackStackImmediate();

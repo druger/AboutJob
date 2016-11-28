@@ -11,11 +11,16 @@ import android.widget.TextView;
 
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.Utils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mikepenz.fastadapter.items.AbstractItem;
+
+import java.util.List;
 
 /**
  * Created by druger on 10.08.2016.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Review extends AbstractItem<Review, Review.ViewHolder> implements Parcelable {
 
     /**
@@ -27,10 +32,12 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
 
     private int companyId;
     private String userId;
+    @JsonIgnore
     private String userName;
     private long date;
     private String pluses;
     private String minuses;
+    @JsonIgnore
     private MarkCompany markCompany;
     private int status;
     private String city;
@@ -42,6 +49,9 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
     private int dislike;
     private boolean myLike;
     private boolean myDislike;
+
+    public Review() {
+    }
 
     public Review(int companyId, String userId, String userName, long date) {
         this.companyId = companyId;
@@ -207,6 +217,14 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
         this.myDislike = myDislike;
     }
 
+    public boolean isMyLike() {
+        return myLike;
+    }
+
+    public boolean isMyDislike() {
+        return myDislike;
+    }
+
     @Override
     public int getType() {
         return R.id.item_review;
@@ -218,8 +236,8 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
     }
 
     @Override
-    public void bindView(final ViewHolder holder) {
-        super.bindView(holder);
+    public void bindView(final ViewHolder holder, List<Object> payloads) {
+        super.bindView(holder, payloads);
         holder.name.setText(userName);
         holder.date.setText(Utils.getDate(date));
         holder.city.setText(city);
@@ -298,6 +316,21 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
                 }
             }
         });
+    }
+
+    @Override
+    public void unbindView(ViewHolder holder) {
+        super.unbindView(holder);
+        holder.name.setText(null);
+        holder.date.setText(null);
+        holder.city.setText(null);
+        holder.pluses.setText(null);
+        holder.minuses.setText(null);
+        holder.mark.setText(null);
+        holder.imgLike.setTag(null);
+        holder.imgDislike.setTag(null);
+        holder.like.setText(null);
+        holder.dislike.setText(null);
     }
 
     protected static class ViewHolder extends RecyclerView.ViewHolder {

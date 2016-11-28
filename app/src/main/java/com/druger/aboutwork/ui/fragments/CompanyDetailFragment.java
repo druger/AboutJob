@@ -26,12 +26,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
-import com.druger.aboutwork.db.DBHelper;
+import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
-import com.mikepenz.fastadapter.adapters.FastItemAdapter;
+import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
@@ -81,13 +81,13 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
         ratingCompany = (RatingBar) view.findViewById(R.id.rating_company);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        reviews = DBHelper.getReviews();
+        reviews = FirebaseHelper.getReviews();
 
         description.setVisibility(View.GONE);
         downDrop.setOnClickListener(this);
         upDrop.setOnClickListener(this);
 
-        countReviews.setText(String.valueOf(DBHelper.getReviews().size()));
+        countReviews.setText(String.valueOf(FirebaseHelper.getReviews().size()));
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

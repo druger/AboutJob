@@ -11,6 +11,8 @@ import com.druger.aboutwork.R;
 import com.google.gson.annotations.SerializedName;
 import com.mikepenz.fastadapter.items.AbstractItem;
 
+import java.util.List;
+
 /**
  * Created by druger on 24.07.2016.
  */
@@ -91,8 +93,8 @@ public class Company extends AbstractItem<Company, Company.CompanyVH> {
     }
 
     @Override
-    public void bindView(CompanyVH holder) {
-        super.bindView(holder);
+    public void bindView(CompanyVH holder, List<Object> payloads) {
+        super.bindView(holder, payloads);
         holder.name.setText(name);
 
         Glide.with(holder.itemView.getContext())
@@ -103,6 +105,12 @@ public class Company extends AbstractItem<Company, Company.CompanyVH> {
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.logo);
+    }
+
+    @Override
+    public void unbindView(CompanyVH holder) {
+        super.unbindView(holder);
+        holder.name.setText(null);
     }
 
     protected static class CompanyVH extends RecyclerView.ViewHolder {
