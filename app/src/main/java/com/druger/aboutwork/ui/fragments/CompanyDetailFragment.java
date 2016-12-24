@@ -29,27 +29,38 @@ import com.druger.aboutwork.R;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter;
 import com.squareup.leakcanary.RefWatcher;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CompanyDetailFragment extends Fragment implements View.OnClickListener{
+public class CompanyDetailFragment extends Fragment implements View.OnClickListener, ChildEventListener {
 
     private TextView description;
     private ImageView downDrop;
     private ImageView upDrop;
     private TextView rating;
+    private TextView countReviews;
     private RatingBar ratingCompany;
 
     private Toolbar toolbar;
     private RecyclerView recyclerView;
-    private List<Review> reviews;
+    private List<Review> reviews = new ArrayList<>();
+    ;
+
+    private FastItemAdapter<Review> fastItemAdapter;
+    private FirebaseHelper firebaseHelper = new FirebaseHelper();
+    private DatabaseReference dbReference;
 
     public CompanyDetailFragment() {
         // Required empty public constructor
@@ -59,8 +70,8 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -76,18 +87,15 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
         downDrop = (ImageView) view.findViewById(R.id.down_drop);
         upDrop = (ImageView) view.findViewById(R.id.up_drop);
         ImageView imgToolbar = (ImageView) view.findViewById(R.id.img_toolbar);
-        TextView countReviews = (TextView) view.findViewById(R.id.count_reviews);
+        countReviews = (TextView) view.findViewById(R.id.count_reviews);
         rating = (TextView) view.findViewById(R.id.rating);
         ratingCompany = (RatingBar) view.findViewById(R.id.rating_company);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        reviews = FirebaseHelper.getReviews();
 
         description.setVisibility(View.GONE);
         downDrop.setOnClickListener(this);
         upDrop.setOnClickListener(this);
-
-        countReviews.setText(String.valueOf(FirebaseHelper.getReviews().size()));
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -119,11 +127,7 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgToolbar);
 
-        if (reviews != null && reviews.size() > 0) {
-            setRating();
-        }
         setReviews();
-
         return view;
     }
 
@@ -141,15 +145,17 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
     }
 
     private void setReviews() {
-        FastItemAdapter<Review> adapter = new FastItemAdapter<>();
+        fastItemAdapter = new FastItemAdapter<>();
+        dbReference = firebaseHelper.getDbReference();
+        dbReference.addChildEventListener(this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(fastItemAdapter);
         recyclerView.setNestedScrollingEnabled(false);
 
-        adapter.withSelectable(true);
-        adapter.withOnClickListener(new FastAdapter.OnClickListener<Review>() {
+        fastItemAdapter.withSelectable(true);
+        fastItemAdapter.withOnClickListener(new FastAdapter.OnClickListener<Review>() {
             @Override
             public boolean onClick(View v, IAdapter<Review> adapter, Review item, int position) {
                 SelectedReviewFragment reviewFragment = new SelectedReviewFragment();
@@ -165,7 +171,6 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
                 return true;
             }
         });
-        adapter.add(reviews);
     }
 
 
@@ -176,6 +181,21 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
         transaction.replace(R.id.company_container, review);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    private void fetchReviews(DataSnapshot dataSnapshot) {
+        reviews.clear();
+        fastItemAdapter.clear();
+
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+            Review review = snapshot.getValue(Review.class);
+            review.setFirebaseHelper(firebaseHelper);
+            review.setFirebaseKey(snapshot.getKey());
+            reviews.add(review);
+        }
+        countReviews.setText(String.valueOf(reviews.size()));
+        setRating();
+        fastItemAdapter.add(reviews);
     }
 
     @Override
@@ -199,5 +219,31 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
         super.onDestroy();
         RefWatcher refWatcher = AboutWorkApp.getRefWatcher(getActivity());
         refWatcher.watch(this);
+
+        dbReference.removeEventListener(this);
+    }
+
+    @Override
+    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+        fetchReviews(dataSnapshot);
+    }
+
+    @Override
+    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+    }
+
+    @Override
+    public void onChildRemoved(DataSnapshot dataSnapshot) {
+        fetchReviews(dataSnapshot);
+    }
+
+    @Override
+    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
+
     }
 }

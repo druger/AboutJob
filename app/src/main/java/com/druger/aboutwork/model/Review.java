@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.Utils;
+import com.druger.aboutwork.db.FirebaseHelper;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mikepenz.fastadapter.items.AbstractItem;
@@ -37,7 +38,6 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
     private long date;
     private String pluses;
     private String minuses;
-    @JsonIgnore
     private MarkCompany markCompany;
     private int status;
     private String city;
@@ -49,6 +49,10 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
     private int dislike;
     private boolean myLike;
     private boolean myDislike;
+    @JsonIgnore
+    private FirebaseHelper firebaseHelper;
+    @JsonIgnore
+    private String firebaseKey;
 
     public Review() {
     }
@@ -225,6 +229,18 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
         return myDislike;
     }
 
+    public void setFirebaseHelper(FirebaseHelper firebaseHelper) {
+        this.firebaseHelper = firebaseHelper;
+    }
+
+    public String getFirebaseKey() {
+        return firebaseKey;
+    }
+
+    public void setFirebaseKey(String firebaseKey) {
+        this.firebaseKey = firebaseKey;
+    }
+
     @Override
     public int getType() {
         return R.id.item_review;
@@ -271,6 +287,7 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
                     like++;
                     myLike = true;
                     holder.like.setText(String.valueOf(like));
+                    firebaseHelper.setLike(Review.this);
 
                     if (tagDislike.equalsIgnoreCase("dislikeActive")) {
                         holder.imgDislike.setTag("dislikeInactive");
@@ -278,6 +295,7 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
                         dislike--;
                         myDislike = false;
                         holder.dislike.setText(String.valueOf(dislike));
+                        firebaseHelper.setDislike(Review.this);
                     }
                 } else {
                     holder.imgLike.setTag("likeInactive");
@@ -285,6 +303,7 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
                     like--;
                     myLike = false;
                     holder.like.setText(String.valueOf(like));
+                    firebaseHelper.setLike(Review.this);
                 }
             }
         });
@@ -299,6 +318,7 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
                     dislike++;
                     myDislike = true;
                     holder.dislike.setText(String.valueOf(dislike));
+                    firebaseHelper.setDislike(Review.this);
 
                     if (tagLike.equalsIgnoreCase("likeActive")) {
                         holder.imgLike.setTag("likeInactive");
@@ -306,6 +326,7 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
                         like--;
                         myLike = false;
                         holder.like.setText(String.valueOf(like));
+                        firebaseHelper.setLike(Review.this);
                     }
                 } else {
                     holder.imgDislike.setTag("dislikeInactive");
@@ -313,6 +334,7 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
                     dislike--;
                     myDislike = false;
                     holder.dislike.setText(String.valueOf(dislike));
+                    firebaseHelper.setDislike(Review.this);
                 }
             }
         });

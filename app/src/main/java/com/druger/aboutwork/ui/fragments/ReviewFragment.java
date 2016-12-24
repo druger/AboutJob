@@ -11,7 +11,6 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -239,7 +238,6 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
                 if (checkReview()) {
                     FirebaseHelper firebaseHelper = new FirebaseHelper();
                     firebaseHelper.addReview(review);
-                    Log.d(TAG, "Review list size = " + FirebaseHelper.getReviews().size());
                     Toast.makeText(getActivity().getApplicationContext(), R.string.review_added,
                             Toast.LENGTH_SHORT).show();
                     getFragmentManager().popBackStackImmediate();

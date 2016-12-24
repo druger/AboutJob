@@ -16,6 +16,9 @@ public class MarkCompany {
     private float collective;
     private float socialPackage;
 
+    public MarkCompany() {
+    }
+
     public MarkCompany(String userId, int companyId) {
         this.userId = userId;
         this.companyId = companyId;
@@ -75,6 +78,14 @@ public class MarkCompany {
 
     public void setSocialPackage(float socialPackage) {
         this.socialPackage = socialPackage;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
     }
 
     public float getAverageMark() {
