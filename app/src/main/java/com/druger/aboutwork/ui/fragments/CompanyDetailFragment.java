@@ -246,13 +246,19 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        dbReference.removeEventListener(this);
+        if (valueEventListener != null) {
+            dbReference.removeEventListener(valueEventListener);
+        }
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         RefWatcher refWatcher = AboutWorkApp.getRefWatcher(getActivity());
         refWatcher.watch(this);
-
-        dbReference.removeEventListener(this);
-        dbReference.removeEventListener(valueEventListener);
     }
 
     @Override

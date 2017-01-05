@@ -1,4 +1,4 @@
-package com.druger.aboutwork;
+package com.druger.aboutwork.utils;
 
 import android.util.Patterns;
 

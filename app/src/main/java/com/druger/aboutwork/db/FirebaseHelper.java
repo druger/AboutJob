@@ -41,4 +41,10 @@ public class FirebaseHelper {
 
         dbReference.updateChildren(updateDislike);
     }
+
+    public static void changeUserName(String name, String key) {
+        Map<String, Object> updateName = new HashMap<>();
+        updateName.put("users/" + key + "/name", name);
+        FirebaseDatabase.getInstance().getReference().updateChildren(updateName);
+    }
 }

@@ -1,22 +1,28 @@
 package com.druger.aboutwork.ui.fragments;
 
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
-import com.druger.aboutwork.Utils;
+import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.ui.activities.LoginActivity;
 import com.druger.aboutwork.ui.activities.SettingsActivity;
+import com.druger.aboutwork.utils.SharedPreferencesHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.leakcanary.RefWatcher;
@@ -58,7 +64,6 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    name.setText(Utils.getNameByEmail(user.getEmail()));
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -68,9 +73,11 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
             }
         };
 
+        name.setText(SharedPreferencesHelper.getUserName(getActivity()));
+
         settings.setOnClickListener(this);
         logout.setOnClickListener(this);
-
+        editName.setOnClickListener(this);
 
         return view;
     }
@@ -121,6 +128,37 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     }
 
     private void changeName() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_change_name, null);
+        final EditText etName = (EditText) view.findViewById(R.id.user_name);
+        etName.setText(name.getText());
 
+        builder.setTitle(R.string.name);
+        builder.setView(view);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String userName = etName.getText().toString();
+                if (!userName.trim().isEmpty()) {
+                    name.setText(userName);
+                    InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    manager.hideSoftInputFromWindow(etName.getWindowToken(), 0);
+                    SharedPreferencesHelper.saveUserName(userName, getActivity());
+                    FirebaseHelper.changeUserName(userName, user.getUid());
+                }
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                manager.hideSoftInputFromWindow(etName.getWindowToken(), 0);
+                dialog.cancel();
+            }
+        });
+        builder.show();
+        InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        manager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 }

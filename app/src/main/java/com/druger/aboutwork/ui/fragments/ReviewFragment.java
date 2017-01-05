@@ -24,9 +24,9 @@ import android.widget.Toast;
 
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
-import com.druger.aboutwork.Utils;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
+import com.druger.aboutwork.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.leakcanary.RefWatcher;

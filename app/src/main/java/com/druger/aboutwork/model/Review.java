@@ -10,8 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.druger.aboutwork.R;
-import com.druger.aboutwork.Utils;
 import com.druger.aboutwork.db.FirebaseHelper;
+import com.druger.aboutwork.utils.Utils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mikepenz.fastadapter.items.AbstractItem;
