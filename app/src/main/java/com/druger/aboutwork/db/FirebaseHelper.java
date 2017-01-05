@@ -41,8 +41,4 @@ public class FirebaseHelper {
 
         dbReference.updateChildren(updateDislike);
     }
-
-    public DatabaseReference getDbReference() {
-        return dbReference;
-    }
 }

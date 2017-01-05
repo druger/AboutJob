@@ -57,10 +57,9 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
     public Review() {
     }
 
-    public Review(int companyId, String userId, String userName, long date) {
+    public Review(int companyId, String userId, long date) {
         this.companyId = companyId;
         this.userId = userId;
-        this.userName = userName;
         this.date = date;
     }
 
@@ -99,14 +98,6 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
 
     public void setCompanyId(int companyId) {
         this.companyId = companyId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public long getDate() {
@@ -241,6 +232,14 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
         this.firebaseKey = firebaseKey;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     @Override
     public int getType() {
         return R.id.item_review;
@@ -259,7 +258,9 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
         holder.city.setText(city);
         holder.pluses.setText(pluses);
         holder.minuses.setText(minuses);
-        holder.mark.setText(String.valueOf(markCompany.getAverageMark()));
+        if (markCompany != null) {
+            holder.mark.setText(String.valueOf(markCompany.getAverageMark()));
+        }
         holder.like.setText(String.valueOf(like));
         holder.dislike.setText(String.valueOf(dislike));
 

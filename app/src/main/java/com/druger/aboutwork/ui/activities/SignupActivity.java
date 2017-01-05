@@ -15,10 +15,14 @@ import android.widget.Toast;
 
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.Utils;
+import com.druger.aboutwork.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.leakcanary.RefWatcher;
 
 public class SignupActivity extends AppCompatActivity {
@@ -84,12 +88,18 @@ public class SignupActivity extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             onSignupFailed();
                         } else {
+                            saveNewUser(task.getResult().getUser());
                             onSignupSuccess();
                         }
 
                     }
                 });
 
+    }
+
+    private void saveNewUser(FirebaseUser firebaseUser) {
+        User user = new User(firebaseUser.getUid(), Utils.getNameByEmail(firebaseUser.getEmail()));
+        FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid()).setValue(user);
     }
 
     private void onSignupSuccess() {

@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.Utils;
 import com.druger.aboutwork.ui.activities.LoginActivity;
 import com.druger.aboutwork.ui.activities.SettingsActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,7 +29,9 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
 
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
+    private FirebaseUser user;
 
+    private  TextView name;
 
     public static AccountFragment newInstance(int index) {
         AccountFragment account = new AccountFragment();
@@ -43,13 +46,19 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
 
+        name = (TextView) view.findViewById(R.id.name);
+        ImageView editName = (ImageView) view.findViewById(R.id.edit_name);
+        TextView settings = (TextView) view.findViewById(R.id.settings);
+        TextView logout = (TextView) view.findViewById(R.id.logout);
+
         auth = FirebaseAuth.getInstance();
 
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                user = firebaseAuth.getCurrentUser();
                 if (user != null) {
+                    name.setText(Utils.getNameByEmail(user.getEmail()));
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -58,11 +67,6 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 }
             }
         };
-
-        TextView name = (TextView) view.findViewById(R.id.name);
-        ImageView editName = (ImageView) view.findViewById(R.id.edit_name);
-        TextView settings = (TextView) view.findViewById(R.id.settings);
-        TextView logout = (TextView) view.findViewById(R.id.logout);
 
         settings.setOnClickListener(this);
         logout.setOnClickListener(this);

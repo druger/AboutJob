@@ -29,10 +29,14 @@ import com.druger.aboutwork.R;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
+import com.druger.aboutwork.model.User;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter;
@@ -41,10 +45,13 @@ import com.squareup.leakcanary.RefWatcher;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class CompanyDetailFragment extends Fragment implements View.OnClickListener, ChildEventListener {
+    public static final int REVIEW_REQUEST = 0;
 
     private TextView description;
     private ImageView downDrop;
@@ -56,11 +63,11 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private List<Review> reviews = new ArrayList<>();
-    ;
 
     private FastItemAdapter<Review> fastItemAdapter;
     private FirebaseHelper firebaseHelper = new FirebaseHelper();
     private DatabaseReference dbReference;
+    private ValueEventListener valueEventListener;
 
     public CompanyDetailFragment() {
         // Required empty public constructor
@@ -136,7 +143,8 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
         float mRating;
 
         for (Review review : reviews) {
-            sum += review.getMarkCompany().getAverageMark();
+            MarkCompany markCompany = review.getMarkCompany();
+            sum += markCompany != null ? markCompany.getAverageMark() : 0;
         }
         mRating = MarkCompany.roundMark(sum / reviews.size(), 2);
 
@@ -146,7 +154,7 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
 
     private void setReviews() {
         fastItemAdapter = new FastItemAdapter<>();
-        dbReference = firebaseHelper.getDbReference();
+        dbReference = FirebaseDatabase.getInstance().getReference();
         dbReference.addChildEventListener(this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -178,24 +186,47 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
         ReviewFragment review = new ReviewFragment();
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        review.setTargetFragment(CompanyDetailFragment.this, REVIEW_REQUEST);
         transaction.replace(R.id.company_container, review);
         transaction.addToBackStack(null);
         transaction.commit();
     }
 
     private void fetchReviews(DataSnapshot dataSnapshot) {
-        reviews.clear();
-        fastItemAdapter.clear();
+        if (dataSnapshot.getKey().equals("reviews")) {
+            reviews.clear();
+            fastItemAdapter.clear();
 
-        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-            Review review = snapshot.getValue(Review.class);
-            review.setFirebaseHelper(firebaseHelper);
-            review.setFirebaseKey(snapshot.getKey());
-            reviews.add(review);
+            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                final Review review = snapshot.getValue(Review.class);
+                Query queryUserId = dbReference.child("users").orderByChild("id").equalTo(review.getUserId());
+                valueEventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                User user = data.getValue(User.class);
+                                review.setUserName(user.getName());
+                                fastItemAdapter.notifyAdapterDataSetChanged();
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                };
+                queryUserId.addValueEventListener(valueEventListener);
+                review.setFirebaseHelper(firebaseHelper);
+                review.setFirebaseKey(dataSnapshot.getKey());
+                reviews.add(review);
+            }
+            countReviews.setText(String.valueOf(reviews.size()));
+            setRating();
+            fastItemAdapter.add(reviews);
         }
-        countReviews.setText(String.valueOf(reviews.size()));
-        setRating();
-        fastItemAdapter.add(reviews);
     }
 
     @Override
@@ -221,6 +252,7 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
         refWatcher.watch(this);
 
         dbReference.removeEventListener(this);
+        dbReference.removeEventListener(valueEventListener);
     }
 
     @Override
@@ -245,5 +277,15 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
     @Override
     public void onCancelled(DatabaseError databaseError) {
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REVIEW_REQUEST) {
+                firebaseHelper.addReview((Review) data.getParcelableExtra("addedReview"));
+            }
+        }
     }
 }

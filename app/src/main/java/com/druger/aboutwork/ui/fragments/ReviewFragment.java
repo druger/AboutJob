@@ -25,7 +25,6 @@ import android.widget.Toast;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.Utils;
-import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +32,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.Calendar;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -90,7 +91,7 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null) {
-            review = new Review(companyId, user.getUid(), user.getDisplayName(), Calendar.getInstance().getTimeInMillis());
+            review = new Review(companyId, user.getUid(), Calendar.getInstance().getTimeInMillis());
         }
 
         etPluses = (TextInputEditText) view.findViewById(R.id.et_pluses);
@@ -236,8 +237,9 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
         switch (v.getId()) {
             case R.id.btn_add:
                 if (checkReview()) {
-                    FirebaseHelper firebaseHelper = new FirebaseHelper();
-                    firebaseHelper.addReview(review);
+                    Intent addedReview = new Intent(getActivity(), ReviewFragment.class);
+                    addedReview.putExtra("addedReview", review);
+                    getTargetFragment().onActivityResult(getTargetRequestCode(), RESULT_OK, addedReview);
                     Toast.makeText(getActivity().getApplicationContext(), R.string.review_added,
                             Toast.LENGTH_SHORT).show();
                     getFragmentManager().popBackStackImmediate();
