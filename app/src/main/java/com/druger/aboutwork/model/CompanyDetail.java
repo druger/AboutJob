@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class CompanyDetail {
 
-    private int id;
+    private String id;
     private String name;
     @SerializedName("site_url")
     private String site;
@@ -18,11 +18,11 @@ public class CompanyDetail {
     public CompanyDetail() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

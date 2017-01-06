@@ -46,7 +46,7 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
     private Review review;
     private MarkCompany mark;
 
-    private int companyId;
+    private String companyId;
     private int status = -1;
 
     private RatingBar salary;
@@ -78,7 +78,7 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
         view = inflater.inflate(R.layout.fragment_review, container, false);
 
         Intent intent = getActivity().getIntent();
-        companyId = intent.getIntExtra("id", 0);
+        companyId = intent.getStringExtra("id");
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);

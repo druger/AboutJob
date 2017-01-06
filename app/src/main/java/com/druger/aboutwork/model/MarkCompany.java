@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 public class MarkCompany {
 
     private String userId;
-    private int companyId;
+    private String companyId;
     private float salary;
     private float chief;
     private float workplace;
@@ -19,7 +19,7 @@ public class MarkCompany {
     public MarkCompany() {
     }
 
-    public MarkCompany(String userId, int companyId) {
+    public MarkCompany(String userId, String companyId) {
         this.userId = userId;
         this.companyId = companyId;
     }
@@ -28,7 +28,7 @@ public class MarkCompany {
         return userId;
     }
 
-    public int getCompanyId() {
+    public String getCompanyId() {
         return companyId;
     }
 
@@ -84,7 +84,7 @@ public class MarkCompany {
         this.userId = userId;
     }
 
-    public void setCompanyId(int companyId) {
+    public void setCompanyId(String companyId) {
         this.companyId = companyId;
     }
 

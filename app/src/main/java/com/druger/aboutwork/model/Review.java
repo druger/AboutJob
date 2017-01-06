@@ -31,7 +31,7 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
     public static final int WORKED = 1; // работал
     public static final int INTERVIEW = 2; // проходил интервью
 
-    private int companyId;
+    private String companyId;
     private String userId;
     @JsonIgnore
     private String userName;
@@ -57,14 +57,14 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
     public Review() {
     }
 
-    public Review(int companyId, String userId, long date) {
+    public Review(String companyId, String userId, long date) {
         this.companyId = companyId;
         this.userId = userId;
         this.date = date;
     }
 
     protected Review(Parcel in) {
-        companyId = in.readInt();
+        companyId = in.readString();
         userId = in.readString();
         userName = in.readString();
         date = in.readLong();
@@ -92,11 +92,11 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
         }
     };
 
-    public int getCompanyId() {
+    public String getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(int companyId) {
+    public void setCompanyId(String companyId) {
         this.companyId = companyId;
     }
 
@@ -392,7 +392,7 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(companyId);
+        dest.writeString(companyId);
         dest.writeString(userId);
         dest.writeString(userName);
         dest.writeLong(date);

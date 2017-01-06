@@ -17,5 +17,5 @@ public interface ApiService {
                                        @Query("page") int page);
 
     @GET("/employers/{employer_id}")
-    Call<CompanyDetail> getCompanyDetail(@Path("employer_id") int id);
+    Call<CompanyDetail> getCompanyDetail(@Path("employer_id") String id);
 }

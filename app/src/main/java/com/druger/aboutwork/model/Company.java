@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class Company extends AbstractItem<Company, Company.CompanyVH> {
 
-    private int id;
+    private String id;
     private String name;
     @SerializedName("logo_urls")
     private Logo logo;
@@ -34,11 +34,11 @@ public class Company extends AbstractItem<Company, Company.CompanyVH> {
         this.name = name;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

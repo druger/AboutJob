@@ -30,7 +30,6 @@ import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.model.User;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,7 +49,7 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CompanyDetailFragment extends Fragment implements View.OnClickListener, ChildEventListener {
+public class CompanyDetailFragment extends Fragment implements View.OnClickListener, ValueEventListener {
     public static final int REVIEW_REQUEST = 0;
 
     private TextView description;
@@ -68,6 +67,8 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
     private FirebaseHelper firebaseHelper = new FirebaseHelper();
     private DatabaseReference dbReference;
     private ValueEventListener valueEventListener;
+
+    private Intent companyIntent;
 
     public CompanyDetailFragment() {
         // Required empty public constructor
@@ -112,13 +113,13 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
             }
         });
 
-        Intent intent = getActivity().getIntent();
+        companyIntent = getActivity().getIntent();
 
-        collapsingToolbar.setTitle(intent.getStringExtra("name"));
+        collapsingToolbar.setTitle(companyIntent.getStringExtra("name"));
         collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
 
-        String iSite = intent.getStringExtra("site");
-        String iDescription = intent.getStringExtra("description");
+        String iSite = companyIntent.getStringExtra("site");
+        String iDescription = companyIntent.getStringExtra("description");
         if (iSite != null) {
             site.setText(iSite);
         }
@@ -127,7 +128,7 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
         }
 
         Glide.with(this)
-                .load(intent.getStringExtra("logo"))
+                .load(companyIntent.getStringExtra("logo"))
                 .placeholder(R.drawable.default_company)
                 .error(R.drawable.default_company)
                 .crossFade()
@@ -140,13 +141,15 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
 
     private void setRating() {
         float sum = 0;
-        float mRating;
+        float mRating = 0;
 
-        for (Review review : reviews) {
-            MarkCompany markCompany = review.getMarkCompany();
-            sum += markCompany != null ? markCompany.getAverageMark() : 0;
+        if (!reviews.isEmpty()) {
+            for (Review review : reviews) {
+                MarkCompany markCompany = review.getMarkCompany();
+                sum += markCompany != null ? markCompany.getAverageMark() : 0;
+            }
+            mRating = MarkCompany.roundMark(sum / reviews.size(), 2);
         }
-        mRating = MarkCompany.roundMark(sum / reviews.size(), 2);
 
         rating.setText(String.valueOf(mRating));
         ratingCompany.setRating(mRating);
@@ -155,7 +158,8 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
     private void setReviews() {
         fastItemAdapter = new FastItemAdapter<>();
         dbReference = FirebaseDatabase.getInstance().getReference();
-        dbReference.addChildEventListener(this);
+        Query reviewsQuery = dbReference.child("reviews").orderByChild("companyId").equalTo(companyIntent.getStringExtra("id"));
+        reviewsQuery.addValueEventListener(this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -193,40 +197,38 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
     }
 
     private void fetchReviews(DataSnapshot dataSnapshot) {
-        if (dataSnapshot.getKey().equals("reviews")) {
-            reviews.clear();
-            fastItemAdapter.clear();
+        reviews.clear();
+        fastItemAdapter.clear();
 
-            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                final Review review = snapshot.getValue(Review.class);
-                Query queryUserId = dbReference.child("users").orderByChild("id").equalTo(review.getUserId());
-                valueEventListener = new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            for (DataSnapshot data : dataSnapshot.getChildren()) {
-                                User user = data.getValue(User.class);
-                                review.setUserName(user.getName());
-                                fastItemAdapter.notifyAdapterDataSetChanged();
-                            }
-
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+            final Review review = snapshot.getValue(Review.class);
+            Query queryUserId = dbReference.child("users").orderByChild("id").equalTo(review.getUserId());
+            valueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            User user = data.getValue(User.class);
+                            review.setUserName(user.getName());
+                            fastItemAdapter.notifyAdapterDataSetChanged();
                         }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
 
                     }
-                };
-                queryUserId.addValueEventListener(valueEventListener);
-                review.setFirebaseHelper(firebaseHelper);
-                review.setFirebaseKey(dataSnapshot.getKey());
-                reviews.add(review);
-            }
-            countReviews.setText(String.valueOf(reviews.size()));
-            setRating();
-            fastItemAdapter.add(reviews);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            };
+            queryUserId.addValueEventListener(valueEventListener);
+            review.setFirebaseHelper(firebaseHelper);
+            review.setFirebaseKey(dataSnapshot.getKey());
+            reviews.add(review);
         }
+        countReviews.setText(String.valueOf(reviews.size()));
+        setRating();
+        fastItemAdapter.add(reviews);
     }
 
     @Override
@@ -262,30 +264,6 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
     }
 
     @Override
-    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-        fetchReviews(dataSnapshot);
-    }
-
-    @Override
-    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-    }
-
-    @Override
-    public void onChildRemoved(DataSnapshot dataSnapshot) {
-        fetchReviews(dataSnapshot);
-    }
-
-    @Override
-    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-    }
-
-    @Override
-    public void onCancelled(DatabaseError databaseError) {
-
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
@@ -293,5 +271,15 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
                 firebaseHelper.addReview((Review) data.getParcelableExtra("addedReview"));
             }
         }
+    }
+
+    @Override
+    public void onDataChange(DataSnapshot dataSnapshot) {
+        fetchReviews(dataSnapshot);
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
+
     }
 }
