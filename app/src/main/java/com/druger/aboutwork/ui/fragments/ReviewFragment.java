@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.utils.Utils;
@@ -77,13 +78,16 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_review, container, false);
 
-        Intent intent = getActivity().getIntent();
-        companyId = intent.getStringExtra("id");
+        CompanyDetail detail = getActivity().getIntent().getExtras().getParcelable("companyDetail");
+        if (detail != null) {
+            companyId = detail.getId();
+        }
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        String companyName = intent.getStringExtra("name");
+        assert detail != null;
+        String companyName = detail.getName();
         if (companyName != null) {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(companyName);
         }

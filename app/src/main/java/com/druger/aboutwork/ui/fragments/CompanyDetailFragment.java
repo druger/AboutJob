@@ -27,6 +27,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.db.FirebaseHelper;
+import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.model.User;
@@ -68,7 +69,7 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
     private DatabaseReference dbReference;
     private ValueEventListener valueEventListener;
 
-    private Intent companyIntent;
+    private CompanyDetail detail;
 
     public CompanyDetailFragment() {
         // Required empty public constructor
@@ -113,13 +114,13 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
             }
         });
 
-        companyIntent = getActivity().getIntent();
+        detail = getActivity().getIntent().getExtras().getParcelable("companyDetail");
 
-        collapsingToolbar.setTitle(companyIntent.getStringExtra("name"));
+        collapsingToolbar.setTitle(detail.getName());
         collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
 
-        String iSite = companyIntent.getStringExtra("site");
-        String iDescription = companyIntent.getStringExtra("description");
+        String iSite = detail.getSite();
+        String iDescription = detail.getDescription();
         if (iSite != null) {
             site.setText(iSite);
         }
@@ -127,8 +128,9 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
             description.setText(Html.fromHtml(iDescription));
         }
 
+        CompanyDetail.Logo logo = detail.getLogo();
         Glide.with(this)
-                .load(companyIntent.getStringExtra("logo"))
+                .load(logo != null ? logo.getOriginal() : "")
                 .placeholder(R.drawable.default_company)
                 .error(R.drawable.default_company)
                 .crossFade()
@@ -158,7 +160,7 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
     private void setReviews() {
         fastItemAdapter = new FastItemAdapter<>();
         dbReference = FirebaseDatabase.getInstance().getReference();
-        Query reviewsQuery = dbReference.child("reviews").orderByChild("companyId").equalTo(companyIntent.getStringExtra("id"));
+        Query reviewsQuery = dbReference.child("reviews").orderByChild("companyId").equalTo(detail.getId());
         reviewsQuery.addValueEventListener(this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -269,6 +271,7 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
         if (resultCode == RESULT_OK) {
             if (requestCode == REVIEW_REQUEST) {
                 firebaseHelper.addReview((Review) data.getParcelableExtra("addedReview"));
+                FirebaseHelper.addCompany(detail.getId(), detail.getName());
             }
         }
     }

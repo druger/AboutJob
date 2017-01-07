@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,6 +55,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
 
         name = (TextView) view.findViewById(R.id.name);
         ImageView editName = (ImageView) view.findViewById(R.id.edit_name);
+        TextView myReviews = (TextView) view.findViewById(R.id.my_reviews);
         TextView settings = (TextView) view.findViewById(R.id.settings);
         TextView logout = (TextView) view.findViewById(R.id.logout);
 
@@ -78,6 +80,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         settings.setOnClickListener(this);
         logout.setOnClickListener(this);
         editName.setOnClickListener(this);
+        myReviews.setOnClickListener(this);
 
         return view;
     }
@@ -115,7 +118,19 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
             case R.id.logout:
                 logout();
                 break;
+            case R.id.my_reviews:
+                openMyReviews();
+                break;
         }
+    }
+
+    private void openMyReviews() {
+        MyReviewsFragment myReviews = new MyReviewsFragment();
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.account_container, myReviews);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     private void logout() {

@@ -1,11 +1,14 @@
 package com.druger.aboutwork.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by druger on 04.08.2016.
  */
-public class CompanyDetail {
+public class CompanyDetail implements Parcelable {
 
     private String id;
     private String name;
@@ -17,6 +20,26 @@ public class CompanyDetail {
 
     public CompanyDetail() {
     }
+
+    protected CompanyDetail(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        site = in.readString();
+        description = in.readString();
+        logo = in.readParcelable(getClass().getClassLoader());
+    }
+
+    public static final Creator<CompanyDetail> CREATOR = new Creator<CompanyDetail>() {
+        @Override
+        public CompanyDetail createFromParcel(Parcel in) {
+            return new CompanyDetail(in);
+        }
+
+        @Override
+        public CompanyDetail[] newArray(int size) {
+            return new CompanyDetail[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -58,8 +81,38 @@ public class CompanyDetail {
         this.logo = logo;
     }
 
-    public static class Logo {
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(site);
+        dest.writeString(description);
+        dest.writeParcelable(logo, PARCELABLE_WRITE_RETURN_VALUE);
+    }
+
+    public static class Logo implements Parcelable {
         String original;
+
+        protected Logo(Parcel in) {
+            original = in.readString();
+        }
+
+        public static final Creator<Logo> CREATOR = new Creator<Logo>() {
+            @Override
+            public Logo createFromParcel(Parcel in) {
+                return new Logo(in);
+            }
+
+            @Override
+            public Logo[] newArray(int size) {
+                return new Logo[size];
+            }
+        };
 
         public String getOriginal() {
             return original;
@@ -67,6 +120,16 @@ public class CompanyDetail {
 
         public void setOriginal(String original) {
             this.original = original;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(original);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.druger.aboutwork.db;
 
 import com.druger.aboutwork.model.Review;
+import com.druger.aboutwork.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.firebase.database.DatabaseReference;
@@ -46,5 +47,13 @@ public class FirebaseHelper {
         Map<String, Object> updateName = new HashMap<>();
         updateName.put("users/" + key + "/name", name);
         FirebaseDatabase.getInstance().getReference().updateChildren(updateName);
+    }
+
+    public static void addUser(User user, String key) {
+        FirebaseDatabase.getInstance().getReference().child("users").child(key).setValue(user);
+    }
+
+    public static void addCompany(String key, String name) {
+        FirebaseDatabase.getInstance().getReference().child("companies").child(key).child("name").setValue(name);
     }
 }

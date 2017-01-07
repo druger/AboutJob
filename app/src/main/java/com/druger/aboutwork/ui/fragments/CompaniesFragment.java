@@ -92,16 +92,11 @@ public class CompaniesFragment extends Fragment {
                     @Override
                     public void onResponse(Call<CompanyDetail> call, Response<CompanyDetail> response) {
                         CompanyDetail detail = response.body();
-                        CompanyDetail.Logo logo = detail.getLogo();
 
                         Intent intent = new Intent(getActivity(), CompanyDetailActivity.class);
-                        intent.putExtra("id", detail.getId());
-                        intent.putExtra("name", detail.getName());
-                        intent.putExtra("site", detail.getSite());
-                        intent.putExtra("description", detail.getDescription());
-                        if (logo != null) {
-                            intent.putExtra("logo", logo.getOriginal());
-                        }
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("companyDetail", detail);
+                        intent.putExtras(bundle);
                         startActivity(intent);
                     }
 

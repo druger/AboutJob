@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.User;
 import com.druger.aboutwork.utils.SharedPreferencesHelper;
 import com.druger.aboutwork.utils.Utils;
@@ -23,7 +24,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.leakcanary.RefWatcher;
 
 public class SignupActivity extends AppCompatActivity {
@@ -102,7 +102,7 @@ public class SignupActivity extends AppCompatActivity {
         String id = firebaseUser.getUid();
         String name = Utils.getNameByEmail(firebaseUser.getEmail());
         User user = new User(id, name);
-        FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid()).setValue(user);
+        FirebaseHelper.addUser(user, firebaseUser.getUid());
         SharedPreferencesHelper.saveUserName(name, this);
     }
 
