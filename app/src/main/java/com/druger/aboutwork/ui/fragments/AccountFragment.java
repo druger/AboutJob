@@ -40,12 +40,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
 
     private  TextView name;
 
-    public static AccountFragment newInstance(int index) {
-        AccountFragment account = new AccountFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt("index", index);
-        account.setArguments(bundle);
-        return  account;
+    public AccountFragment() {
     }
 
     @Override

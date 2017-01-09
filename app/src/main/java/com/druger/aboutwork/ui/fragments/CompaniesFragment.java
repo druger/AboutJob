@@ -47,12 +47,7 @@ public class CompaniesFragment extends Fragment {
 
     private String query;
 
-    public static CompaniesFragment newInstance(int index) {
-        CompaniesFragment companies = new CompaniesFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt("index", index);
-        companies.setArguments(bundle);
-        return companies;
+    public CompaniesFragment() {
     }
 
 

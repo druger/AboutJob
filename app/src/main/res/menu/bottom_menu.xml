@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_companies"
+        android:title="@string/companies"
+        android:icon="@drawable/ic_company"/>
+
+    <item
+        android:id="@+id/action_ratings"
+        android:title="@string/ratings"
+        android:icon="@drawable/ic_star"/>
+
+    <item
+        android:id="@+id/action_account"
+        android:title="@string/account"
+        android:icon="@drawable/ic_account"/>
+</menu>

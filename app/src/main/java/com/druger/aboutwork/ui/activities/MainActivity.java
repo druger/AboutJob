@@ -3,27 +3,26 @@ package com.druger.aboutwork.ui.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
-import com.druger.aboutwork.adapters.ViewPagerAdapter;
+import com.druger.aboutwork.ui.fragments.AccountFragment;
+import com.druger.aboutwork.ui.fragments.CompaniesFragment;
+import com.druger.aboutwork.ui.fragments.RatingsFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.leakcanary.RefWatcher;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FloatingActionButton fab;
-    private AHBottomNavigationViewPager viewPager;
-
-    private FirebaseAuth auth;
-    private FirebaseAuth.AuthStateListener authListener;
+    private Fragment fragment;
+    private BottomNavigationView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +31,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        auth = FirebaseAuth.getInstance();
+        bottomNavigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
-        authListener = new FirebaseAuth.AuthStateListener() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -55,28 +55,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        AHBottomNavigation bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
-        viewPager = (AHBottomNavigationViewPager) findViewById(R.id.view_pager);
+        CompaniesFragment companies = new CompaniesFragment();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.main_container, companies).commit();
 
-        ViewPagerAdapter pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(pagerAdapter);
-        viewPager.setOffscreenPageLimit(2);
-
-        AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.companies, R.drawable.ic_company, R.color.tab1);
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.ratings, R.drawable.ic_star, R.color.tab2);
-        AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.account, R.drawable.ic_account, R.color.tab3);
-
-        bottomNavigation.addItem(item1);
-        bottomNavigation.addItem(item2);
-        bottomNavigation.addItem(item3);
-
-        bottomNavigation.setColored(true);
-
-        bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
+        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onTabSelected(int position, boolean wasSelected) {
-                viewPager.setCurrentItem(position, false);
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_companies:
+                        bottomNavigation.setItemBackgroundResource(R.color.tab1);
+                        fragment = new CompaniesFragment();
+                        break;
+                    case R.id.action_ratings:
+                        bottomNavigation.setItemBackgroundResource(R.color.tab2);
+                        fragment = new RatingsFragment();
+                        break;
+                    case R.id.action_account:
+                        bottomNavigation.setItemBackgroundResource(R.color.tab3);
+                        fragment = new AccountFragment();
+                        break;
+                }
+                final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.main_container, fragment);
+                transaction.commit();
                 return true;
             }
         });

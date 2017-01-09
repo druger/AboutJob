@@ -33,25 +33,22 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager
-            android:id="@+id/view_pager"
+        <FrameLayout
+            android:id="@+id/main_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottom_navigation"
+            android:layout_alignParentTop="true"/>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@drawable/ic_add"
-            android:visibility="gone" />
-
-        <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
+        <android.support.design.widget.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom" />
+            android:layout_gravity="bottom"
+            app:itemBackground="@color/tab1"
+            app:itemIconTint="@color/bottom_navigation_item_color"
+            app:itemTextColor="@color/bottom_navigation_item_color"
+            app:menu="@menu/bottom_menu"/>
 
     </android.support.design.widget.CoordinatorLayout>
 </RelativeLayout>

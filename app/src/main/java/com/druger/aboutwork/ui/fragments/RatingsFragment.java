@@ -17,12 +17,7 @@ import com.squareup.leakcanary.RefWatcher;
 public class RatingsFragment extends Fragment {
 
 
-    public static RatingsFragment newInstance(int index) {
-        RatingsFragment ratings = new RatingsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt("index", index);
-        ratings.setArguments(bundle);
-        return ratings;
+    public RatingsFragment() {
     }
 
 
