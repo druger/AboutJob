@@ -44,7 +44,10 @@ public class CompaniesFragment extends Fragment {
 
     private FastItemAdapter<Company> adapter;
     private FooterAdapter<ProgressItem> footerAdapter;
+    private RecyclerView recyclerView;
+    private EndlessRecyclerOnScrollListener scrollListener;
 
+    private SearchView searchView;
     private String query;
 
     public CompaniesFragment() {
@@ -61,14 +64,14 @@ public class CompaniesFragment extends Fragment {
         adapter = new FastItemAdapter<>();
         footerAdapter = new FooterAdapter<>();
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        SearchView searchView = (SearchView) getActivity().findViewById(R.id.search_view);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        searchView = (SearchView) getActivity().findViewById(R.id.search_view);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(footerAdapter.wrap(adapter));
 
-        final EndlessRecyclerOnScrollListener scrollListener = new EndlessRecyclerOnScrollListener(footerAdapter) {
+        scrollListener = new EndlessRecyclerOnScrollListener(footerAdapter) {
             @Override
             public void onLoadMore(int currentPage) {
                 footerAdapter.clear();
@@ -147,6 +150,14 @@ public class CompaniesFragment extends Fragment {
                 footerAdapter.clear();
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        searchView.setOnQueryTextListener(null);
+        adapter.withOnClickListener(null);
+        recyclerView.removeOnScrollListener(scrollListener);
     }
 
     @Override

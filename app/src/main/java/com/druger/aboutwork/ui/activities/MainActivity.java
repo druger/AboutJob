@@ -55,9 +55,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        CompaniesFragment companies = new CompaniesFragment();
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.main_container, companies).commit();
+        fragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (fragment == null) {
+            fragment = new CompaniesFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.main_container, fragment).commit();
+        }
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
