@@ -28,15 +28,6 @@
             android:name=".ui.activities.SignupActivity"
             android:theme="@style/AppTheme.Dark" />
         <activity
-            android:name=".ui.activities.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName=".ui.activities.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.druger.aboutwork.ui.activities.MainActivity" />
-        </activity>
-        <activity
             android:name=".ui.activities.ResetPasswordActivity"
             android:theme="@style/AppTheme.Dark"/>
         <activity

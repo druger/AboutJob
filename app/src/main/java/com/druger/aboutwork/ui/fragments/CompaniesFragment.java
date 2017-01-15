@@ -20,6 +20,7 @@ import com.druger.aboutwork.model.CompanyResponse;
 import com.druger.aboutwork.rest.ApiClient;
 import com.druger.aboutwork.rest.ApiService;
 import com.druger.aboutwork.ui.activities.CompanyDetailActivity;
+import com.druger.aboutwork.ui.activities.MainActivity;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.adapters.FooterAdapter;
@@ -58,6 +59,9 @@ public class CompaniesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_companies, container, false);
+
+        ((MainActivity) getActivity()).setActionBarTitle(R.string.app_name);
+        ((MainActivity) getActivity()).resetBackArrowActionBar();
 
         apiService = ApiClient.getClient().create(ApiService.class);
 

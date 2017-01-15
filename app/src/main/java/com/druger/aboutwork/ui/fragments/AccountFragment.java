@@ -22,7 +22,7 @@ import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.ui.activities.LoginActivity;
-import com.druger.aboutwork.ui.activities.SettingsActivity;
+import com.druger.aboutwork.ui.activities.MainActivity;
 import com.druger.aboutwork.utils.SharedPreferencesHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -69,6 +69,9 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 }
             }
         };
+
+        ((MainActivity) getActivity()).setActionBarTitle(R.string.app_name);
+        ((MainActivity) getActivity()).resetBackArrowActionBar();
 
         name.setText(SharedPreferencesHelper.getUserName(getActivity()));
 
@@ -123,7 +126,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         MyReviewsFragment myReviews = new MyReviewsFragment();
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.account_container, myReviews);
+        transaction.replace(R.id.main_container, myReviews);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -133,7 +136,10 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     }
 
     private void openSettings() {
-        startActivity(new Intent(getActivity(), SettingsActivity.class));
+        SettingsFragment settings = new SettingsFragment();
+        getFragmentManager().beginTransaction().replace(R.id.main_container, settings)
+                .addToBackStack(null)
+                .commit();
 
     }
 

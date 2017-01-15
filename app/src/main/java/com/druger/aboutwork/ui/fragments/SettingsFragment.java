@@ -1,17 +1,19 @@
-package com.druger.aboutwork.ui.activities;
+package com.druger.aboutwork.ui.fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -19,14 +21,17 @@ import android.widget.Toast;
 
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.ui.activities.LoginActivity;
+import com.druger.aboutwork.ui.activities.MainActivity;
+import com.druger.aboutwork.ui.activities.SignupActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.leakcanary.RefWatcher;
 
-public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
-    private final String TAG = SettingsActivity.class.getSimpleName();
+public class SettingsFragment extends Fragment implements View.OnClickListener {
+    private final String TAG = SettingsFragment.class.getSimpleName();
 
     private EditText editText;
     private Button changeEmail;
@@ -37,10 +42,10 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     private FirebaseUser user;
     private FirebaseAuth.AuthStateListener authListener;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
         auth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -48,38 +53,22 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (user == null) {
-                    startActivity(new Intent(SettingsActivity.this, LoginActivity.class));
-                    finish();
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
             }
         };
 
-        setUI();
+        ((MainActivity) getActivity()).setActionBarTitle(R.string.settings);
+        ((MainActivity) getActivity()).setBackArrowActionBar();
 
-    }
+        editText = (EditText) view.findViewById(R.id.edit);
+        changeEmail = (Button) view.findViewById(R.id.change_email);
+        changePass = (Button) view.findViewById(R.id.change_pass);
+        Button btnChangeEmail = (Button) view.findViewById(R.id.btn_change_email);
+        Button btnChangePass = (Button) view.findViewById(R.id.btn_change_pass);
+        Button removeUser = (Button) view.findViewById(R.id.btn_remove_user);
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(this);
-        refWatcher.watch(this);
-    }
-
-    private void setUI() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        assert getSupportActionBar() != null;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        editText = (EditText) findViewById(R.id.edit);
-        changeEmail = (Button) findViewById(R.id.change_email);
-        changePass = (Button) findViewById(R.id.change_pass);
-        Button btnChangeEmail = (Button) findViewById(R.id.btn_change_email);
-        Button btnChangePass = (Button) findViewById(R.id.btn_change_pass);
-        Button removeUser = (Button) findViewById(R.id.btn_remove_user);
-
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
 
         editText.setVisibility(View.GONE);
         changeEmail.setVisibility(View.GONE);
@@ -93,6 +82,14 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         btnChangeEmail.setOnClickListener(this);
         btnChangePass.setOnClickListener(this);
         removeUser.setOnClickListener(this);
+        return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 
     @Override
@@ -146,7 +143,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             case R.id.btn_remove_user:
                 progressBar.setVisibility(View.VISIBLE);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(R.string.remove_account_ask);
                 builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
@@ -175,11 +172,10 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 Log.d(TAG, "User account deleted.");
-                                Toast.makeText(SettingsActivity.this, R.string.profile_deleted, Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(SettingsActivity.this, SignupActivity.class));
-                                finish();
+                                Toast.makeText(getActivity(), R.string.profile_deleted, Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getActivity(), SignupActivity.class));
                             } else {
-                                Toast.makeText(SettingsActivity.this, R.string.failed_delete_user, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), R.string.failed_delete_user, Toast.LENGTH_SHORT).show();
                             }
                             progressBar.setVisibility(View.GONE);
                         }
@@ -198,10 +194,10 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 Log.d(TAG, "User password updated.");
-                                Toast.makeText(SettingsActivity.this, "Password is updated, sign in with new password!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Password is updated, sign in with new password!", Toast.LENGTH_SHORT).show();
                                 logout();
                             } else {
-                                Toast.makeText(SettingsActivity.this, R.string.failed_update_pass, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), R.string.failed_update_pass, Toast.LENGTH_SHORT).show();
                             }
                             progressBar.setVisibility(View.GONE);
                         }
@@ -216,10 +212,10 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "User email address updated.");
-                            Toast.makeText(SettingsActivity.this, R.string.updated_email, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), R.string.updated_email, Toast.LENGTH_SHORT).show();
                             logout();
                         } else {
-                            Toast.makeText(SettingsActivity.this, R.string.failed_update_email, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), R.string.failed_update_email, Toast.LENGTH_LONG).show();
                         }
                         progressBar.setVisibility(View.GONE);
                     }
@@ -228,24 +224,23 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     private void logout() {
         auth.signOut();
-        startActivity(new Intent(this, LoginActivity.class));
-        finish();
+        startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         auth.addAuthStateListener(authListener);
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         progressBar.setVisibility(View.GONE);
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         if (authListener != null) {
             auth.removeAuthStateListener(authListener);
