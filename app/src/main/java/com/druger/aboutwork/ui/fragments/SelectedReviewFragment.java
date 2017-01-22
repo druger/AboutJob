@@ -71,7 +71,7 @@ public class SelectedReviewFragment extends Fragment {
         Review review = bundle.getParcelable("review");
 
         if (review != null) {
-            userName.setText(review.getUserName());
+            userName.setText(review.getName());
             date.setText(Utils.getDate(review.getDate()));
             city.setText(review.getCity());
             if (!TextUtils.isEmpty(review.getPosition())) {

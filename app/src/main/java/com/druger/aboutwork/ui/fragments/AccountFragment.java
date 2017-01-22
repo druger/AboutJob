@@ -123,10 +123,8 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     }
 
     private void openMyReviews() {
-        MyReviewsFragment myReviews = new MyReviewsFragment();
-
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_container, myReviews);
+        transaction.replace(R.id.main_container, MyReviewsFragment.newInstance(user.getUid()));
         transaction.addToBackStack(null);
         transaction.commit();
     }

@@ -1,5 +1,6 @@
 package com.druger.aboutwork.db;
 
+import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -54,6 +55,10 @@ public class FirebaseHelper {
     }
 
     public static void addCompany(String key, String name) {
-        FirebaseDatabase.getInstance().getReference().child("companies").child(key).child("name").setValue(name);
+        Company company = new Company(key, name);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        Map<String, Object> map = mapper.convertValue(company, Map.class);
+        FirebaseDatabase.getInstance().getReference().child("companies").child(key).setValue(map);
     }
 }

@@ -8,6 +8,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.R;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.gson.annotations.SerializedName;
 import com.mikepenz.fastadapter.items.AbstractItem;
 
@@ -16,14 +18,21 @@ import java.util.List;
 /**
  * Created by druger on 24.07.2016.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Company extends AbstractItem<Company, Company.CompanyVH> {
 
     private String id;
     private String name;
+    @JsonIgnore
     @SerializedName("logo_urls")
     private Logo logo;
 
     public Company() {
+    }
+
+    public Company(String id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public String getName() {

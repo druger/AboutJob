@@ -34,7 +34,7 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
     private String companyId;
     private String userId;
     @JsonIgnore
-    private String userName;
+    private String name;
     private long date;
     private String pluses;
     private String minuses;
@@ -66,7 +66,7 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
     protected Review(Parcel in) {
         companyId = in.readString();
         userId = in.readString();
-        userName = in.readString();
+        name = in.readString();
         date = in.readLong();
         pluses = in.readString();
         minuses = in.readString();
@@ -196,12 +196,12 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
         this.dislike = dislike;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
     public void setMyLike(boolean myLike) {
@@ -253,7 +253,7 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
     @Override
     public void bindView(final ViewHolder holder, List<Object> payloads) {
         super.bindView(holder, payloads);
-        holder.name.setText(userName);
+        holder.name.setText(name);
         holder.date.setText(Utils.getDate(date));
         holder.city.setText(city);
         holder.pluses.setText(pluses);
@@ -394,7 +394,7 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(companyId);
         dest.writeString(userId);
-        dest.writeString(userName);
+        dest.writeString(name);
         dest.writeLong(date);
         dest.writeString(pluses);
         dest.writeString(minuses);

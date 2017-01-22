@@ -211,10 +211,9 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot data : dataSnapshot.getChildren()) {
                             User user = data.getValue(User.class);
-                            review.setUserName(user.getName());
+                            review.setName(user.getName());
                             fastItemAdapter.notifyAdapterDataSetChanged();
                         }
-
                     }
                 }
 
