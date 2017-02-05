@@ -1,28 +1,16 @@
 package com.druger.aboutwork.model;
 
-import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.druger.aboutwork.R;
-import com.druger.aboutwork.db.FirebaseHelper;
-import com.druger.aboutwork.utils.Utils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.mikepenz.fastadapter.items.AbstractItem;
-
-import java.util.List;
 
 /**
  * Created by druger on 10.08.2016.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Review extends AbstractItem<Review, Review.ViewHolder> implements Parcelable {
+public class Review implements Parcelable {
 
     /**
      * Статусы работника
@@ -49,8 +37,6 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
     private int dislike;
     private boolean myLike;
     private boolean myDislike;
-    @JsonIgnore
-    private FirebaseHelper firebaseHelper;
     @JsonIgnore
     private String firebaseKey;
 
@@ -220,10 +206,6 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
         return myDislike;
     }
 
-    public void setFirebaseHelper(FirebaseHelper firebaseHelper) {
-        this.firebaseHelper = firebaseHelper;
-    }
-
     public String getFirebaseKey() {
         return firebaseKey;
     }
@@ -238,151 +220,6 @@ public class Review extends AbstractItem<Review, Review.ViewHolder> implements P
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    @Override
-    public int getType() {
-        return R.id.item_review;
-    }
-
-    @Override
-    public int getLayoutRes() {
-        return R.layout.review_card;
-    }
-
-    @Override
-    public void bindView(final ViewHolder holder, List<Object> payloads) {
-        super.bindView(holder, payloads);
-        holder.name.setText(name);
-        holder.date.setText(Utils.getDate(date));
-        holder.city.setText(city);
-        holder.pluses.setText(pluses);
-        holder.minuses.setText(minuses);
-        if (markCompany != null) {
-            holder.mark.setText(String.valueOf(markCompany.getAverageMark()));
-        }
-        holder.like.setText(String.valueOf(like));
-        holder.dislike.setText(String.valueOf(dislike));
-
-        if (!myLike) {
-            holder.imgLike.setTag("likeInactive");
-        } else {
-            holder.imgLike.setTag("likeActive");
-            holder.imgLike.setColorFilter(Color.parseColor("#8BC34A"));
-        }
-        if (!myDislike) {
-            holder.imgDislike.setTag("dislikeInactive");
-        } else {
-            holder.imgDislike.setTag("dislikeActive");
-            holder.imgDislike.setColorFilter(Color.parseColor("#F44336"));
-        }
-
-        holder.imgLike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String tagLike = holder.imgLike.getTag().toString();
-                String tagDislike = holder.imgDislike.getTag().toString();
-                if (tagLike.equalsIgnoreCase("likeInactive")) {
-                    holder.imgLike.setTag("likeActive");
-                    holder.imgLike.setColorFilter(Color.parseColor("#8BC34A"));
-                    like++;
-                    myLike = true;
-                    holder.like.setText(String.valueOf(like));
-                    firebaseHelper.setLike(Review.this);
-
-                    if (tagDislike.equalsIgnoreCase("dislikeActive")) {
-                        holder.imgDislike.setTag("dislikeInactive");
-                        holder.imgDislike.setColorFilter(Color.parseColor("#9E9E9E"));
-                        dislike--;
-                        myDislike = false;
-                        holder.dislike.setText(String.valueOf(dislike));
-                        firebaseHelper.setDislike(Review.this);
-                    }
-                } else {
-                    holder.imgLike.setTag("likeInactive");
-                    holder.imgLike.setColorFilter(Color.parseColor("#9E9E9E"));
-                    like--;
-                    myLike = false;
-                    holder.like.setText(String.valueOf(like));
-                    firebaseHelper.setLike(Review.this);
-                }
-            }
-        });
-        holder.imgDislike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String tagLike = holder.imgLike.getTag().toString();
-                String tagDislike = holder.imgDislike.getTag().toString();
-                if (tagDislike.equalsIgnoreCase("dislikeInactive")) {
-                    holder.imgDislike.setTag("dislikeActive");
-                    holder.imgDislike.setColorFilter(Color.parseColor("#F44336"));
-                    dislike++;
-                    myDislike = true;
-                    holder.dislike.setText(String.valueOf(dislike));
-                    firebaseHelper.setDislike(Review.this);
-
-                    if (tagLike.equalsIgnoreCase("likeActive")) {
-                        holder.imgLike.setTag("likeInactive");
-                        holder.imgLike.setColorFilter(Color.parseColor("#9E9E9E"));
-                        like--;
-                        myLike = false;
-                        holder.like.setText(String.valueOf(like));
-                        firebaseHelper.setLike(Review.this);
-                    }
-                } else {
-                    holder.imgDislike.setTag("dislikeInactive");
-                    holder.imgDislike.setColorFilter(Color.parseColor("#9E9E9E"));
-                    dislike--;
-                    myDislike = false;
-                    holder.dislike.setText(String.valueOf(dislike));
-                    firebaseHelper.setDislike(Review.this);
-                }
-            }
-        });
-    }
-
-    @Override
-    public void unbindView(ViewHolder holder) {
-        super.unbindView(holder);
-        holder.name.setText(null);
-        holder.date.setText(null);
-        holder.city.setText(null);
-        holder.pluses.setText(null);
-        holder.minuses.setText(null);
-        holder.mark.setText(null);
-        holder.imgLike.setTag(null);
-        holder.imgDislike.setTag(null);
-        holder.like.setText(null);
-        holder.dislike.setText(null);
-    }
-
-    protected static class ViewHolder extends RecyclerView.ViewHolder {
-        protected CardView cardView;
-        protected TextView name;
-        protected TextView date;
-        protected TextView city;
-        protected TextView pluses;
-        protected TextView minuses;
-        protected TextView mark;
-        protected ImageView imgLike;
-        protected ImageView imgDislike;
-        protected TextView like;
-        protected TextView dislike;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            cardView = (CardView) itemView.findViewById(R.id.card_view);
-            name = (TextView) itemView.findViewById(R.id.user_name);
-            date = (TextView) itemView.findViewById(R.id.date);
-            city = (TextView) itemView.findViewById(R.id.city);
-            pluses = (TextView) itemView.findViewById(R.id.pluses);
-            minuses = (TextView) itemView.findViewById(R.id.minuses);
-            mark = (TextView) itemView.findViewById(R.id.mark);
-            imgLike = (ImageView) itemView.findViewById(R.id.img_like);
-            imgDislike = (ImageView) itemView.findViewById(R.id.img_dislike);
-            like = (TextView) itemView.findViewById(R.id.like);
-            dislike = (TextView) itemView.findViewById(R.id.dislike);
-        }
     }
 
     @Override

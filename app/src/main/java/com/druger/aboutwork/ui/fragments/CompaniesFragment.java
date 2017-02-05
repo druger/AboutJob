@@ -14,21 +14,19 @@ import android.view.ViewGroup;
 
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.adapters.CompanyAdapter;
 import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.CompanyResponse;
+import com.druger.aboutwork.recyclerview_helper.ItemClickListener;
 import com.druger.aboutwork.rest.ApiClient;
 import com.druger.aboutwork.rest.ApiService;
 import com.druger.aboutwork.ui.activities.CompanyDetailActivity;
 import com.druger.aboutwork.ui.activities.MainActivity;
-import com.mikepenz.fastadapter.FastAdapter;
-import com.mikepenz.fastadapter.IAdapter;
-import com.mikepenz.fastadapter.adapters.FooterAdapter;
-import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter;
-import com.mikepenz.fastadapter_extensions.items.ProgressItem;
 import com.mikepenz.fastadapter_extensions.scroll.EndlessRecyclerOnScrollListener;
 import com.squareup.leakcanary.RefWatcher;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -43,8 +41,8 @@ public class CompaniesFragment extends Fragment {
 
     private ApiService apiService;
 
-    private FastItemAdapter<Company> adapter;
-    private FooterAdapter<ProgressItem> footerAdapter;
+    private List<Company> companies;
+    private CompanyAdapter adapter;
     private RecyclerView recyclerView;
     private EndlessRecyclerOnScrollListener scrollListener;
 
@@ -58,38 +56,37 @@ public class CompaniesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_companies, container, false);
+        final View view = inflater.inflate(R.layout.fragment_companies, container, false);
 
         ((MainActivity) getActivity()).setActionBarTitle(R.string.app_name);
         ((MainActivity) getActivity()).resetBackArrowActionBar();
 
         apiService = ApiClient.getClient().create(ApiService.class);
 
-        adapter = new FastItemAdapter<>();
-        footerAdapter = new FooterAdapter<>();
+        companies = new ArrayList<>();
+        adapter = new CompanyAdapter(companies);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         searchView = (SearchView) getActivity().findViewById(R.id.search_view);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(footerAdapter.wrap(adapter));
+        recyclerView.setAdapter(adapter);
 
-        scrollListener = new EndlessRecyclerOnScrollListener(footerAdapter) {
+        scrollListener = new EndlessRecyclerOnScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int currentPage) {
-                footerAdapter.clear();
-                footerAdapter.add(new ProgressItem().withEnabled(false));
                 getCompanies(query, currentPage);
             }
         };
         recyclerView.addOnScrollListener(scrollListener);
 
-        adapter.withSelectable(true);
-        adapter.withOnClickListener(new FastAdapter.OnClickListener<Company>() {
+
+        adapter.setOnItemClickListener(new ItemClickListener() {
             @Override
-            public boolean onClick(View v, IAdapter<Company> adapter, Company item, int position) {
-                Call<CompanyDetail> call = apiService.getCompanyDetail(item.getId());
+            public void onClick(View view, int position) {
+                Company company = companies.get(position);
+                Call<CompanyDetail> call = apiService.getCompanyDetail(company.getId());
                 call.enqueue(new Callback<CompanyDetail>() {
                     @Override
                     public void onResponse(Call<CompanyDetail> call, Response<CompanyDetail> response) {
@@ -107,7 +104,6 @@ public class CompaniesFragment extends Fragment {
                         Log.e(TAG, t.getMessage());
                     }
                 });
-                return true;
             }
         });
 
@@ -123,7 +119,8 @@ public class CompaniesFragment extends Fragment {
                 Log.d(TAG, newText);
                 if (!newText.isEmpty()) {
                     query = newText;
-                    adapter.clear();
+                    companies.clear();
+                    adapter.notifyDataSetChanged();
                     scrollListener.resetPageCount();
                 }
                 return true;
@@ -142,16 +139,15 @@ public class CompaniesFragment extends Fragment {
         call.enqueue(new Callback<CompanyResponse>() {
             @Override
             public void onResponse(Call<CompanyResponse> call, Response<CompanyResponse> response) {
-                List<Company> companies = response.body().getItems();
-                footerAdapter.clear();
-                adapter.add(companies);
-                Log.d(TAG, "Companies size = " + companies.size());
+                List<Company> companiesRes = response.body().getItems();
+                companies.addAll(companiesRes);
+                adapter.notifyDataSetChanged();
+                Log.d(TAG, "Companies size = " + companiesRes.size());
             }
 
             @Override
             public void onFailure(Call<CompanyResponse> call, Throwable t) {
                 Log.e(TAG, t.getMessage());
-                footerAdapter.clear();
             }
         });
     }
@@ -160,7 +156,6 @@ public class CompaniesFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         searchView.setOnQueryTextListener(null);
-        adapter.withOnClickListener(null);
         recyclerView.removeOnScrollListener(scrollListener);
     }
 

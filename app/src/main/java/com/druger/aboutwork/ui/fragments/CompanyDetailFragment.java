@@ -26,20 +26,19 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.adapters.ReviewAdapter;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.model.User;
+import com.druger.aboutwork.recyclerview_helper.ItemClickListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.mikepenz.fastadapter.FastAdapter;
-import com.mikepenz.fastadapter.IAdapter;
-import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
@@ -63,9 +62,8 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private List<Review> reviews = new ArrayList<>();
+    private ReviewAdapter reviewAdapter;
 
-    private FastItemAdapter<Review> fastItemAdapter;
-    private FirebaseHelper firebaseHelper = new FirebaseHelper();
     private DatabaseReference dbReference;
     private ValueEventListener valueEventListener;
 
@@ -158,35 +156,33 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
     }
 
     private void setReviews() {
-        fastItemAdapter = new FastItemAdapter<>();
         dbReference = FirebaseDatabase.getInstance().getReference();
         Query reviewsQuery = dbReference.child("reviews").orderByChild("companyId").equalTo(detail.getId());
         reviewsQuery.addValueEventListener(this);
 
+        reviewAdapter = new ReviewAdapter(reviews);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(fastItemAdapter);
+        recyclerView.setAdapter(reviewAdapter);
         recyclerView.setNestedScrollingEnabled(false);
 
-        fastItemAdapter.withSelectable(true);
-        fastItemAdapter.withOnClickListener(new FastAdapter.OnClickListener<Review>() {
+        reviewAdapter.setOnClickListener(new ItemClickListener() {
             @Override
-            public boolean onClick(View v, IAdapter<Review> adapter, Review item, int position) {
+            public void onClick(View view, int position) {
                 SelectedReviewFragment reviewFragment = new SelectedReviewFragment();
 
+                Review review = reviews.get(position);
                 Bundle bundle = new Bundle();
-                bundle.putParcelable("review", item);
+                bundle.putParcelable("review", review);
                 reviewFragment.setArguments(bundle);
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.company_container, reviewFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
-                return true;
             }
         });
     }
-
 
     private void addReview() {
         ReviewFragment review = new ReviewFragment();
@@ -200,7 +196,6 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
 
     private void fetchReviews(DataSnapshot dataSnapshot) {
         reviews.clear();
-        fastItemAdapter.clear();
 
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
             final Review review = snapshot.getValue(Review.class);
@@ -212,7 +207,7 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
                         for (DataSnapshot data : dataSnapshot.getChildren()) {
                             User user = data.getValue(User.class);
                             review.setName(user.getName());
-                            fastItemAdapter.notifyAdapterDataSetChanged();
+                            reviewAdapter.notifyDataSetChanged();
                         }
                     }
                 }
@@ -223,13 +218,12 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
                 }
             };
             queryUserId.addValueEventListener(valueEventListener);
-            review.setFirebaseHelper(firebaseHelper);
             review.setFirebaseKey(dataSnapshot.getKey());
             reviews.add(review);
         }
         countReviews.setText(String.valueOf(reviews.size()));
         setRating();
-        fastItemAdapter.add(reviews);
+        reviewAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -269,7 +263,7 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REVIEW_REQUEST) {
-                firebaseHelper.addReview((Review) data.getParcelableExtra("addedReview"));
+                FirebaseHelper.addReview((Review) data.getParcelableExtra("addedReview"));
                 FirebaseHelper.addCompany(detail.getId(), detail.getName());
             }
         }

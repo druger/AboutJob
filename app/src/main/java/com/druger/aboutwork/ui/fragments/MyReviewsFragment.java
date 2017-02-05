@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.adapters.ReviewAdapter;
 import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.ui.activities.MainActivity;
@@ -22,7 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
 
     private List<Review> reviews;
     private RecyclerView recyclerView;
-    private FastItemAdapter<Review> fastItemAdapter;
+    private ReviewAdapter reviewAdapter;
 
     private TextView countReviews;
 
@@ -70,11 +70,11 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
         countReviews = (TextView) view.findViewById(R.id.count_reviews);
 
         reviews = new ArrayList<>();
-        fastItemAdapter = new FastItemAdapter<>();
+        reviewAdapter = new ReviewAdapter(reviews);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(fastItemAdapter);
+        recyclerView.setAdapter(reviewAdapter);
         recyclerView.setNestedScrollingEnabled(false);
 
         Bundle bundle = this.getArguments();
@@ -116,7 +116,6 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
 
     private void fetchReviews(DataSnapshot dataSnapshot) {
         reviews.clear();
-        fastItemAdapter.clear();
 
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
             final Review review = snapshot.getValue(Review.class);
@@ -128,7 +127,7 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
                         for (DataSnapshot data : dataSnapshot.getChildren()) {
                             Company company = data.getValue(Company.class);
                             review.setName(company.getName());
-                            fastItemAdapter.notifyAdapterDataSetChanged();
+                            reviewAdapter.notifyDataSetChanged();
                         }
                     }
                 }
@@ -142,6 +141,6 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
             reviews.add(review);
         }
         countReviews.setText(String.valueOf(reviews.size()));
-        fastItemAdapter.add(reviews);
+        reviewAdapter.notifyDataSetChanged();
     }
 }

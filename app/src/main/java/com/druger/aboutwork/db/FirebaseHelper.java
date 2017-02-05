@@ -5,7 +5,6 @@ import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
@@ -15,33 +14,28 @@ import java.util.Map;
  * Created by druger on 16.08.2016.
  */
 public class FirebaseHelper {
-    private DatabaseReference dbReference;
 
-    public FirebaseHelper() {
-        dbReference = FirebaseDatabase.getInstance().getReference();
-    }
-
-    public void addReview(Review review) {
+    public static void addReview(Review review) {
         ObjectMapper mapper = new ObjectMapper();;
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         Map<String, Object> map = mapper.convertValue(review, Map.class);
-        dbReference.child("reviews").push().setValue(map);
+        FirebaseDatabase.getInstance().getReference().child("reviews").push().setValue(map);
     }
 
-    public void setLike(Review review) {
+    public static void setLike(Review review) {
         Map<String, Object> updateLike = new HashMap<>();
         updateLike.put("reviews/" + review.getFirebaseKey() + "/like", review.getLike());
         updateLike.put("reviews/" + review.getFirebaseKey() + "/myLike", review.isMyLike());
 
-        dbReference.updateChildren(updateLike);
+        FirebaseDatabase.getInstance().getReference().updateChildren(updateLike);
     }
 
-    public void setDislike(Review review) {
+    public static void setDislike(Review review) {
         Map<String, Object> updateDislike = new HashMap<>();
         updateDislike.put("reviews/" + review.getFirebaseKey() + "/dislike", review.getDislike());
         updateDislike.put("reviews/" + review.getFirebaseKey() + "/myDislike", review.isMyDislike());
 
-        dbReference.updateChildren(updateDislike);
+        FirebaseDatabase.getInstance().getReference().updateChildren(updateDislike);
     }
 
     public static void changeUserName(String name, String key) {
