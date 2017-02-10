@@ -105,6 +105,11 @@ public class CompaniesFragment extends Fragment {
                     }
                 });
             }
+
+            @Override
+            public boolean onLongClick(View view, int position) {
+                return false;
+            }
         });
 
         searchView.setQueryHint(getResources().getString(R.string.query_hint));

@@ -3,10 +3,13 @@ package com.druger.aboutwork.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -16,6 +19,7 @@ import com.druger.aboutwork.R;
 import com.druger.aboutwork.adapters.ReviewAdapter;
 import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.Review;
+import com.druger.aboutwork.recyclerview_helper.ItemClickListener;
 import com.druger.aboutwork.ui.activities.MainActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,6 +40,9 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
     private List<Review> reviews;
     private RecyclerView recyclerView;
     private ReviewAdapter reviewAdapter;
+
+    private ActionMode actionMode;
+    private ActionModeCallback actionModeCallback = new ActionModeCallback();
 
     private TextView countReviews;
 
@@ -76,6 +83,24 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(reviewAdapter);
         recyclerView.setNestedScrollingEnabled(false);
+
+        reviewAdapter.setOnClickListener(new ItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                if (actionMode != null) {
+                    toggleSelection(position);
+                }
+            }
+
+            @Override
+            public boolean onLongClick(View view, int position) {
+                if (actionMode == null) {
+                    actionMode = ((MainActivity) getActivity()).startSupportActionMode(actionModeCallback);
+                }
+                toggleSelection(position);
+                return true;
+            }
+        });
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -142,5 +167,55 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
         }
         countReviews.setText(String.valueOf(reviews.size()));
         reviewAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Toggle the selection state of an item.
+     *
+     * If the item was the last one in the selection and is unselected, the selection is stopped.
+     * Note that the selection must already be started (actionMode must not be null).
+     *
+     * @param position Position of the item to toggle the selection state
+     */
+    private void toggleSelection(int position) {
+        reviewAdapter.toggleSelection(position);
+        int count = reviewAdapter.getSelectedItemCount();
+
+        if (count == 0) {
+            actionMode.finish();
+        } else {
+            actionMode.setTitle(String.valueOf(count));
+            actionMode.invalidate();
+        }
+    }
+
+    private class ActionModeCallback implements ActionMode.Callback {
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.selected_menu, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.menu_delete:
+                    mode.finish();
+                    return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            reviewAdapter.clearSelection();
+            actionMode = null;
+        }
     }
 }

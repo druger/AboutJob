@@ -1,6 +1,7 @@
 package com.druger.aboutwork.adapters;
 
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,7 +23,7 @@ import java.util.List;
  * Created by druger on 29.01.2017.
  */
 
-public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewVH> {
+public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
 
     private List<Review> reviews;
 
@@ -53,6 +54,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewVH> 
         }
         holder.like.setText(String.valueOf(review.getLike()));
         holder.dislike.setText(String.valueOf(review.getDislike()));
+        holder.cardView.setCardBackgroundColor(isSelected(position)
+                ? ContextCompat.getColor(holder.cardView.getContext(), R.color.red200) : Color.WHITE);
 
         boolean myLike = review.isMyLike();
         boolean myDislike = review.isMyDislike();
@@ -142,7 +145,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewVH> 
         return reviews.size();
     }
 
-    public class ReviewVH extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ReviewVH extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         CardView cardView;
         TextView name;
         TextView date;
@@ -158,6 +161,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewVH> 
         public ReviewVH(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             name = (TextView) itemView.findViewById(R.id.user_name);
             date = (TextView) itemView.findViewById(R.id.date);
@@ -176,6 +181,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewVH> 
             if (clickListener != null) {
                 clickListener.onClick(v, getAdapterPosition());
             }
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            return clickListener != null && clickListener.onLongClick(v, getAdapterPosition());
         }
     }
 

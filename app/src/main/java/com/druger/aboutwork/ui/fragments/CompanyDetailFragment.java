@@ -181,6 +181,11 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
+
+            @Override
+            public boolean onLongClick(View view, int position) {
+                return false;
+            }
         });
     }
 
