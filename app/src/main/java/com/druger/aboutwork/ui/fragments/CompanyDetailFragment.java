@@ -257,6 +257,12 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        reviewAdapter.setOnClickListener(null);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         RefWatcher refWatcher = AboutWorkApp.getRefWatcher(getActivity());

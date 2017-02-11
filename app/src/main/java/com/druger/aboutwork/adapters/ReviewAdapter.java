@@ -17,6 +17,9 @@ import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.recyclerview_helper.ItemClickListener;
 import com.druger.aboutwork.utils.Utils;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -26,11 +29,17 @@ import java.util.List;
 public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
 
     private List<Review> reviews;
+    private List<Review> deletedReviews;
 
     private ItemClickListener clickListener;
 
     public ReviewAdapter(List<Review> reviews) {
         this.reviews = reviews;
+        deletedReviews = new ArrayList<>();
+    }
+
+    public List<Review> getDeletedReviews() {
+        return deletedReviews;
     }
 
     @Override
@@ -191,5 +200,47 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
 
     public void setOnClickListener(ItemClickListener clickListener) {
         this.clickListener = clickListener;
+    }
+
+    private void removeItem(int position) {
+        deletedReviews.add(reviews.remove(position));
+        notifyItemRemoved(position);
+    }
+
+    public void removeItems(List<Integer> positions) {
+        deletedReviews.clear();
+        Collections.sort(positions, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o2 - o1;
+            }
+        });
+
+        while (!positions.isEmpty()) {
+            if (positions.size() == 1) {
+                removeItem(positions.get(0));
+                positions.remove(0);
+            } else {
+                int count = 1;
+                while (positions.size() > count && positions.get(count).equals(positions.get(count - 1) - 1)) {
+                    ++count;
+                }
+                if (count == 1) {
+                    removeItem(positions.get(0));
+                } else {
+                    removeRange(positions.get(count - 1), count);
+                }
+                for (int i = 0; i < count; ++i) {
+                    positions.remove(0);
+                }
+            }
+        }
+    }
+
+    private void removeRange(int positionStart, int itemCount) {
+        for (int i = 0; i < itemCount; ++i) {
+            deletedReviews.add(reviews.remove(positionStart));
+        }
+        notifyItemRangeRemoved(positionStart, itemCount);
     }
 }

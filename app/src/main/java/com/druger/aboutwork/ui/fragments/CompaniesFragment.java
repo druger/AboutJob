@@ -162,6 +162,7 @@ public class CompaniesFragment extends Fragment {
         super.onDestroyView();
         searchView.setOnQueryTextListener(null);
         recyclerView.removeOnScrollListener(scrollListener);
+        adapter.setOnItemClickListener(null);
     }
 
     @Override

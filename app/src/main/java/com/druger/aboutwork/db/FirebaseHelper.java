@@ -55,4 +55,8 @@ public class FirebaseHelper {
         Map<String, Object> map = mapper.convertValue(company, Map.class);
         FirebaseDatabase.getInstance().getReference().child("companies").child(key).setValue(map);
     }
+
+    public static void removeReview(String id) {
+        FirebaseDatabase.getInstance().getReference().child("reviews/" + id).removeValue();
+    }
 }

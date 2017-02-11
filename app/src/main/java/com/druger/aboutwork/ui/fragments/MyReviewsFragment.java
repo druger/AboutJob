@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.adapters.ReviewAdapter;
+import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.recyclerview_helper.ItemClickListener;
@@ -163,6 +164,7 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
                 }
             };
             queryByCompanyId.addValueEventListener(valueEventListener);
+            review.setFirebaseKey(snapshot.getKey());
             reviews.add(review);
         }
         countReviews.setText(String.valueOf(reviews.size()));
@@ -206,6 +208,11 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.menu_delete:
+                    reviewAdapter.removeItems(reviewAdapter.getSelectedItems());
+                    List<Review> deletedReviews = reviewAdapter.getDeletedReviews();
+                    for (Review review : deletedReviews) {
+                        FirebaseHelper.removeReview(review.getFirebaseKey());
+                    }
                     mode.finish();
                     return true;
             }
