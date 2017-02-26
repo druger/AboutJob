@@ -70,4 +70,6 @@
     <string name="error_review_add">Fill in the required fields</string>
     <string name="ok">OK</string>
     <string name="delete">Delete</string>
+    <string name="review_deleted">Review deleted</string>
+    <string name="undo">Undo</string>
 </resources>

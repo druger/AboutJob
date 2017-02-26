@@ -2,11 +2,15 @@ package com.druger.aboutwork.ui.fragments;
 
 
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,11 +45,15 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
     private List<Review> reviews;
     private RecyclerView recyclerView;
     private ReviewAdapter reviewAdapter;
+    private ItemTouchHelper touchHelper;
+    private ItemTouchHelper.SimpleCallback simpleCallback;
 
     private ActionMode actionMode;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
+    private boolean itemSwipe = true;
 
     private TextView countReviews;
+    private BottomNavigationView bottomNavigation;
 
     private String userId;
 
@@ -76,6 +84,7 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
         dbReference = FirebaseDatabase.getInstance().getReference();
 
         countReviews = (TextView) view.findViewById(R.id.count_reviews);
+        bottomNavigation = (BottomNavigationView) getActivity().findViewById(R.id.bottom_navigation);
 
         reviews = new ArrayList<>();
         reviewAdapter = new ReviewAdapter(reviews);
@@ -97,11 +106,14 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
             public boolean onLongClick(View view, int position) {
                 if (actionMode == null) {
                     actionMode = ((MainActivity) getActivity()).startSupportActionMode(actionModeCallback);
+                    itemSwipe = false;
                 }
                 toggleSelection(position);
                 return true;
             }
         });
+
+        initSwipe();
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -111,6 +123,42 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
         Query reviewsQuery = dbReference.child("reviews").orderByChild("userId").equalTo(userId);
         reviewsQuery.addValueEventListener(this);
         return view;
+    }
+
+    private void initSwipe() {
+        simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
+                final int position = viewHolder.getAdapterPosition();
+                final Review review = reviews.get(position);
+                Snackbar snackbar = Snackbar
+                        .make(getActivity().findViewById(R.id.coordinator), R.string.review_deleted, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.undo, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                reviews.add(position, review);
+                                reviewAdapter.notifyItemInserted(position);
+                                recyclerView.scrollToPosition(position);
+                                FirebaseHelper.addReview(review);
+                            }
+                        });
+                showSnackbar(snackbar);
+                FirebaseHelper.removeReview(reviews.remove(position).getFirebaseKey());
+                reviewAdapter.notifyItemRemoved(position);
+            }
+
+            @Override
+            public boolean isItemViewSwipeEnabled() {
+                return itemSwipe && super.isItemViewSwipeEnabled();
+            }
+        };
+        touchHelper = new ItemTouchHelper(simpleCallback);
+        touchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
@@ -209,10 +257,23 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
             switch (item.getItemId()) {
                 case R.id.menu_delete:
                     reviewAdapter.removeItems(reviewAdapter.getSelectedItems());
-                    List<Review> deletedReviews = reviewAdapter.getDeletedReviews();
+                    final List<Review> deletedReviews = reviewAdapter.getDeletedReviews();
                     for (Review review : deletedReviews) {
                         FirebaseHelper.removeReview(review.getFirebaseKey());
                     }
+                    Snackbar snackbar = Snackbar
+                            .make(getActivity().findViewById(R.id.coordinator), R.string.review_deleted, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.undo, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    reviews.addAll(deletedReviews);
+                                    reviewAdapter.notifyDataSetChanged();
+                                    for (Review review : deletedReviews) {
+                                        FirebaseHelper.addReview(review);
+                                    }
+                                }
+                            });
+                    showSnackbar(snackbar);
                     mode.finish();
                     return true;
             }
@@ -223,6 +284,14 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
         public void onDestroyActionMode(ActionMode mode) {
             reviewAdapter.clearSelection();
             actionMode = null;
+            itemSwipe = true;
         }
+    }
+
+    private void showSnackbar(Snackbar snackbar) {
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) snackbar.getView().getLayoutParams();
+        params.setMargins(0, 0, 0, bottomNavigation.getHeight());
+        snackbar.getView().setLayoutParams(params);
+        snackbar.show();
     }
 }
