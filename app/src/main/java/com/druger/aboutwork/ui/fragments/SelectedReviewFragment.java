@@ -2,6 +2,8 @@ package com.druger.aboutwork.ui.fragments;
 
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -9,6 +11,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -21,7 +24,30 @@ import com.squareup.leakcanary.RefWatcher;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SelectedReviewFragment extends Fragment {
+public class SelectedReviewFragment extends Fragment implements View.OnClickListener {
+
+    private TextView userName;
+    private TextView date;
+    private TextView city;
+    private TextView position;
+    private TextView mPosition;
+    private TextView employmentDate;
+    private TextView mEmploymentDate;
+    private TextView dismissalDate;
+    private TextView mDismissalDate;
+    private TextView interviewDate;
+    private TextView mInterviewDate;
+    private TextView pluses;
+    private TextView minuses;
+    private RatingBar salary;
+    private RatingBar chief;
+    private RatingBar workplace;
+    private RatingBar career;
+    private RatingBar collective;
+    private RatingBar socialPackage;
+    private ImageView like;
+    private ImageView dislike;
+    private ImageView comments;
 
 
     public SelectedReviewFragment() {
@@ -41,27 +67,36 @@ public class SelectedReviewFragment extends Fragment {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(companyName);
         }
 
-        TextView userName = (TextView) view.findViewById(R.id.user_name);
-        TextView date = (TextView) view.findViewById(R.id.date);
-        TextView city = (TextView) view.findViewById(R.id.city);
-        TextView position = (TextView) view.findViewById(R.id.position);
-        TextView mPosition = (TextView) view.findViewById(R.id.tv_position);
-        TextView employmentDate = (TextView) view.findViewById(R.id.employment_date);
-        TextView mEmploymentDate = (TextView) view.findViewById(R.id.tv_employment_date);
-        TextView dismissalDate = (TextView) view.findViewById(R.id.dismissal_date);
-        TextView mDismissalDate = (TextView) view.findViewById(R.id.tv_dismissal_date);
-        TextView interviewDate = (TextView) view.findViewById(R.id.interview_date);
-        TextView mInterviewDate = (TextView) view.findViewById(R.id.tv_interview_date);
-        TextView pluses = (TextView) view.findViewById(R.id.pluses);
-        TextView minuses = (TextView) view.findViewById(R.id.minuses);
+        userName = (TextView) view.findViewById(R.id.user_name);
+        date = (TextView) view.findViewById(R.id.date);
+        city = (TextView) view.findViewById(R.id.city);
+        position = (TextView) view.findViewById(R.id.position);
+        mPosition = (TextView) view.findViewById(R.id.tv_position);
+        employmentDate = (TextView) view.findViewById(R.id.employment_date);
+        mEmploymentDate = (TextView) view.findViewById(R.id.tv_employment_date);
+        dismissalDate = (TextView) view.findViewById(R.id.dismissal_date);
+        mDismissalDate = (TextView) view.findViewById(R.id.tv_dismissal_date);
+        interviewDate = (TextView) view.findViewById(R.id.interview_date);
+        mInterviewDate = (TextView) view.findViewById(R.id.tv_interview_date);
+        pluses = (TextView) view.findViewById(R.id.pluses);
+        minuses = (TextView) view.findViewById(R.id.minuses);
 
-        RatingBar salary = (RatingBar) view.findViewById(R.id.ratingbar_salary);
-        RatingBar chief = (RatingBar) view.findViewById(R.id.ratingbar_chief);
-        RatingBar workplace = (RatingBar) view.findViewById(R.id.ratingbar_workplace);
-        RatingBar career = (RatingBar) view.findViewById(R.id.ratingbar_career);
-        RatingBar collective = (RatingBar) view.findViewById(R.id.ratingbar_collective);
-        RatingBar socialPackage = (RatingBar) view.findViewById(R.id.ratingbar_social_package);
+        salary = (RatingBar) view.findViewById(R.id.ratingbar_salary);
+        chief = (RatingBar) view.findViewById(R.id.ratingbar_chief);
+        workplace = (RatingBar) view.findViewById(R.id.ratingbar_workplace);
+        career = (RatingBar) view.findViewById(R.id.ratingbar_career);
+        collective = (RatingBar) view.findViewById(R.id.ratingbar_collective);
+        socialPackage = (RatingBar) view.findViewById(R.id.ratingbar_social_package);
 
+        like = (ImageView) view.findViewById(R.id.like);
+        dislike = (ImageView) view.findViewById(R.id.dislike);
+        comments = (ImageView) view.findViewById(R.id.comments);
+
+        setUI();
+        return view;
+    }
+
+    private void setUI() {
         position.setVisibility(View.GONE);
         employmentDate.setVisibility(View.GONE);
         dismissalDate.setVisibility(View.GONE);
@@ -103,8 +138,10 @@ public class SelectedReviewFragment extends Fragment {
             career.setRating(review.getMarkCompany().getCareer());
             collective.setRating(review.getMarkCompany().getCollective());
             socialPackage.setRating(review.getMarkCompany().getSocialPackage());
+
+            comments.setOnClickListener(this);
+            comments.setColorFilter(Color.parseColor("#9E9E9E"));
         }
-        return view;
     }
 
     @Override
@@ -112,5 +149,27 @@ public class SelectedReviewFragment extends Fragment {
         super.onDestroy();
         RefWatcher refWatcher = AboutWorkApp.getRefWatcher(getActivity());
         refWatcher.watch(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.like:
+                break;
+            case R.id.dislike:
+                break;
+            case R.id.comments:
+                showComments();
+                break;
+        }
+    }
+
+    private void showComments() {
+        CommentsFragment comments = new CommentsFragment();
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.company_container, comments);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

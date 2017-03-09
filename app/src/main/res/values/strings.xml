@@ -72,4 +72,7 @@
     <string name="delete">Delete</string>
     <string name="review_deleted">Review deleted</string>
     <string name="undo">Undo</string>
+
+    <string name="comments">Comments</string>
+    <string name="your_message">Your message</string>
 </resources>

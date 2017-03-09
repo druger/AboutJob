@@ -89,7 +89,7 @@
                 android:layout_marginEnd="5dp"
                 android:layout_marginRight="5dp"
                 android:clickable="true"
-                android:tint="@color/like_dislike"
+                android:tint="@color/grey500"
                 card_view:srcCompat="@drawable/thumb_up" />
 
             <TextView
@@ -108,7 +108,7 @@
                 android:layout_marginEnd="5dp"
                 android:layout_marginRight="5dp"
                 android:clickable="true"
-                android:tint="@color/like_dislike"
+                android:tint="@color/grey500"
                 card_view:srcCompat="@drawable/thumb_down" />
 
             <TextView
