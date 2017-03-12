@@ -1,5 +1,6 @@
 package com.druger.aboutwork.db;
 
+import com.druger.aboutwork.model.Comment;
 import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.model.User;
@@ -58,5 +59,9 @@ public class FirebaseHelper {
 
     public static void removeReview(String id) {
         FirebaseDatabase.getInstance().getReference().child("reviews/" + id).removeValue();
+    }
+
+    public static void addComment(Comment comment) {
+        FirebaseDatabase.getInstance().getReference().child("comments").push().setValue(comment);
     }
 }

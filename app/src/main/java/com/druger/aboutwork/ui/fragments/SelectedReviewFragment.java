@@ -49,6 +49,7 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
     private ImageView dislike;
     private ImageView comments;
 
+    private Review review;
 
     public SelectedReviewFragment() {
         // Required empty public constructor
@@ -103,7 +104,7 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
         interviewDate.setVisibility(View.GONE);
 
         Bundle bundle = getArguments();
-        Review review = bundle.getParcelable("review");
+        review = bundle.getParcelable("review");
 
         if (review != null) {
             userName.setText(review.getName());
@@ -165,7 +166,7 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
     }
 
     private void showComments() {
-        CommentsFragment comments = new CommentsFragment();
+        CommentsFragment comments = CommentsFragment.newInstance(review.getFirebaseKey());
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.company_container, comments);

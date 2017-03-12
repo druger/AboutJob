@@ -17,10 +17,21 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.adapters.CommentAdapter;
+import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.Comment;
 import com.druger.aboutwork.utils.SharedPreferencesHelper;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,7 +40,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CommentsFragment extends Fragment {
+public class CommentsFragment extends Fragment implements ValueEventListener {
 
     private EditText message;
     private ImageView send;
@@ -38,9 +49,24 @@ public class CommentsFragment extends Fragment {
     private List<Comment> comments;
     private CommentAdapter commentAdapter;
 
+    private String reviewId;
+
+    private FirebaseUser user;
+    private DatabaseReference dbReference;
+
 
     public CommentsFragment() {
         // Required empty public constructor
+    }
+
+    public static CommentsFragment newInstance(String reviewId) {
+
+        Bundle args = new Bundle();
+        args.putString("reviewId", reviewId);
+
+        CommentsFragment fragment = new CommentsFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -57,6 +83,11 @@ public class CommentsFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         message = (EditText) view.findViewById(R.id.et_message);
         send = (ImageView) view.findViewById(R.id.send_message);
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        Bundle bundle = getArguments();
+        reviewId = bundle.getString("reviewId");
 
         message.addTextChangedListener(new TextWatcher() {
             @Override
@@ -100,6 +131,10 @@ public class CommentsFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(commentAdapter);
         recyclerView.setNestedScrollingEnabled(false);
+
+        dbReference = FirebaseDatabase.getInstance().getReference();
+        Query commentsQuery = dbReference.child("comments").orderByChild("reviewId").equalTo(reviewId);
+        commentsQuery.addValueEventListener(this);
     }
 
     private void sendMessage(String message) {
@@ -107,10 +142,35 @@ public class CommentsFragment extends Fragment {
             Calendar calendar = Calendar.getInstance();
             Comment comment = new Comment(message, calendar.getTimeInMillis());
             comment.setUserName(SharedPreferencesHelper.getUserName(getActivity()));
-            comments.add(comment);
-            commentAdapter.notifyItemChanged(comments.size() - 1);
-
+            if (user != null) {
+                comment.setUserId(user.getUid());
+            }
+            comment.setReviewId(reviewId);
+            FirebaseHelper.addComment(comment);
             this.message.setText(null);
         }
+    }
+
+    @Override
+    public void onDataChange(DataSnapshot dataSnapshot) {
+        comments.clear();
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+            Comment comment = snapshot.getValue(Comment.class);
+            comments.add(comment);
+            commentAdapter.notifyItemChanged(comments.size() - 1);
+        }
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(getActivity());
+        refWatcher.watch(this);
+        dbReference.removeEventListener(this);
     }
 }

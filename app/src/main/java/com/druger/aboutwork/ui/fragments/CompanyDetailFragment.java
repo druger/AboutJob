@@ -223,7 +223,7 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
                 }
             };
             queryUserId.addValueEventListener(valueEventListener);
-            review.setFirebaseKey(dataSnapshot.getKey());
+            review.setFirebaseKey(snapshot.getKey());
             reviews.add(review);
         }
         countReviews.setText(String.valueOf(reviews.size()));

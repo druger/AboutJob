@@ -6,7 +6,6 @@ package com.druger.aboutwork.model;
 
 public class Comment {
 
-    private String id;
     private String userId;
     private String userName;
     private String reviewId;
@@ -21,14 +20,6 @@ public class Comment {
     public Comment(String message, long date) {
         this.message = message;
         this.date = date;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getUserId() {
