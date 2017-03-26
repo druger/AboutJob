@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.model.Comment;
+import com.druger.aboutwork.recyclerview_helper.OnItemClickListener;
 import com.druger.aboutwork.utils.Utils;
 
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentVH> {
 
     private List<Comment> comments;
+    private OnItemClickListener clickListener;
 
     public CommentAdapter(List<Comment> comments) {
         this.comments = comments;
@@ -64,6 +66,24 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             countLikes = (TextView) itemView.findViewById(R.id.count_likes);
             like = (ImageView) itemView.findViewById(R.id.like);
             reply = (ImageView) itemView.findViewById(R.id.reply);
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (clickListener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            clickListener.onLongClick(v, position);
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            });
         }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 }

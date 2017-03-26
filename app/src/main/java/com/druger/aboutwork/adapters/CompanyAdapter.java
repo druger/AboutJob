@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.model.Company;
-import com.druger.aboutwork.recyclerview_helper.ItemClickListener;
+import com.druger.aboutwork.recyclerview_helper.OnItemClickListener;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class CompanyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private List<Company> companies;
 
-    private ItemClickListener clickListener;
+    private OnItemClickListener clickListener;
 
     public CompanyAdapter(List<Company> companies) {
         this.companies = companies;
@@ -106,7 +106,7 @@ public class CompanyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    public void setOnItemClickListener(ItemClickListener clickListener) {
+    public void setOnItemClickListener(OnItemClickListener clickListener) {
         this.clickListener = clickListener;
     }
 }

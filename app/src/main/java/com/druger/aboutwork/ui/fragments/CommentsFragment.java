@@ -2,8 +2,10 @@ package com.druger.aboutwork.ui.fragments;
 
 
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +24,7 @@ import com.druger.aboutwork.R;
 import com.druger.aboutwork.adapters.CommentAdapter;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.Comment;
+import com.druger.aboutwork.recyclerview_helper.OnItemClickListener;
 import com.druger.aboutwork.utils.SharedPreferencesHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -135,6 +138,36 @@ public class CommentsFragment extends Fragment implements ValueEventListener {
         dbReference = FirebaseDatabase.getInstance().getReference();
         Query commentsQuery = dbReference.child("comments").orderByChild("reviewId").equalTo(reviewId);
         commentsQuery.addValueEventListener(this);
+
+        deleteComment();
+    }
+
+    private void deleteComment() {
+        commentAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+            }
+
+            @Override
+            public boolean onLongClick(View view, final int position) {
+                final Comment comment = comments.get(position);
+                if (comment.getUserId().equals(user.getUid())) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setItems(R.array.comments_del, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            FirebaseHelper.deleteComment(comment.getId());
+                            comments.remove(position);
+                            commentAdapter.notifyItemRemoved(position);
+                            commentAdapter.notifyItemRangeChanged(position, comments.size());
+                        }
+                    });
+                    builder.show();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     private void sendMessage(String message) {
@@ -156,6 +189,7 @@ public class CommentsFragment extends Fragment implements ValueEventListener {
         comments.clear();
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
             Comment comment = snapshot.getValue(Comment.class);
+            comment.setId(snapshot.getKey());
             comments.add(comment);
             commentAdapter.notifyItemChanged(comments.size() - 1);
         }

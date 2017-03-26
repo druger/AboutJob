@@ -24,7 +24,7 @@ import com.druger.aboutwork.adapters.ReviewAdapter;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.Review;
-import com.druger.aboutwork.recyclerview_helper.ItemClickListener;
+import com.druger.aboutwork.recyclerview_helper.OnItemClickListener;
 import com.druger.aboutwork.ui.activities.MainActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -94,7 +94,7 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
         recyclerView.setAdapter(reviewAdapter);
         recyclerView.setNestedScrollingEnabled(false);
 
-        reviewAdapter.setOnClickListener(new ItemClickListener() {
+        reviewAdapter.setOnClickListener(new OnItemClickListener() {
             @Override
             public void onClick(View view, int position) {
                 if (actionMode != null) {

@@ -14,7 +14,7 @@ import com.druger.aboutwork.R;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
-import com.druger.aboutwork.recyclerview_helper.ItemClickListener;
+import com.druger.aboutwork.recyclerview_helper.OnItemClickListener;
 import com.druger.aboutwork.utils.Utils;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
     private List<Review> reviews;
     private List<Review> deletedReviews;
 
-    private ItemClickListener clickListener;
+    private OnItemClickListener clickListener;
 
     public ReviewAdapter(List<Review> reviews) {
         this.reviews = reviews;
@@ -198,7 +198,7 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
         }
     }
 
-    public void setOnClickListener(ItemClickListener clickListener) {
+    public void setOnClickListener(OnItemClickListener clickListener) {
         this.clickListener = clickListener;
     }
 

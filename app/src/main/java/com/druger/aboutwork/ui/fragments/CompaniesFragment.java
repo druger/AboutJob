@@ -18,7 +18,7 @@ import com.druger.aboutwork.adapters.CompanyAdapter;
 import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.CompanyResponse;
-import com.druger.aboutwork.recyclerview_helper.ItemClickListener;
+import com.druger.aboutwork.recyclerview_helper.OnItemClickListener;
 import com.druger.aboutwork.rest.ApiClient;
 import com.druger.aboutwork.rest.ApiService;
 import com.druger.aboutwork.ui.activities.CompanyDetailActivity;
@@ -82,7 +82,7 @@ public class CompaniesFragment extends Fragment {
         recyclerView.addOnScrollListener(scrollListener);
 
 
-        adapter.setOnItemClickListener(new ItemClickListener() {
+        adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onClick(View view, int position) {
                 Company company = companies.get(position);

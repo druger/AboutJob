@@ -64,4 +64,8 @@ public class FirebaseHelper {
     public static void addComment(Comment comment) {
         FirebaseDatabase.getInstance().getReference().child("comments").push().setValue(comment);
     }
+
+    public static void deleteComment(String id) {
+        FirebaseDatabase.getInstance().getReference().child("comments/" + id).removeValue();
+    }
 }

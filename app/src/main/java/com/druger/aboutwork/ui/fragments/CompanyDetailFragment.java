@@ -32,7 +32,7 @@ import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.model.User;
-import com.druger.aboutwork.recyclerview_helper.ItemClickListener;
+import com.druger.aboutwork.recyclerview_helper.OnItemClickListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -166,7 +166,7 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
         recyclerView.setAdapter(reviewAdapter);
         recyclerView.setNestedScrollingEnabled(false);
 
-        reviewAdapter.setOnClickListener(new ItemClickListener() {
+        reviewAdapter.setOnClickListener(new OnItemClickListener() {
             @Override
             public void onClick(View view, int position) {
                 SelectedReviewFragment reviewFragment = new SelectedReviewFragment();
