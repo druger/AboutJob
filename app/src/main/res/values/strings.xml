@@ -78,5 +78,6 @@
 
     <string-array name="comments_del">
         <item>@string/delete</item>
+        <item>@string/change</item>
     </string-array>
 </resources>

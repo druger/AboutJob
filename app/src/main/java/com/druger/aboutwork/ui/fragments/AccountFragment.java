@@ -1,7 +1,6 @@
 package com.druger.aboutwork.ui.fragments;
 
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +22,7 @@ import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.ui.activities.LoginActivity;
 import com.druger.aboutwork.ui.activities.MainActivity;
 import com.druger.aboutwork.utils.SharedPreferencesHelper;
+import com.druger.aboutwork.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.leakcanary.RefWatcher;
@@ -156,8 +155,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 String userName = etName.getText().toString();
                 if (!userName.trim().isEmpty()) {
                     name.setText(userName);
-                    InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    manager.hideSoftInputFromWindow(etName.getWindowToken(), 0);
+                    Utils.hideKeyboard(getActivity(), etName);
                     SharedPreferencesHelper.saveUserName(userName, getActivity());
                     FirebaseHelper.changeUserName(userName, user.getUid());
                 }
@@ -166,13 +164,11 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                manager.hideSoftInputFromWindow(etName.getWindowToken(), 0);
+                Utils.hideKeyboard(getActivity(), etName);
                 dialog.cancel();
             }
         });
         builder.show();
-        InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        manager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        Utils.showKeyboard(getActivity());
     }
 }

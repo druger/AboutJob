@@ -26,6 +26,7 @@ import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.Comment;
 import com.druger.aboutwork.recyclerview_helper.OnItemClickListener;
 import com.druger.aboutwork.utils.SharedPreferencesHelper;
+import com.druger.aboutwork.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,6 +45,9 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class CommentsFragment extends Fragment implements ValueEventListener {
+    public static final int NEW = 0;
+    public static final int UPDATE = 1;
+    private int type = NEW;
 
     private EditText message;
     private ImageView send;
@@ -51,12 +55,12 @@ public class CommentsFragment extends Fragment implements ValueEventListener {
     private RecyclerView recyclerView;
     private List<Comment> comments;
     private CommentAdapter commentAdapter;
+    private Comment comment;
 
     private String reviewId;
 
     private FirebaseUser user;
     private DatabaseReference dbReference;
-
 
     public CommentsFragment() {
         // Required empty public constructor
@@ -118,7 +122,14 @@ public class CommentsFragment extends Fragment implements ValueEventListener {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage(message.getText().toString().trim());
+                switch (type) {
+                    case 0:
+                        sendMessage(message.getText().toString().trim(), NEW);
+                        break;
+                    case 1:
+                        sendMessage(message.getText().toString().trim(), UPDATE);
+                        break;
+                }
             }
         });
 
@@ -139,10 +150,10 @@ public class CommentsFragment extends Fragment implements ValueEventListener {
         Query commentsQuery = dbReference.child("comments").orderByChild("reviewId").equalTo(reviewId);
         commentsQuery.addValueEventListener(this);
 
-        deleteComment();
+        changeComment();
     }
 
-    private void deleteComment() {
+    private void changeComment() {
         commentAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -150,16 +161,24 @@ public class CommentsFragment extends Fragment implements ValueEventListener {
 
             @Override
             public boolean onLongClick(View view, final int position) {
-                final Comment comment = comments.get(position);
+                comment = comments.get(position);
                 if (comment.getUserId().equals(user.getUid())) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setItems(R.array.comments_del, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            FirebaseHelper.deleteComment(comment.getId());
-                            comments.remove(position);
-                            commentAdapter.notifyItemRemoved(position);
-                            commentAdapter.notifyItemRangeChanged(position, comments.size());
+                            switch (which) {
+                                case 0:
+                                    deleteComment(comment, position);
+                                    break;
+                                case 1:
+                                    message.setText(comment.getMessage());
+                                    Utils.showKeyboard(getActivity());
+                                    message.setFocusableInTouchMode(true);
+                                    message.setSelection(comment.getMessage().length());
+                                    type = UPDATE;
+                                    break;
+                            }
                         }
                     });
                     builder.show();
@@ -170,16 +189,29 @@ public class CommentsFragment extends Fragment implements ValueEventListener {
         });
     }
 
-    private void sendMessage(String message) {
+    private void deleteComment(Comment comment, int position) {
+        FirebaseHelper.deleteComment(comment.getId());
+        comments.remove(position);
+        commentAdapter.notifyItemRemoved(position);
+        commentAdapter.notifyItemRangeChanged(position, comments.size());
+    }
+
+    private void sendMessage(String message, int type) {
         if (message.length() > 0) {
-            Calendar calendar = Calendar.getInstance();
-            Comment comment = new Comment(message, calendar.getTimeInMillis());
-            comment.setUserName(SharedPreferencesHelper.getUserName(getActivity()));
-            if (user != null) {
-                comment.setUserId(user.getUid());
+            if (type == NEW) {
+                Calendar calendar = Calendar.getInstance();
+                Comment comment = new Comment(message, calendar.getTimeInMillis());
+                comment.setUserName(SharedPreferencesHelper.getUserName(getActivity()));
+                if (user != null) {
+                    comment.setUserId(user.getUid());
+                }
+                comment.setReviewId(reviewId);
+                FirebaseHelper.addComment(comment);
+            } else if (type == UPDATE) {
+                FirebaseHelper.updateComment(comment.getId(), message);
+                Utils.hideKeyboard(getActivity(), this.message);
+                this.type = NEW;
             }
-            comment.setReviewId(reviewId);
-            FirebaseHelper.addComment(comment);
             this.message.setText(null);
         }
     }

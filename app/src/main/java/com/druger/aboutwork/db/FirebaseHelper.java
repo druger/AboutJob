@@ -68,4 +68,10 @@ public class FirebaseHelper {
     public static void deleteComment(String id) {
         FirebaseDatabase.getInstance().getReference().child("comments/" + id).removeValue();
     }
+
+    public static void updateComment(String id, String message) {
+        Map<String, Object> updateComment = new HashMap<>();
+        updateComment.put("comments/" + id + "/message", message);
+        FirebaseDatabase.getInstance().getReference().updateChildren(updateComment);
+    }
 }

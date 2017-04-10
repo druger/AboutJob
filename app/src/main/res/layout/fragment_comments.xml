@@ -25,20 +25,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:weightSum="1"
         android:background="@android:color/white"
-        app:layout_anchorGravity="bottom">
+        android:weightSum="1">
 
         <EditText
             android:id="@+id/et_message"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:maxHeight="80dp"
-            android:layout_weight="0.9"
             android:layout_gravity="center"
+            android:layout_weight="0.9"
             android:background="@android:color/white"
             android:hint="@string/your_message"
             android:inputType="textMultiLine"
+            android:maxHeight="80dp"
             android:paddingLeft="15dp"
             android:paddingStart="15dp" />
 
@@ -46,10 +45,10 @@
             android:id="@+id/send_message"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_weight="0.1"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
             android:layout_marginStart="15dp"
+            android:layout_weight="0.1"
             android:clickable="false"
             app:srcCompat="@drawable/ic_send" />
     </LinearLayout>
