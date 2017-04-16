@@ -91,7 +91,7 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
                 if (tagLike.equalsIgnoreCase("likeInactive")) {
                     holder.imgLike.setTag("likeActive");
                     holder.imgLike.setColorFilter(Color.parseColor("#8BC34A"));
-                    review.setLike(like++);
+                    review.setLike(++like);
                     review.setMyLike(true);
                     holder.like.setText(String.valueOf(like));
                     FirebaseHelper.setLike(review);
@@ -99,7 +99,7 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
                     if (tagDislike.equalsIgnoreCase("dislikeActive")) {
                         holder.imgDislike.setTag("dislikeInactive");
                         holder.imgDislike.setColorFilter(Color.parseColor("#9E9E9E"));
-                        review.setDislike(dislike--);
+                        review.setDislike(--dislike);
                         review.setMyDislike(false);
                         holder.dislike.setText(String.valueOf(dislike));
                         FirebaseHelper.setDislike(review);
@@ -107,7 +107,7 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
                 } else {
                     holder.imgLike.setTag("likeInactive");
                     holder.imgLike.setColorFilter(Color.parseColor("#9E9E9E"));
-                    review.setLike(like--);
+                    review.setLike(--like);
                     review.setMyLike(false);
                     holder.like.setText(String.valueOf(like));
                     FirebaseHelper.setLike(review);
@@ -124,7 +124,7 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
                 if (tagDislike.equalsIgnoreCase("dislikeInactive")) {
                     holder.imgDislike.setTag("dislikeActive");
                     holder.imgDislike.setColorFilter(Color.parseColor("#F44336"));
-                    review.setDislike(dislike++);
+                    review.setDislike(++dislike);
                     review.setMyDislike(true);
                     holder.dislike.setText(String.valueOf(dislike));
                     FirebaseHelper.setDislike(review);
@@ -132,7 +132,7 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
                     if (tagLike.equalsIgnoreCase("likeActive")) {
                         holder.imgLike.setTag("likeInactive");
                         holder.imgLike.setColorFilter(Color.parseColor("#9E9E9E"));
-                        review.setLike(like--);
+                        review.setLike(--like);
                         review.setMyLike(false);
                         holder.like.setText(String.valueOf(like));
                         FirebaseHelper.setLike(review);
@@ -140,7 +140,7 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
                 } else {
                     holder.imgDislike.setTag("dislikeInactive");
                     holder.imgDislike.setColorFilter(Color.parseColor("#9E9E9E"));
-                    review.setDislike(dislike--);
+                    review.setDislike(--dislike);
                     review.setMyDislike(false);
                     holder.dislike.setText(String.valueOf(dislike));
                     FirebaseHelper.setDislike(review);
