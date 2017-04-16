@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.utils.Utils;
 import com.squareup.leakcanary.RefWatcher;
@@ -47,6 +48,8 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
     private RatingBar socialPackage;
     private ImageView like;
     private ImageView dislike;
+    private TextView tvLike;
+    private TextView tvDislike;
     private ImageView comments;
 
     private Review review;
@@ -92,6 +95,8 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
         like = (ImageView) view.findViewById(R.id.like);
         dislike = (ImageView) view.findViewById(R.id.dislike);
         comments = (ImageView) view.findViewById(R.id.comments);
+        tvLike = (TextView) view.findViewById(R.id.tvLike);
+        tvDislike = (TextView) view.findViewById(R.id.tvDislike);
 
         setUI();
         return view;
@@ -140,8 +145,28 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
             collective.setRating(review.getMarkCompany().getCollective());
             socialPackage.setRating(review.getMarkCompany().getSocialPackage());
 
+            tvLike.setText(String.valueOf(review.getLike()));
+            tvDislike.setText(String.valueOf(review.getDislike()));
+
+            like.setOnClickListener(this);
+            dislike.setOnClickListener(this);
             comments.setOnClickListener(this);
             comments.setColorFilter(Color.parseColor("#9E9E9E"));
+
+            boolean myLike = review.isMyLike();
+            boolean myDislike = review.isMyDislike();
+            if (!myLike) {
+                like.setTag("likeInactive");
+            } else {
+                like.setTag("likeActive");
+                like.setColorFilter(Color.parseColor("#8BC34A"));
+            }
+            if (!myDislike) {
+                dislike.setTag("dislikeInactive");
+            } else {
+                dislike.setTag("dislikeActive");
+                dislike.setColorFilter(Color.parseColor("#F44336"));
+            }
         }
     }
 
@@ -156,13 +181,78 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.like:
+                clickLike();
                 break;
             case R.id.dislike:
+                clickDislike();
                 break;
             case R.id.comments:
                 showComments();
                 break;
         }
+    }
+
+    private void clickDislike() {
+        int likeCount = review.getLike();
+        int dislikeCount = review.getDislike();
+        String tagLike = like.getTag().toString();
+        String tagDislike = dislike.getTag().toString();
+        if (tagDislike.equalsIgnoreCase("dislikeInactive")) {
+            dislike.setTag("dislikeActive");
+            dislike.setColorFilter(Color.parseColor("#F44336"));
+            review.setDislike(++dislikeCount);
+            review.setMyDislike(true);
+            tvDislike.setText(String.valueOf(dislikeCount));
+            FirebaseHelper.setDislike(review);
+
+            if (tagLike.equalsIgnoreCase("likeActive")) {
+                like.setTag("likeInactive");
+                like.setColorFilter(Color.parseColor("#9E9E9E"));
+                review.setLike(--likeCount);
+                review.setMyLike(false);
+                tvLike.setText(String.valueOf(likeCount));
+                FirebaseHelper.setLike(review);
+            }
+        } else {
+            dislike.setTag("dislikeInactive");
+            dislike.setColorFilter(Color.parseColor("#9E9E9E"));
+            review.setDislike(--dislikeCount);
+            review.setMyDislike(false);
+            tvDislike.setText(String.valueOf(dislikeCount));
+            FirebaseHelper.setDislike(review);
+        }
+    }
+
+    private void clickLike() {
+        int likeCount = review.getLike();
+        int dislikeCount = review.getDislike();
+        String tagLike = like.getTag().toString();
+        String tagDislike = dislike.getTag().toString();
+        if (tagLike.equalsIgnoreCase("likeInactive")) {
+            like.setTag("likeActive");
+            like.setColorFilter(Color.parseColor("#8BC34A"));
+            review.setLike(++likeCount);
+            review.setMyLike(true);
+            tvLike.setText(String.valueOf(likeCount));
+            FirebaseHelper.setLike(review);
+
+            if (tagDislike.equalsIgnoreCase("dislikeActive")) {
+                dislike.setTag("dislikeInactive");
+                dislike.setColorFilter(Color.parseColor("#9E9E9E"));
+                review.setDislike(--dislikeCount);
+                review.setMyDislike(false);
+                tvDislike.setText(String.valueOf(dislikeCount));
+                FirebaseHelper.setDislike(review);
+            }
+        } else {
+            like.setTag("likeInactive");
+            like.setColorFilter(Color.parseColor("#9E9E9E"));
+            review.setLike(--likeCount);
+            review.setMyLike(false);
+            tvLike.setText(String.valueOf(likeCount));
+            FirebaseHelper.setLike(review);
+        }
+
     }
 
     private void showComments() {

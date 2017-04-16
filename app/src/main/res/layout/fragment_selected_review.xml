@@ -25,27 +25,46 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_marginBottom="5dp"
-        android:weightSum="0.3">
+        android:clickable="true"
+        android:weightSum="1">
 
         <ImageView
             android:id="@+id/like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            app:srcCompat="@drawable/thumb_up" />
+
+        <TextView
+            android:id="@+id/tvLike"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            app:srcCompat="@drawable/thumb_up" />
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:maxLines="1"
+            android:text="0" />
 
         <ImageView
             android:id="@+id/dislike"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.1"
+            android:layout_weight="0.2"
             app:srcCompat="@drawable/thumb_down" />
+
+        <TextView
+            android:id="@+id/tvDislike"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:maxLines="1"
+            android:text="0" />
 
         <ImageView
             android:id="@+id/comments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.1"
+            android:layout_weight="0.2"
             app:srcCompat="@drawable/ic_message" />
     </LinearLayout>
 
