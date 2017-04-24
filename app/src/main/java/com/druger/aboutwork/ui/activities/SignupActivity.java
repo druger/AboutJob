@@ -29,8 +29,8 @@ import com.squareup.leakcanary.RefWatcher;
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = SignupActivity.class.getSimpleName();
 
-    private EditText emailText;
-    private EditText passwordText;
+    private EditText etEmail;
+    private EditText etPassword;
     private Button btnSignup;
     private ProgressBar progressBar;
 
@@ -43,10 +43,10 @@ public class SignupActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        emailText = (EditText) findViewById(R.id.input_email);
-        passwordText = (EditText) findViewById(R.id.input_password);
-        btnSignup = (Button) findViewById(R.id.btn_signup);
-        TextView loginLink = (TextView) findViewById(R.id.link_login);
+        etEmail = (EditText) findViewById(R.id.etEmail);
+        etPassword = (EditText) findViewById(R.id.etPassword);
+        btnSignup = (Button) findViewById(R.id.btnSignup);
+        TextView tvLogin = (TextView) findViewById(R.id.tvLogin);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         btnSignup.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +56,7 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-        loginLink.setOnClickListener(new View.OnClickListener() {
+        tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -67,8 +67,8 @@ public class SignupActivity extends AppCompatActivity {
     private void signup() {
         Log.d(TAG, "Signup");
 
-        String email = emailText.getText().toString().trim();
-        String password = passwordText.getText().toString().trim();
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
 
         if (!validate(email, password)) {
             onSignupFailed();
@@ -123,17 +123,17 @@ public class SignupActivity extends AppCompatActivity {
 
         if (TextUtils.isEmpty(email) ||
                 !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailText.setError(getString(R.string.error_email));
+            etEmail.setError(getString(R.string.error_email));
             valid = false;
         } else {
-            emailText.setError(null);
+            etEmail.setError(null);
         }
 
         if (TextUtils.isEmpty(password) || password.length() < 6) {
-            passwordText.setError(getString(R.string.pass_error));
+            etPassword.setError(getString(R.string.pass_error));
             valid = false;
         } else {
-            passwordText.setError(null);
+            etPassword.setError(null);
         }
         return valid;
     }

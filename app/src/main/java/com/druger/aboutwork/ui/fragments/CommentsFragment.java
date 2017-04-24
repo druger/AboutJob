@@ -49,8 +49,8 @@ public class CommentsFragment extends Fragment implements ValueEventListener {
     public static final int UPDATE = 1;
     private int type = NEW;
 
-    private EditText message;
-    private ImageView send;
+    private EditText etMessage;
+    private ImageView ivSend;
 
     private RecyclerView recyclerView;
     private List<Comment> comments;
@@ -88,15 +88,15 @@ public class CommentsFragment extends Fragment implements ValueEventListener {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.comments);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        message = (EditText) view.findViewById(R.id.et_message);
-        send = (ImageView) view.findViewById(R.id.send_message);
+        etMessage = (EditText) view.findViewById(R.id.etMessage);
+        ivSend = (ImageView) view.findViewById(R.id.ivSend);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         Bundle bundle = getArguments();
         reviewId = bundle.getString("reviewId");
 
-        message.addTextChangedListener(new TextWatcher() {
+        etMessage.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -105,11 +105,11 @@ public class CommentsFragment extends Fragment implements ValueEventListener {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0) {
-                    send.setClickable(true);
-                    send.setColorFilter(Color.parseColor("#F44336"));
+                    ivSend.setClickable(true);
+                    ivSend.setColorFilter(Color.parseColor("#F44336"));
                 } else {
-                    send.setClickable(false);
-                    send.setColorFilter(Color.parseColor("#EF9A9A"));
+                    ivSend.setClickable(false);
+                    ivSend.setColorFilter(Color.parseColor("#EF9A9A"));
                 }
             }
 
@@ -119,15 +119,15 @@ public class CommentsFragment extends Fragment implements ValueEventListener {
             }
         });
 
-        send.setOnClickListener(new View.OnClickListener() {
+        ivSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (type) {
                     case 0:
-                        sendMessage(message.getText().toString().trim(), NEW);
+                        sendMessage(etMessage.getText().toString().trim(), NEW);
                         break;
                     case 1:
-                        sendMessage(message.getText().toString().trim(), UPDATE);
+                        sendMessage(etMessage.getText().toString().trim(), UPDATE);
                         break;
                 }
             }
@@ -172,10 +172,10 @@ public class CommentsFragment extends Fragment implements ValueEventListener {
                                     deleteComment(comment, position);
                                     break;
                                 case 1:
-                                    message.setText(comment.getMessage());
+                                    etMessage.setText(comment.getMessage());
                                     Utils.showKeyboard(getActivity());
-                                    message.setFocusableInTouchMode(true);
-                                    message.setSelection(comment.getMessage().length());
+                                    etMessage.setFocusableInTouchMode(true);
+                                    etMessage.setSelection(comment.getMessage().length());
                                     type = UPDATE;
                                     break;
                             }
@@ -209,10 +209,10 @@ public class CommentsFragment extends Fragment implements ValueEventListener {
                 FirebaseHelper.addComment(comment);
             } else if (type == UPDATE) {
                 FirebaseHelper.updateComment(comment.getId(), message);
-                Utils.hideKeyboard(getActivity(), this.message);
+                Utils.hideKeyboard(getActivity(), this.etMessage);
                 this.type = NEW;
             }
-            this.message.setText(null);
+            this.etMessage.setText(null);
         }
     }
 

@@ -51,7 +51,7 @@ public class CompanyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (holder instanceof CompanyVH) {
             CompanyVH companyVH = (CompanyVH) holder;
             Company company = companies.get(position);
-            companyVH.name.setText(company.getName());
+            companyVH.tvName.setText(company.getName());
 
             Glide.with(holder.itemView.getContext())
                     .load(company.getLogo().getLogo_90())
@@ -60,7 +60,7 @@ public class CompanyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     .fitCenter()
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(companyVH.logo);
+                    .into(companyVH.ivLogo);
         } else if (holder instanceof LoadVH) {
             LoadVH loadVH = (LoadVH) holder;
             loadVH.progressBar.setVisibility(View.VISIBLE);
@@ -79,14 +79,14 @@ public class CompanyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public class CompanyVH extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView logo;
-        TextView name;
+        ImageView ivLogo;
+        TextView tvName;
 
         public CompanyVH(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            logo = (ImageView) itemView.findViewById(R.id.logo_comapny);
-            name = (TextView) itemView.findViewById(R.id.name_company);
+            ivLogo = (ImageView) itemView.findViewById(R.id.ivLogoComapny);
+            tvName = (TextView) itemView.findViewById(R.id.tvNameCompany);
         }
 
         @Override

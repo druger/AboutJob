@@ -98,8 +98,8 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
             review = new Review(companyId, user.getUid(), Calendar.getInstance().getTimeInMillis());
         }
 
-        etPluses = (TextInputEditText) view.findViewById(R.id.et_pluses);
-        etMinuses = (TextInputEditText) view.findViewById(R.id.et_minuses);
+        etPluses = (TextInputEditText) view.findViewById(R.id.etPluses);
+        etMinuses = (TextInputEditText) view.findViewById(R.id.etMinuses);
         etPosition = (TextInputEditText) view.findViewById(R.id.et_position);
 
         salary = (RatingBar) view.findViewById(R.id.ratingbar_salary);
@@ -112,16 +112,16 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
         RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.radio_group);
         radioGroup.setOnCheckedChangeListener(this);
 
-        etEmploymentDate = (EditText) view.findViewById(R.id.employment_date);
-        etDismissalDate = (EditText) view.findViewById(R.id.dismissal_date);
-        etInterviewDate = (EditText) view.findViewById(R.id.interview_date);
+        etEmploymentDate = (EditText) view.findViewById(R.id.tvEmploymentDate);
+        etDismissalDate = (EditText) view.findViewById(R.id.tvDismissalDate);
+        etInterviewDate = (EditText) view.findViewById(R.id.tvInterviewDate);
 
         datePicker = new DatePickerFragment();
 
-        Button add = (Button) view.findViewById(R.id.btn_add);
-        Button cancel = (Button) view.findViewById(R.id.btn_cancel);
-        add.setOnClickListener(this);
-        cancel.setOnClickListener(this);
+        Button btnAdd = (Button) view.findViewById(R.id.btnAdd);
+        Button btnCancel = (Button) view.findViewById(R.id.btnCancel);
+        btnAdd.setOnClickListener(this);
+        btnCancel.setOnClickListener(this);
 
         etEmploymentDate.setOnClickListener(this);
         etDismissalDate.setOnClickListener(this);
@@ -239,7 +239,7 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_add:
+            case R.id.btnAdd:
                 if (checkReview()) {
                     Intent addedReview = new Intent(getActivity(), ReviewFragment.class);
                     addedReview.putExtra("addedReview", review);
@@ -252,20 +252,20 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
                             Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.btn_cancel:
+            case R.id.btnCancel:
                 getFragmentManager().popBackStackImmediate();
                 break;
-            case R.id.employment_date:
+            case R.id.tvEmploymentDate:
                 datePicker.flag = DatePickerFragment.EMPLOYMENT_DATE;
                 datePicker.show(getFragmentManager(), "DatePickerDialog");
                 datePicker.setData(etEmploymentDate, review);
                 break;
-            case R.id.dismissal_date:
+            case R.id.tvDismissalDate:
                 datePicker.flag = DatePickerFragment.DISMISSAL_DATE;
                 datePicker.show(getFragmentManager(), "DatePickerDialog");
                 datePicker.setData(etDismissalDate, review);
                 break;
-            case R.id.interview_date:
+            case R.id.tvInterviewDate:
                 datePicker.flag = DatePickerFragment.INTERVIEW_DATE;
                 datePicker.show(getFragmentManager(), "DatePickerDialog");
                 datePicker.setData(etInterviewDate, review);

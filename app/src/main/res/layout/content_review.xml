@@ -17,7 +17,7 @@
             android:layout_marginBottom="5dp">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/et_pluses"
+                android:id="@+id/etPluses"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/pluses" />
@@ -30,7 +30,7 @@
             android:layout_marginBottom="10dp">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/et_minuses"
+                android:id="@+id/etMinuses"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/minuses" />
@@ -50,7 +50,7 @@
             android:layout_marginBottom="10dp">
 
             <TextView
-                android:id="@+id/salary"
+                android:id="@+id/tvSalary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/ratingbar_salary"
@@ -69,7 +69,7 @@
                 android:layout_alignParentEnd="true" />
 
             <TextView
-                android:id="@+id/chief"
+                android:id="@+id/tvChief"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/ratingbar_chief"
@@ -87,7 +87,7 @@
                 android:layout_alignParentEnd="true" />
 
             <TextView
-                android:id="@+id/workplace"
+                android:id="@+id/tvWorkplace"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/ratingbar_workplace"
@@ -105,7 +105,7 @@
                 android:layout_alignParentEnd="true" />
 
             <TextView
-                android:id="@+id/career"
+                android:id="@+id/tvCareer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/ratingbar_career"
@@ -123,7 +123,7 @@
                 android:layout_alignParentEnd="true" />
 
             <TextView
-                android:id="@+id/collective"
+                android:id="@+id/tvCollective"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/ratingbar_collective"
@@ -141,7 +141,7 @@
                 android:layout_alignParentEnd="true" />
 
             <TextView
-                android:id="@+id/social_package"
+                android:id="@+id/tvSocialPackage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/ratingbar_social_package"
@@ -160,7 +160,7 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/status"
+            android:id="@+id/tvStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -202,7 +202,7 @@
                 android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/employment_date"
+                    android:id="@+id/tvEmploymentDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
@@ -219,7 +219,7 @@
                 android:layout_alignParentEnd="true">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/dismissal_date"
+                    android:id="@+id/tvDismissalDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
@@ -233,7 +233,7 @@
                 android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/interview_date"
+                    android:id="@+id/tvInterviewDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
@@ -261,7 +261,7 @@
             android:layout_marginBottom="@dimen/activity_vertical_margin">
 
             <Button
-                android:id="@+id/btn_cancel"
+                android:id="@+id/btnCancel"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -270,7 +270,7 @@
                 android:text="@string/cancel"/>
 
             <Button
-                android:id="@+id/btn_add"
+                android:id="@+id/btnAdd"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="@string/add"

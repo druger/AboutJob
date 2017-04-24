@@ -37,7 +37,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseUser user;
 
-    private  TextView name;
+    private  TextView tvName;
 
     public AccountFragment() {
     }
@@ -47,11 +47,11 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
 
-        name = (TextView) view.findViewById(R.id.name);
-        ImageView editName = (ImageView) view.findViewById(R.id.edit_name);
-        TextView myReviews = (TextView) view.findViewById(R.id.my_reviews);
-        TextView settings = (TextView) view.findViewById(R.id.settings);
-        TextView logout = (TextView) view.findViewById(R.id.logout);
+        tvName = (TextView) view.findViewById(R.id.tvName);
+        ImageView ivEditName = (ImageView) view.findViewById(R.id.ivEditName);
+        TextView tvMyReviews = (TextView) view.findViewById(R.id.tvMyReviews);
+        TextView tvSettings = (TextView) view.findViewById(R.id.tvSettings);
+        TextView tvLogout = (TextView) view.findViewById(R.id.tvLogout);
 
         auth = FirebaseAuth.getInstance();
 
@@ -72,12 +72,12 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         ((MainActivity) getActivity()).setActionBarTitle(R.string.app_name);
         ((MainActivity) getActivity()).resetBackArrowActionBar();
 
-        name.setText(SharedPreferencesHelper.getUserName(getActivity()));
+        tvName.setText(SharedPreferencesHelper.getUserName(getActivity()));
 
-        settings.setOnClickListener(this);
-        logout.setOnClickListener(this);
-        editName.setOnClickListener(this);
-        myReviews.setOnClickListener(this);
+        tvSettings.setOnClickListener(this);
+        tvLogout.setOnClickListener(this);
+        ivEditName.setOnClickListener(this);
+        tvMyReviews.setOnClickListener(this);
 
         return view;
     }
@@ -106,16 +106,16 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.edit_name:
+            case R.id.ivEditName:
                 changeName();
                 break;
-            case R.id.settings:
+            case R.id.tvSettings:
                 openSettings();
                 break;
-            case R.id.logout:
+            case R.id.tvLogout:
                 logout();
                 break;
-            case R.id.my_reviews:
+            case R.id.tvMyReviews:
                 openMyReviews();
                 break;
         }
@@ -144,8 +144,8 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_change_name, null);
-        final EditText etName = (EditText) view.findViewById(R.id.user_name);
-        etName.setText(name.getText());
+        final EditText etName = (EditText) view.findViewById(R.id.etUserName);
+        etName.setText(tvName.getText());
 
         builder.setTitle(R.string.name);
         builder.setView(view);
@@ -154,7 +154,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
             public void onClick(DialogInterface dialog, int which) {
                 String userName = etName.getText().toString();
                 if (!userName.trim().isEmpty()) {
-                    name.setText(userName);
+                    tvName.setText(userName);
                     Utils.hideKeyboard(getActivity(), etName);
                     SharedPreferencesHelper.saveUserName(userName, getActivity());
                     FirebaseHelper.changeUserName(userName, user.getUid());

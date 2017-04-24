@@ -26,8 +26,8 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int REQUEST_SIGNUP = 0;
 
-    private EditText emailText;
-    private EditText passwordText;
+    private EditText etEmail;
+    private EditText etPassword;
     private Button btnLogin;
     private ProgressBar progressBar;
 
@@ -46,11 +46,11 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
-        emailText = (EditText) findViewById(R.id.input_email);
-        passwordText = (EditText) findViewById(R.id.input_password);
-        btnLogin = (Button) findViewById(R.id.btn_login);
-        TextView signupLink = (TextView) findViewById(R.id.link_signup);
-        TextView resetPassword = (TextView) findViewById(R.id.reset_password);
+        etEmail = (EditText) findViewById(R.id.etEmail);
+        etPassword = (EditText) findViewById(R.id.etPassword);
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+        TextView tvSignup = (TextView) findViewById(R.id.tvSignup);
+        TextView tvResetPassword = (TextView) findViewById(R.id.tvResetPassword);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        signupLink.setOnClickListener(new View.OnClickListener() {
+        tvSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        resetPassword.setOnClickListener(new View.OnClickListener() {
+        tvResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
@@ -102,8 +102,8 @@ public class LoginActivity extends AppCompatActivity {
     private void login() {
         Log.d(TAG, "Login");
 
-        String email = emailText.getText().toString().trim();
-        String password = passwordText.getText().toString().trim();
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
 
         if (!validate(email, password)) {
             onLoginFailed();
@@ -147,17 +147,17 @@ public class LoginActivity extends AppCompatActivity {
 
         if (TextUtils.isEmpty(email) ||
                 !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailText.setError(getString(R.string.error_email));
+            etEmail.setError(getString(R.string.error_email));
             valid = false;
         } else {
-            emailText.setError(null);
+            etEmail.setError(null);
         }
 
         if (TextUtils.isEmpty(password) || password.length() < 6) {
-            passwordText.setError(getString(R.string.pass_error));
+            etPassword.setError(getString(R.string.pass_error));
             valid = false;
         } else {
-            passwordText.setError(null);
+            etPassword.setError(null);
         }
         return valid;
     }

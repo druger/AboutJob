@@ -52,11 +52,11 @@ import static android.app.Activity.RESULT_OK;
 public class CompanyDetailFragment extends Fragment implements View.OnClickListener, ValueEventListener {
     public static final int REVIEW_REQUEST = 0;
 
-    private TextView description;
-    private ImageView downDrop;
-    private ImageView upDrop;
-    private TextView rating;
-    private TextView countReviews;
+    private TextView tvDescription;
+    private ImageView ivDownDrop;
+    private ImageView ivUpDrop;
+    private TextView tvRating;
+    private TextView tvCountReviews;
     private RatingBar ratingCompany;
 
     private Toolbar toolbar;
@@ -89,20 +89,20 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
 
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) view.findViewById(R.id.collapsingToolbar);
 
-        TextView site = (TextView) view.findViewById(R.id.site);
-        description = (TextView) view.findViewById(R.id.content_description);
-        downDrop = (ImageView) view.findViewById(R.id.down_drop);
-        upDrop = (ImageView) view.findViewById(R.id.up_drop);
-        ImageView imgToolbar = (ImageView) view.findViewById(R.id.img_toolbar);
-        countReviews = (TextView) view.findViewById(R.id.count_reviews);
-        rating = (TextView) view.findViewById(R.id.rating);
+        TextView site = (TextView) view.findViewById(R.id.tvSite);
+        tvDescription = (TextView) view.findViewById(R.id.tvContentDescription);
+        ivDownDrop = (ImageView) view.findViewById(R.id.ivDownDrop);
+        ivUpDrop = (ImageView) view.findViewById(R.id.ivUpDrop);
+        ImageView ivToolbar = (ImageView) view.findViewById(R.id.ivToolbar);
+        tvCountReviews = (TextView) view.findViewById(R.id.tvCountReviews);
+        tvRating = (TextView) view.findViewById(R.id.tvRating);
         ratingCompany = (RatingBar) view.findViewById(R.id.rating_company);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 
-        description.setVisibility(View.GONE);
-        downDrop.setOnClickListener(this);
-        upDrop.setOnClickListener(this);
+        tvDescription.setVisibility(View.GONE);
+        ivDownDrop.setOnClickListener(this);
+        ivUpDrop.setOnClickListener(this);
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +123,7 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
             site.setText(iSite);
         }
         if (iDescription != null) {
-            description.setText(Html.fromHtml(iDescription));
+            tvDescription.setText(Html.fromHtml(iDescription));
         }
 
         CompanyDetail.Logo logo = detail.getLogo();
@@ -133,7 +133,7 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
                 .error(R.drawable.default_company)
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imgToolbar);
+                .into(ivToolbar);
 
         setReviews();
         return view;
@@ -151,7 +151,7 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
             mRating = MarkCompany.roundMark(sum / reviews.size(), 2);
         }
 
-        rating.setText(String.valueOf(mRating));
+        tvRating.setText(String.valueOf(mRating));
         ratingCompany.setRating(mRating);
     }
 
@@ -226,7 +226,7 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
             review.setFirebaseKey(snapshot.getKey());
             reviews.add(review);
         }
-        countReviews.setText(String.valueOf(reviews.size()));
+        tvCountReviews.setText(String.valueOf(reviews.size()));
         setRating();
         reviewAdapter.notifyDataSetChanged();
     }
@@ -234,15 +234,15 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.down_drop:
-                downDrop.setVisibility(View.INVISIBLE);
-                upDrop.setVisibility(View.VISIBLE);
-                description.setVisibility(View.VISIBLE);
+            case R.id.ivDownDrop:
+                ivDownDrop.setVisibility(View.INVISIBLE);
+                ivUpDrop.setVisibility(View.VISIBLE);
+                tvDescription.setVisibility(View.VISIBLE);
                 break;
-            case R.id.up_drop:
-                upDrop.setVisibility(View.INVISIBLE);
-                downDrop.setVisibility(View.VISIBLE);
-                description.setVisibility(View.GONE);
+            case R.id.ivUpDrop:
+                ivUpDrop.setVisibility(View.INVISIBLE);
+                ivDownDrop.setVisibility(View.VISIBLE);
+                tvDescription.setVisibility(View.GONE);
                 break;
         }
     }

@@ -15,7 +15,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/user_name"
+            android:id="@+id/tvUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -25,16 +25,16 @@
             android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/date"
+            android:id="@+id/tvDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/user_name"
-            android:layout_toRightOf="@+id/user_name"
+            android:layout_toEndOf="@+id/tvUserName"
+            android:layout_toRightOf="@+id/tvUserName"
             android:text="Date"
             android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/city"
+            android:id="@+id/tvCity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -43,10 +43,10 @@
             android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/pluses"
+            android:id="@+id/tvPluses"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/user_name"
+            android:layout_below="@+id/tvUserName"
             android:layout_marginBottom="5dp"
             android:background="@android:color/holo_green_light"
             android:ellipsize="end"
@@ -56,10 +56,10 @@
             android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/minuses"
+            android:id="@+id/tvMinuses"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/pluses"
+            android:layout_below="@+id/tvPluses"
             android:layout_marginBottom="20dp"
             android:background="@color/colorPrimary"
             android:ellipsize="end"
@@ -69,21 +69,21 @@
             android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/mark"
+            android:id="@+id/tvMark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/minuses"
+            android:layout_below="@+id/tvMinuses"
             android:text="Mark" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/mark"
+            android:layout_alignBottom="@+id/tvMark"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true">
 
             <ImageView
-                android:id="@+id/img_like"
+                android:id="@+id/ivLike"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
@@ -93,7 +93,7 @@
                 card_view:srcCompat="@drawable/thumb_up" />
 
             <TextView
-                android:id="@+id/like"
+                android:id="@+id/ivLike"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -102,7 +102,7 @@
                 android:text="0" />
 
             <ImageView
-                android:id="@+id/img_dislike"
+                android:id="@+id/ivDislike"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
@@ -112,7 +112,7 @@
                 card_view:srcCompat="@drawable/thumb_down" />
 
             <TextView
-                android:id="@+id/dislike"
+                android:id="@+id/tvDislike"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

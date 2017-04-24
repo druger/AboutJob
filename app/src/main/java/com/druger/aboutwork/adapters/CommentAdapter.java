@@ -37,10 +37,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     @Override
     public void onBindViewHolder(CommentVH holder, int position) {
         Comment comment = comments.get(position);
-        holder.userName.setText(comment.getUserName());
-        holder.comment.setText(comment.getMessage());
-        holder.date.setText(Utils.getDate(comment.getDate()));
-        holder.countLikes.setText(String.valueOf(comment.getLike()));
+        holder.tvUserName.setText(comment.getUserName());
+        holder.tvComment.setText(comment.getMessage());
+        holder.tvDdate.setText(Utils.getDate(comment.getDate()));
+        holder.tvCountLikes.setText(String.valueOf(comment.getLike()));
     }
 
     @Override
@@ -49,23 +49,23 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     }
 
     class CommentVH extends RecyclerView.ViewHolder {
-        ImageView avatar;
-        TextView userName;
-        TextView comment;
-        TextView date;
-        TextView countLikes;
-        ImageView like;
-        ImageView reply;
+        ImageView ivAvatar;
+        TextView tvUserName;
+        TextView tvComment;
+        TextView tvDdate;
+        TextView tvCountLikes;
+        ImageView ivLike;
+        ImageView ivReply;
 
         public CommentVH(View itemView) {
             super(itemView);
-            avatar = (ImageView) itemView.findViewById(R.id.avatar);
-            userName = (TextView) itemView.findViewById(R.id.user_name);
-            comment = (TextView) itemView.findViewById(R.id.comment);
-            date = (TextView) itemView.findViewById(R.id.date);
-            countLikes = (TextView) itemView.findViewById(R.id.count_likes);
-            like = (ImageView) itemView.findViewById(R.id.like);
-            reply = (ImageView) itemView.findViewById(R.id.reply);
+            ivAvatar = (ImageView) itemView.findViewById(R.id.ivAvatar);
+            tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
+            tvComment = (TextView) itemView.findViewById(R.id.tvComment);
+            tvDdate = (TextView) itemView.findViewById(R.id.tvDate);
+            tvCountLikes = (TextView) itemView.findViewById(R.id.tvCountLikes);
+            ivLike = (ImageView) itemView.findViewById(R.id.ivLike);
+            ivReply = (ImageView) itemView.findViewById(R.id.ivReply);
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override

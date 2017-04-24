@@ -27,30 +27,30 @@ import com.squareup.leakcanary.RefWatcher;
  */
 public class SelectedReviewFragment extends Fragment implements View.OnClickListener {
 
-    private TextView userName;
-    private TextView date;
-    private TextView city;
-    private TextView position;
+    private TextView tvUserName;
+    private TextView tvDate;
+    private TextView tvCity;
+    private TextView tvPosition;
     private TextView mPosition;
-    private TextView employmentDate;
+    private TextView tvEmploymentDate;
     private TextView mEmploymentDate;
-    private TextView dismissalDate;
+    private TextView tvDismissalDate;
     private TextView mDismissalDate;
-    private TextView interviewDate;
+    private TextView tvInterviewDate;
     private TextView mInterviewDate;
-    private TextView pluses;
-    private TextView minuses;
+    private TextView tvPluses;
+    private TextView tvMinuses;
     private RatingBar salary;
     private RatingBar chief;
     private RatingBar workplace;
     private RatingBar career;
     private RatingBar collective;
     private RatingBar socialPackage;
-    private ImageView like;
-    private ImageView dislike;
+    private ImageView ivLike;
+    private ImageView ivDislike;
     private TextView tvLike;
     private TextView tvDislike;
-    private ImageView comments;
+    private ImageView ivComments;
 
     private Review review;
 
@@ -71,19 +71,19 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(companyName);
         }
 
-        userName = (TextView) view.findViewById(R.id.user_name);
-        date = (TextView) view.findViewById(R.id.date);
-        city = (TextView) view.findViewById(R.id.city);
-        position = (TextView) view.findViewById(R.id.position);
+        tvUserName = (TextView) view.findViewById(R.id.tvUserName);
+        tvDate = (TextView) view.findViewById(R.id.tvDate);
+        tvCity = (TextView) view.findViewById(R.id.tvCity);
+        tvPosition = (TextView) view.findViewById(R.id.tvPosition);
         mPosition = (TextView) view.findViewById(R.id.tv_position);
-        employmentDate = (TextView) view.findViewById(R.id.employment_date);
+        tvEmploymentDate = (TextView) view.findViewById(R.id.tvEmploymentDate);
         mEmploymentDate = (TextView) view.findViewById(R.id.tv_employment_date);
-        dismissalDate = (TextView) view.findViewById(R.id.dismissal_date);
+        tvDismissalDate = (TextView) view.findViewById(R.id.tvDismissalDate);
         mDismissalDate = (TextView) view.findViewById(R.id.tv_dismissal_date);
-        interviewDate = (TextView) view.findViewById(R.id.interview_date);
+        tvInterviewDate = (TextView) view.findViewById(R.id.tvInterviewDate);
         mInterviewDate = (TextView) view.findViewById(R.id.tv_interview_date);
-        pluses = (TextView) view.findViewById(R.id.pluses);
-        minuses = (TextView) view.findViewById(R.id.minuses);
+        tvPluses = (TextView) view.findViewById(R.id.tvPluses);
+        tvMinuses = (TextView) view.findViewById(R.id.tvMinuses);
 
         salary = (RatingBar) view.findViewById(R.id.ratingbar_salary);
         chief = (RatingBar) view.findViewById(R.id.ratingbar_chief);
@@ -92,9 +92,9 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
         collective = (RatingBar) view.findViewById(R.id.ratingbar_collective);
         socialPackage = (RatingBar) view.findViewById(R.id.ratingbar_social_package);
 
-        like = (ImageView) view.findViewById(R.id.like);
-        dislike = (ImageView) view.findViewById(R.id.dislike);
-        comments = (ImageView) view.findViewById(R.id.comments);
+        ivLike = (ImageView) view.findViewById(R.id.ivLike);
+        ivDislike = (ImageView) view.findViewById(R.id.ivDislike);
+        ivComments = (ImageView) view.findViewById(R.id.ivComments);
         tvLike = (TextView) view.findViewById(R.id.tvLike);
         tvDislike = (TextView) view.findViewById(R.id.tvDislike);
 
@@ -103,40 +103,40 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
     }
 
     private void setUI() {
-        position.setVisibility(View.GONE);
-        employmentDate.setVisibility(View.GONE);
-        dismissalDate.setVisibility(View.GONE);
-        interviewDate.setVisibility(View.GONE);
+        tvPosition.setVisibility(View.GONE);
+        tvEmploymentDate.setVisibility(View.GONE);
+        tvDismissalDate.setVisibility(View.GONE);
+        tvInterviewDate.setVisibility(View.GONE);
 
         Bundle bundle = getArguments();
         review = bundle.getParcelable("review");
 
         if (review != null) {
-            userName.setText(review.getName());
-            date.setText(Utils.getDate(review.getDate()));
-            city.setText(review.getCity());
+            tvUserName.setText(review.getName());
+            tvDate.setText(Utils.getDate(review.getDate()));
+            tvCity.setText(review.getCity());
             if (!TextUtils.isEmpty(review.getPosition())) {
-                position.setVisibility(View.VISIBLE);
+                tvPosition.setVisibility(View.VISIBLE);
                 mPosition.setVisibility(View.VISIBLE);
                 mPosition.setText(review.getPosition());
             }
             if (review.getEmploymentDate() != 0) {
-                employmentDate.setVisibility(View.GONE);
+                tvEmploymentDate.setVisibility(View.GONE);
                 mEmploymentDate.setVisibility(View.GONE);
                 mEmploymentDate.setText(String.valueOf(review.getEmploymentDate()));
             }
             if (review.getDismissalDate() != 0) {
-                dismissalDate.setVisibility(View.GONE);
+                tvDismissalDate.setVisibility(View.GONE);
                 mDismissalDate.setVisibility(View.GONE);
                 mDismissalDate.setText(String.valueOf(review.getDismissalDate()));
             }
             if (review.getInterviewDate() != 0) {
-                interviewDate.setVisibility(View.GONE);
+                tvInterviewDate.setVisibility(View.GONE);
                 mInterviewDate.setVisibility(View.GONE);
                 mInterviewDate.setText(String.valueOf(review.getInterviewDate()));
             }
-            pluses.setText(review.getPluses());
-            minuses.setText(review.getMinuses());
+            tvPluses.setText(review.getPluses());
+            tvMinuses.setText(review.getMinuses());
 
             salary.setRating(review.getMarkCompany().getSalary());
             chief.setRating(review.getMarkCompany().getChief());
@@ -148,24 +148,24 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
             tvLike.setText(String.valueOf(review.getLike()));
             tvDislike.setText(String.valueOf(review.getDislike()));
 
-            like.setOnClickListener(this);
-            dislike.setOnClickListener(this);
-            comments.setOnClickListener(this);
-            comments.setColorFilter(Color.parseColor("#9E9E9E"));
+            ivLike.setOnClickListener(this);
+            ivDislike.setOnClickListener(this);
+            ivComments.setOnClickListener(this);
+            ivComments.setColorFilter(Color.parseColor("#9E9E9E"));
 
             boolean myLike = review.isMyLike();
             boolean myDislike = review.isMyDislike();
             if (!myLike) {
-                like.setTag("likeInactive");
+                ivLike.setTag("likeInactive");
             } else {
-                like.setTag("likeActive");
-                like.setColorFilter(Color.parseColor("#8BC34A"));
+                ivLike.setTag("likeActive");
+                ivLike.setColorFilter(Color.parseColor("#8BC34A"));
             }
             if (!myDislike) {
-                dislike.setTag("dislikeInactive");
+                ivDislike.setTag("dislikeInactive");
             } else {
-                dislike.setTag("dislikeActive");
-                dislike.setColorFilter(Color.parseColor("#F44336"));
+                ivDislike.setTag("dislikeActive");
+                ivDislike.setColorFilter(Color.parseColor("#F44336"));
             }
         }
     }
@@ -180,13 +180,13 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.like:
+            case R.id.ivLike:
                 clickLike();
                 break;
-            case R.id.dislike:
+            case R.id.tvDislike:
                 clickDislike();
                 break;
-            case R.id.comments:
+            case R.id.ivComments:
                 showComments();
                 break;
         }
@@ -195,27 +195,27 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
     private void clickDislike() {
         int likeCount = review.getLike();
         int dislikeCount = review.getDislike();
-        String tagLike = like.getTag().toString();
-        String tagDislike = dislike.getTag().toString();
+        String tagLike = ivLike.getTag().toString();
+        String tagDislike = ivDislike.getTag().toString();
         if (tagDislike.equalsIgnoreCase("dislikeInactive")) {
-            dislike.setTag("dislikeActive");
-            dislike.setColorFilter(Color.parseColor("#F44336"));
+            ivDislike.setTag("dislikeActive");
+            ivDislike.setColorFilter(Color.parseColor("#F44336"));
             review.setDislike(++dislikeCount);
             review.setMyDislike(true);
             tvDislike.setText(String.valueOf(dislikeCount));
             FirebaseHelper.setDislike(review);
 
             if (tagLike.equalsIgnoreCase("likeActive")) {
-                like.setTag("likeInactive");
-                like.setColorFilter(Color.parseColor("#9E9E9E"));
+                ivLike.setTag("likeInactive");
+                ivLike.setColorFilter(Color.parseColor("#9E9E9E"));
                 review.setLike(--likeCount);
                 review.setMyLike(false);
                 tvLike.setText(String.valueOf(likeCount));
                 FirebaseHelper.setLike(review);
             }
         } else {
-            dislike.setTag("dislikeInactive");
-            dislike.setColorFilter(Color.parseColor("#9E9E9E"));
+            ivDislike.setTag("dislikeInactive");
+            ivDislike.setColorFilter(Color.parseColor("#9E9E9E"));
             review.setDislike(--dislikeCount);
             review.setMyDislike(false);
             tvDislike.setText(String.valueOf(dislikeCount));
@@ -226,27 +226,27 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
     private void clickLike() {
         int likeCount = review.getLike();
         int dislikeCount = review.getDislike();
-        String tagLike = like.getTag().toString();
-        String tagDislike = dislike.getTag().toString();
+        String tagLike = ivLike.getTag().toString();
+        String tagDislike = ivDislike.getTag().toString();
         if (tagLike.equalsIgnoreCase("likeInactive")) {
-            like.setTag("likeActive");
-            like.setColorFilter(Color.parseColor("#8BC34A"));
+            ivLike.setTag("likeActive");
+            ivLike.setColorFilter(Color.parseColor("#8BC34A"));
             review.setLike(++likeCount);
             review.setMyLike(true);
             tvLike.setText(String.valueOf(likeCount));
             FirebaseHelper.setLike(review);
 
             if (tagDislike.equalsIgnoreCase("dislikeActive")) {
-                dislike.setTag("dislikeInactive");
-                dislike.setColorFilter(Color.parseColor("#9E9E9E"));
+                ivDislike.setTag("dislikeInactive");
+                ivDislike.setColorFilter(Color.parseColor("#9E9E9E"));
                 review.setDislike(--dislikeCount);
                 review.setMyDislike(false);
                 tvDislike.setText(String.valueOf(dislikeCount));
                 FirebaseHelper.setDislike(review);
             }
         } else {
-            like.setTag("likeInactive");
-            like.setColorFilter(Color.parseColor("#9E9E9E"));
+            ivLike.setTag("likeInactive");
+            ivLike.setColorFilter(Color.parseColor("#9E9E9E"));
             review.setLike(--likeCount);
             review.setMyLike(false);
             tvLike.setText(String.valueOf(likeCount));

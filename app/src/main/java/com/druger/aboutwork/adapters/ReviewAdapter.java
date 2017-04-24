@@ -52,97 +52,97 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
     @Override
     public void onBindViewHolder(final ReviewVH holder, int position) {
         final Review review = reviews.get(position);
-        holder.name.setText(review.getName());
-        holder.date.setText(Utils.getDate(review.getDate()));
-        holder.city.setText(review.getCity());
-        holder.pluses.setText(review.getPluses());
-        holder.minuses.setText(review.getMinuses());
+        holder.tvName.setText(review.getName());
+        holder.tvDate.setText(Utils.getDate(review.getDate()));
+        holder.tvCity.setText(review.getCity());
+        holder.tvPluses.setText(review.getPluses());
+        holder.tvMinuses.setText(review.getMinuses());
         MarkCompany markCompany = review.getMarkCompany();
         if (markCompany != null) {
-            holder.mark.setText(String.valueOf(markCompany.getAverageMark()));
+            holder.tvMark.setText(String.valueOf(markCompany.getAverageMark()));
         }
-        holder.like.setText(String.valueOf(review.getLike()));
-        holder.dislike.setText(String.valueOf(review.getDislike()));
+        holder.tvLike.setText(String.valueOf(review.getLike()));
+        holder.tvDislike.setText(String.valueOf(review.getDislike()));
         holder.cardView.setCardBackgroundColor(isSelected(position)
                 ? ContextCompat.getColor(holder.cardView.getContext(), R.color.red200) : Color.WHITE);
 
         boolean myLike = review.isMyLike();
         boolean myDislike = review.isMyDislike();
         if (!myLike) {
-            holder.imgLike.setTag("likeInactive");
+            holder.ivLike.setTag("likeInactive");
         } else {
-            holder.imgLike.setTag("likeActive");
-            holder.imgLike.setColorFilter(Color.parseColor("#8BC34A"));
+            holder.ivLike.setTag("likeActive");
+            holder.ivLike.setColorFilter(Color.parseColor("#8BC34A"));
         }
         if (!myDislike) {
-            holder.imgDislike.setTag("dislikeInactive");
+            holder.ivDislike.setTag("dislikeInactive");
         } else {
-            holder.imgDislike.setTag("dislikeActive");
-            holder.imgDislike.setColorFilter(Color.parseColor("#F44336"));
+            holder.ivDislike.setTag("dislikeActive");
+            holder.ivDislike.setColorFilter(Color.parseColor("#F44336"));
         }
 
-        holder.imgLike.setOnClickListener(new View.OnClickListener() {
+        holder.ivLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int like = review.getLike();
                 int dislike = review.getDislike();
-                String tagLike = holder.imgLike.getTag().toString();
-                String tagDislike = holder.imgDislike.getTag().toString();
+                String tagLike = holder.ivLike.getTag().toString();
+                String tagDislike = holder.ivDislike.getTag().toString();
                 if (tagLike.equalsIgnoreCase("likeInactive")) {
-                    holder.imgLike.setTag("likeActive");
-                    holder.imgLike.setColorFilter(Color.parseColor("#8BC34A"));
+                    holder.ivLike.setTag("likeActive");
+                    holder.ivLike.setColorFilter(Color.parseColor("#8BC34A"));
                     review.setLike(++like);
                     review.setMyLike(true);
-                    holder.like.setText(String.valueOf(like));
+                    holder.tvLike.setText(String.valueOf(like));
                     FirebaseHelper.setLike(review);
 
                     if (tagDislike.equalsIgnoreCase("dislikeActive")) {
-                        holder.imgDislike.setTag("dislikeInactive");
-                        holder.imgDislike.setColorFilter(Color.parseColor("#9E9E9E"));
+                        holder.ivDislike.setTag("dislikeInactive");
+                        holder.ivDislike.setColorFilter(Color.parseColor("#9E9E9E"));
                         review.setDislike(--dislike);
                         review.setMyDislike(false);
-                        holder.dislike.setText(String.valueOf(dislike));
+                        holder.tvDislike.setText(String.valueOf(dislike));
                         FirebaseHelper.setDislike(review);
                     }
                 } else {
-                    holder.imgLike.setTag("likeInactive");
-                    holder.imgLike.setColorFilter(Color.parseColor("#9E9E9E"));
+                    holder.ivLike.setTag("likeInactive");
+                    holder.ivLike.setColorFilter(Color.parseColor("#9E9E9E"));
                     review.setLike(--like);
                     review.setMyLike(false);
-                    holder.like.setText(String.valueOf(like));
+                    holder.tvLike.setText(String.valueOf(like));
                     FirebaseHelper.setLike(review);
                 }
             }
         });
-        holder.imgDislike.setOnClickListener(new View.OnClickListener() {
+        holder.ivDislike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int like = review.getLike();
                 int dislike = review.getDislike();
-                String tagLike = holder.imgLike.getTag().toString();
-                String tagDislike = holder.imgDislike.getTag().toString();
+                String tagLike = holder.ivLike.getTag().toString();
+                String tagDislike = holder.ivDislike.getTag().toString();
                 if (tagDislike.equalsIgnoreCase("dislikeInactive")) {
-                    holder.imgDislike.setTag("dislikeActive");
-                    holder.imgDislike.setColorFilter(Color.parseColor("#F44336"));
+                    holder.ivDislike.setTag("dislikeActive");
+                    holder.ivDislike.setColorFilter(Color.parseColor("#F44336"));
                     review.setDislike(++dislike);
                     review.setMyDislike(true);
-                    holder.dislike.setText(String.valueOf(dislike));
+                    holder.tvDislike.setText(String.valueOf(dislike));
                     FirebaseHelper.setDislike(review);
 
                     if (tagLike.equalsIgnoreCase("likeActive")) {
-                        holder.imgLike.setTag("likeInactive");
-                        holder.imgLike.setColorFilter(Color.parseColor("#9E9E9E"));
+                        holder.ivLike.setTag("likeInactive");
+                        holder.ivLike.setColorFilter(Color.parseColor("#9E9E9E"));
                         review.setLike(--like);
                         review.setMyLike(false);
-                        holder.like.setText(String.valueOf(like));
+                        holder.tvLike.setText(String.valueOf(like));
                         FirebaseHelper.setLike(review);
                     }
                 } else {
-                    holder.imgDislike.setTag("dislikeInactive");
-                    holder.imgDislike.setColorFilter(Color.parseColor("#9E9E9E"));
+                    holder.ivDislike.setTag("dislikeInactive");
+                    holder.ivDislike.setColorFilter(Color.parseColor("#9E9E9E"));
                     review.setDislike(--dislike);
                     review.setMyDislike(false);
-                    holder.dislike.setText(String.valueOf(dislike));
+                    holder.tvDislike.setText(String.valueOf(dislike));
                     FirebaseHelper.setDislike(review);
                 }
             }
@@ -156,16 +156,16 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
 
     public class ReviewVH extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         CardView cardView;
-        TextView name;
-        TextView date;
-        TextView city;
-        TextView pluses;
-        TextView minuses;
-        TextView mark;
-        ImageView imgLike;
-        ImageView imgDislike;
-        TextView like;
-        TextView dislike;
+        TextView tvName;
+        TextView tvDate;
+        TextView tvCity;
+        TextView tvPluses;
+        TextView tvMinuses;
+        TextView tvMark;
+        ImageView ivLike;
+        ImageView ivDislike;
+        TextView tvLike;
+        TextView tvDislike;
 
         public ReviewVH(View itemView) {
             super(itemView);
@@ -173,16 +173,16 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
             itemView.setOnLongClickListener(this);
 
             cardView = (CardView) itemView.findViewById(R.id.card_view);
-            name = (TextView) itemView.findViewById(R.id.user_name);
-            date = (TextView) itemView.findViewById(R.id.date);
-            city = (TextView) itemView.findViewById(R.id.city);
-            pluses = (TextView) itemView.findViewById(R.id.pluses);
-            minuses = (TextView) itemView.findViewById(R.id.minuses);
-            mark = (TextView) itemView.findViewById(R.id.mark);
-            imgLike = (ImageView) itemView.findViewById(R.id.img_like);
-            imgDislike = (ImageView) itemView.findViewById(R.id.img_dislike);
-            like = (TextView) itemView.findViewById(R.id.like);
-            dislike = (TextView) itemView.findViewById(R.id.dislike);
+            tvName = (TextView) itemView.findViewById(R.id.tvUserName);
+            tvDate = (TextView) itemView.findViewById(R.id.tvDate);
+            tvCity = (TextView) itemView.findViewById(R.id.tvCity);
+            tvPluses = (TextView) itemView.findViewById(R.id.tvPluses);
+            tvMinuses = (TextView) itemView.findViewById(R.id.tvMinuses);
+            tvMark = (TextView) itemView.findViewById(R.id.tvMark);
+            ivLike = (ImageView) itemView.findViewById(R.id.ivLike);
+            ivDislike = (ImageView) itemView.findViewById(R.id.ivDislike);
+            tvLike = (TextView) itemView.findViewById(R.id.tvLike);
+            tvDislike = (TextView) itemView.findViewById(R.id.tvDislike);
         }
 
         @Override

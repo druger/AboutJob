@@ -29,7 +29,7 @@
         android:weightSum="1">
 
         <EditText
-            android:id="@+id/et_message"
+            android:id="@+id/etMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -42,7 +42,7 @@
             android:paddingStart="15dp" />
 
         <ImageView
-            android:id="@+id/send_message"
+            android:id="@+id/ivSend"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_gravity="center"

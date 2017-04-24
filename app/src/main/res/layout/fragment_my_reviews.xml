@@ -11,7 +11,7 @@
         android:layout_marginTop="?attr/actionBarSize">
 
         <TextView
-            android:id="@+id/count_reviews"
+            android:id="@+id/tvCountReviews"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
@@ -20,18 +20,18 @@
             android:text="0" />
 
         <TextView
-            android:id="@+id/reviews"
+            android:id="@+id/tvReviews"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/count_reviews"
-            android:layout_toEndOf="@+id/count_reviews"
+            android:layout_toRightOf="@+id/tvCountReviews"
+            android:layout_toEndOf="@+id/tvCountReviews"
             android:text="@string/reviews"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/count_reviews"
+            android:layout_below="@+id/tvCountReviews"
             android:layout_marginBottom="105dp"/>
     </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>

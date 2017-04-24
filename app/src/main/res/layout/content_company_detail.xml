@@ -14,7 +14,7 @@
         android:focusableInTouchMode="true">
 
         <TextView
-            android:id="@+id/rating"
+            android:id="@+id/tvRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -30,7 +30,7 @@
             style="@style/reviewRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rating"
+            android:layout_below="@+id/tvRating"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -39,7 +39,7 @@
             android:isIndicator="true"/>
 
         <TextView
-            android:id="@+id/count_reviews"
+            android:id="@+id/tvCountReviews"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rating_company"
@@ -50,19 +50,19 @@
             android:text="0" />
 
         <TextView
-            android:id="@+id/reviews"
+            android:id="@+id/tvReviews"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rating_company"
-            android:layout_toEndOf="@+id/count_reviews"
-            android:layout_toRightOf="@+id/count_reviews"
+            android:layout_toEndOf="@+id/tvCountReviews"
+            android:layout_toRightOf="@+id/tvCountReviews"
             android:text="@string/reviews" />
 
         <TextView
-            android:id="@+id/site"
+            android:id="@+id/tvSite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/social_package"
+            android:layout_below="@+id/tvSocialPackage"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -70,10 +70,10 @@
             android:text="Site" />
 
         <LinearLayout
-            android:id="@+id/description"
+            android:id="@+id/ltDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/site"
+            android:layout_below="@+id/tvSite"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin">
@@ -93,13 +93,13 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/down_drop"
+                    android:id="@+id/ivDownDrop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/arrow_down_drop_circle" />
 
                 <ImageView
-                    android:id="@+id/up_drop"
+                    android:id="@+id/ivUpDrop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/arrow_up_drop_circle"
@@ -109,10 +109,10 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/content_description"
+            android:id="@+id/tvContentDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/description"
+            android:layout_below="@+id/ltDescription"
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -121,12 +121,12 @@
             android:text="@string/not_description" />
 
         <TextView
-            android:id="@+id/salary"
+            android:id="@+id/tvSalary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/rating"
+            android:layout_alignTop="@+id/tvRating"
             android:layout_marginBottom="5dp"
             android:layout_marginEnd="70dp"
             android:layout_marginRight="70dp"
@@ -134,24 +134,24 @@
             android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/salary_mark"
+            android:id="@+id/tvSalaryMark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/salary"
+            android:layout_alignTop="@+id/tvSalary"
             android:layout_marginBottom="5dp"
             android:layout_marginEnd="30dp"
             android:layout_marginRight="30dp"
             android:text="0" />
 
         <TextView
-            android:id="@+id/chief"
+            android:id="@+id/tvChief"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/salary"
+            android:layout_below="@+id/tvSalary"
             android:layout_marginBottom="5dp"
             android:layout_marginEnd="70dp"
             android:layout_marginRight="70dp"
@@ -159,24 +159,24 @@
             android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/chief_mark"
+            android:id="@+id/tvChiefMark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/salary_mark"
+            android:layout_below="@+id/tvSalaryMark"
             android:layout_marginBottom="5dp"
             android:layout_marginEnd="30dp"
             android:layout_marginRight="30dp"
             android:text="0" />
 
         <TextView
-            android:id="@+id/workplace"
+            android:id="@+id/tvWorkplace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/chief"
+            android:layout_below="@+id/tvChief"
             android:layout_marginBottom="5dp"
             android:layout_marginEnd="70dp"
             android:layout_marginRight="70dp"
@@ -184,24 +184,24 @@
             android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/workplace_mark"
+            android:id="@+id/tvWorkplaceMark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/chief_mark"
+            android:layout_below="@+id/tvChiefMark"
             android:layout_marginBottom="5dp"
             android:layout_marginEnd="30dp"
             android:layout_marginRight="30dp"
             android:text="0" />
 
         <TextView
-            android:id="@+id/career"
+            android:id="@+id/tvCareer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/workplace"
+            android:layout_below="@+id/tvWorkplace"
             android:layout_marginBottom="5dp"
             android:layout_marginEnd="70dp"
             android:layout_marginRight="70dp"
@@ -209,24 +209,24 @@
             android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/career_mark"
+            android:id="@+id/tvCareerMark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/workplace_mark"
+            android:layout_below="@+id/tvWorkplaceMark"
             android:layout_marginBottom="5dp"
             android:layout_marginEnd="30dp"
             android:layout_marginRight="30dp"
             android:text="0" />
 
         <TextView
-            android:id="@+id/collective"
+            android:id="@+id/tvCollective"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/career"
+            android:layout_below="@+id/tvCareer"
             android:layout_marginBottom="5dp"
             android:layout_marginEnd="70dp"
             android:layout_marginRight="70dp"
@@ -234,24 +234,24 @@
             android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/collective_mark"
+            android:id="@+id/tvCollectiveMark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/career_mark"
+            android:layout_below="@+id/tvCareerMark"
             android:layout_marginBottom="5dp"
             android:layout_marginEnd="30dp"
             android:layout_marginRight="30dp"
             android:text="0" />
 
         <TextView
-            android:id="@+id/social_package"
+            android:id="@+id/tvSocialPackage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/collective"
+            android:layout_below="@+id/tvCollective"
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="70dp"
             android:layout_marginRight="70dp"
@@ -259,12 +259,12 @@
             android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/social_package_mark"
+            android:id="@+id/tvSocialPackageMark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/collective_mark"
+            android:layout_below="@+id/tvCollectiveMark"
             android:layout_marginEnd="30dp"
             android:layout_marginRight="30dp"
             android:text="0" />
@@ -273,7 +273,7 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/content_description"/>
+            android:layout_below="@+id/tvContentDescription"/>
     </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>
 

@@ -20,7 +20,7 @@ import com.squareup.leakcanary.RefWatcher;
 
 public class ResetPasswordActivity extends AppCompatActivity {
 
-    private EditText inputEmail;
+    private EditText etEmail;
     private ProgressBar progressBar;
 
     private FirebaseAuth auth;
@@ -30,26 +30,26 @@ public class ResetPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
 
-        inputEmail = (EditText) findViewById(R.id.input_email);
-        Button resetPass = (Button) findViewById(R.id.btn_reset_pass);
-        Button back = (Button) findViewById(R.id.btn_back);
+        etEmail = (EditText) findViewById(R.id.etEmail);
+        Button btnResetPass = (Button) findViewById(R.id.btnResetPass);
+        Button btnBack = (Button) findViewById(R.id.btnBack);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         auth = FirebaseAuth.getInstance();
 
-        back.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
 
-        resetPass.setOnClickListener(new View.OnClickListener() {
+        btnResetPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
 
-                String email = inputEmail.getText().toString().trim();
+                String email = etEmail.getText().toString().trim();
 
                 if (TextUtils.isEmpty(email) && !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     Toast.makeText(getApplicationContext(), R.string.error_email, Toast.LENGTH_SHORT).show();

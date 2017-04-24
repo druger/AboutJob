@@ -52,7 +52,7 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     private boolean itemSwipe = true;
 
-    private TextView countReviews;
+    private TextView tvCountReviews;
     private BottomNavigationView bottomNavigation;
 
     private String userId;
@@ -83,7 +83,7 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
 
         dbReference = FirebaseDatabase.getInstance().getReference();
 
-        countReviews = (TextView) view.findViewById(R.id.count_reviews);
+        tvCountReviews = (TextView) view.findViewById(R.id.tvCountReviews);
         bottomNavigation = (BottomNavigationView) getActivity().findViewById(R.id.bottom_navigation);
 
         reviews = new ArrayList<>();
@@ -215,7 +215,7 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
             review.setFirebaseKey(snapshot.getKey());
             reviews.add(review);
         }
-        countReviews.setText(String.valueOf(reviews.size()));
+        tvCountReviews.setText(String.valueOf(reviews.size()));
         reviewAdapter.notifyDataSetChanged();
     }
 

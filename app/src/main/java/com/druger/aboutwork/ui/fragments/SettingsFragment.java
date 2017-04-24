@@ -61,12 +61,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         ((MainActivity) getActivity()).setActionBarTitle(R.string.settings);
         ((MainActivity) getActivity()).setBackArrowActionBar();
 
-        editText = (EditText) view.findViewById(R.id.edit);
+        editText = (EditText) view.findViewById(R.id.editText);
         changeEmail = (Button) view.findViewById(R.id.change_email);
         changePass = (Button) view.findViewById(R.id.change_pass);
         Button btnChangeEmail = (Button) view.findViewById(R.id.btn_change_email);
         Button btnChangePass = (Button) view.findViewById(R.id.btn_change_pass);
-        Button removeUser = (Button) view.findViewById(R.id.btn_remove_user);
+        Button removeAccount = (Button) view.findViewById(R.id.btnRemoveAccount);
 
         progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
 
@@ -81,7 +81,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         changePass.setOnClickListener(this);
         btnChangeEmail.setOnClickListener(this);
         btnChangePass.setOnClickListener(this);
-        removeUser.setOnClickListener(this);
+        removeAccount.setOnClickListener(this);
         return view;
     }
 
@@ -140,7 +140,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                     progressBar.setVisibility(View.GONE);
                 }
                 break;
-            case R.id.btn_remove_user:
+            case R.id.btnRemoveAccount:
                 progressBar.setVisibility(View.VISIBLE);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
