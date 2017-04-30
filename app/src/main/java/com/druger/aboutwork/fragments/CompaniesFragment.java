@@ -12,39 +12,38 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.CompanyDetailActivity;
 import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.adapters.CompanyAdapter;
+import com.druger.aboutwork.interfaces.view.CompaniesView;
 import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.CompanyDetail;
-import com.druger.aboutwork.model.CompanyResponse;
+import com.druger.aboutwork.presenters.CompaniesPresenter;
 import com.druger.aboutwork.recyclerview_helper.OnItemClickListener;
-import com.druger.aboutwork.rest.ApiClient;
-import com.druger.aboutwork.rest.ApiService;
 import com.mikepenz.fastadapter_extensions.scroll.EndlessRecyclerOnScrollListener;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CompaniesFragment extends Fragment {
+public class CompaniesFragment extends MvpAppCompatFragment implements CompaniesView {
     private static final String TAG = CompaniesFragment.class.getSimpleName();
 
-    private ApiService apiService;
+    @InjectPresenter
+    CompaniesPresenter companiesPresenter;
 
-    private List<Company> companies;
+    private List<Company> mCompanies;
     private CompanyAdapter adapter;
     private RecyclerView recyclerView;
     private EndlessRecyclerOnScrollListener scrollListener;
+    private LinearLayoutManager layoutManager;
 
     private SearchView searchView;
     private String query;
@@ -61,49 +60,38 @@ public class CompaniesFragment extends Fragment {
         ((MainActivity) getActivity()).setActionBarTitle(R.string.app_name);
         ((MainActivity) getActivity()).resetBackArrowActionBar();
 
-        apiService = ApiClient.getClient().create(ApiService.class);
+        companiesPresenter.onCreate();
 
-        companies = new ArrayList<>();
-        adapter = new CompanyAdapter(companies);
+        setupUI(view);
+        setupRecycler();
+        setupListeners();
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        searchView = (SearchView) getActivity().findViewById(R.id.search_view);
+        return view;
+    }
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+    private void setupRecycler() {
+        mCompanies = new ArrayList<>();
+        adapter = new CompanyAdapter(mCompanies);
+
+        layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+    }
 
+    private void setupListeners() {
         scrollListener = new EndlessRecyclerOnScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int currentPage) {
-                getCompanies(query, currentPage);
+                companiesPresenter.getCompanies(query, currentPage);
             }
         };
         recyclerView.addOnScrollListener(scrollListener);
 
-
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Company company = companies.get(position);
-                Call<CompanyDetail> call = apiService.getCompanyDetail(company.getId());
-                call.enqueue(new Callback<CompanyDetail>() {
-                    @Override
-                    public void onResponse(Call<CompanyDetail> call, Response<CompanyDetail> response) {
-                        CompanyDetail detail = response.body();
-
-                        Intent intent = new Intent(getActivity(), CompanyDetailActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelable("companyDetail", detail);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onFailure(Call<CompanyDetail> call, Throwable t) {
-                        Log.e(TAG, t.getMessage());
-                    }
-                });
+                Company company = mCompanies.get(position);
+                companiesPresenter.getCompanyDetail(company);
             }
 
             @Override
@@ -124,37 +112,18 @@ public class CompaniesFragment extends Fragment {
                 Log.d(TAG, newText);
                 if (!newText.isEmpty()) {
                     query = newText;
-                    companies.clear();
+                    mCompanies.clear();
                     adapter.notifyDataSetChanged();
                     scrollListener.resetPageCount();
                 }
                 return true;
             }
         });
-
-        return view;
     }
 
-    /**
-     * Get list companies from search on hh.ru
-     */
-    private void getCompanies(String query, int page) {
-
-        Call<CompanyResponse> call = apiService.getCompanies(query, page);
-        call.enqueue(new Callback<CompanyResponse>() {
-            @Override
-            public void onResponse(Call<CompanyResponse> call, Response<CompanyResponse> response) {
-                List<Company> companiesRes = response.body().getItems();
-                companies.addAll(companiesRes);
-                adapter.notifyDataSetChanged();
-                Log.d(TAG, "Companies size = " + companiesRes.size());
-            }
-
-            @Override
-            public void onFailure(Call<CompanyResponse> call, Throwable t) {
-                Log.e(TAG, t.getMessage());
-            }
-        });
+    private void setupUI(View view) {
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        searchView = (SearchView) getActivity().findViewById(R.id.search_view);
     }
 
     @Override
@@ -170,5 +139,20 @@ public class CompaniesFragment extends Fragment {
         super.onDestroy();
         RefWatcher refWatcher = AboutWorkApp.getRefWatcher(getActivity());
         refWatcher.watch(this);
+    }
+
+    @Override
+    public void showCompanies(List<Company> companies) {
+        mCompanies.addAll(companies);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showCompanyDetail(CompanyDetail companyDetail) {
+        Intent intent = new Intent(getActivity(), CompanyDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("companyDetail", companyDetail);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }
