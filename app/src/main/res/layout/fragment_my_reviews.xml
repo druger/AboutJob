@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context="com.druger.aboutwork.ui.fragments.MyReviewsFragment">
+    tools:context=".fragments.MyReviewsFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

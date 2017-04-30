@@ -1,4 +1,4 @@
-package com.druger.aboutwork.ui.fragments;
+package com.druger.aboutwork.fragments;
 
 
 import android.content.Intent;
@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.activities.CompanyDetailActivity;
+import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.adapters.CompanyAdapter;
 import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.CompanyDetail;
@@ -21,8 +23,6 @@ import com.druger.aboutwork.model.CompanyResponse;
 import com.druger.aboutwork.recyclerview_helper.OnItemClickListener;
 import com.druger.aboutwork.rest.ApiClient;
 import com.druger.aboutwork.rest.ApiService;
-import com.druger.aboutwork.ui.activities.CompanyDetailActivity;
-import com.druger.aboutwork.ui.activities.MainActivity;
 import com.mikepenz.fastadapter_extensions.scroll.EndlessRecyclerOnScrollListener;
 import com.squareup.leakcanary.RefWatcher;
 

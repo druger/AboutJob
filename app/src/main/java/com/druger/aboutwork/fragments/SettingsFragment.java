@@ -1,4 +1,4 @@
-package com.druger.aboutwork.ui.fragments;
+package com.druger.aboutwork.fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -21,9 +21,9 @@ import android.widget.Toast;
 
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
-import com.druger.aboutwork.ui.activities.LoginActivity;
-import com.druger.aboutwork.ui.activities.MainActivity;
-import com.druger.aboutwork.ui.activities.SignupActivity;
+import com.druger.aboutwork.activities.LoginActivity;
+import com.druger.aboutwork.activities.MainActivity;
+import com.druger.aboutwork.activities.SignupActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

@@ -1,4 +1,4 @@
-package com.druger.aboutwork.ui.activities;
+package com.druger.aboutwork.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,7 +6,7 @@ import android.view.MenuItem;
 
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
-import com.druger.aboutwork.ui.fragments.CompanyDetailFragment;
+import com.druger.aboutwork.fragments.CompanyDetailFragment;
 import com.squareup.leakcanary.RefWatcher;
 
 public class CompanyDetailActivity extends AppCompatActivity{

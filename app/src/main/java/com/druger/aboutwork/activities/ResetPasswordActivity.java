@@ -1,4 +1,4 @@
-package com.druger.aboutwork.ui.activities;
+package com.druger.aboutwork.activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

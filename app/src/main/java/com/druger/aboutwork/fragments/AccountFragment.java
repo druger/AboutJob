@@ -1,4 +1,4 @@
-package com.druger.aboutwork.ui.fragments;
+package com.druger.aboutwork.fragments;
 
 
 import android.content.DialogInterface;
@@ -18,9 +18,9 @@ import android.widget.TextView;
 
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.activities.LoginActivity;
+import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.db.FirebaseHelper;
-import com.druger.aboutwork.ui.activities.LoginActivity;
-import com.druger.aboutwork.ui.activities.MainActivity;
 import com.druger.aboutwork.utils.SharedPreferencesHelper;
 import com.druger.aboutwork.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;

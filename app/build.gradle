@@ -54,6 +54,10 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile 'com.arello-mobile:moxy:1.5.1'
+    annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.1'
+    compile 'com.arello-mobile:moxy-android:1.5.1'
+    compile 'com.arello-mobile:moxy-app-compat:1.5.1'
 }
 
 

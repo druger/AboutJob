@@ -1,4 +1,4 @@
-package com.druger.aboutwork.ui.fragments;
+package com.druger.aboutwork.fragments;
 
 
 import android.os.Bundle;
@@ -20,12 +20,12 @@ import android.widget.TextView;
 
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.adapters.ReviewAdapter;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.recyclerview_helper.OnItemClickListener;
-import com.druger.aboutwork.ui.activities.MainActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

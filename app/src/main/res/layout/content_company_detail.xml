@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
-        tools:context="com.druger.aboutwork.ui.activities.CompanyDetailActivity"
+        tools:context=".activities.CompanyDetailActivity"
         android:focusableInTouchMode="true">
 
         <TextView

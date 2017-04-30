@@ -1,4 +1,4 @@
-package com.druger.aboutwork.ui.fragments;
+package com.druger.aboutwork.fragments;
 
 
 import android.app.Fragment;

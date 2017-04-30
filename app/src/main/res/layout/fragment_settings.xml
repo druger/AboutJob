@@ -12,7 +12,7 @@
     android:orientation="vertical"
     android:animateLayoutChanges="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.druger.aboutwork.ui.fragments.SettingsFragment">
+    tools:context=".fragments.SettingsFragment">
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"

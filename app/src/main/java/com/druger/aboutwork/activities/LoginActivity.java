@@ -1,5 +1,6 @@
-package com.druger.aboutwork.ui.activities;
+package com.druger.aboutwork.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -15,23 +16,19 @@ import android.widget.Toast;
 
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
-import com.druger.aboutwork.db.FirebaseHelper;
-import com.druger.aboutwork.model.User;
-import com.druger.aboutwork.utils.SharedPreferencesHelper;
-import com.druger.aboutwork.utils.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.squareup.leakcanary.RefWatcher;
 
-public class SignupActivity extends AppCompatActivity {
-    private static final String TAG = SignupActivity.class.getSimpleName();
+public class LoginActivity extends AppCompatActivity {
+    private static final String TAG = LoginActivity.class.getSimpleName();
+    private static final int REQUEST_SIGNUP = 0;
 
     private EditText etEmail;
     private EditText etPassword;
-    private Button btnSignup;
+    private Button btnLogin;
     private ProgressBar progressBar;
 
     private FirebaseAuth auth;
@@ -39,83 +36,110 @@ public class SignupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
 
         auth = FirebaseAuth.getInstance();
 
+        if (auth.getCurrentUser() != null) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
+
+        setContentView(R.layout.activity_login);
+
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);
-        btnSignup = (Button) findViewById(R.id.btnSignup);
-        TextView tvLogin = (TextView) findViewById(R.id.tvLogin);
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+        TextView tvSignup = (TextView) findViewById(R.id.tvSignup);
+        TextView tvResetPassword = (TextView) findViewById(R.id.tvResetPassword);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
-        btnSignup.setOnClickListener(new View.OnClickListener() {
+        btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signup();
+                login();
             }
         });
 
-        tvLogin.setOnClickListener(new View.OnClickListener() {
+        tvSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+                startActivityForResult(intent, REQUEST_SIGNUP);
+            }
+        });
+
+        tvResetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
             }
         });
     }
 
-    private void signup() {
-        Log.d(TAG, "Signup");
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_SIGNUP) {
+            if (resultCode == RESULT_OK) {
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Disable going back to the MainActivity
+        moveTaskToBack(true);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(this);
+        refWatcher.watch(this);
+    }
+
+    private void login() {
+        Log.d(TAG, "Login");
 
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
         if (!validate(email, password)) {
-            onSignupFailed();
+            onLoginFailed();
             return;
         }
 
-        btnSignup.setEnabled(false);
+        btnLogin.setEnabled(false);
         progressBar.setVisibility(View.VISIBLE);
 
-        auth.createUserWithEmailAndPassword(email, password)
+        auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
-
+                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
                         progressBar.setVisibility(View.GONE);
 
                         if (!task.isSuccessful()) {
-                            onSignupFailed();
+                            Log.w(TAG, "signInWithEmail", task.getException());
+                            onLoginFailed();
                         } else {
-                            saveNewUser(task.getResult().getUser());
-                            onSignupSuccess();
+                            onLoginSuccess();
                         }
-
                     }
                 });
-
     }
 
-    private void saveNewUser(FirebaseUser firebaseUser) {
-        String id = firebaseUser.getUid();
-        String name = Utils.getNameByEmail(firebaseUser.getEmail());
-        User user = new User(id, name);
-        FirebaseHelper.addUser(user, firebaseUser.getUid());
-        SharedPreferencesHelper.saveUserName(name, this);
-    }
-
-    private void onSignupSuccess() {
-        btnSignup.setEnabled(true);
-        setResult(RESULT_OK, null);
+    private void onLoginSuccess() {
+        btnLogin.setEnabled(true);
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 
-    private void onSignupFailed() {
-        Toast.makeText(getBaseContext(), R.string.signup_failed, Toast.LENGTH_SHORT).show();
+    private void onLoginFailed() {
+        Toast.makeText(getBaseContext(), R.string.login_failed, Toast.LENGTH_SHORT).show();
 
-        btnSignup.setEnabled(true);
+        btnLogin.setEnabled(true);
     }
 
     private boolean validate(String email, String password) {
@@ -136,18 +160,5 @@ public class SignupActivity extends AppCompatActivity {
             etPassword.setError(null);
         }
         return valid;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        progressBar.setVisibility(View.GONE);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(this);
-        refWatcher.watch(this);
     }
 }
