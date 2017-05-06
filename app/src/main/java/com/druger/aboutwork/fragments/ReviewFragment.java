@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +21,15 @@ import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import com.arellomobile.mvp.MvpFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.interfaces.view.ReviewView;
 import com.druger.aboutwork.model.CompanyDetail;
-import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
+import com.druger.aboutwork.presenters.ReviewPresenter;
 import com.druger.aboutwork.utils.Utils;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.Calendar;
@@ -39,16 +39,11 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChangeListener,
-        View.OnClickListener {
+public class ReviewFragment extends MvpFragment implements ReviewView, View.OnClickListener {
     public static final String TAG = ReviewFragment.class.getSimpleName();
 
-    private FirebaseUser user;
-    private Review review;
-    private MarkCompany mark;
-
-    private String companyId;
-    private int status = -1;
+    @InjectPresenter
+    ReviewPresenter reviewPresenter;
 
     private RatingBar salary;
     private RatingBar chief;
@@ -65,9 +60,14 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
     private EditText etDismissalDate;
     private EditText etInterviewDate;
 
+    private RadioGroup radioGroup;
+    private Button btnAdd;
+    private Button btnCancel;
+
     private DatePickerFragment datePicker;
 
     private View view;
+    private CompanyDetail detail;
 
     public ReviewFragment() {
         // Required empty public constructor
@@ -78,11 +78,24 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_review, container, false);
 
-        CompanyDetail detail = getActivity().getIntent().getExtras().getParcelable("companyDetail");
+        detail = getActivity().getIntent().getExtras().getParcelable("companyDetail");
         if (detail != null) {
-            companyId = detail.getId();
+            String companyId = detail.getId();
+            reviewPresenter.setCompanyId(companyId);
         }
 
+        setupToolbar();
+        setupUI();
+        setupListeners();
+
+        datePicker = new DatePickerFragment();
+
+        reviewPresenter.setCompanyRating(salary, chief, workplace, career, collective, socialPackage);
+
+        return view;
+    }
+
+    private void setupToolbar() {
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -91,13 +104,18 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
         if (companyName != null) {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(companyName);
         }
+    }
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
+    private void setupListeners() {
+        radioGroup.setOnCheckedChangeListener(reviewPresenter);
+        btnAdd.setOnClickListener(this);
+        btnCancel.setOnClickListener(this);
+        etEmploymentDate.setOnClickListener(this);
+        etDismissalDate.setOnClickListener(this);
+        etInterviewDate.setOnClickListener(this);
+    }
 
-        if (user != null) {
-            review = new Review(companyId, user.getUid(), Calendar.getInstance().getTimeInMillis());
-        }
-
+    private void setupUI() {
         etPluses = (TextInputEditText) view.findViewById(R.id.etPluses);
         etMinuses = (TextInputEditText) view.findViewById(R.id.etMinuses);
         etPosition = (TextInputEditText) view.findViewById(R.id.et_position);
@@ -109,79 +127,18 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
         collective = (RatingBar) view.findViewById(R.id.ratingbar_collective);
         socialPackage = (RatingBar) view.findViewById(R.id.ratingbar_social_package);
 
-        RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.radio_group);
-        radioGroup.setOnCheckedChangeListener(this);
+        radioGroup = (RadioGroup) view.findViewById(R.id.radio_group);
 
         etEmploymentDate = (EditText) view.findViewById(R.id.tvEmploymentDate);
         etDismissalDate = (EditText) view.findViewById(R.id.tvDismissalDate);
         etInterviewDate = (EditText) view.findViewById(R.id.tvInterviewDate);
 
-        datePicker = new DatePickerFragment();
+        btnAdd = (Button) view.findViewById(R.id.btnAdd);
+        btnCancel = (Button) view.findViewById(R.id.btnCancel);
 
-        Button btnAdd = (Button) view.findViewById(R.id.btnAdd);
-        Button btnCancel = (Button) view.findViewById(R.id.btnCancel);
-        btnAdd.setOnClickListener(this);
-        btnCancel.setOnClickListener(this);
-
-        etEmploymentDate.setOnClickListener(this);
-        etDismissalDate.setOnClickListener(this);
-        etInterviewDate.setOnClickListener(this);
         etEmploymentDate.setVisibility(View.GONE);
         etDismissalDate.setVisibility(View.GONE);
         etInterviewDate.setVisibility(View.GONE);
-
-        setCompanyRating();
-
-        return view;
-    }
-
-    private void setCompanyRating() {
-
-        mark = new MarkCompany(user.getUid(), companyId);
-
-        salary.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                mark.setSalary(rating);
-            }
-        });
-
-        chief.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                mark.setChief(rating);
-            }
-        });
-
-        workplace.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                mark.setWorkplace(rating);
-            }
-        });
-
-        career.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                mark.setCareer(rating);
-            }
-        });
-
-        collective.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                mark.setCollective(rating);
-            }
-        });
-
-        socialPackage.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                mark.setSocialPackage(rating);
-            }
-        });
-
-        review.setMarkCompany(mark);
     }
 
     @Override
@@ -205,44 +162,12 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
     }
 
     @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        View radioButton;
-
-        switch (checkedId) {
-            case R.id.radio_working:
-                etEmploymentDate.setVisibility(View.VISIBLE);
-                etDismissalDate.setVisibility(View.GONE);
-                etInterviewDate.setVisibility(View.GONE);
-
-                radioButton = group.findViewById(R.id.radio_working);
-                status = group.indexOfChild(radioButton);
-                break;
-            case R.id.radio_worked:
-                etEmploymentDate.setVisibility(View.VISIBLE);
-                etDismissalDate.setVisibility(View.VISIBLE);
-                etInterviewDate.setVisibility(View.GONE);
-
-                radioButton = group.findViewById(R.id.radio_worked);
-                status = group.indexOfChild(radioButton);
-                break;
-            case R.id.radio_interview:
-                etInterviewDate.setVisibility(View.VISIBLE);
-                etEmploymentDate.setVisibility(View.GONE);
-                etDismissalDate.setVisibility(View.GONE);
-
-                radioButton = group.findViewById(R.id.radio_interview);
-                status = group.indexOfChild(radioButton);
-                break;
-        }
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnAdd:
                 if (checkReview()) {
                     Intent addedReview = new Intent(getActivity(), ReviewFragment.class);
-                    addedReview.putExtra("addedReview", review);
+                    addedReview.putExtra("addedReview", reviewPresenter.getReview());
                     getTargetFragment().onActivityResult(getTargetRequestCode(), RESULT_OK, addedReview);
                     Toast.makeText(getActivity().getApplicationContext(), R.string.review_added,
                             Toast.LENGTH_SHORT).show();
@@ -257,18 +182,18 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
                 break;
             case R.id.tvEmploymentDate:
                 datePicker.flag = DatePickerFragment.EMPLOYMENT_DATE;
-                datePicker.show(getFragmentManager(), "DatePickerDialog");
-                datePicker.setData(etEmploymentDate, review);
+                datePicker.show(getFragmentManager(), DatePickerFragment.TAG);
+                datePicker.setData(etEmploymentDate, reviewPresenter.getReview());
                 break;
             case R.id.tvDismissalDate:
                 datePicker.flag = DatePickerFragment.DISMISSAL_DATE;
-                datePicker.show(getFragmentManager(), "DatePickerDialog");
-                datePicker.setData(etDismissalDate, review);
+                datePicker.show(getFragmentManager(), DatePickerFragment.TAG);
+                datePicker.setData(etDismissalDate, reviewPresenter.getReview());
                 break;
             case R.id.tvInterviewDate:
                 datePicker.flag = DatePickerFragment.INTERVIEW_DATE;
-                datePicker.show(getFragmentManager(), "DatePickerDialog");
-                datePicker.setData(etInterviewDate, review);
+                datePicker.show(getFragmentManager(), DatePickerFragment.TAG);
+                datePicker.setData(etInterviewDate, reviewPresenter.getReview());
                 break;
         }
     }
@@ -278,22 +203,33 @@ public class ReviewFragment extends Fragment implements RadioGroup.OnCheckedChan
         String minuses = etMinuses.getText().toString().trim();
         String position = etPosition.getText().toString().trim();
 
-        if (!TextUtils.isEmpty(pluses) && !TextUtils.isEmpty(minuses) && status > -1
-                && mark.getAverageMark() != 0) {
-            review.setPluses(pluses);
-            review.setMinuses(minuses);
-            review.setStatus(status);
+        return reviewPresenter.checkReview(pluses, minuses, position);
+    }
 
-            if (!TextUtils.isEmpty(position)) {
-                review.setPosition(position);
-            }
-            return true;
-        }
-        return false;
+    @Override
+    public void showWorkingDate() {
+        etEmploymentDate.setVisibility(View.VISIBLE);
+        etDismissalDate.setVisibility(View.GONE);
+        etInterviewDate.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showWorkedDate() {
+        etEmploymentDate.setVisibility(View.VISIBLE);
+        etDismissalDate.setVisibility(View.VISIBLE);
+        etInterviewDate.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showInterviewDate() {
+        etInterviewDate.setVisibility(View.VISIBLE);
+        etEmploymentDate.setVisibility(View.GONE);
+        etDismissalDate.setVisibility(View.GONE);
     }
 
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
+        public static final String TAG = "DatePickerDialog";
 
         public static final int EMPLOYMENT_DATE = 0;
         public static final int DISMISSAL_DATE = 1;
