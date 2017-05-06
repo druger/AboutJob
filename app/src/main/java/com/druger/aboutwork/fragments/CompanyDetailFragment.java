@@ -4,6 +4,7 @@ package com.druger.aboutwork.fragments;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -22,23 +23,19 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.arellomobile.mvp.MvpFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.adapters.ReviewAdapter;
 import com.druger.aboutwork.db.FirebaseHelper;
+import com.druger.aboutwork.interfaces.view.CompanyDetailView;
 import com.druger.aboutwork.model.CompanyDetail;
-import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
-import com.druger.aboutwork.model.User;
+import com.druger.aboutwork.presenters.CompanyDetailPresenter;
 import com.druger.aboutwork.recyclerview_helper.OnItemClickListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
@@ -49,23 +46,29 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CompanyDetailFragment extends Fragment implements View.OnClickListener, ValueEventListener {
+public class CompanyDetailFragment extends MvpFragment implements View.OnClickListener,
+        CompanyDetailView {
     public static final int REVIEW_REQUEST = 0;
 
+    @InjectPresenter
+    CompanyDetailPresenter companyDetailPresenter;
+
+    private View view;
     private TextView tvDescription;
     private ImageView ivDownDrop;
     private ImageView ivUpDrop;
     private TextView tvRating;
     private TextView tvCountReviews;
+    private TextView site;
     private RatingBar ratingCompany;
+    private ImageView ivToolbar;
+    private FloatingActionButton fab;
 
     private Toolbar toolbar;
+    private CollapsingToolbarLayout collapsingToolbar;
     private RecyclerView recyclerView;
     private List<Review> reviews = new ArrayList<>();
     private ReviewAdapter reviewAdapter;
-
-    private DatabaseReference dbReference;
-    private ValueEventListener valueEventListener;
 
     private CompanyDetail detail;
 
@@ -84,35 +87,38 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_company_detail, container, false);
+        view = inflater.inflate(R.layout.fragment_company_detail, container, false);
+        detail = getActivity().getIntent().getExtras().getParcelable("companyDetail");
+
+        setupUI(view);
+        setupUX();
+        setupRecycler(view, reviews);
+
+        companyDetailPresenter.setReviews(detail);
+        return view;
+    }
+
+    private void setupUX() {
+        ivDownDrop.setOnClickListener(this);
+        ivUpDrop.setOnClickListener(this);
+        fab.setOnClickListener(this);
+    }
+
+    private void setupUI(View view) {
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        collapsingToolbar = (CollapsingToolbarLayout) view.findViewById(R.id.collapsingToolbar);
 
-        CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) view.findViewById(R.id.collapsingToolbar);
-
-        TextView site = (TextView) view.findViewById(R.id.tvSite);
+        site = (TextView) view.findViewById(R.id.tvSite);
         tvDescription = (TextView) view.findViewById(R.id.tvContentDescription);
         ivDownDrop = (ImageView) view.findViewById(R.id.ivDownDrop);
         ivUpDrop = (ImageView) view.findViewById(R.id.ivUpDrop);
-        ImageView ivToolbar = (ImageView) view.findViewById(R.id.ivToolbar);
+        ivToolbar = (ImageView) view.findViewById(R.id.ivToolbar);
         tvCountReviews = (TextView) view.findViewById(R.id.tvCountReviews);
         tvRating = (TextView) view.findViewById(R.id.tvRating);
         ratingCompany = (RatingBar) view.findViewById(R.id.rating_company);
-
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        fab = (FloatingActionButton) view.findViewById(R.id.fab);
 
         tvDescription.setVisibility(View.GONE);
-        ivDownDrop.setOnClickListener(this);
-        ivUpDrop.setOnClickListener(this);
-
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addReview();
-            }
-        });
-
-        detail = getActivity().getIntent().getExtras().getParcelable("companyDetail");
 
         collapsingToolbar.setTitle(detail.getName());
         collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
@@ -123,7 +129,11 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
             site.setText(iSite);
         }
         if (iDescription != null) {
-            tvDescription.setText(Html.fromHtml(iDescription));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                tvDescription.setText(Html.fromHtml(iDescription, Html.FROM_HTML_MODE_LEGACY));
+            } else {
+                tvDescription.setText(Html.fromHtml(iDescription));
+            }
         }
 
         CompanyDetail.Logo logo = detail.getLogo();
@@ -134,32 +144,10 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(ivToolbar);
-
-        setReviews();
-        return view;
     }
 
-    private void setRating() {
-        float sum = 0;
-        float mRating = 0;
-
-        if (!reviews.isEmpty()) {
-            for (Review review : reviews) {
-                MarkCompany markCompany = review.getMarkCompany();
-                sum += markCompany != null ? markCompany.getAverageMark() : 0;
-            }
-            mRating = MarkCompany.roundMark(sum / reviews.size(), 2);
-        }
-
-        tvRating.setText(String.valueOf(mRating));
-        ratingCompany.setRating(mRating);
-    }
-
-    private void setReviews() {
-        dbReference = FirebaseDatabase.getInstance().getReference();
-        Query reviewsQuery = dbReference.child("reviews").orderByChild("companyId").equalTo(detail.getId());
-        reviewsQuery.addValueEventListener(this);
-
+    private void setupRecycler(View view, final List<Review> reviews) {
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         reviewAdapter = new ReviewAdapter(reviews);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -199,50 +187,17 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
         transaction.commit();
     }
 
-    private void fetchReviews(DataSnapshot dataSnapshot) {
-        reviews.clear();
-
-        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-            final Review review = snapshot.getValue(Review.class);
-            Query queryUserId = dbReference.child("users").orderByChild("id").equalTo(review.getUserId());
-            valueEventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        for (DataSnapshot data : dataSnapshot.getChildren()) {
-                            User user = data.getValue(User.class);
-                            review.setName(user.getName());
-                            reviewAdapter.notifyDataSetChanged();
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            };
-            queryUserId.addValueEventListener(valueEventListener);
-            review.setFirebaseKey(snapshot.getKey());
-            reviews.add(review);
-        }
-        tvCountReviews.setText(String.valueOf(reviews.size()));
-        setRating();
-        reviewAdapter.notifyDataSetChanged();
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ivDownDrop:
-                ivDownDrop.setVisibility(View.INVISIBLE);
-                ivUpDrop.setVisibility(View.VISIBLE);
-                tvDescription.setVisibility(View.VISIBLE);
+                companyDetailPresenter.downDropClick();
                 break;
             case R.id.ivUpDrop:
-                ivUpDrop.setVisibility(View.INVISIBLE);
-                ivDownDrop.setVisibility(View.VISIBLE);
-                tvDescription.setVisibility(View.GONE);
+                companyDetailPresenter.upDropClick();
+                break;
+            case R.id.fab:
+                addReview();
                 break;
         }
     }
@@ -250,10 +205,7 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
     @Override
     public void onStop() {
         super.onStop();
-        dbReference.removeEventListener(this);
-        if (valueEventListener != null) {
-            dbReference.removeEventListener(valueEventListener);
-        }
+        companyDetailPresenter.removeListeners();
     }
 
     @Override
@@ -281,12 +233,39 @@ public class CompanyDetailFragment extends Fragment implements View.OnClickListe
     }
 
     @Override
-    public void onDataChange(DataSnapshot dataSnapshot) {
-        fetchReviews(dataSnapshot);
+    public void showDescription() {
+        ivDownDrop.setVisibility(View.INVISIBLE);
+        ivUpDrop.setVisibility(View.VISIBLE);
+        tvDescription.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void onCancelled(DatabaseError databaseError) {
+    public void hideDescription() {
+        ivUpDrop.setVisibility(View.INVISIBLE);
+        ivDownDrop.setVisibility(View.VISIBLE);
+        tvDescription.setVisibility(View.GONE);
+    }
 
+    @Override
+    public void updateAdapter() {
+        reviewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showReviews(List<Review> reviews) {
+        this.reviews.clear();
+        this.reviews.addAll(reviews);
+        reviewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showRating(float rating) {
+        tvRating.setText(String.valueOf(rating));
+        ratingCompany.setRating(rating);
+    }
+
+    @Override
+    public void showCountReviews(int count) {
+        tvCountReviews.setText(String.valueOf(count));
     }
 }
