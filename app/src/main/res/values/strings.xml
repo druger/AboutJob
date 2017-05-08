@@ -76,7 +76,7 @@
     <string name="comments">Comments</string>
     <string name="your_message">Your message</string>
 
-    <string-array name="comments_del">
+    <string-array name="comments_change">
         <item>@string/delete</item>
         <item>@string/change</item>
     </string-array>

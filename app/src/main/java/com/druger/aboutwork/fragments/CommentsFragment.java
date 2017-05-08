@@ -19,48 +19,38 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.arellomobile.mvp.MvpFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.adapters.CommentAdapter;
-import com.druger.aboutwork.db.FirebaseHelper;
+import com.druger.aboutwork.interfaces.view.CommentsView;
 import com.druger.aboutwork.model.Comment;
+import com.druger.aboutwork.presenters.CommentsPresenter;
 import com.druger.aboutwork.recyclerview_helper.OnItemClickListener;
-import com.druger.aboutwork.utils.SharedPreferencesHelper;
 import com.druger.aboutwork.utils.Utils;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.leakcanary.RefWatcher;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CommentsFragment extends Fragment implements ValueEventListener {
+public class CommentsFragment extends MvpFragment implements CommentsView{
     public static final int NEW = 0;
     public static final int UPDATE = 1;
     private int type = NEW;
+
+    @InjectPresenter
+    CommentsPresenter commentsPresenter;
 
     private EditText etMessage;
     private ImageView ivSend;
 
     private RecyclerView recyclerView;
-    private List<Comment> comments;
     private CommentAdapter commentAdapter;
-    private Comment comment;
 
     private String reviewId;
-
-    private FirebaseUser user;
-    private DatabaseReference dbReference;
 
     public CommentsFragment() {
         // Required empty public constructor
@@ -82,20 +72,18 @@ public class CommentsFragment extends Fragment implements ValueEventListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_comments, container, false);
 
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.comments);
-
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        etMessage = (EditText) view.findViewById(R.id.etMessage);
-        ivSend = (ImageView) view.findViewById(R.id.ivSend);
-
-        user = FirebaseAuth.getInstance().getCurrentUser();
-
         Bundle bundle = getArguments();
         reviewId = bundle.getString("reviewId");
 
+        setupToolbar(view);
+        setupUI(view);
+        setupListeners();
+        retrieveComments();
+
+        return view;
+    }
+
+    private void setupListeners() {
         etMessage.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -132,23 +120,31 @@ public class CommentsFragment extends Fragment implements ValueEventListener {
                 }
             }
         });
-
-        setComments();
-
-        return view;
     }
 
-    private void setComments() {
-        comments = new ArrayList<>();
+    private void setupToolbar(View view) {
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.comments);
+    }
+
+    private void setupUI(View view) {
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        etMessage = (EditText) view.findViewById(R.id.etMessage);
+        ivSend = (ImageView) view.findViewById(R.id.ivSend);
+    }
+
+    private void retrieveComments() {
+        commentsPresenter.retrieveComments(reviewId);
+    }
+
+    private void setupRecycler(List<Comment> comments) {
         commentAdapter = new CommentAdapter(comments);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(commentAdapter);
         recyclerView.setNestedScrollingEnabled(false);
-
-        dbReference = FirebaseDatabase.getInstance().getReference();
-        Query commentsQuery = dbReference.child("comments").orderByChild("reviewId").equalTo(reviewId);
-        commentsQuery.addValueEventListener(this);
 
         changeComment();
     }
@@ -161,54 +157,17 @@ public class CommentsFragment extends Fragment implements ValueEventListener {
 
             @Override
             public boolean onLongClick(View view, final int position) {
-                comment = comments.get(position);
-                if (comment.getUserId().equals(user.getUid())) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setItems(R.array.comments_del, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            switch (which) {
-                                case 0:
-                                    deleteComment(comment, position);
-                                    break;
-                                case 1:
-                                    etMessage.setText(comment.getMessage());
-                                    Utils.showKeyboard(getActivity());
-                                    etMessage.setFocusableInTouchMode(true);
-                                    etMessage.setSelection(comment.getMessage().length());
-                                    type = UPDATE;
-                                    break;
-                            }
-                        }
-                    });
-                    builder.show();
-                    return true;
-                }
-                return false;
+                return commentsPresenter.onLongClick(position);
             }
         });
-    }
-
-    private void deleteComment(Comment comment, int position) {
-        FirebaseHelper.deleteComment(comment.getId());
-        comments.remove(position);
-        commentAdapter.notifyItemRemoved(position);
-        commentAdapter.notifyItemRangeChanged(position, comments.size());
     }
 
     private void sendMessage(String message, int type) {
         if (message.length() > 0) {
             if (type == NEW) {
-                Calendar calendar = Calendar.getInstance();
-                Comment comment = new Comment(message, calendar.getTimeInMillis());
-                comment.setUserName(SharedPreferencesHelper.getUserName(getActivity()));
-                if (user != null) {
-                    comment.setUserId(user.getUid());
-                }
-                comment.setReviewId(reviewId);
-                FirebaseHelper.addComment(comment);
+                commentsPresenter.addComment(getActivity(), message, reviewId);
             } else if (type == UPDATE) {
-                FirebaseHelper.updateComment(comment.getId(), message);
+                commentsPresenter.updateComment(message);
                 Utils.hideKeyboard(getActivity(), this.etMessage);
                 this.type = NEW;
             }
@@ -217,26 +176,48 @@ public class CommentsFragment extends Fragment implements ValueEventListener {
     }
 
     @Override
-    public void onDataChange(DataSnapshot dataSnapshot) {
-        comments.clear();
-        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-            Comment comment = snapshot.getValue(Comment.class);
-            comment.setId(snapshot.getKey());
-            comments.add(comment);
-            commentAdapter.notifyItemChanged(comments.size() - 1);
-        }
-    }
-
-    @Override
-    public void onCancelled(DatabaseError databaseError) {
-
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         RefWatcher refWatcher = AboutWorkApp.getRefWatcher(getActivity());
         refWatcher.watch(this);
-        dbReference.removeEventListener(this);
+        commentsPresenter.removeListeners();
+    }
+
+    @Override
+    public void showComments(List<Comment> comments) {
+        if (commentAdapter == null) {
+            setupRecycler(comments);
+        } else {
+            commentAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void showChangeDialog(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setItems(R.array.comments_change, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0:
+                        commentsPresenter.deleteComment(position);
+                        break;
+                    case 1:
+                        etMessage.setText(commentsPresenter.getComment().getMessage());
+                        Utils.showKeyboard(getActivity());
+                        etMessage.setFocusableInTouchMode(true);
+                        etMessage.setSelection(commentsPresenter.getComment().getMessage().length());
+                        type = UPDATE;
+                        break;
+                }
+            }
+        });
+        builder.show();
+    }
+
+    @Override
+    public void notifyItemRemoved(int position, int size) {
+        commentAdapter.notifyItemRemoved(position);
+        commentAdapter.notifyItemRangeChanged(position, size);
     }
 }
