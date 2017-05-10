@@ -18,31 +18,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.adapters.ReviewAdapter;
 import com.druger.aboutwork.db.FirebaseHelper;
-import com.druger.aboutwork.model.Company;
+import com.druger.aboutwork.interfaces.view.MyReviewsView;
 import com.druger.aboutwork.model.Review;
+import com.druger.aboutwork.presenters.MyReviewsPresenter;
 import com.druger.aboutwork.recyclerview_helper.OnItemClickListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.leakcanary.RefWatcher;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyReviewsFragment extends Fragment implements ValueEventListener {
+public class MyReviewsFragment extends MvpAppCompatFragment implements MyReviewsView {
 
-    private List<Review> reviews;
+    @InjectPresenter
+    MyReviewsPresenter myReviewsPresenter;
+
     private RecyclerView recyclerView;
     private ReviewAdapter reviewAdapter;
     private ItemTouchHelper touchHelper;
@@ -56,9 +54,6 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
     private BottomNavigationView bottomNavigation;
 
     private String userId;
-
-    private DatabaseReference dbReference;
-    private ValueEventListener valueEventListener;
 
     public MyReviewsFragment() {
         // Required empty public constructor
@@ -78,17 +73,26 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_reviews, container, false);
 
+        setupToolbar();
+        setupUI(view);
+        initSwipe();
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            userId = bundle.getString("userId", userId);
+        }
+
+        myReviewsPresenter.fetchReviews(userId);
+        return view;
+    }
+
+    private void setupToolbar() {
         ((MainActivity) getActivity()).setActionBarTitle(R.string.my_reviews);
         ((MainActivity) getActivity()).setBackArrowActionBar();
+    }
 
-        dbReference = FirebaseDatabase.getInstance().getReference();
-
-        tvCountReviews = (TextView) view.findViewById(R.id.tvCountReviews);
-        bottomNavigation = (BottomNavigationView) getActivity().findViewById(R.id.bottom_navigation);
-
-        reviews = new ArrayList<>();
+    private void setupRecycler(List<Review> reviews) {
         reviewAdapter = new ReviewAdapter(reviews);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(reviewAdapter);
@@ -112,17 +116,12 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
                 return true;
             }
         });
+    }
 
-        initSwipe();
-
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            userId = bundle.getString("userId", userId);
-        }
-
-        Query reviewsQuery = dbReference.child("reviews").orderByChild("userId").equalTo(userId);
-        reviewsQuery.addValueEventListener(this);
-        return view;
+    private void setupUI(View view) {
+        tvCountReviews = (TextView) view.findViewById(R.id.tvCountReviews);
+        bottomNavigation = (BottomNavigationView) getActivity().findViewById(R.id.bottom_navigation);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
     }
 
     private void initSwipe() {
@@ -135,20 +134,19 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
                 final int position = viewHolder.getAdapterPosition();
-                final Review review = reviews.get(position);
+                final Review review = myReviewsPresenter.getReview(position);
                 Snackbar snackbar = Snackbar
                         .make(getActivity().findViewById(R.id.coordinator), R.string.review_deleted, Snackbar.LENGTH_LONG)
                         .setAction(R.string.undo, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                reviews.add(position, review);
+                                myReviewsPresenter.addReview(position, review);
                                 reviewAdapter.notifyItemInserted(position);
                                 recyclerView.scrollToPosition(position);
-                                FirebaseHelper.addReview(review);
                             }
                         });
                 showSnackbar(snackbar);
-                FirebaseHelper.removeReview(reviews.remove(position).getFirebaseKey());
+                myReviewsPresenter.removeReview(position);
                 reviewAdapter.notifyItemRemoved(position);
             }
 
@@ -164,10 +162,7 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
     @Override
     public void onStop() {
         super.onStop();
-        dbReference.removeEventListener(this);
-        if (valueEventListener != null) {
-            dbReference.removeEventListener(valueEventListener);
-        }
+        myReviewsPresenter.removeListeners();
     }
 
     @Override
@@ -175,48 +170,6 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
         super.onDestroy();
         RefWatcher refWatcher = AboutWorkApp.getRefWatcher(getActivity());
         refWatcher.watch(this);
-    }
-
-    @Override
-    public void onDataChange(DataSnapshot dataSnapshot) {
-        fetchReviews(dataSnapshot);
-    }
-
-
-    @Override
-    public void onCancelled(DatabaseError databaseError) {
-
-    }
-
-    private void fetchReviews(DataSnapshot dataSnapshot) {
-        reviews.clear();
-
-        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-            final Review review = snapshot.getValue(Review.class);
-            Query queryByCompanyId = dbReference.child("companies").orderByChild("id").equalTo(review.getCompanyId());
-            valueEventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        for (DataSnapshot data : dataSnapshot.getChildren()) {
-                            Company company = data.getValue(Company.class);
-                            review.setName(company.getName());
-                            reviewAdapter.notifyDataSetChanged();
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            };
-            queryByCompanyId.addValueEventListener(valueEventListener);
-            review.setFirebaseKey(snapshot.getKey());
-            reviews.add(review);
-        }
-        tvCountReviews.setText(String.valueOf(reviews.size()));
-        reviewAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -237,6 +190,21 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
             actionMode.setTitle(String.valueOf(count));
             actionMode.invalidate();
         }
+    }
+
+    @Override
+    public void showReviews(List<Review> reviews) {
+        tvCountReviews.setText(String.valueOf(reviews.size()));
+        if (reviewAdapter == null) {
+            setupRecycler(reviews);
+        } else {
+            notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        reviewAdapter.notifyDataSetChanged();
     }
 
     private class ActionModeCallback implements ActionMode.Callback {
@@ -266,10 +234,10 @@ public class MyReviewsFragment extends Fragment implements ValueEventListener {
                             .setAction(R.string.undo, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    reviews.addAll(deletedReviews);
+                                    myReviewsPresenter.addDeletedReviews(deletedReviews);
                                     reviewAdapter.notifyDataSetChanged();
                                     for (Review review : deletedReviews) {
-                                        FirebaseHelper.addReview(review);
+                                        myReviewsPresenter.addToFirebase(review);
                                     }
                                 }
                             });
