@@ -2,10 +2,7 @@ package com.druger.aboutwork.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -14,49 +11,47 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.arellomobile.mvp.MvpAppCompatActivity;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+import com.druger.aboutwork.interfaces.view.LoginView;
+import com.druger.aboutwork.presenters.LoginPresenter;
 import com.squareup.leakcanary.RefWatcher;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends MvpAppCompatActivity implements LoginView {
     private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int REQUEST_SIGNUP = 0;
+
+    @InjectPresenter
+    LoginPresenter loginPresenter;
 
     private EditText etEmail;
     private EditText etPassword;
     private Button btnLogin;
     private ProgressBar progressBar;
-
-    private FirebaseAuth auth;
+    private TextView tvSignup;
+    private TextView tvResetPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        auth = FirebaseAuth.getInstance();
-
-        if (auth.getCurrentUser() != null) {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        }
+        loginPresenter.setAuth(this);
 
         setContentView(R.layout.activity_login);
+        setupUI();
+        setupUX();
+    }
 
-        etEmail = (EditText) findViewById(R.id.etEmail);
-        etPassword = (EditText) findViewById(R.id.etPassword);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        TextView tvSignup = (TextView) findViewById(R.id.tvSignup);
-        TextView tvResetPassword = (TextView) findViewById(R.id.tvResetPassword);
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
-
+    private void setupUX() {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login();
+                String email = etEmail.getText().toString().trim();
+                String password = etPassword.getText().toString().trim();
+
+                loginPresenter.loginClick(email, password);
             }
         });
 
@@ -76,12 +71,20 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void setupUI() {
+        etEmail = (EditText) findViewById(R.id.etEmail);
+        etPassword = (EditText) findViewById(R.id.etPassword);
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+        tvSignup = (TextView) findViewById(R.id.tvSignup);
+        tvResetPassword = (TextView) findViewById(R.id.tvResetPassword);
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
+                showMainActivity();
             }
         }
     }
@@ -99,50 +102,32 @@ public class LoginActivity extends AppCompatActivity {
         refWatcher.watch(this);
     }
 
-    private void login() {
-        Log.d(TAG, "Login");
-
-        String email = etEmail.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
-
-        if (!validate(email, password)) {
-            onLoginFailed();
-            return;
-        }
-
-        btnLogin.setEnabled(false);
-        progressBar.setVisibility(View.VISIBLE);
-
-        auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-                        progressBar.setVisibility(View.GONE);
-
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithEmail", task.getException());
-                            onLoginFailed();
-                        } else {
-                            onLoginSuccess();
-                        }
-                    }
-                });
-    }
-
-    private void onLoginSuccess() {
+    @Override
+    public void onLoginSuccess() {
         btnLogin.setEnabled(true);
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
+        showMainActivity();
     }
 
-    private void onLoginFailed() {
+    @Override
+    public void onLoginFailed() {
         Toast.makeText(getBaseContext(), R.string.login_failed, Toast.LENGTH_SHORT).show();
 
         btnLogin.setEnabled(true);
     }
 
-    private boolean validate(String email, String password) {
+    @Override
+    public void showProgress() {
+        btnLogin.setEnabled(false);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public boolean validate(String email, String password) {
         boolean valid = true;
 
         if (TextUtils.isEmpty(email) ||
@@ -160,5 +145,11 @@ public class LoginActivity extends AppCompatActivity {
             etPassword.setError(null);
         }
         return valid;
+    }
+
+    @Override
+    public void showMainActivity() {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 }
