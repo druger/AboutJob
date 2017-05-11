@@ -75,6 +75,7 @@
 
     <string name="comments">Comments</string>
     <string name="your_message">Your message</string>
+    <string name="success_update_pass">Password is updated, sign in with new password!</string>
 
     <string-array name="comments_change">
         <item>@string/delete</item>
