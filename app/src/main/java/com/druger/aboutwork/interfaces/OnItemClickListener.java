@@ -1,4 +1,4 @@
-package com.druger.aboutwork.recyclerview_helper;
+package com.druger.aboutwork.interfaces;
 
 import android.view.View;
 

@@ -63,14 +63,20 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_selected_review, container, false);
 
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        String companyName = getActivity().getIntent().getStringExtra("name");
-        if (companyName != null) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(companyName);
-        }
+        setToolbar(view);
+        setUI(view);
+        setUX();
+        setReview();
+        return view;
+    }
 
+    private void setUX() {
+        ivLike.setOnClickListener(this);
+        ivDislike.setOnClickListener(this);
+        ivComments.setOnClickListener(this);
+    }
+
+    private void setUI(View view) {
         tvUserName = (TextView) view.findViewById(R.id.tvUserName);
         tvDate = (TextView) view.findViewById(R.id.tvDate);
         tvCity = (TextView) view.findViewById(R.id.tvCity);
@@ -98,16 +104,23 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
         tvLike = (TextView) view.findViewById(R.id.tvLike);
         tvDislike = (TextView) view.findViewById(R.id.tvDislike);
 
-        setUI();
-        return view;
-    }
-
-    private void setUI() {
         tvPosition.setVisibility(View.GONE);
         tvEmploymentDate.setVisibility(View.GONE);
         tvDismissalDate.setVisibility(View.GONE);
         tvInterviewDate.setVisibility(View.GONE);
+    }
 
+    private void setToolbar(View view) {
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        String companyName = getActivity().getIntent().getStringExtra("name");
+        if (companyName != null) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(companyName);
+        }
+    }
+
+    private void setReview() {
         Bundle bundle = getArguments();
         review = bundle.getParcelable("review");
 
@@ -148,9 +161,6 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
             tvLike.setText(String.valueOf(review.getLike()));
             tvDislike.setText(String.valueOf(review.getDislike()));
 
-            ivLike.setOnClickListener(this);
-            ivDislike.setOnClickListener(this);
-            ivComments.setOnClickListener(this);
             ivComments.setColorFilter(Color.parseColor("#9E9E9E"));
 
             boolean myLike = review.isMyLike();

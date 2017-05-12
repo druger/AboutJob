@@ -11,8 +11,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.model.Company;
-import com.druger.aboutwork.recyclerview_helper.OnItemClickListener;
 
 import java.util.List;
 

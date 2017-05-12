@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.db.FirebaseHelper;
+import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
-import com.druger.aboutwork.recyclerview_helper.OnItemClickListener;
 import com.druger.aboutwork.utils.Utils;
 
 import java.util.ArrayList;

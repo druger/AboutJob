@@ -19,11 +19,11 @@ import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.CompanyDetailActivity;
 import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.adapters.CompanyAdapter;
+import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.CompaniesView;
 import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.presenters.CompaniesPresenter;
-import com.druger.aboutwork.recyclerview_helper.OnItemClickListener;
 import com.mikepenz.fastadapter_extensions.scroll.EndlessRecyclerOnScrollListener;
 import com.squareup.leakcanary.RefWatcher;
 
