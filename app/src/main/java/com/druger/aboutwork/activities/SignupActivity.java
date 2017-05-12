@@ -1,8 +1,6 @@
 package com.druger.aboutwork.activities;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -13,46 +11,46 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.arellomobile.mvp.MvpAppCompatActivity;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
-import com.druger.aboutwork.db.FirebaseHelper;
-import com.druger.aboutwork.model.User;
-import com.druger.aboutwork.utils.SharedPreferencesHelper;
-import com.druger.aboutwork.utils.Utils;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.druger.aboutwork.interfaces.view.SignupView;
+import com.druger.aboutwork.presenters.SignupPresenter;
 import com.squareup.leakcanary.RefWatcher;
 
-public class SignupActivity extends AppCompatActivity {
+public class SignupActivity extends MvpAppCompatActivity implements SignupView {
     private static final String TAG = SignupActivity.class.getSimpleName();
+
+    @InjectPresenter
+    SignupPresenter signupPresenter;
 
     private EditText etEmail;
     private EditText etPassword;
     private Button btnSignup;
     private ProgressBar progressBar;
-
-    private FirebaseAuth auth;
+    private TextView tvLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        auth = FirebaseAuth.getInstance();
+        signupPresenter.setAuth(this);
+        setUI();
+        setUX();
+    }
 
-        etEmail = (EditText) findViewById(R.id.etEmail);
-        etPassword = (EditText) findViewById(R.id.etPassword);
-        btnSignup = (Button) findViewById(R.id.btnSignup);
-        TextView tvLogin = (TextView) findViewById(R.id.tvLogin);
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
-
+    private void setUX() {
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signup();
+                Log.d(TAG, "Signup");
+
+                String email = etEmail.getText().toString().trim();
+                String password = etPassword.getText().toString().trim();
+
+                signupPresenter.signupClick(email, password);
             }
         });
 
@@ -64,61 +62,41 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    private void signup() {
-        Log.d(TAG, "Signup");
-
-        String email = etEmail.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
-
-        if (!validate(email, password)) {
-            onSignupFailed();
-            return;
-        }
-
-        btnSignup.setEnabled(false);
-        progressBar.setVisibility(View.VISIBLE);
-
-        auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
-
-                        progressBar.setVisibility(View.GONE);
-
-                        if (!task.isSuccessful()) {
-                            onSignupFailed();
-                        } else {
-                            saveNewUser(task.getResult().getUser());
-                            onSignupSuccess();
-                        }
-
-                    }
-                });
-
+    private void setUI() {
+        etEmail = (EditText) findViewById(R.id.etEmail);
+        etPassword = (EditText) findViewById(R.id.etPassword);
+        btnSignup = (Button) findViewById(R.id.btnSignup);
+        tvLogin = (TextView) findViewById(R.id.tvLogin);
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
     }
 
-    private void saveNewUser(FirebaseUser firebaseUser) {
-        String id = firebaseUser.getUid();
-        String name = Utils.getNameByEmail(firebaseUser.getEmail());
-        User user = new User(id, name);
-        FirebaseHelper.addUser(user, firebaseUser.getUid());
-        SharedPreferencesHelper.saveUserName(name, this);
-    }
-
-    private void onSignupSuccess() {
+    @Override
+    public void onSignupSuccess() {
         btnSignup.setEnabled(true);
         setResult(RESULT_OK, null);
         finish();
     }
 
-    private void onSignupFailed() {
+    @Override
+    public void onSignupFailed() {
         Toast.makeText(getBaseContext(), R.string.signup_failed, Toast.LENGTH_SHORT).show();
 
         btnSignup.setEnabled(true);
     }
 
-    private boolean validate(String email, String password) {
+    @Override
+    public void showProgress() {
+        btnSignup.setEnabled(false);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public boolean validate(String email, String password) {
         boolean valid = true;
 
         if (TextUtils.isEmpty(email) ||
@@ -141,7 +119,7 @@ public class SignupActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        progressBar.setVisibility(View.GONE);
+        hideProgress();
     }
 
     @Override
