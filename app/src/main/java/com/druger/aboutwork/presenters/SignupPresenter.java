@@ -38,11 +38,6 @@ public class SignupPresenter extends MvpPresenter<SignupView> {
     }
 
     private void signup(String email, String password) {
-        if (!getViewState().validate(email, password)) {
-            getViewState().onSignupFailed();
-            return;
-        }
-
         getViewState().showProgress();
 
         auth.createUserWithEmailAndPassword(email, password)

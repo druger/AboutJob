@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CompaniesFragment extends MvpAppCompatFragment implements CompaniesView {
+public class CompaniesFragment extends MvpFragment implements CompaniesView {
     private static final String TAG = CompaniesFragment.class.getSimpleName();
 
     @InjectPresenter

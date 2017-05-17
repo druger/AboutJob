@@ -51,7 +51,11 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
                 String email = etEmail.getText().toString().trim();
                 String password = etPassword.getText().toString().trim();
 
-                loginPresenter.loginClick(email, password);
+                if (!validate(email, password)) {
+                    onLoginFailed();
+                } else {
+                    loginPresenter.loginClick(email, password);
+                }
             }
         });
 
@@ -126,8 +130,7 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
         progressBar.setVisibility(View.GONE);
     }
 
-    @Override
-    public boolean validate(String email, String password) {
+    private boolean validate(String email, String password) {
         boolean valid = true;
 
         if (TextUtils.isEmpty(email) ||

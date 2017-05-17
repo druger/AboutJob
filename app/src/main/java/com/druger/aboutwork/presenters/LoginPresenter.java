@@ -31,11 +31,6 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
     private void login(String email, String password) {
         Log.d(TAG, "Login");
 
-        if (!getViewState().validate(email, password)) {
-            getViewState().onLoginFailed();
-            return;
-        }
-
         getViewState().showProgress();
 
         auth.signInWithEmailAndPassword(email, password)

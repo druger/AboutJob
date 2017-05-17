@@ -157,12 +157,8 @@ public class CompanyDetailFragment extends MvpFragment implements View.OnClickLi
         reviewAdapter.setOnClickListener(new OnItemClickListener() {
             @Override
             public void onClick(View view, int position) {
-                SelectedReviewFragment reviewFragment = new SelectedReviewFragment();
-
                 Review review = reviews.get(position);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("review", review);
-                reviewFragment.setArguments(bundle);
+                SelectedReviewFragment reviewFragment = SelectedReviewFragment.newInstance(review, false);
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.company_container, reviewFragment);

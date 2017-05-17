@@ -10,8 +10,6 @@ public interface LoginView extends MvpView {
 
     void showMainActivity();
 
-    boolean validate(String email, String password);
-
     void onLoginFailed();
 
     void showProgress();

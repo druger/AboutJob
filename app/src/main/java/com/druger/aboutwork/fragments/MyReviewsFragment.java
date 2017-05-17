@@ -1,6 +1,7 @@
 package com.druger.aboutwork.fragments;
 
 
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
@@ -18,7 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
@@ -36,7 +37,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyReviewsFragment extends MvpAppCompatFragment implements MyReviewsView {
+public class MyReviewsFragment extends MvpFragment implements MyReviewsView {
 
     @InjectPresenter
     MyReviewsPresenter myReviewsPresenter;
@@ -91,7 +92,7 @@ public class MyReviewsFragment extends MvpAppCompatFragment implements MyReviews
         ((MainActivity) getActivity()).setBackArrowActionBar();
     }
 
-    private void setupRecycler(List<Review> reviews) {
+    private void setupRecycler(final List<Review> reviews) {
         reviewAdapter = new ReviewAdapter(reviews);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -103,6 +104,9 @@ public class MyReviewsFragment extends MvpAppCompatFragment implements MyReviews
             public void onClick(View view, int position) {
                 if (actionMode != null) {
                     toggleSelection(position);
+                } else {
+                    Review review = reviews.get(position);
+                    showSelectedReview(review);
                 }
             }
 
@@ -116,6 +120,15 @@ public class MyReviewsFragment extends MvpAppCompatFragment implements MyReviews
                 return true;
             }
         });
+    }
+
+    private void showSelectedReview(Review review) {
+        SelectedReviewFragment reviewFragment = SelectedReviewFragment.newInstance(review, true);
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.main_container, reviewFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     private void setupUI(View view) {
@@ -195,11 +208,7 @@ public class MyReviewsFragment extends MvpAppCompatFragment implements MyReviews
     @Override
     public void showReviews(List<Review> reviews) {
         tvCountReviews.setText(String.valueOf(reviews.size()));
-        if (reviewAdapter == null) {
-            setupRecycler(reviews);
-        } else {
-            notifyDataSetChanged();
-        }
+        setupRecycler(reviews);
     }
 
     @Override

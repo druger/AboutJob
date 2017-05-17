@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
@@ -26,7 +26,7 @@ import com.druger.aboutwork.interfaces.view.SettingsView;
 import com.druger.aboutwork.presenters.SettingPresenter;
 import com.squareup.leakcanary.RefWatcher;
 
-public class SettingsFragment extends MvpAppCompatFragment implements View.OnClickListener, SettingsView {
+public class SettingsFragment extends MvpFragment implements View.OnClickListener, SettingsView {
     private final String TAG = SettingsFragment.class.getSimpleName();
 
     @InjectPresenter

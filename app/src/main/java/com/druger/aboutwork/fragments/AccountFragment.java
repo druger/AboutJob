@@ -1,11 +1,10 @@
 package com.druger.aboutwork.fragments;
 
 
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
@@ -26,10 +25,8 @@ import com.druger.aboutwork.utils.SharedPreferencesHelper;
 import com.druger.aboutwork.utils.Utils;
 import com.squareup.leakcanary.RefWatcher;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class AccountFragment extends MvpAppCompatFragment implements View.OnClickListener, AccountView{
+
+public class AccountFragment extends MvpFragment implements View.OnClickListener, AccountView{
 
     @InjectPresenter
     AccountPresenter accountPresenter;
@@ -125,7 +122,7 @@ public class AccountFragment extends MvpAppCompatFragment implements View.OnClic
 
     @Override
     public void showLoginActivity() {
-        startActivity(new Intent(getContext(), LoginActivity.class));
+        startActivity(new Intent(getActivity(), LoginActivity.class));
         getActivity().finish();
     }
 

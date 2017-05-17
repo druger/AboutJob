@@ -1,10 +1,10 @@
 package com.druger.aboutwork.activities;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 
@@ -59,10 +59,10 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     private void setupUI() {
         bottomNavigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
-        fragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        fragment = getFragmentManager().findFragmentById(R.id.main_container);
         if (fragment == null) {
             fragment = new CompaniesFragment();
-            getSupportFragmentManager().beginTransaction()
+            getFragmentManager().beginTransaction()
                     .add(R.id.main_container, fragment).commit();
         }
     }
@@ -115,7 +115,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     }
 
     private void replaceFragment(Fragment fragment) {
-        final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        final FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.main_container, fragment);
         transaction.commit();
     }

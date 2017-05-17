@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -51,23 +52,46 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
     private TextView tvLike;
     private TextView tvDislike;
     private ImageView ivComments;
-
+    private BottomNavigationView bottomNavigationView;
     private Review review;
 
     public SelectedReviewFragment() {
         // Required empty public constructor
     }
 
+    public static SelectedReviewFragment newInstance(Review review, boolean fromAccount) {
+
+        Bundle args = new Bundle();
+        args.putParcelable("review", review);
+        args.putBoolean("fromAccount", fromAccount);
+
+        SelectedReviewFragment fragment = new SelectedReviewFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_selected_review, container, false);
-
-        setToolbar(view);
+        View view;
+        if (!getArguments().getBoolean("fromAccount")) {
+            view = inflater.inflate(R.layout.fragment_selected_review, container, false);
+            setToolbar(view);
+        } else {
+            view = inflater.inflate(R.layout.selected_review_no_actionbar, container, false);
+        }
         setUI(view);
         setUX();
         setReview();
+        hideViews();
         return view;
+    }
+
+    private void hideViews() {
+        if (getArguments().getBoolean("fromAccount")) {
+            bottomNavigationView = (BottomNavigationView) getActivity().findViewById(R.id.bottom_navigation);
+            bottomNavigationView.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void setUX() {
@@ -272,5 +296,11 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
         transaction.replace(R.id.company_container, comments);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        bottomNavigationView.setVisibility(View.VISIBLE);
     }
 }

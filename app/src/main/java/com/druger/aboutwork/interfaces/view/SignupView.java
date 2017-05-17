@@ -8,8 +8,6 @@ import com.arellomobile.mvp.MvpView;
 
 public interface SignupView extends MvpView {
 
-    boolean validate(String email, String password);
-
     void onSignupFailed();
 
     void showProgress();
