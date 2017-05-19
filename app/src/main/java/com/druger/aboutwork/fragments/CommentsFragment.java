@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -33,6 +34,8 @@ import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
 
+import static com.druger.aboutwork.R.string.comments;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -46,6 +49,7 @@ public class CommentsFragment extends MvpFragment implements CommentsView{
 
     private EditText etMessage;
     private ImageView ivSend;
+    private BottomNavigationView bottomNavigation;
 
     private RecyclerView recyclerView;
     private CommentAdapter commentAdapter;
@@ -56,10 +60,11 @@ public class CommentsFragment extends MvpFragment implements CommentsView{
         // Required empty public constructor
     }
 
-    public static CommentsFragment newInstance(String reviewId) {
+    public static CommentsFragment newInstance(String reviewId, boolean fromAccount) {
 
         Bundle args = new Bundle();
         args.putString("reviewId", reviewId);
+        args.putBoolean("fromAccount", fromAccount);
 
         CommentsFragment fragment = new CommentsFragment();
         fragment.setArguments(args);
@@ -79,8 +84,14 @@ public class CommentsFragment extends MvpFragment implements CommentsView{
         setupUI(view);
         setupListeners();
         retrieveComments();
-
+        hideBottomNavigation();
         return view;
+    }
+
+    private void hideBottomNavigation() {
+        if (getArguments().getBoolean("fromAccount")) {
+            bottomNavigation.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void setupListeners() {
@@ -126,13 +137,14 @@ public class CommentsFragment extends MvpFragment implements CommentsView{
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.comments);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(comments);
     }
 
     private void setupUI(View view) {
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         etMessage = (EditText) view.findViewById(R.id.etMessage);
         ivSend = (ImageView) view.findViewById(R.id.ivSend);
+        bottomNavigation = (BottomNavigationView) getActivity().findViewById(R.id.bottom_navigation);
     }
 
     private void retrieveComments() {
@@ -172,6 +184,18 @@ public class CommentsFragment extends MvpFragment implements CommentsView{
                 this.type = NEW;
             }
             this.etMessage.setText(null);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        showBottomNavigation();
+    }
+
+    private void showBottomNavigation() {
+        if (getArguments().getBoolean("fromAccount")) {
+            bottomNavigation.setVisibility(View.VISIBLE);
         }
     }
 

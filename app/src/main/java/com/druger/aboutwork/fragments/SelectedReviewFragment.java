@@ -290,10 +290,16 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
     }
 
     private void showComments() {
-        CommentsFragment comments = CommentsFragment.newInstance(review.getFirebaseKey());
+        CommentsFragment comments;
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.company_container, comments);
+        if (getArguments().getBoolean("fromAccount")) {
+            comments = CommentsFragment.newInstance(review.getFirebaseKey(), true);
+            transaction.replace(R.id.main_container, comments);
+        } else {
+            comments = CommentsFragment.newInstance(review.getFirebaseKey(), false);
+            transaction.replace(R.id.company_container, comments);
+        }
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -301,6 +307,8 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        bottomNavigationView.setVisibility(View.VISIBLE);
+        if (getArguments().getBoolean("fromAccount")) {
+            bottomNavigationView.setVisibility(View.VISIBLE);
+        }
     }
 }
