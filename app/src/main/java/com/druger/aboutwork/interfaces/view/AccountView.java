@@ -1,5 +1,7 @@
 package com.druger.aboutwork.interfaces.view;
 
+import android.net.Uri;
+
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
@@ -20,4 +22,12 @@ public interface AccountView extends MvpView {
     void openMyReviews(String userId);
 
     void showLoginActivity();
+
+    void showEmail(String email);
+
+    void checkPermissionReadExternal();
+
+    void startCropImageActivity(Uri imgUri);
+
+    void setupPhoto(Uri imgUri);
 }

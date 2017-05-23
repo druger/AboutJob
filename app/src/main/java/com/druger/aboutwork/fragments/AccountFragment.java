@@ -1,9 +1,12 @@
 package com.druger.aboutwork.fragments;
 
 
+import android.Manifest;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -24,6 +27,13 @@ import com.druger.aboutwork.presenters.AccountPresenter;
 import com.druger.aboutwork.utils.SharedPreferencesHelper;
 import com.druger.aboutwork.utils.Utils;
 import com.squareup.leakcanary.RefWatcher;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.theartofdev.edmodo.cropper.CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE;
+import static com.theartofdev.edmodo.cropper.CropImage.getPickImageChooserIntent;
 
 
 public class AccountFragment extends MvpFragment implements View.OnClickListener, AccountView{
@@ -31,11 +41,13 @@ public class AccountFragment extends MvpFragment implements View.OnClickListener
     @InjectPresenter
     AccountPresenter accountPresenter;
 
-    private  TextView tvName;
+    private TextView tvName;
     private ImageView ivEditName;
     private TextView tvMyReviews;
     private TextView tvSettings;
     private TextView tvLogout;
+    private CircleImageView civAvatar;
+    private TextView tvEmail;
 
     public AccountFragment() {
     }
@@ -58,6 +70,7 @@ public class AccountFragment extends MvpFragment implements View.OnClickListener
         tvLogout.setOnClickListener(this);
         ivEditName.setOnClickListener(this);
         tvMyReviews.setOnClickListener(this);
+        civAvatar.setOnClickListener(this);
     }
 
     private void setupToolbar() {
@@ -71,6 +84,8 @@ public class AccountFragment extends MvpFragment implements View.OnClickListener
         tvMyReviews = (TextView) view.findViewById(R.id.tvMyReviews);
         tvSettings = (TextView) view.findViewById(R.id.tvSettings);
         tvLogout = (TextView) view.findViewById(R.id.tvLogout);
+        civAvatar = (CircleImageView) view.findViewById(R.id.civAvatar);
+        tvEmail = (TextView) view.findViewById(R.id.tvEmail);
 
         tvName.setText(SharedPreferencesHelper.getUserName(getActivity()));
     }
@@ -109,7 +124,14 @@ public class AccountFragment extends MvpFragment implements View.OnClickListener
             case R.id.tvMyReviews:
                 accountPresenter.clickOpenMyReviews();
                 break;
+            case R.id.civAvatar:
+                showPhotoPicker();
+                break;
         }
+    }
+
+    private void showPhotoPicker() {
+        startActivityForResult(getPickImageChooserIntent(getActivity()), PICK_IMAGE_CHOOSER_REQUEST_CODE);
     }
 
     @Override
@@ -124,6 +146,34 @@ public class AccountFragment extends MvpFragment implements View.OnClickListener
     public void showLoginActivity() {
         startActivity(new Intent(getActivity(), LoginActivity.class));
         getActivity().finish();
+    }
+
+    @Override
+    public void showEmail(String email) {
+        tvEmail.setText(email);
+    }
+
+    @Override
+    public void checkPermissionReadExternal() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+        }
+    }
+
+    @Override
+    public void startCropImageActivity(Uri imgUri) {
+        CropImage.activity(imgUri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setCropShape(CropImageView.CropShape.OVAL)
+                .setActivityTitle(getString(R.string.photo_crop_name))
+                .setScaleType(CropImageView.ScaleType.CENTER)
+                .setAspectRatio(1, 1)
+                .start(getActivity(), this);
+    }
+
+    @Override
+    public void setupPhoto(Uri imgUri) {
+        civAvatar.setImageURI(imgUri);
     }
 
     @Override
@@ -166,5 +216,11 @@ public class AccountFragment extends MvpFragment implements View.OnClickListener
         });
         builder.show();
         Utils.showKeyboard(getActivity());
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        accountPresenter.checkActivityResult(getActivity(), requestCode, resultCode, data);
     }
 }
