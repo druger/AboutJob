@@ -5,6 +5,7 @@ import android.net.Uri;
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
+import com.google.firebase.storage.StorageReference;
 
 /**
  * Created by druger on 09.05.2017.
@@ -30,4 +31,6 @@ public interface AccountView extends MvpView {
     void startCropImageActivity(Uri imgUri);
 
     void setupPhoto(Uri imgUri);
+
+    void showPhoto(StorageReference storageRef);
 }

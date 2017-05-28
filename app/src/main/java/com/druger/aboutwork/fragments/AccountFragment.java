@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.bumptech.glide.Glide;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.LoginActivity;
@@ -26,6 +27,8 @@ import com.druger.aboutwork.interfaces.view.AccountView;
 import com.druger.aboutwork.presenters.AccountPresenter;
 import com.druger.aboutwork.utils.SharedPreferencesHelper;
 import com.druger.aboutwork.utils.Utils;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.leakcanary.RefWatcher;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -59,6 +62,7 @@ public class AccountFragment extends MvpFragment implements View.OnClickListener
 
         setupUI(view);
         accountPresenter.setupAuth();
+        accountPresenter.setupStorage();
         setupListeners();
         setupToolbar();
 
@@ -174,6 +178,16 @@ public class AccountFragment extends MvpFragment implements View.OnClickListener
     @Override
     public void setupPhoto(Uri imgUri) {
         civAvatar.setImageURI(imgUri);
+    }
+
+    @Override
+    public void showPhoto(StorageReference storageRef) {
+        Glide.with(getActivity())
+                .using(new FirebaseImageLoader())
+                .load(storageRef)
+                .crossFade()
+                .error(R.drawable.ic_account_circle_black)
+                .into(civAvatar);
     }
 
     @Override
