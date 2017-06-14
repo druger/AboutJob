@@ -13,4 +13,8 @@ public interface ReviewView extends MvpView {
     void showWorkedDate();
 
     void showInterviewDate();
+
+    void successfulAddition();
+
+    void showErrorAdding();
 }

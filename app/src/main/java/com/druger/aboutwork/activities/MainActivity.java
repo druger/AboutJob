@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -118,5 +119,14 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         final FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.main_container, fragment);
         transaction.commit();
+    }
+
+    public void hideBottomNavigation() {
+        bottomNavigation.setVisibility(View.GONE);
+
+    }
+
+    public void showBottomNavigation() {
+        bottomNavigation.setVisibility(View.VISIBLE);
     }
 }

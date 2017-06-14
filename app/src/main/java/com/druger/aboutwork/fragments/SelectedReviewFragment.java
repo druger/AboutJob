@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.utils.Utils;
@@ -54,6 +56,10 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
     private ImageView ivComments;
     private BottomNavigationView bottomNavigationView;
     private Review review;
+    private FloatingActionButton fabEdit;
+
+    private Bundle bundle;
+    private boolean fromAccount;
 
     public SelectedReviewFragment() {
         // Required empty public constructor
@@ -74,30 +80,29 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view;
-        if (!getArguments().getBoolean("fromAccount")) {
+        bundle = getArguments();
+        fromAccount = getArguments().getBoolean("fromAccount");
+
+        if (!fromAccount) {
             view = inflater.inflate(R.layout.fragment_selected_review, container, false);
             setToolbar(view);
         } else {
             view = inflater.inflate(R.layout.selected_review_no_actionbar, container, false);
+            ((MainActivity) getActivity()).hideBottomNavigation();
         }
         setUI(view);
         setUX();
         setReview();
-        hideViews();
         return view;
-    }
-
-    private void hideViews() {
-        if (getArguments().getBoolean("fromAccount")) {
-            bottomNavigationView = (BottomNavigationView) getActivity().findViewById(R.id.bottom_navigation);
-            bottomNavigationView.setVisibility(View.INVISIBLE);
-        }
     }
 
     private void setUX() {
         ivLike.setOnClickListener(this);
         ivDislike.setOnClickListener(this);
         ivComments.setOnClickListener(this);
+        if (fromAccount) {
+            fabEdit.setOnClickListener(this);
+        }
     }
 
     private void setUI(View view) {
@@ -128,6 +133,8 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
         tvLike = (TextView) view.findViewById(R.id.tvLike);
         tvDislike = (TextView) view.findViewById(R.id.tvDislike);
 
+        fabEdit = (FloatingActionButton) view.findViewById(R.id.fabEdit);
+
         tvPosition.setVisibility(View.GONE);
         tvEmploymentDate.setVisibility(View.GONE);
         tvDismissalDate.setVisibility(View.GONE);
@@ -145,7 +152,6 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
     }
 
     private void setReview() {
-        Bundle bundle = getArguments();
         review = bundle.getParcelable("review");
 
         if (review != null) {
@@ -223,7 +229,19 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
             case R.id.ivComments:
                 showComments();
                 break;
+            case R.id.fabEdit:
+                showEditReview();
+                break;
         }
+    }
+
+    private void showEditReview() {
+        ReviewFragment reviewFragment = ReviewFragment.newInstance(review, true);
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.main_container, reviewFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     private void clickDislike() {
@@ -307,8 +325,8 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (getArguments().getBoolean("fromAccount")) {
-            bottomNavigationView.setVisibility(View.VISIBLE);
+        if (fromAccount) {
+            ((MainActivity) getActivity()).showBottomNavigation();
         }
     }
 }

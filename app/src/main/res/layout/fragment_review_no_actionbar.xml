@@ -3,8 +3,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <include layout="@layout/toolbar" />
-
     <include layout="@layout/content_review" />
 
 </android.support.design.widget.CoordinatorLayout>

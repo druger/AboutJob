@@ -1,6 +1,7 @@
 package com.druger.aboutwork.presenters;
 
 import android.support.annotation.IdRes;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RadioGroup;
@@ -9,6 +10,7 @@ import android.widget.RatingBar;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.view.ReviewView;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
@@ -61,11 +63,18 @@ public class ReviewPresenter extends MvpPresenter<ReviewView>
         }
     }
 
-    public void setCompanyRating(RatingBar salary, RatingBar chief, RatingBar workplace, RatingBar career, RatingBar collective, RatingBar socialPackage) {
+    public void setCompanyRating(RatingBar salary, RatingBar chief, RatingBar workplace,
+                                 RatingBar career, RatingBar collective, RatingBar socialPackage,
+                                 Review review, boolean fromAccount) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            review = new Review(companyId, user.getUid(), Calendar.getInstance().getTimeInMillis());
-            mark = new MarkCompany(user.getUid(), companyId);
+            if (fromAccount) {
+                this.review = review;
+                mark = review.getMarkCompany();
+            } else {
+                this.review = new Review(companyId, user.getUid(), Calendar.getInstance().getTimeInMillis());
+                mark = new MarkCompany(user.getUid(), companyId);
+            }
         }
 
         salary.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -110,7 +119,7 @@ public class ReviewPresenter extends MvpPresenter<ReviewView>
             }
         });
 
-        review.setMarkCompany(mark);
+        this.review.setMarkCompany(mark);
     }
 
     public void setCompanyId(String companyId) {
@@ -121,7 +130,9 @@ public class ReviewPresenter extends MvpPresenter<ReviewView>
         return review;
     }
 
-    public boolean checkReview(String pluses, String minuses, String position) {
+    public void checkReview(String pluses, String minuses, String position,
+                            @Nullable String companyId, @Nullable String companyName,
+                            boolean fromAccount) {
         if (!TextUtils.isEmpty(pluses) && !TextUtils.isEmpty(minuses) && status > -1
                 && mark.getAverageMark() != 0) {
             review.setPluses(pluses);
@@ -131,8 +142,15 @@ public class ReviewPresenter extends MvpPresenter<ReviewView>
             if (!TextUtils.isEmpty(position)) {
                 review.setPosition(position);
             }
-            return true;
+            if (fromAccount) {
+                FirebaseHelper.updateReview(review);
+            } else {
+                FirebaseHelper.addReview(review);
+                FirebaseHelper.addCompany(companyId, companyName);
+                getViewState().successfulAddition();
+            }
+        } else {
+            getViewState().showErrorAdding();
         }
-        return false;
     }
 }

@@ -3,7 +3,6 @@ package com.druger.aboutwork.fragments;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -30,7 +29,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.adapters.ReviewAdapter;
-import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.CompanyDetailView;
 import com.druger.aboutwork.model.CompanyDetail;
@@ -40,8 +38,6 @@ import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -116,7 +112,7 @@ public class CompanyDetailFragment extends MvpFragment implements View.OnClickLi
         tvCountReviews = (TextView) view.findViewById(R.id.tvCountReviews);
         tvRating = (TextView) view.findViewById(R.id.tvRating);
         ratingCompany = (RatingBar) view.findViewById(R.id.rating_company);
-        fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab = (FloatingActionButton) view.findViewById(R.id.fabAddReview);
 
         tvDescription.setVisibility(View.GONE);
 
@@ -177,7 +173,6 @@ public class CompanyDetailFragment extends MvpFragment implements View.OnClickLi
         ReviewFragment review = new ReviewFragment();
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        review.setTargetFragment(CompanyDetailFragment.this, REVIEW_REQUEST);
         transaction.replace(R.id.company_container, review);
         transaction.addToBackStack(null);
         transaction.commit();
@@ -192,7 +187,7 @@ public class CompanyDetailFragment extends MvpFragment implements View.OnClickLi
             case R.id.ivUpDrop:
                 companyDetailPresenter.upDropClick();
                 break;
-            case R.id.fab:
+            case R.id.fabAddReview:
                 addReview();
                 break;
         }
@@ -215,17 +210,6 @@ public class CompanyDetailFragment extends MvpFragment implements View.OnClickLi
         super.onDestroy();
         RefWatcher refWatcher = AboutWorkApp.getRefWatcher(getActivity());
         refWatcher.watch(this);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == REVIEW_REQUEST) {
-                FirebaseHelper.addReview((Review) data.getParcelableExtra("addedReview"));
-                FirebaseHelper.addCompany(detail.getId(), detail.getName());
-            }
-        }
     }
 
     @Override

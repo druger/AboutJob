@@ -5,9 +5,9 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -25,16 +25,16 @@ import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.AboutWorkApp;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.interfaces.view.ReviewView;
 import com.druger.aboutwork.model.CompanyDetail;
+import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.ReviewPresenter;
 import com.druger.aboutwork.utils.Utils;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.Calendar;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,66 +56,122 @@ public class ReviewFragment extends MvpFragment implements ReviewView, View.OnCl
     private TextInputEditText etMinuses;
     private TextInputEditText etPosition;
 
+    private TextInputLayout ltEmploymentDate;
+    private TextInputLayout ltDismissalDate;
+    private TextInputLayout ltInterviewDate;
     private EditText etEmploymentDate;
     private EditText etDismissalDate;
     private EditText etInterviewDate;
 
     private RadioGroup radioGroup;
     private Button btnAdd;
-    private Button btnCancel;
+    private Button btnEdit;
 
     private DatePickerFragment datePicker;
 
     private View view;
     private CompanyDetail detail;
+    private Review review;
+    private boolean fromAccount;
 
     public ReviewFragment() {
         // Required empty public constructor
     }
 
+    public static ReviewFragment newInstance(Review review, boolean fromAccount) {
+        Bundle args = new Bundle();
+
+        ReviewFragment fragment = new ReviewFragment();
+        args.putParcelable("review", review);
+        args.putBoolean("fromAccount", fromAccount);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_review, container, false);
 
-        detail = getActivity().getIntent().getExtras().getParcelable("companyDetail");
-        if (detail != null) {
-            String companyId = detail.getId();
-            reviewPresenter.setCompanyId(companyId);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            review = (Review) bundle.get("review");
+            fromAccount = bundle.getBoolean("fromAccount");
         }
 
-        setupToolbar();
+        if (!fromAccount) {
+            view = inflater.inflate(R.layout.fragment_review, container, false);
+            detail = getActivity().getIntent().getExtras().getParcelable("companyDetail");
+            if (detail != null) {
+                String companyId = detail.getId();
+                reviewPresenter.setCompanyId(companyId);
+            }
+            setupToolbar();
+        } else {
+            view = inflater.inflate(R.layout.fragment_review_no_actionbar, container, false);
+            ((MainActivity) getActivity()).hideBottomNavigation();
+        }
         setupUI();
         setupListeners();
 
-        datePicker = new DatePickerFragment();
-
-        reviewPresenter.setCompanyRating(salary, chief, workplace, career, collective, socialPackage);
-
+        reviewPresenter.setCompanyRating(salary, chief, workplace, career, collective, socialPackage,
+                review, fromAccount);
+        if (fromAccount) {
+            fillData();
+        }
         return view;
+    }
+
+    private void fillData() {
+        etPluses.setText(review.getPluses());
+        etMinuses.setText(review.getMinuses());
+        etPosition.setText(review.getPosition());
+        etEmploymentDate.setText(Utils.getDate(review.getEmploymentDate()));
+        etDismissalDate.setText(Utils.getDate(review.getDismissalDate()));
+        etInterviewDate.setText(Utils.getDate(review.getInterviewDate()));
+
+        MarkCompany markCompany = review.getMarkCompany();
+        salary.setRating(markCompany.getSalary());
+        chief.setRating(markCompany.getChief());
+        workplace.setRating(markCompany.getWorkplace());
+        career.setRating(markCompany.getCareer());
+        collective.setRating(markCompany.getCollective());
+        socialPackage.setRating(markCompany.getSocialPackage());
+
+        switch (review.getStatus()) {
+            case 0:
+                radioGroup.check(R.id.radio_working);
+                break;
+            case 1:
+                radioGroup.check(R.id.radio_worked);
+                break;
+            case 2:
+                radioGroup.check(R.id.radio_interview);
+                break;
+        }
     }
 
     private void setupToolbar() {
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        assert detail != null;
-        String companyName = detail.getName();
-        if (companyName != null) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(companyName);
+        if (detail != null) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(detail.getName());
         }
+
     }
 
     private void setupListeners() {
         radioGroup.setOnCheckedChangeListener(reviewPresenter);
         btnAdd.setOnClickListener(this);
-        btnCancel.setOnClickListener(this);
         etEmploymentDate.setOnClickListener(this);
         etDismissalDate.setOnClickListener(this);
         etInterviewDate.setOnClickListener(this);
+        btnEdit.setOnClickListener(this);
     }
 
     private void setupUI() {
+        datePicker = new DatePickerFragment();
+
         etPluses = (TextInputEditText) view.findViewById(R.id.etPluses);
         etMinuses = (TextInputEditText) view.findViewById(R.id.etMinuses);
         etPosition = (TextInputEditText) view.findViewById(R.id.et_position);
@@ -129,16 +185,24 @@ public class ReviewFragment extends MvpFragment implements ReviewView, View.OnCl
 
         radioGroup = (RadioGroup) view.findViewById(R.id.radio_group);
 
-        etEmploymentDate = (EditText) view.findViewById(R.id.tvEmploymentDate);
-        etDismissalDate = (EditText) view.findViewById(R.id.tvDismissalDate);
-        etInterviewDate = (EditText) view.findViewById(R.id.tvInterviewDate);
+        ltEmploymentDate = (TextInputLayout) view.findViewById(R.id.ltEmploymentDate);
+        ltDismissalDate = (TextInputLayout) view.findViewById(R.id.ltDismissalDate);
+        ltInterviewDate = (TextInputLayout) view.findViewById(R.id.ltInterviewDate);
+        etEmploymentDate = (EditText) view.findViewById(R.id.etEmploymentDate);
+        etDismissalDate = (EditText) view.findViewById(R.id.etDismissalDate);
+        etInterviewDate = (EditText) view.findViewById(R.id.etInterviewDate);
 
         btnAdd = (Button) view.findViewById(R.id.btnAdd);
-        btnCancel = (Button) view.findViewById(R.id.btnCancel);
+        btnEdit = (Button) view.findViewById(R.id.btnEdit);
 
-        etEmploymentDate.setVisibility(View.GONE);
-        etDismissalDate.setVisibility(View.GONE);
-        etInterviewDate.setVisibility(View.GONE);
+        ltEmploymentDate.setVisibility(View.GONE);
+        ltDismissalDate.setVisibility(View.GONE);
+        ltInterviewDate.setVisibility(View.GONE);
+
+        if (fromAccount) {
+            btnAdd.setVisibility(View.GONE);
+            btnEdit.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -147,6 +211,9 @@ public class ReviewFragment extends MvpFragment implements ReviewView, View.OnCl
         unbindDrawables(view);
         RefWatcher refWatcher = AboutWorkApp.getRefWatcher(getActivity());
         refWatcher.watch(this);
+        if (fromAccount) {
+            ((MainActivity) getActivity()).showBottomNavigation();
+        }
     }
 
     private void unbindDrawables(View view) {
@@ -165,66 +232,72 @@ public class ReviewFragment extends MvpFragment implements ReviewView, View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnAdd:
-                if (checkReview()) {
-                    Intent addedReview = new Intent(getActivity(), ReviewFragment.class);
-                    addedReview.putExtra("addedReview", reviewPresenter.getReview());
-                    getTargetFragment().onActivityResult(getTargetRequestCode(), RESULT_OK, addedReview);
-                    Toast.makeText(getActivity().getApplicationContext(), R.string.review_added,
-                            Toast.LENGTH_SHORT).show();
-                    getFragmentManager().popBackStackImmediate();
-                } else {
-                    Toast.makeText(getActivity().getApplicationContext(), R.string.error_review_add,
-                            Toast.LENGTH_SHORT).show();
-                }
+                checkReview(false);
                 break;
-            case R.id.btnCancel:
-                getFragmentManager().popBackStackImmediate();
-                break;
-            case R.id.tvEmploymentDate:
+            case R.id.etEmploymentDate:
                 datePicker.flag = DatePickerFragment.EMPLOYMENT_DATE;
                 datePicker.show(getFragmentManager(), DatePickerFragment.TAG);
                 datePicker.setData(etEmploymentDate, reviewPresenter.getReview());
                 break;
-            case R.id.tvDismissalDate:
+            case R.id.etDismissalDate:
                 datePicker.flag = DatePickerFragment.DISMISSAL_DATE;
                 datePicker.show(getFragmentManager(), DatePickerFragment.TAG);
                 datePicker.setData(etDismissalDate, reviewPresenter.getReview());
                 break;
-            case R.id.tvInterviewDate:
+            case R.id.etInterviewDate:
                 datePicker.flag = DatePickerFragment.INTERVIEW_DATE;
                 datePicker.show(getFragmentManager(), DatePickerFragment.TAG);
                 datePicker.setData(etInterviewDate, reviewPresenter.getReview());
                 break;
+            case R.id.btnEdit:
+                checkReview(true);
+                break;
         }
     }
 
-    private boolean checkReview() {
+    private void checkReview(boolean fromAccount) {
         String pluses = etPluses.getText().toString().trim();
         String minuses = etMinuses.getText().toString().trim();
         String position = etPosition.getText().toString().trim();
-
-        return reviewPresenter.checkReview(pluses, minuses, position);
+        if (fromAccount) {
+            reviewPresenter.checkReview(pluses, minuses, position, null, null, true);
+        } else {
+            reviewPresenter.checkReview(pluses, minuses, position, detail.getId(), detail.getName(), false);
+        }
     }
 
     @Override
     public void showWorkingDate() {
-        etEmploymentDate.setVisibility(View.VISIBLE);
-        etDismissalDate.setVisibility(View.GONE);
-        etInterviewDate.setVisibility(View.GONE);
+        ltEmploymentDate.setVisibility(View.VISIBLE);
+        ltDismissalDate.setVisibility(View.GONE);
+        ltInterviewDate.setVisibility(View.GONE);
     }
 
     @Override
     public void showWorkedDate() {
-        etEmploymentDate.setVisibility(View.VISIBLE);
-        etDismissalDate.setVisibility(View.VISIBLE);
-        etInterviewDate.setVisibility(View.GONE);
+        ltEmploymentDate.setVisibility(View.VISIBLE);
+        ltDismissalDate.setVisibility(View.VISIBLE);
+        ltInterviewDate.setVisibility(View.GONE);
     }
 
     @Override
     public void showInterviewDate() {
-        etInterviewDate.setVisibility(View.VISIBLE);
-        etEmploymentDate.setVisibility(View.GONE);
-        etDismissalDate.setVisibility(View.GONE);
+        ltInterviewDate.setVisibility(View.VISIBLE);
+        ltEmploymentDate.setVisibility(View.GONE);
+        ltDismissalDate.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void successfulAddition() {
+        Toast.makeText(getActivity().getApplicationContext(), R.string.review_added,
+                Toast.LENGTH_SHORT).show();
+        getFragmentManager().popBackStackImmediate();
+    }
+
+    @Override
+    public void showErrorAdding() {
+        Toast.makeText(getActivity().getApplicationContext(), R.string.error_review_add,
+                Toast.LENGTH_SHORT).show();
     }
 
     public static class DatePickerFragment extends DialogFragment

@@ -198,11 +198,12 @@
             android:layout_marginBottom="10dp">
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/ltEmploymentDate"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/tvEmploymentDate"
+                    android:id="@+id/etEmploymentDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
@@ -212,6 +213,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/ltDismissalDate"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -219,7 +221,7 @@
                 android:layout_alignParentEnd="true">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/tvDismissalDate"
+                    android:id="@+id/etDismissalDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
@@ -229,17 +231,18 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/ltInterviewDate"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/tvInterviewDate"
+                    android:id="@+id/etInterviewDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:hint="@string/interview_date"
                     android:cursorVisible="false"
-                    android:focusableInTouchMode="false"/>
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/interview_date"
+                    android:inputType="none" />
             </android.support.design.widget.TextInputLayout>
         </RelativeLayout>
 
@@ -255,28 +258,19 @@
                 android:hint="@string/position" />
         </android.support.design.widget.TextInputLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin">
+            android:text="@string/add"
+            android:layout_gravity="center"/>
 
-            <Button
-                android:id="@+id/btnCancel"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:text="@string/cancel"/>
-
-            <Button
-                android:id="@+id/btnAdd"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="@string/add"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-        </RelativeLayout>
+        <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/edit"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

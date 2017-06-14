@@ -7,6 +7,6 @@
 
     <include layout="@layout/content_selected_review" />
 
-    <include layout="@layout/botom_selected_review" />
+    <include layout="@layout/bottom_selected_review" />
 
 </android.support.design.widget.CoordinatorLayout>

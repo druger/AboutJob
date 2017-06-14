@@ -84,4 +84,5 @@
 
     <string name="photo_crop_name">Crop photo</string>
     <string name="upload_error">Upload error</string>
+    <string name="edit">Edit</string>
 </resources>

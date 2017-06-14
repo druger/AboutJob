@@ -74,4 +74,10 @@ public class FirebaseHelper {
         updateComment.put("comments/" + id + "/message", message);
         FirebaseDatabase.getInstance().getReference().updateChildren(updateComment);
     }
+
+    public static void updateReview(Review review) {
+        Map<String, Object> updateReview = new HashMap<>();
+        updateReview.put("reviews/" + review.getFirebaseKey(), review);
+        FirebaseDatabase.getInstance().getReference().updateChildren(updateReview);
+    }
 }
