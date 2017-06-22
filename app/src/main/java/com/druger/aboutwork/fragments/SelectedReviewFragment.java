@@ -25,6 +25,10 @@ import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.utils.Utils;
 import com.squareup.leakcanary.RefWatcher;
 
+import static com.druger.aboutwork.Const.Bundles.FROM_ACCOUNT;
+import static com.druger.aboutwork.Const.Bundles.NAME;
+import static com.druger.aboutwork.Const.Bundles.REVIEW;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -68,8 +72,8 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
     public static SelectedReviewFragment newInstance(Review review, boolean fromAccount) {
 
         Bundle args = new Bundle();
-        args.putParcelable("review", review);
-        args.putBoolean("fromAccount", fromAccount);
+        args.putParcelable(REVIEW, review);
+        args.putBoolean(FROM_ACCOUNT, fromAccount);
 
         SelectedReviewFragment fragment = new SelectedReviewFragment();
         fragment.setArguments(args);
@@ -81,7 +85,7 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
                              Bundle savedInstanceState) {
         View view;
         bundle = getArguments();
-        fromAccount = getArguments().getBoolean("fromAccount");
+        fromAccount = getArguments().getBoolean(FROM_ACCOUNT);
 
         if (!fromAccount) {
             view = inflater.inflate(R.layout.fragment_selected_review, container, false);
@@ -145,14 +149,14 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        String companyName = getActivity().getIntent().getStringExtra("name");
+        String companyName = getActivity().getIntent().getStringExtra(NAME);
         if (companyName != null) {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(companyName);
         }
     }
 
     private void setReview() {
-        review = bundle.getParcelable("review");
+        review = bundle.getParcelable(REVIEW);
 
         if (review != null) {
             tvUserName.setText(review.getName());
@@ -196,15 +200,15 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
             boolean myLike = review.isMyLike();
             boolean myDislike = review.isMyDislike();
             if (!myLike) {
-                ivLike.setTag("likeInactive");
+                ivLike.setTag(getActivity().getString(R.string.like_inactive));
             } else {
-                ivLike.setTag("likeActive");
+                ivLike.setTag(getActivity().getString(R.string.like_active));
                 ivLike.setColorFilter(Color.parseColor("#8BC34A"));
             }
             if (!myDislike) {
-                ivDislike.setTag("dislikeInactive");
+                ivDislike.setTag(getActivity().getString(R.string.dislike_inactive));
             } else {
-                ivDislike.setTag("dislikeActive");
+                ivDislike.setTag(getActivity().getString(R.string.dislike_active));
                 ivDislike.setColorFilter(Color.parseColor("#F44336"));
             }
         }
@@ -249,16 +253,16 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
         int dislikeCount = review.getDislike();
         String tagLike = ivLike.getTag().toString();
         String tagDislike = ivDislike.getTag().toString();
-        if (tagDislike.equalsIgnoreCase("dislikeInactive")) {
-            ivDislike.setTag("dislikeActive");
+        if (tagDislike.equalsIgnoreCase(getActivity().getString(R.string.dislike_inactive))) {
+            ivDislike.setTag(getActivity().getString(R.string.dislike_active));
             ivDislike.setColorFilter(Color.parseColor("#F44336"));
             review.setDislike(++dislikeCount);
             review.setMyDislike(true);
             tvDislike.setText(String.valueOf(dislikeCount));
             FirebaseHelper.setDislike(review);
 
-            if (tagLike.equalsIgnoreCase("likeActive")) {
-                ivLike.setTag("likeInactive");
+            if (tagLike.equalsIgnoreCase(getActivity().getString(R.string.like_active))) {
+                ivLike.setTag(getActivity().getString(R.string.like_inactive));
                 ivLike.setColorFilter(Color.parseColor("#9E9E9E"));
                 review.setLike(--likeCount);
                 review.setMyLike(false);
@@ -266,7 +270,7 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
                 FirebaseHelper.setLike(review);
             }
         } else {
-            ivDislike.setTag("dislikeInactive");
+            ivDislike.setTag(getActivity().getString(R.string.dislike_inactive));
             ivDislike.setColorFilter(Color.parseColor("#9E9E9E"));
             review.setDislike(--dislikeCount);
             review.setMyDislike(false);
@@ -280,16 +284,16 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
         int dislikeCount = review.getDislike();
         String tagLike = ivLike.getTag().toString();
         String tagDislike = ivDislike.getTag().toString();
-        if (tagLike.equalsIgnoreCase("likeInactive")) {
-            ivLike.setTag("likeActive");
+        if (tagLike.equalsIgnoreCase(getActivity().getString(R.string.like_inactive))) {
+            ivLike.setTag(getActivity().getString(R.string.like_active));
             ivLike.setColorFilter(Color.parseColor("#8BC34A"));
             review.setLike(++likeCount);
             review.setMyLike(true);
             tvLike.setText(String.valueOf(likeCount));
             FirebaseHelper.setLike(review);
 
-            if (tagDislike.equalsIgnoreCase("dislikeActive")) {
-                ivDislike.setTag("dislikeInactive");
+            if (tagDislike.equalsIgnoreCase(getActivity().getString(R.string.dislike_active))) {
+                ivDislike.setTag(getActivity().getString(R.string.dislike_inactive));
                 ivDislike.setColorFilter(Color.parseColor("#9E9E9E"));
                 review.setDislike(--dislikeCount);
                 review.setMyDislike(false);
@@ -297,7 +301,7 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
                 FirebaseHelper.setDislike(review);
             }
         } else {
-            ivLike.setTag("likeInactive");
+            ivLike.setTag(getActivity().getString(R.string.like_inactive));
             ivLike.setColorFilter(Color.parseColor("#9E9E9E"));
             review.setLike(--likeCount);
             review.setMyLike(false);
@@ -311,7 +315,7 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
         CommentsFragment comments;
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        if (getArguments().getBoolean("fromAccount")) {
+        if (getArguments().getBoolean(FROM_ACCOUNT)) {
             comments = CommentsFragment.newInstance(review.getFirebaseKey(), true);
             transaction.replace(R.id.main_container, comments);
         } else {

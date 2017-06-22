@@ -30,6 +30,8 @@ import com.squareup.leakcanary.RefWatcher;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.druger.aboutwork.Const.Bundles.COMPANY_DETAIL;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -151,7 +153,7 @@ public class CompaniesFragment extends MvpFragment implements CompaniesView {
     public void showCompanyDetail(CompanyDetail companyDetail) {
         Intent intent = new Intent(getActivity(), CompanyDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putParcelable("companyDetail", companyDetail);
+        bundle.putParcelable(COMPANY_DETAIL, companyDetail);
         intent.putExtras(bundle);
         startActivity(intent);
     }

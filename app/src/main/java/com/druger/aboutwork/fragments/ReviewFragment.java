@@ -36,6 +36,10 @@ import com.squareup.leakcanary.RefWatcher;
 
 import java.util.Calendar;
 
+import static com.druger.aboutwork.Const.Bundles.COMPANY_DETAIL;
+import static com.druger.aboutwork.Const.Bundles.FROM_ACCOUNT;
+import static com.druger.aboutwork.Const.Bundles.REVIEW;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -82,8 +86,8 @@ public class ReviewFragment extends MvpFragment implements ReviewView, View.OnCl
         Bundle args = new Bundle();
 
         ReviewFragment fragment = new ReviewFragment();
-        args.putParcelable("review", review);
-        args.putBoolean("fromAccount", fromAccount);
+        args.putParcelable(REVIEW, review);
+        args.putBoolean(FROM_ACCOUNT, fromAccount);
         fragment.setArguments(args);
         return fragment;
     }
@@ -94,13 +98,13 @@ public class ReviewFragment extends MvpFragment implements ReviewView, View.OnCl
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            review = (Review) bundle.get("review");
-            fromAccount = bundle.getBoolean("fromAccount");
+            review = (Review) bundle.get(REVIEW);
+            fromAccount = bundle.getBoolean(FROM_ACCOUNT);
         }
 
         if (!fromAccount) {
             view = inflater.inflate(R.layout.fragment_review, container, false);
-            detail = getActivity().getIntent().getExtras().getParcelable("companyDetail");
+            detail = getActivity().getIntent().getExtras().getParcelable(COMPANY_DETAIL);
             if (detail != null) {
                 String companyId = detail.getId();
                 reviewPresenter.setCompanyId(companyId);

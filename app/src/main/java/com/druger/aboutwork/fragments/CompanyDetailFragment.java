@@ -39,6 +39,8 @@ import com.squareup.leakcanary.RefWatcher;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.druger.aboutwork.Const.Bundles.COMPANY_DETAIL;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -84,7 +86,7 @@ public class CompanyDetailFragment extends MvpFragment implements View.OnClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_company_detail, container, false);
-        detail = getActivity().getIntent().getExtras().getParcelable("companyDetail");
+        detail = getActivity().getIntent().getExtras().getParcelable(COMPANY_DETAIL);
 
         setupUI(view);
         setupUX();
@@ -144,7 +146,7 @@ public class CompanyDetailFragment extends MvpFragment implements View.OnClickLi
 
     private void setupRecycler(View view, final List<Review> reviews) {
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        reviewAdapter = new ReviewAdapter(reviews);
+        reviewAdapter = new ReviewAdapter(getActivity(), reviews);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(reviewAdapter);

@@ -1,5 +1,6 @@
 package com.druger.aboutwork.adapters;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -22,6 +23,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.druger.aboutwork.Const.Colors.GRAY_500;
+import static com.druger.aboutwork.Const.Colors.GREEN_500;
+import static com.druger.aboutwork.Const.Colors.RED_500;
+
 /**
  * Created by druger on 29.01.2017.
  */
@@ -30,10 +35,12 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
 
     private List<Review> reviews;
     private List<Review> deletedReviews;
+    private Context context;
 
     private OnItemClickListener clickListener;
 
-    public ReviewAdapter(List<Review> reviews) {
+    public ReviewAdapter(Context context, List<Review> reviews) {
+        this.context = context;
         this.reviews = reviews;
         deletedReviews = new ArrayList<>();
     }
@@ -69,16 +76,16 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
         boolean myLike = review.isMyLike();
         boolean myDislike = review.isMyDislike();
         if (!myLike) {
-            holder.ivLike.setTag("likeInactive");
+            holder.ivLike.setTag(context.getString(R.string.like_inactive));
         } else {
-            holder.ivLike.setTag("likeActive");
-            holder.ivLike.setColorFilter(Color.parseColor("#8BC34A"));
+            holder.ivLike.setTag(context.getString(R.string.like_active));
+            holder.ivLike.setColorFilter(Color.parseColor(GREEN_500));
         }
         if (!myDislike) {
-            holder.ivDislike.setTag("dislikeInactive");
+            holder.ivDislike.setTag(context.getString(R.string.dislike_inactive));
         } else {
-            holder.ivDislike.setTag("dislikeActive");
-            holder.ivDislike.setColorFilter(Color.parseColor("#F44336"));
+            holder.ivDislike.setTag(context.getString(R.string.dislike_active));
+            holder.ivDislike.setColorFilter(Color.parseColor(RED_500));
         }
 
         holder.ivLike.setOnClickListener(new View.OnClickListener() {
@@ -88,25 +95,25 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
                 int dislike = review.getDislike();
                 String tagLike = holder.ivLike.getTag().toString();
                 String tagDislike = holder.ivDislike.getTag().toString();
-                if (tagLike.equalsIgnoreCase("likeInactive")) {
-                    holder.ivLike.setTag("likeActive");
-                    holder.ivLike.setColorFilter(Color.parseColor("#8BC34A"));
+                if (tagLike.equalsIgnoreCase(context.getString(R.string.like_inactive))) {
+                    holder.ivLike.setTag(context.getString(R.string.like_active));
+                    holder.ivLike.setColorFilter(Color.parseColor(GREEN_500));
                     review.setLike(++like);
                     review.setMyLike(true);
                     holder.tvLike.setText(String.valueOf(like));
                     FirebaseHelper.setLike(review);
 
-                    if (tagDislike.equalsIgnoreCase("dislikeActive")) {
-                        holder.ivDislike.setTag("dislikeInactive");
-                        holder.ivDislike.setColorFilter(Color.parseColor("#9E9E9E"));
+                    if (tagDislike.equalsIgnoreCase(context.getString(R.string.dislike_active))) {
+                        holder.ivDislike.setTag(context.getString(R.string.dislike_inactive));
+                        holder.ivDislike.setColorFilter(Color.parseColor(GRAY_500));
                         review.setDislike(--dislike);
                         review.setMyDislike(false);
                         holder.tvDislike.setText(String.valueOf(dislike));
                         FirebaseHelper.setDislike(review);
                     }
                 } else {
-                    holder.ivLike.setTag("likeInactive");
-                    holder.ivLike.setColorFilter(Color.parseColor("#9E9E9E"));
+                    holder.ivLike.setTag(context.getString(R.string.like_inactive));
+                    holder.ivLike.setColorFilter(Color.parseColor(GRAY_500));
                     review.setLike(--like);
                     review.setMyLike(false);
                     holder.tvLike.setText(String.valueOf(like));
@@ -121,25 +128,25 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
                 int dislike = review.getDislike();
                 String tagLike = holder.ivLike.getTag().toString();
                 String tagDislike = holder.ivDislike.getTag().toString();
-                if (tagDislike.equalsIgnoreCase("dislikeInactive")) {
-                    holder.ivDislike.setTag("dislikeActive");
-                    holder.ivDislike.setColorFilter(Color.parseColor("#F44336"));
+                if (tagDislike.equalsIgnoreCase(context.getString(R.string.dislike_inactive))) {
+                    holder.ivDislike.setTag(context.getString(R.string.dislike_active));
+                    holder.ivDislike.setColorFilter(Color.parseColor(RED_500));
                     review.setDislike(++dislike);
                     review.setMyDislike(true);
                     holder.tvDislike.setText(String.valueOf(dislike));
                     FirebaseHelper.setDislike(review);
 
-                    if (tagLike.equalsIgnoreCase("likeActive")) {
-                        holder.ivLike.setTag("likeInactive");
-                        holder.ivLike.setColorFilter(Color.parseColor("#9E9E9E"));
+                    if (tagLike.equalsIgnoreCase(context.getString(R.string.like_active))) {
+                        holder.ivLike.setTag(context.getString(R.string.like_inactive));
+                        holder.ivLike.setColorFilter(Color.parseColor(GRAY_500));
                         review.setLike(--like);
                         review.setMyLike(false);
                         holder.tvLike.setText(String.valueOf(like));
                         FirebaseHelper.setLike(review);
                     }
                 } else {
-                    holder.ivDislike.setTag("dislikeInactive");
-                    holder.ivDislike.setColorFilter(Color.parseColor("#9E9E9E"));
+                    holder.ivDislike.setTag(context.getString(R.string.dislike_inactive));
+                    holder.ivDislike.setColorFilter(Color.parseColor(GRAY_500));
                     review.setDislike(--dislike);
                     review.setMyDislike(false);
                     holder.tvDislike.setText(String.valueOf(dislike));

@@ -17,6 +17,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.druger.aboutwork.db.FirebaseHelper.getReviewsForCompany;
+import static com.druger.aboutwork.db.FirebaseHelper.getUser;
+
 /**
  * Created by druger on 01.05.2017.
  */
@@ -40,7 +43,7 @@ public class CompanyDetailPresenter extends MvpPresenter<CompanyDetailView>
 
     public void setReviews(CompanyDetail detail) {
         dbReference = FirebaseDatabase.getInstance().getReference();
-        Query reviewsQuery = dbReference.child("reviews").orderByChild("companyId").equalTo(detail.getId());
+        Query reviewsQuery = getReviewsForCompany(dbReference, detail.getId());
         reviewsQuery.addValueEventListener(this);
     }
 
@@ -54,7 +57,7 @@ public class CompanyDetailPresenter extends MvpPresenter<CompanyDetailView>
 
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
             final Review review = snapshot.getValue(Review.class);
-            Query queryUserId = dbReference.child("users").orderByChild("id").equalTo(review.getUserId());
+            Query queryUser = getUser(dbReference, review.getUserId());
             valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -72,7 +75,7 @@ public class CompanyDetailPresenter extends MvpPresenter<CompanyDetailView>
 
                 }
             };
-            queryUserId.addValueEventListener(valueEventListener);
+            queryUser.addValueEventListener(valueEventListener);
             review.setFirebaseKey(snapshot.getKey());
             reviews.add(review);
         }

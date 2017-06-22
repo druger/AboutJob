@@ -114,7 +114,7 @@ public class AccountPresenter extends MvpPresenter<AccountView> {
 
     private void savePhoto() {
         Uri file = Uri.fromFile(new File(selectedImgUri.getPath()));
-        storageRef = storage.getReference().child("avatars/" + user.getUid() + "/avatar.jpg");
+        storageRef = FirebaseHelper.savePhoto(storage, user.getUid());
         uploadTask = storageRef.putFile(file);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -146,7 +146,7 @@ public class AccountPresenter extends MvpPresenter<AccountView> {
     }
 
     private void downloadPhoto() {
-        storageRef = storage.getReference().child("avatars/" + user.getUid() + "/avatar.jpg");
+        storageRef = FirebaseHelper.downloadPhoto(storage, user.getUid());
         getViewState().showPhoto(storageRef);
     }
 }

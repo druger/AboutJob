@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.druger.aboutwork.db.FirebaseHelper.getComments;
+
 /**
  * Created by druger on 08.05.2017.
  */
@@ -42,7 +44,7 @@ public class CommentsPresenter extends MvpPresenter<CommentsView> implements Val
 
     public void retrieveComments(String reviewId) {
         dbReference = FirebaseDatabase.getInstance().getReference();
-        Query commentsQuery = dbReference.child("comments").orderByChild("reviewId").equalTo(reviewId);
+        Query commentsQuery = getComments(dbReference, reviewId);
         commentsQuery.addValueEventListener(this);
     }
 

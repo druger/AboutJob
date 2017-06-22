@@ -34,6 +34,8 @@ import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
 
+import static com.druger.aboutwork.Const.Bundles.USER_ID;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -63,7 +65,7 @@ public class MyReviewsFragment extends MvpFragment implements MyReviewsView {
     public static MyReviewsFragment newInstance(String userId) {
         MyReviewsFragment myReviews = new MyReviewsFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("userId", userId);
+        bundle.putString(USER_ID, userId);
         myReviews.setArguments(bundle);
         return myReviews;
     }
@@ -80,7 +82,7 @@ public class MyReviewsFragment extends MvpFragment implements MyReviewsView {
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            userId = bundle.getString("userId", userId);
+            userId = bundle.getString(USER_ID, userId);
         }
 
         myReviewsPresenter.fetchReviews(userId);
@@ -93,7 +95,7 @@ public class MyReviewsFragment extends MvpFragment implements MyReviewsView {
     }
 
     private void setupRecycler(final List<Review> reviews) {
-        reviewAdapter = new ReviewAdapter(reviews);
+        reviewAdapter = new ReviewAdapter(getActivity(), reviews);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(reviewAdapter);

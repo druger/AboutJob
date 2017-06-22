@@ -34,6 +34,10 @@ import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
 
+import static com.druger.aboutwork.Const.Bundles.FROM_ACCOUNT;
+import static com.druger.aboutwork.Const.Bundles.REVIEW_ID;
+import static com.druger.aboutwork.Const.Colors.RED_200;
+import static com.druger.aboutwork.Const.Colors.RED_500;
 import static com.druger.aboutwork.R.string.comments;
 
 /**
@@ -63,8 +67,8 @@ public class CommentsFragment extends MvpFragment implements CommentsView{
     public static CommentsFragment newInstance(String reviewId, boolean fromAccount) {
 
         Bundle args = new Bundle();
-        args.putString("reviewId", reviewId);
-        args.putBoolean("fromAccount", fromAccount);
+        args.putString(REVIEW_ID, reviewId);
+        args.putBoolean(FROM_ACCOUNT, fromAccount);
 
         CommentsFragment fragment = new CommentsFragment();
         fragment.setArguments(args);
@@ -78,7 +82,7 @@ public class CommentsFragment extends MvpFragment implements CommentsView{
         View view = inflater.inflate(R.layout.fragment_comments, container, false);
 
         Bundle bundle = getArguments();
-        reviewId = bundle.getString("reviewId");
+        reviewId = bundle.getString(REVIEW_ID);
 
         setupToolbar(view);
         setupUI(view);
@@ -89,7 +93,7 @@ public class CommentsFragment extends MvpFragment implements CommentsView{
     }
 
     private void hideBottomNavigation() {
-        if (getArguments().getBoolean("fromAccount")) {
+        if (getArguments().getBoolean(FROM_ACCOUNT)) {
             bottomNavigation.setVisibility(View.INVISIBLE);
         }
     }
@@ -105,10 +109,10 @@ public class CommentsFragment extends MvpFragment implements CommentsView{
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0) {
                     ivSend.setClickable(true);
-                    ivSend.setColorFilter(Color.parseColor("#F44336"));
+                    ivSend.setColorFilter(Color.parseColor(RED_500));
                 } else {
                     ivSend.setClickable(false);
-                    ivSend.setColorFilter(Color.parseColor("#EF9A9A"));
+                    ivSend.setColorFilter(Color.parseColor(RED_200));
                 }
             }
 
@@ -194,7 +198,7 @@ public class CommentsFragment extends MvpFragment implements CommentsView{
     }
 
     private void showBottomNavigation() {
-        if (getArguments().getBoolean("fromAccount")) {
+        if (getArguments().getBoolean(FROM_ACCOUNT)) {
             bottomNavigation.setVisibility(View.VISIBLE);
         }
     }

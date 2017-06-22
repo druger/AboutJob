@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class SettingPresenter extends MvpPresenter<SettingsView> {
 
     private static final String TAG = SettingPresenter.class.getSimpleName();
+    private static final int PASSWORD_LENGTH = 6;
 
     private FirebaseAuth auth;
     private FirebaseUser user;
@@ -87,7 +88,7 @@ public class SettingPresenter extends MvpPresenter<SettingsView> {
     }
 
     private void changePassword(String password, Context context) {
-        if (password.length() < 6) {
+        if (password.length() < PASSWORD_LENGTH) {
             getViewState().showError(context.getString(R.string.pass_error));
         } else {
             user.updatePassword(password)

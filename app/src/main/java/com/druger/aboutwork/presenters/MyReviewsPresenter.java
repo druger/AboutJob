@@ -1,7 +1,5 @@
 package com.druger.aboutwork.presenters;
 
-import android.support.v7.widget.helper.ItemTouchHelper;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.druger.aboutwork.db.FirebaseHelper;
@@ -18,6 +16,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.druger.aboutwork.db.FirebaseHelper.getCompanies;
+import static com.druger.aboutwork.db.FirebaseHelper.getMyReviews;
+
 /**
  * Created by druger on 09.05.2017.
  */
@@ -30,10 +31,6 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
 
     private List<Review> reviews;
 
-    private ItemTouchHelper touchHelper;
-    private ItemTouchHelper.SimpleCallback simpleCallback;
-    private boolean itemSwipe = true;
-
     public MyReviewsPresenter() {
         reviews = new ArrayList<>();
     }
@@ -41,7 +38,7 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
     public void fetchReviews(String userId) {
         dbReference = FirebaseDatabase.getInstance().getReference();
 
-        Query reviewsQuery = dbReference.child("reviews").orderByChild("userId").equalTo(userId);
+        Query reviewsQuery = getMyReviews(dbReference, userId);
         reviewsQuery.addValueEventListener(this);
     }
 
@@ -60,7 +57,7 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
 
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
             final Review review = snapshot.getValue(Review.class);
-            Query queryByCompanyId = dbReference.child("companies").orderByChild("id").equalTo(review.getCompanyId());
+            Query queryCompanies = getCompanies(dbReference, review.getCompanyId());
             valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -78,7 +75,7 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
 
                 }
             };
-            queryByCompanyId.addValueEventListener(valueEventListener);
+            queryCompanies.addValueEventListener(valueEventListener);
             review.setFirebaseKey(snapshot.getKey());
             reviews.add(review);
         }

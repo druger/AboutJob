@@ -85,4 +85,8 @@
     <string name="photo_crop_name">Crop photo</string>
     <string name="upload_error">Upload error</string>
     <string name="edit">Edit</string>
+    <string name="like_inactive" translatable="false">likeInactive</string>
+    <string name="like_active" translatable="false">likeActive</string>
+    <string name="dislike_inactive" translatable="false">dislikeInactive</string>
+    <string name="dislike_active" translatable="false">dislikeActive</string>
 </resources>
