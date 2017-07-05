@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +23,15 @@ import com.druger.aboutwork.interfaces.view.CompaniesView;
 import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.presenters.CompaniesPresenter;
+import com.druger.aboutwork.utils.RxSearch;
 import com.mikepenz.fastadapter_extensions.scroll.EndlessRecyclerOnScrollListener;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 import static com.druger.aboutwork.Const.Bundles.COMPANY_DETAIL;
 
@@ -67,7 +70,7 @@ public class CompaniesFragment extends MvpFragment implements CompaniesView {
         setupUI(view);
         setupRecycler();
         setupListeners();
-
+        setupSearch();
         return view;
     }
 
@@ -101,26 +104,21 @@ public class CompaniesFragment extends MvpFragment implements CompaniesView {
                 return false;
             }
         });
+    }
 
+    private void setupSearch() {
         searchView.setQueryHint(getResources().getString(R.string.query_hint));
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                Log.d(TAG, newText);
-                if (!newText.isEmpty()) {
+        RxSearch.fromSearchView(searchView)
+                .debounce(300, TimeUnit.MILLISECONDS)
+                .filter(item -> item.length() >= 2)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(newText -> {
                     query = newText;
                     mCompanies.clear();
                     adapter.notifyDataSetChanged();
                     scrollListener.resetPageCount();
-                }
-                return true;
-            }
-        });
+                });
     }
 
     private void setupUI(View view) {
