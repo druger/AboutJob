@@ -23,7 +23,7 @@ import com.druger.aboutwork.interfaces.view.CompaniesView;
 import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.presenters.CompaniesPresenter;
-import com.druger.aboutwork.utils.RxSearch;
+import com.druger.aboutwork.utils.rx.RxSearch;
 import com.mikepenz.fastadapter_extensions.scroll.EndlessRecyclerOnScrollListener;
 import com.squareup.leakcanary.RefWatcher;
 

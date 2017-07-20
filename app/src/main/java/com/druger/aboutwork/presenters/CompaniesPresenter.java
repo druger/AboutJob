@@ -3,26 +3,24 @@ package com.druger.aboutwork.presenters;
 import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
 import com.druger.aboutwork.interfaces.view.CompaniesView;
 import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.CompanyResponse;
 import com.druger.aboutwork.rest.ApiClient;
 import com.druger.aboutwork.rest.ApiService;
+import com.druger.aboutwork.utils.rx.RxUtils;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by druger on 01.05.2017.
  */
 
 @InjectViewState
-public class CompaniesPresenter extends MvpPresenter<CompaniesView> {
+public class CompaniesPresenter extends BasePresenter<CompaniesView> {
     private static final String TAG = CompaniesPresenter.class.getSimpleName();
 
     private ApiService apiService;
@@ -35,36 +33,32 @@ public class CompaniesPresenter extends MvpPresenter<CompaniesView> {
      * Get list companies from search on hh.ru
      */
     public void getCompanies(String query, int page) {
+        Disposable request = apiService.getCompanies(query, page)
+                .compose(RxUtils.httpSchedulers())
+                .subscribe(this::successGetCompanies, this::handleError);
 
-        Call<CompanyResponse> call = apiService.getCompanies(query, page);
-        call.enqueue(new Callback<CompanyResponse>() {
-            @Override
-            public void onResponse(Call<CompanyResponse> call, Response<CompanyResponse> response) {
-                List<Company> companies = response.body().getItems();
-                getViewState().showCompanies(companies);
-                Log.d(TAG, "Companies size = " + companies.size());
-            }
+        unSubscribeOnDestroy(request);
+    }
 
-            @Override
-            public void onFailure(Call<CompanyResponse> call, Throwable t) {
-                Log.e(TAG, t.getMessage());
-            }
-        });
+    private void handleError(Throwable throwable) {
+        Log.e(TAG, throwable.getMessage());
+    }
+
+    private void successGetCompanies(CompanyResponse response) {
+        List<Company> companies = response.getItems();
+        getViewState().showCompanies(companies);
+        Log.d(TAG, "Companies size = " + companies.size());
     }
 
     public void getCompanyDetail(Company company) {
-        Call<CompanyDetail> call = apiService.getCompanyDetail(company.getId());
-        call.enqueue(new Callback<CompanyDetail>() {
-            @Override
-            public void onResponse(Call<CompanyDetail> call, Response<CompanyDetail> response) {
-                CompanyDetail detail = response.body();
-                getViewState().showCompanyDetail(detail);
-            }
+        Disposable request = apiService.getCompanyDetail(company.getId())
+                .compose(RxUtils.httpSchedulers())
+                .subscribe(this::successGetCompanyDetails, this::handleError);
 
-            @Override
-            public void onFailure(Call<CompanyDetail> call, Throwable t) {
-                Log.e(TAG, t.getMessage());
-            }
-        });
+        unSubscribeOnDestroy(request);
+    }
+
+    private void successGetCompanyDetails(CompanyDetail companyDetail) {
+        getViewState().showCompanyDetail(companyDetail);
     }
 }

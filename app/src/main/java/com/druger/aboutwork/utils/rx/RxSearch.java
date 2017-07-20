@@ -1,4 +1,4 @@
-package com.druger.aboutwork.utils;
+package com.druger.aboutwork.utils.rx;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.SearchView;
