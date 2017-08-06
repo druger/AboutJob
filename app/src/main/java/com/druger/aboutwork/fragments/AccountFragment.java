@@ -16,20 +16,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.bumptech.glide.Glide;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.LoginActivity;
-import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.interfaces.view.AccountView;
 import com.druger.aboutwork.presenters.AccountPresenter;
 import com.druger.aboutwork.utils.PreferencesHelper;
 import com.druger.aboutwork.utils.Utils;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.leakcanary.RefWatcher;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -41,7 +38,7 @@ import static com.theartofdev.edmodo.cropper.CropImage.PICK_IMAGE_CHOOSER_REQUES
 import static com.theartofdev.edmodo.cropper.CropImage.getPickImageChooserIntent;
 
 
-public class AccountFragment extends MvpFragment implements View.OnClickListener, AccountView{
+public class AccountFragment extends BaseFragment implements View.OnClickListener, AccountView{
 
     @InjectPresenter
     AccountPresenter accountPresenter;
@@ -68,15 +65,15 @@ public class AccountFragment extends MvpFragment implements View.OnClickListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_account, container, false);
+        rootView = inflater.inflate(R.layout.fragment_account, container, false);
 
-        setupUI(view);
+        setupUI();
         accountPresenter.setupAuth();
         accountPresenter.setupStorage();
         setupListeners();
         setupToolbar();
 
-        return view;
+        return rootView;
     }
 
     private void setupListeners() {
@@ -88,18 +85,19 @@ public class AccountFragment extends MvpFragment implements View.OnClickListener
     }
 
     private void setupToolbar() {
-        ((MainActivity) getActivity()).setActionBarTitle(R.string.app_name);
-        ((MainActivity) getActivity()).resetBackArrowActionBar();
+        toolbar = bindView(R.id.toolbar);
+        setActionBar(toolbar);
+        getActionBar().setTitle(R.string.account);
     }
 
-    private void setupUI(View view) {
-        tvName = (TextView) view.findViewById(R.id.tvName);
-        ivEditName = (ImageView) view.findViewById(R.id.ivEditName);
-        tvMyReviews = (TextView) view.findViewById(R.id.tvMyReviews);
-        tvSettings = (TextView) view.findViewById(R.id.tvSettings);
-        tvLogout = (TextView) view.findViewById(R.id.tvLogout);
-        civAvatar = (CircleImageView) view.findViewById(R.id.civAvatar);
-        tvEmail = (TextView) view.findViewById(R.id.tvEmail);
+    private void setupUI() {
+        tvName = bindView(R.id.tvName);
+        ivEditName = bindView(R.id.ivEditName);
+        tvMyReviews = bindView(R.id.tvMyReviews);
+        tvSettings =  bindView(R.id.tvSettings);
+        tvLogout = bindView(R.id.tvLogout);
+        civAvatar = bindView(R.id.civAvatar);
+        tvEmail = bindView(R.id.tvEmail);
 
         tvName.setText(preferencesHelper.getUserName());
     }
@@ -114,13 +112,6 @@ public class AccountFragment extends MvpFragment implements View.OnClickListener
     public void onStop() {
         super.onStop();
         accountPresenter.removeAuthListener();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        RefWatcher refWatcher = App.getRefWatcher(getActivity());
-        refWatcher.watch(this);
     }
 
     @Override

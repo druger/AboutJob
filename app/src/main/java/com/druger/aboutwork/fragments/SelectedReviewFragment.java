@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +16,11 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.utils.Utils;
-import com.squareup.leakcanary.RefWatcher;
 
 import static com.druger.aboutwork.Const.Bundles.FROM_ACCOUNT;
 import static com.druger.aboutwork.Const.Bundles.NAME;
@@ -32,7 +29,8 @@ import static com.druger.aboutwork.Const.Bundles.REVIEW;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SelectedReviewFragment extends Fragment implements View.OnClickListener {
+// TODO добавить MVP
+public class SelectedReviewFragment extends BaseFragment implements View.OnClickListener {
 
     private TextView tvUserName;
     private TextView tvDate;
@@ -83,21 +81,20 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view;
         bundle = getArguments();
         fromAccount = getArguments().getBoolean(FROM_ACCOUNT);
 
         if (!fromAccount) {
-            view = inflater.inflate(R.layout.fragment_selected_review, container, false);
-            setToolbar(view);
+            rootView = inflater.inflate(R.layout.fragment_selected_review, container, false);
+            setupToolbar();
         } else {
-            view = inflater.inflate(R.layout.selected_review_no_actionbar, container, false);
+            rootView = inflater.inflate(R.layout.selected_review_no_actionbar, container, false);
             ((MainActivity) getActivity()).hideBottomNavigation();
         }
-        setUI(view);
+        setUI();
         setUX();
         setReview();
-        return view;
+        return rootView;
     }
 
     private void setUX() {
@@ -109,35 +106,35 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
         }
     }
 
-    private void setUI(View view) {
-        tvUserName = (TextView) view.findViewById(R.id.tvUserName);
-        tvDate = (TextView) view.findViewById(R.id.tvDate);
-        tvCity = (TextView) view.findViewById(R.id.tvCity);
-        tvPosition = (TextView) view.findViewById(R.id.tvPosition);
-        mPosition = (TextView) view.findViewById(R.id.tv_position);
-        tvEmploymentDate = (TextView) view.findViewById(R.id.tvEmploymentDate);
-        mEmploymentDate = (TextView) view.findViewById(R.id.tv_employment_date);
-        tvDismissalDate = (TextView) view.findViewById(R.id.tvDismissalDate);
-        mDismissalDate = (TextView) view.findViewById(R.id.tv_dismissal_date);
-        tvInterviewDate = (TextView) view.findViewById(R.id.tvInterviewDate);
-        mInterviewDate = (TextView) view.findViewById(R.id.tv_interview_date);
-        tvPluses = (TextView) view.findViewById(R.id.tvPluses);
-        tvMinuses = (TextView) view.findViewById(R.id.tvMinuses);
+    private void setUI() {
+        tvUserName = bindView(R.id.tvUserName);
+        tvDate =  bindView(R.id.tvDate);
+        tvCity = bindView(R.id.tvCity);
+        tvPosition = bindView(R.id.tvPosition);
+        mPosition = bindView(R.id.tv_position);
+        tvEmploymentDate = bindView(R.id.tvEmploymentDate);
+        mEmploymentDate = bindView(R.id.tv_employment_date);
+        tvDismissalDate = bindView(R.id.tvDismissalDate);
+        mDismissalDate = bindView(R.id.tv_dismissal_date);
+        tvInterviewDate = bindView(R.id.tvInterviewDate);
+        mInterviewDate = bindView(R.id.tv_interview_date);
+        tvPluses = bindView(R.id.tvPluses);
+        tvMinuses = bindView(R.id.tvMinuses);
 
-        salary = (RatingBar) view.findViewById(R.id.ratingbar_salary);
-        chief = (RatingBar) view.findViewById(R.id.ratingbar_chief);
-        workplace = (RatingBar) view.findViewById(R.id.ratingbar_workplace);
-        career = (RatingBar) view.findViewById(R.id.ratingbar_career);
-        collective = (RatingBar) view.findViewById(R.id.ratingbar_collective);
-        socialPackage = (RatingBar) view.findViewById(R.id.ratingbar_social_package);
+        salary = bindView(R.id.ratingbar_salary);
+        chief = bindView(R.id.ratingbar_chief);
+        workplace = bindView(R.id.ratingbar_workplace);
+        career = bindView(R.id.ratingbar_career);
+        collective = bindView(R.id.ratingbar_collective);
+        socialPackage = bindView(R.id.ratingbar_social_package);
 
-        ivLike = (ImageView) view.findViewById(R.id.ivLike);
-        ivDislike = (ImageView) view.findViewById(R.id.ivDislike);
-        ivComments = (ImageView) view.findViewById(R.id.ivComments);
-        tvLike = (TextView) view.findViewById(R.id.tvLike);
-        tvDislike = (TextView) view.findViewById(R.id.tvDislike);
+        ivLike = bindView(R.id.ivLike);
+        ivDislike = bindView(R.id.ivDislike);
+        ivComments = bindView(R.id.ivComments);
+        tvLike = bindView(R.id.tvLike);
+        tvDislike = bindView(R.id.tvDislike);
 
-        fabEdit = (FloatingActionButton) view.findViewById(R.id.fabEdit);
+        fabEdit = bindView(R.id.fabEdit);
 
         tvPosition.setVisibility(View.GONE);
         tvEmploymentDate.setVisibility(View.GONE);
@@ -145,8 +142,8 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
         tvInterviewDate.setVisibility(View.GONE);
     }
 
-    private void setToolbar(View view) {
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+    private void setupToolbar() {
+        toolbar = bindView(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         String companyName = getActivity().getIntent().getStringExtra(NAME);
@@ -212,13 +209,6 @@ public class SelectedReviewFragment extends Fragment implements View.OnClickList
                 ivDislike.setColorFilter(Color.parseColor("#F44336"));
             }
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        RefWatcher refWatcher = App.getRefWatcher(getActivity());
-        refWatcher.watch(this);
     }
 
     @Override

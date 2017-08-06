@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".fragments.AccountFragment">
 
+    <include layout="@layout/toolbar" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -21,14 +21,24 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
-        }
-        refWatcher = LeakCanary.install(this);
+        setupLeakCanary();
+        setupDagger2();
+    }
+
+    private void setupDagger2() {
         appComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
                 .networkModule(new NetworkModule())
                 .build();
+    }
+
+    private void setupLeakCanary() {
+        if (BuildConfig.DEBUG) {
+            if (LeakCanary.isInAnalyzerProcess(this)) {
+                return;
+            }
+            refWatcher = LeakCanary.install(this);
+        }
     }
 
     public static RefWatcher getRefWatcher(Context context) {

@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -20,9 +19,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.adapters.CommentAdapter;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
@@ -30,7 +27,6 @@ import com.druger.aboutwork.interfaces.view.CommentsView;
 import com.druger.aboutwork.model.Comment;
 import com.druger.aboutwork.presenters.CommentsPresenter;
 import com.druger.aboutwork.utils.Utils;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
 
@@ -43,7 +39,7 @@ import static com.druger.aboutwork.R.string.comments;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CommentsFragment extends MvpFragment implements CommentsView{
+public class CommentsFragment extends BaseFragment implements CommentsView {
     public static final int NEW = 0;
     public static final int UPDATE = 1;
     private int type = NEW;
@@ -79,17 +75,17 @@ public class CommentsFragment extends MvpFragment implements CommentsView{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_comments, container, false);
+        rootView = inflater.inflate(R.layout.fragment_comments, container, false);
 
         Bundle bundle = getArguments();
         reviewId = bundle.getString(REVIEW_ID);
 
-        setupToolbar(view);
-        setupUI(view);
+        setupToolbar();
+        setupUI();
         setupListeners();
         retrieveComments();
         hideBottomNavigation();
-        return view;
+        return rootView;
     }
 
     private void hideBottomNavigation() {
@@ -137,17 +133,17 @@ public class CommentsFragment extends MvpFragment implements CommentsView{
         });
     }
 
-    private void setupToolbar(View view) {
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+    private void setupToolbar() {
+        toolbar = bindView(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(comments);
     }
 
-    private void setupUI(View view) {
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        etMessage = (EditText) view.findViewById(R.id.etMessage);
-        ivSend = (ImageView) view.findViewById(R.id.ivSend);
+    private void setupUI() {
+        recyclerView = bindView(R.id.recycler_view);
+        etMessage = bindView(R.id.etMessage);
+        ivSend = bindView(R.id.ivSend);
         bottomNavigation = (BottomNavigationView) getActivity().findViewById(R.id.bottom_navigation);
     }
 
@@ -206,8 +202,6 @@ public class CommentsFragment extends MvpFragment implements CommentsView{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = App.getRefWatcher(getActivity());
-        refWatcher.watch(this);
         commentsPresenter.removeListeners();
     }
 

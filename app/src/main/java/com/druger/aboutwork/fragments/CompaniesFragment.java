@@ -11,13 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.CompanyDetailActivity;
-import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.adapters.CompanyAdapter;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.CompaniesView;
@@ -26,7 +24,6 @@ import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.presenters.CompaniesPresenter;
 import com.druger.aboutwork.utils.rx.RxSearch;
 import com.mikepenz.fastadapter_extensions.scroll.EndlessRecyclerOnScrollListener;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +36,7 @@ import static com.druger.aboutwork.Const.Bundles.COMPANY_DETAIL;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CompaniesFragment extends MvpFragment implements CompaniesView {
+public class CompaniesFragment extends BaseFragment implements CompaniesView {
 
     @InjectPresenter
     CompaniesPresenter companiesPresenter;
@@ -65,19 +62,20 @@ public class CompaniesFragment extends MvpFragment implements CompaniesView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_companies, container, false);
+        rootView = inflater.inflate(R.layout.fragment_companies, container, false);
 
-        setupActionBar();
-        setupUI(view);
+        setupToolbar();
+        setupUI();
         setupRecycler();
         setupListeners();
         setupSearch();
-        return view;
+        return rootView;
     }
 
-    private void setupActionBar() {
-        ((MainActivity) getActivity()).setActionBarTitle(R.string.app_name);
-        ((MainActivity) getActivity()).resetBackArrowActionBar();
+    private void setupToolbar() {
+        toolbar = bindView(R.id.toolbar);
+        setActionBar(toolbar);
+        getActionBar().setTitle(R.string.companies);
     }
 
     private void setupRecycler() {
@@ -127,9 +125,10 @@ public class CompaniesFragment extends MvpFragment implements CompaniesView {
                 });
     }
 
-    private void setupUI(View view) {
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        searchView = (SearchView) getActivity().findViewById(R.id.search_view);
+    private void setupUI() {
+        recyclerView = bindView(R.id.recycler_view);
+        searchView = bindView(R.id.search_view);
+        progressBar = bindView(R.id.progressBar);
     }
 
     @Override
@@ -138,13 +137,6 @@ public class CompaniesFragment extends MvpFragment implements CompaniesView {
         searchView.setOnQueryTextListener(null);
         recyclerView.removeOnScrollListener(scrollListener);
         adapter.setOnItemClickListener(null);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        RefWatcher refWatcher = App.getRefWatcher(getActivity());
-        refWatcher.watch(this);
     }
 
     @Override
@@ -160,5 +152,15 @@ public class CompaniesFragment extends MvpFragment implements CompaniesView {
         bundle.putParcelable(COMPANY_DETAIL, companyDetail);
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    @Override
+    public void showProgress(boolean show) {
+        super.showProgress(show);
+        if (show) {
+            recyclerView.setVisibility(View.INVISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+        }
     }
 }

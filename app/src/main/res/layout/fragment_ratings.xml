@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     tools:context=".fragments.RatingsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <include layout="@layout/toolbar" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

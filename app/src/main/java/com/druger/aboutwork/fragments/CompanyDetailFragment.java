@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,11 +21,9 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.adapters.ReviewAdapter;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
@@ -34,7 +31,6 @@ import com.druger.aboutwork.interfaces.view.CompanyDetailView;
 import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.CompanyDetailPresenter;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,14 +40,13 @@ import static com.druger.aboutwork.Const.Bundles.COMPANY_DETAIL;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CompanyDetailFragment extends MvpFragment implements View.OnClickListener,
+public class CompanyDetailFragment extends BaseFragment implements View.OnClickListener,
         CompanyDetailView {
     public static final int REVIEW_REQUEST = 0;
 
     @InjectPresenter
     CompanyDetailPresenter companyDetailPresenter;
 
-    private View view;
     private TextView tvDescription;
     private ImageView ivDownDrop;
     private ImageView ivUpDrop;
@@ -62,7 +57,6 @@ public class CompanyDetailFragment extends MvpFragment implements View.OnClickLi
     private ImageView ivToolbar;
     private FloatingActionButton fab;
 
-    private Toolbar toolbar;
     private CollapsingToolbarLayout collapsingToolbar;
     private RecyclerView recyclerView;
     private List<Review> reviews = new ArrayList<>();
@@ -85,15 +79,18 @@ public class CompanyDetailFragment extends MvpFragment implements View.OnClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_company_detail, container, false);
+        rootView = inflater.inflate(R.layout.fragment_company_detail, container, false);
         detail = getActivity().getIntent().getExtras().getParcelable(COMPANY_DETAIL);
 
-        setupUI(view);
+        setupToolbar();
+        setupUI();
         setupUX();
-        setupRecycler(view, reviews);
+        loadImage();
+        setDescription();
+        setupRecycler(reviews);
 
         companyDetailPresenter.setReviews(detail);
-        return view;
+        return rootView;
     }
 
     private void setupUX() {
@@ -102,24 +99,20 @@ public class CompanyDetailFragment extends MvpFragment implements View.OnClickLi
         fab.setOnClickListener(this);
     }
 
-    private void setupUI(View view) {
-        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        collapsingToolbar = (CollapsingToolbarLayout) view.findViewById(R.id.collapsingToolbar);
+    private void setupUI() {
+        site = bindView(R.id.tvSite);
+        tvDescription = bindView(R.id.tvContentDescription);
+        ivDownDrop = bindView(R.id.ivDownDrop);
+        ivUpDrop = bindView(R.id.ivUpDrop);
+        ivToolbar = bindView(R.id.ivToolbar);
+        tvCountReviews = bindView(R.id.tvCountReviews);
+        tvRating = bindView(R.id.tvRating);
+        ratingCompany = bindView(R.id.rating_company);
+        fab = bindView(R.id.fabAddReview);
+    }
 
-        site = (TextView) view.findViewById(R.id.tvSite);
-        tvDescription = (TextView) view.findViewById(R.id.tvContentDescription);
-        ivDownDrop = (ImageView) view.findViewById(R.id.ivDownDrop);
-        ivUpDrop = (ImageView) view.findViewById(R.id.ivUpDrop);
-        ivToolbar = (ImageView) view.findViewById(R.id.ivToolbar);
-        tvCountReviews = (TextView) view.findViewById(R.id.tvCountReviews);
-        tvRating = (TextView) view.findViewById(R.id.tvRating);
-        ratingCompany = (RatingBar) view.findViewById(R.id.rating_company);
-        fab = (FloatingActionButton) view.findViewById(R.id.fabAddReview);
-
+    private void setDescription() {
         tvDescription.setVisibility(View.GONE);
-
-        collapsingToolbar.setTitle(detail.getName());
-        collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
 
         String iSite = detail.getSite();
         String iDescription = detail.getDescription();
@@ -133,7 +126,9 @@ public class CompanyDetailFragment extends MvpFragment implements View.OnClickLi
                 tvDescription.setText(Html.fromHtml(iDescription));
             }
         }
+    }
 
+    private void loadImage() {
         CompanyDetail.Logo logo = detail.getLogo();
         Glide.with(this)
                 .load(logo != null ? logo.getOriginal() : "")
@@ -144,8 +139,16 @@ public class CompanyDetailFragment extends MvpFragment implements View.OnClickLi
                 .into(ivToolbar);
     }
 
-    private void setupRecycler(View view, final List<Review> reviews) {
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+    private void setupToolbar() {
+        toolbar = bindView(R.id.toolbar);
+        collapsingToolbar = bindView(R.id.collapsingToolbar);
+
+        collapsingToolbar.setTitle(detail.getName());
+        collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
+    }
+
+    private void setupRecycler(final List<Review> reviews) {
+        recyclerView = bindView(R.id.recycler_view);
         reviewAdapter = new ReviewAdapter(getActivity(), reviews);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -205,13 +208,6 @@ public class CompanyDetailFragment extends MvpFragment implements View.OnClickLi
     public void onDestroyView() {
         super.onDestroyView();
         reviewAdapter.setOnClickListener(null);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        RefWatcher refWatcher = App.getRefWatcher(getActivity());
-        refWatcher.watch(this);
     }
 
     @Override

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +20,7 @@ import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
-import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.interfaces.view.ReviewView;
@@ -32,7 +29,6 @@ import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.ReviewPresenter;
 import com.druger.aboutwork.utils.Utils;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.Calendar;
 
@@ -43,8 +39,7 @@ import static com.druger.aboutwork.Const.Bundles.REVIEW;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ReviewFragment extends MvpFragment implements ReviewView, View.OnClickListener {
-    public static final String TAG = ReviewFragment.class.getSimpleName();
+public class ReviewFragment extends BaseFragment implements ReviewView, View.OnClickListener {
 
     @InjectPresenter
     ReviewPresenter reviewPresenter;
@@ -155,7 +150,7 @@ public class ReviewFragment extends MvpFragment implements ReviewView, View.OnCl
     }
 
     private void setupToolbar() {
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar = bindView(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (detail != null) {
@@ -213,8 +208,6 @@ public class ReviewFragment extends MvpFragment implements ReviewView, View.OnCl
     public void onDestroy() {
         super.onDestroy();
         unbindDrawables(view);
-        RefWatcher refWatcher = App.getRefWatcher(getActivity());
-        refWatcher.watch(this);
         if (fromAccount) {
             ((MainActivity) getActivity()).showBottomNavigation();
         }

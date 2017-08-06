@@ -5,8 +5,8 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
@@ -27,8 +27,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     private Fragment fragment;
     private BottomNavigationView bottomNavigation;
-
-    private ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,27 +63,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
             fragment = new CompaniesFragment();
             getFragmentManager().beginTransaction()
                     .add(R.id.main_container, fragment).commit();
-        }
-    }
-
-    public void setActionBarTitle(int title) {
-        actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(title);
-        }
-    }
-
-    public void setBackArrowActionBar() {
-        actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
-    public void resetBackArrowActionBar() {
-        actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(false);
         }
     }
 
@@ -128,5 +105,15 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     public void showBottomNavigation() {
         bottomNavigation.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

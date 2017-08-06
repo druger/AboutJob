@@ -19,9 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.adapters.ReviewAdapter;
@@ -30,7 +28,6 @@ import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.MyReviewsView;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.MyReviewsPresenter;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
 
@@ -39,7 +36,7 @@ import static com.druger.aboutwork.Const.Bundles.USER_ID;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyReviewsFragment extends MvpFragment implements MyReviewsView {
+public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
 
     @InjectPresenter
     MyReviewsPresenter myReviewsPresenter;
@@ -74,10 +71,10 @@ public class MyReviewsFragment extends MvpFragment implements MyReviewsView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_my_reviews, container, false);
+        rootView = inflater.inflate(R.layout.fragment_my_reviews, container, false);
 
+        setupUI();
         setupToolbar();
-        setupUI(view);
         initSwipe();
 
         Bundle bundle = this.getArguments();
@@ -86,12 +83,14 @@ public class MyReviewsFragment extends MvpFragment implements MyReviewsView {
         }
 
         myReviewsPresenter.fetchReviews(userId);
-        return view;
+        return rootView;
     }
 
     private void setupToolbar() {
-        ((MainActivity) getActivity()).setActionBarTitle(R.string.my_reviews);
-        ((MainActivity) getActivity()).setBackArrowActionBar();
+        toolbar = bindView(R.id.toolbar);
+        setActionBar(toolbar);
+        getActionBar().setTitle(R.string.my_reviews);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void setupRecycler(final List<Review> reviews) {
@@ -133,10 +132,10 @@ public class MyReviewsFragment extends MvpFragment implements MyReviewsView {
         transaction.commit();
     }
 
-    private void setupUI(View view) {
-        tvCountReviews = (TextView) view.findViewById(R.id.tvCountReviews);
+    private void setupUI() {
+        tvCountReviews = bindView(R.id.tvCountReviews);
         bottomNavigation = (BottomNavigationView) getActivity().findViewById(R.id.bottom_navigation);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerView = bindView(R.id.recycler_view);
     }
 
     private void initSwipe() {
@@ -152,13 +151,10 @@ public class MyReviewsFragment extends MvpFragment implements MyReviewsView {
                 final Review review = myReviewsPresenter.getReview(position);
                 Snackbar snackbar = Snackbar
                         .make(getActivity().findViewById(R.id.coordinator), R.string.review_deleted, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.undo, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                myReviewsPresenter.addReview(position, review);
-                                reviewAdapter.notifyItemInserted(position);
-                                recyclerView.scrollToPosition(position);
-                            }
+                        .setAction(R.string.undo, v -> {
+                            myReviewsPresenter.addReview(position, review);
+                            reviewAdapter.notifyItemInserted(position);
+                            recyclerView.scrollToPosition(position);
                         });
                 showSnackbar(snackbar);
                 myReviewsPresenter.removeReview(position);
@@ -178,13 +174,6 @@ public class MyReviewsFragment extends MvpFragment implements MyReviewsView {
     public void onStop() {
         super.onStop();
         myReviewsPresenter.removeListeners();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        RefWatcher refWatcher = App.getRefWatcher(getActivity());
-        refWatcher.watch(this);
     }
 
     /**

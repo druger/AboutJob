@@ -12,22 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.LoginActivity;
-import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.activities.SignupActivity;
 import com.druger.aboutwork.interfaces.view.SettingsView;
 import com.druger.aboutwork.presenters.SettingPresenter;
-import com.squareup.leakcanary.RefWatcher;
 
-public class SettingsFragment extends MvpFragment implements View.OnClickListener, SettingsView {
-    private final String TAG = SettingsFragment.class.getSimpleName();
+public class SettingsFragment extends BaseFragment implements View.OnClickListener, SettingsView {
 
     @InjectPresenter
     SettingPresenter settingPresenter;
@@ -35,7 +29,6 @@ public class SettingsFragment extends MvpFragment implements View.OnClickListene
     private EditText editText;
     private Button changeEmail;
     private Button changePass;
-    private ProgressBar progressBar;
     private Button btnChangeEmail;
     private Button btnChangePass;
     private Button removeAccount;
@@ -43,19 +36,21 @@ public class SettingsFragment extends MvpFragment implements View.OnClickListene
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        rootView = inflater.inflate(R.layout.fragment_settings, container, false);
 
         settingPresenter.setupAuth();
 
+        setupUI();
         setupToolbar();
-        setupUI(view);
         setupUX();
-        return view;
+        return rootView;
     }
 
     private void setupToolbar() {
-        ((MainActivity) getActivity()).setActionBarTitle(R.string.settings);
-        ((MainActivity) getActivity()).setBackArrowActionBar();
+        toolbar = bindView(R.id.toolbar);
+        setActionBar(toolbar);
+        getActionBar().setTitle(R.string.settings);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void setupUX() {
@@ -66,15 +61,15 @@ public class SettingsFragment extends MvpFragment implements View.OnClickListene
         removeAccount.setOnClickListener(this);
     }
 
-    private void setupUI(View view) {
-        editText = (EditText) view.findViewById(R.id.editText);
-        changeEmail = (Button) view.findViewById(R.id.change_email);
-        changePass = (Button) view.findViewById(R.id.change_pass);
-        btnChangeEmail = (Button) view.findViewById(R.id.btn_change_email);
-        btnChangePass = (Button) view.findViewById(R.id.btn_change_pass);
-        removeAccount = (Button) view.findViewById(R.id.btnRemoveAccount);
+    private void setupUI() {
+        editText = bindView(R.id.editText);
+        changeEmail = bindView(R.id.change_email);
+        changePass = bindView(R.id.change_pass);
+        btnChangeEmail = bindView(R.id.btn_change_email);
+        btnChangePass = bindView(R.id.btn_change_pass);
+        removeAccount = bindView(R.id.btnRemoveAccount);
 
-        progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
+        progressBar = bindView(R.id.progress_bar);
 
         editText.setVisibility(View.GONE);
         changeEmail.setVisibility(View.GONE);
@@ -83,13 +78,6 @@ public class SettingsFragment extends MvpFragment implements View.OnClickListene
         if (progressBar != null) {
             progressBar.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        RefWatcher refWatcher = App.getRefWatcher(getActivity());
-        refWatcher.watch(this);
     }
 
     @Override
