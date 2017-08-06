@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.druger.aboutwork.AboutWorkApp;
+import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.interfaces.view.ReviewView;
@@ -213,7 +213,7 @@ public class ReviewFragment extends MvpFragment implements ReviewView, View.OnCl
     public void onDestroy() {
         super.onDestroy();
         unbindDrawables(view);
-        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(getActivity());
+        RefWatcher refWatcher = App.getRefWatcher(getActivity());
         refWatcher.watch(this);
         if (fromAccount) {
             ((MainActivity) getActivity()).showBottomNavigation();

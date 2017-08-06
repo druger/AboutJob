@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.druger.aboutwork.AboutWorkApp;
+import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.interfaces.view.ResetPasswordView;
 import com.druger.aboutwork.presenters.ResetPasswordPresenter;
@@ -63,7 +63,7 @@ public class ResetPasswordActivity extends MvpAppCompatActivity implements Reset
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(this);
+        RefWatcher refWatcher = App.getRefWatcher(this);
         refWatcher.watch(this);
     }
 

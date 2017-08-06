@@ -1,4 +1,4 @@
-package com.druger.aboutwork.rest;
+package com.druger.aboutwork.rest.endpoints;
 
 import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.CompanyResponse;
@@ -11,10 +11,10 @@ import retrofit2.http.Query;
 /**
  * Created by druger on 25.07.2016.
  */
-public interface ApiService {
+public interface Company {
     @GET("/employers")
     Observable<CompanyResponse> getCompanies(@Query("text") String query,
-                                                      @Query("page") int page);
+                                             @Query("page") int page);
 
     @GET("/employers/{employer_id}")
     Observable<CompanyDetail> getCompanyDetail(@Path("employer_id") String id);

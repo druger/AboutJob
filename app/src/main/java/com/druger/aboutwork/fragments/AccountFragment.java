@@ -19,19 +19,21 @@ import android.widget.TextView;
 import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.bumptech.glide.Glide;
-import com.druger.aboutwork.AboutWorkApp;
+import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.LoginActivity;
 import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.interfaces.view.AccountView;
 import com.druger.aboutwork.presenters.AccountPresenter;
-import com.druger.aboutwork.utils.SharedPreferencesHelper;
+import com.druger.aboutwork.utils.PreferencesHelper;
 import com.druger.aboutwork.utils.Utils;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.leakcanary.RefWatcher;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import javax.inject.Inject;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -43,6 +45,8 @@ public class AccountFragment extends MvpFragment implements View.OnClickListener
 
     @InjectPresenter
     AccountPresenter accountPresenter;
+    @Inject
+    PreferencesHelper preferencesHelper;
 
     private TextView tvName;
     private ImageView ivEditName;
@@ -53,6 +57,12 @@ public class AccountFragment extends MvpFragment implements View.OnClickListener
     private TextView tvEmail;
 
     public AccountFragment() {
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        App.getAppComponent().inject(this);
     }
 
     @Override
@@ -91,7 +101,7 @@ public class AccountFragment extends MvpFragment implements View.OnClickListener
         civAvatar = (CircleImageView) view.findViewById(R.id.civAvatar);
         tvEmail = (TextView) view.findViewById(R.id.tvEmail);
 
-        tvName.setText(SharedPreferencesHelper.getUserName(getActivity()));
+        tvName.setText(preferencesHelper.getUserName());
     }
 
     @Override
@@ -109,7 +119,7 @@ public class AccountFragment extends MvpFragment implements View.OnClickListener
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(getActivity());
+        RefWatcher refWatcher = App.getRefWatcher(getActivity());
         refWatcher.watch(this);
     }
 
@@ -216,7 +226,7 @@ public class AccountFragment extends MvpFragment implements View.OnClickListener
                 if (!userName.trim().isEmpty()) {
                     tvName.setText(userName);
                     Utils.hideKeyboard(getActivity(), etName);
-                    SharedPreferencesHelper.saveUserName(userName, getActivity());
+                    preferencesHelper.saveUserName(userName);
                     accountPresenter.changeUserName(userName, userId);
                 }
             }

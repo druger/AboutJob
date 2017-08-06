@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.druger.aboutwork.AboutWorkApp;
+import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.MainActivity;
 import com.squareup.leakcanary.RefWatcher;
@@ -33,7 +33,7 @@ public class RatingsFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(getActivity());
+        RefWatcher refWatcher = App.getRefWatcher(getActivity());
         refWatcher.watch(this);
     }
 }

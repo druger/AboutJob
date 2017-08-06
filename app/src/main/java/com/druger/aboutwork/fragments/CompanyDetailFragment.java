@@ -26,7 +26,7 @@ import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.druger.aboutwork.AboutWorkApp;
+import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.adapters.ReviewAdapter;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
@@ -210,7 +210,7 @@ public class CompanyDetailFragment extends MvpFragment implements View.OnClickLi
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(getActivity());
+        RefWatcher refWatcher = App.getRefWatcher(getActivity());
         refWatcher.watch(this);
     }
 

@@ -22,7 +22,7 @@ import android.widget.ImageView;
 
 import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.druger.aboutwork.AboutWorkApp;
+import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.adapters.CommentAdapter;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
@@ -181,7 +181,7 @@ public class CommentsFragment extends MvpFragment implements CommentsView{
     private void sendMessage(String message, int type) {
         if (message.length() > 0) {
             if (type == NEW) {
-                commentsPresenter.addComment(getActivity(), message, reviewId);
+                commentsPresenter.addComment(message, reviewId);
             } else if (type == UPDATE) {
                 commentsPresenter.updateComment(message);
                 Utils.hideKeyboard(getActivity(), this.etMessage);
@@ -206,7 +206,7 @@ public class CommentsFragment extends MvpFragment implements CommentsView{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(getActivity());
+        RefWatcher refWatcher = App.getRefWatcher(getActivity());
         refWatcher.watch(this);
         commentsPresenter.removeListeners();
     }

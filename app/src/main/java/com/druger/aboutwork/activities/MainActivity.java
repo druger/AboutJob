@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.druger.aboutwork.AboutWorkApp;
+import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.fragments.AccountFragment;
 import com.druger.aboutwork.fragments.CompaniesFragment;
@@ -53,7 +53,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(this);
+        RefWatcher refWatcher = App.getRefWatcher(this);
         refWatcher.watch(this);
     }
 

@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.druger.aboutwork.AboutWorkApp;
+import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.interfaces.view.LoginView;
 import com.druger.aboutwork.presenters.LoginPresenter;
@@ -102,7 +102,7 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(this);
+        RefWatcher refWatcher = App.getRefWatcher(this);
         refWatcher.watch(this);
     }
 

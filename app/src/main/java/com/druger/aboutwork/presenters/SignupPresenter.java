@@ -1,21 +1,20 @@
 package com.druger.aboutwork.presenters;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.druger.aboutwork.App;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.view.SignupView;
 import com.druger.aboutwork.model.User;
-import com.druger.aboutwork.utils.SharedPreferencesHelper;
+import com.druger.aboutwork.utils.PreferencesHelper;
 import com.druger.aboutwork.utils.Utils;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import javax.inject.Inject;
 
 /**
  * Created by druger on 13.05.2017.
@@ -27,6 +26,13 @@ public class SignupPresenter extends MvpPresenter<SignupView> {
 
     private FirebaseAuth auth;
     private Activity activity;
+
+    @Inject
+    PreferencesHelper preferencesHelper;
+
+    public SignupPresenter() {
+        App.getAppComponent().inject(this);
+    }
 
     public void setAuth(Activity activity) {
         this.activity = activity;
@@ -41,21 +47,18 @@ public class SignupPresenter extends MvpPresenter<SignupView> {
         getViewState().showProgress();
 
         auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+                .addOnCompleteListener(activity, task -> {
+                    Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
 
-                        getViewState().hideProgress();
+                    getViewState().hideProgress();
 
-                        if (!task.isSuccessful()) {
-                            getViewState().onSignupFailed();
-                        } else {
-                            saveNewUser(task.getResult().getUser());
-                            getViewState().onSignupSuccess();
-                        }
-
+                    if (!task.isSuccessful()) {
+                        getViewState().onSignupFailed();
+                    } else {
+                        saveNewUser(task.getResult().getUser());
+                        getViewState().onSignupSuccess();
                     }
+
                 });
     }
 
@@ -64,6 +67,6 @@ public class SignupPresenter extends MvpPresenter<SignupView> {
         String name = Utils.getNameByEmail(firebaseUser.getEmail());
         User user = new User(id, name);
         FirebaseHelper.addUser(user, firebaseUser.getUid());
-        SharedPreferencesHelper.saveUserName(name, activity);
+        preferencesHelper.saveUserName(name);
     }
 }

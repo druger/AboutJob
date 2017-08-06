@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.druger.aboutwork.AboutWorkApp;
+import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.fragments.CompanyDetailFragment;
 import com.squareup.leakcanary.RefWatcher;
@@ -31,7 +31,7 @@ public class CompanyDetailActivity extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(this);
+        RefWatcher refWatcher = App.getRefWatcher(this);
         refWatcher.watch(this);
     }
 

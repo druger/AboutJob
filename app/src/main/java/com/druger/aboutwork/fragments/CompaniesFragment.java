@@ -13,7 +13,8 @@ import android.view.ViewGroup;
 
 import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.druger.aboutwork.AboutWorkApp;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.CompanyDetailActivity;
 import com.druger.aboutwork.activities.MainActivity;
@@ -39,7 +40,6 @@ import static com.druger.aboutwork.Const.Bundles.COMPANY_DETAIL;
  * A simple {@link Fragment} subclass.
  */
 public class CompaniesFragment extends MvpFragment implements CompaniesView {
-    private static final String TAG = CompaniesFragment.class.getSimpleName();
 
     @InjectPresenter
     CompaniesPresenter companiesPresenter;
@@ -56,22 +56,28 @@ public class CompaniesFragment extends MvpFragment implements CompaniesView {
     public CompaniesFragment() {
     }
 
+    @ProvidePresenter
+    CompaniesPresenter provideCompaniesPresenter() {
+        return App.getAppComponent().getCompaniesPresenter();
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_companies, container, false);
 
-        ((MainActivity) getActivity()).setActionBarTitle(R.string.app_name);
-        ((MainActivity) getActivity()).resetBackArrowActionBar();
-
-        companiesPresenter.onCreate();
-
+        setupActionBar();
         setupUI(view);
         setupRecycler();
         setupListeners();
         setupSearch();
         return view;
+    }
+
+    private void setupActionBar() {
+        ((MainActivity) getActivity()).setActionBarTitle(R.string.app_name);
+        ((MainActivity) getActivity()).resetBackArrowActionBar();
     }
 
     private void setupRecycler() {
@@ -137,7 +143,7 @@ public class CompaniesFragment extends MvpFragment implements CompaniesView {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = AboutWorkApp.getRefWatcher(getActivity());
+        RefWatcher refWatcher = App.getRefWatcher(getActivity());
         refWatcher.watch(this);
     }
 

@@ -1,13 +1,12 @@
 package com.druger.aboutwork.presenters;
 
-import android.app.Activity;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.druger.aboutwork.App;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.view.CommentsView;
 import com.druger.aboutwork.model.Comment;
-import com.druger.aboutwork.utils.SharedPreferencesHelper;
+import com.druger.aboutwork.utils.PreferencesHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -20,6 +19,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import static com.druger.aboutwork.db.FirebaseHelper.getComments;
 
@@ -36,9 +37,13 @@ public class CommentsPresenter extends MvpPresenter<CommentsView> implements Val
     private List<Comment> comments;
     private Comment comment;
 
+    @Inject
+    PreferencesHelper preferencesHelper;
+
     public CommentsPresenter() {
         user = FirebaseAuth.getInstance().getCurrentUser();
         comments = new ArrayList<>();
+        App.getAppComponent().inject(this);
     }
 
 
@@ -87,10 +92,10 @@ public class CommentsPresenter extends MvpPresenter<CommentsView> implements Val
         return comment;
     }
 
-    public void addComment(Activity activity, String message, String reviewId) {
+    public void addComment(String message, String reviewId) {
         Calendar calendar = Calendar.getInstance();
         Comment comment = new Comment(message, calendar.getTimeInMillis());
-        comment.setUserName(SharedPreferencesHelper.getUserName(activity));
+        comment.setUserName(preferencesHelper.getUserName());
         if (user != null) {
             comment.setUserId(user.getUid());
         }
