@@ -9,6 +9,9 @@ import com.druger.aboutwork.R;
 import com.druger.aboutwork.fragments.CompanyDetailFragment;
 import com.squareup.leakcanary.RefWatcher;
 
+import static com.druger.aboutwork.Const.Bundles.COMPANY_ID;
+
+// TODO добавить MVP
 public class CompanyDetailActivity extends AppCompatActivity{
 
     @Override
@@ -21,11 +24,15 @@ public class CompanyDetailActivity extends AppCompatActivity{
             if (savedInstanceState != null) {
                 return;
             }
-
-            CompanyDetailFragment company = new CompanyDetailFragment();
-            getFragmentManager().beginTransaction()
-                    .add(R.id.company_container, company).commit();
+            showCompanyDetailFragment();
         }
+    }
+
+    private void showCompanyDetailFragment() {
+        String companyID = getIntent().getStringExtra(COMPANY_ID);
+        CompanyDetailFragment company = CompanyDetailFragment.getInstance(companyID);
+        getFragmentManager().beginTransaction()
+                .add(R.id.company_container, company).commit();
     }
 
     @Override

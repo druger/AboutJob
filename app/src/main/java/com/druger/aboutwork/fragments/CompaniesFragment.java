@@ -20,7 +20,6 @@ import com.druger.aboutwork.adapters.CompanyAdapter;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.CompaniesView;
 import com.druger.aboutwork.model.Company;
-import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.presenters.CompaniesPresenter;
 import com.druger.aboutwork.utils.rx.RxSearch;
 import com.mikepenz.fastadapter_extensions.scroll.EndlessRecyclerOnScrollListener;
@@ -31,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-import static com.druger.aboutwork.Const.Bundles.COMPANY_DETAIL;
+import static com.druger.aboutwork.Const.Bundles.COMPANY_ID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -100,7 +99,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
             @Override
             public void onClick(View view, int position) {
                 Company company = mCompanies.get(position);
-                companiesPresenter.getCompanyDetail(company);
+                showCompanyDetail(company.getId());
             }
 
             @Override
@@ -145,11 +144,10 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
         adapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void showCompanyDetail(CompanyDetail companyDetail) {
+    public void showCompanyDetail(String id) {
         Intent intent = new Intent(getActivity(), CompanyDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putParcelable(COMPANY_DETAIL, companyDetail);
+        bundle.putString(COMPANY_ID, id);
         intent.putExtras(bundle);
         startActivity(intent);
     }

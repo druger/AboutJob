@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.druger.aboutwork.interfaces.view.CompaniesView;
-import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.CompanyResponse;
 import com.druger.aboutwork.rest.RestApi;
 import com.druger.aboutwork.utils.rx.RxUtils;
@@ -53,18 +52,5 @@ public class CompaniesPresenter extends BasePresenter<CompaniesView> {
         List<com.druger.aboutwork.model.Company> companies = response.getItems();
         getViewState().showCompanies(companies);
         Log.d(TAG, "Companies size = " + companies.size());
-    }
-
-    // TODO перенести запрос в CompanyDetail fragment
-    public void getCompanyDetail(com.druger.aboutwork.model.Company company) {
-        Disposable request = restApi.company.getCompanyDetail(company.getId())
-                .compose(RxUtils.httpSchedulers())
-                .subscribe(this::successGetCompanyDetails, this::handleError);
-
-        unSubscribeOnDestroy(request);
-    }
-
-    private void successGetCompanyDetails(CompanyDetail companyDetail) {
-        getViewState().showCompanyDetail(companyDetail);
     }
 }

@@ -1,12 +1,15 @@
 package com.druger.aboutwork.presenters;
 
+import android.util.Log;
+
 import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
 import com.druger.aboutwork.interfaces.view.CompanyDetailView;
 import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.model.User;
+import com.druger.aboutwork.rest.RestApi;
+import com.druger.aboutwork.utils.rx.RxUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,6 +20,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import io.reactivex.disposables.Disposable;
+
 import static com.druger.aboutwork.db.FirebaseHelper.getReviewsForCompany;
 import static com.druger.aboutwork.db.FirebaseHelper.getUser;
 
@@ -25,8 +32,14 @@ import static com.druger.aboutwork.db.FirebaseHelper.getUser;
  */
 
 @InjectViewState
-public class CompanyDetailPresenter extends MvpPresenter<CompanyDetailView>
+public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
         implements ValueEventListener {
+
+    @Inject
+    public CompanyDetailPresenter(RestApi restApi) {
+        this.restApi = restApi;
+    }
+
 
     private DatabaseReference dbReference;
     private ValueEventListener valueEventListener;
@@ -41,9 +54,9 @@ public class CompanyDetailPresenter extends MvpPresenter<CompanyDetailView>
         getViewState().hideDescription();
     }
 
-    public void setReviews(CompanyDetail detail) {
+    public void setReviews(String companyID) {
         dbReference = FirebaseDatabase.getInstance().getReference();
-        Query reviewsQuery = getReviewsForCompany(dbReference, detail.getId());
+        Query reviewsQuery = getReviewsForCompany(dbReference, companyID);
         reviewsQuery.addValueEventListener(this);
     }
 
@@ -100,7 +113,7 @@ public class CompanyDetailPresenter extends MvpPresenter<CompanyDetailView>
 
     @Override
     public void onCancelled(DatabaseError databaseError) {
-
+        Log.e(TAG, databaseError.getMessage());
     }
 
     public void removeListeners() {
@@ -108,5 +121,21 @@ public class CompanyDetailPresenter extends MvpPresenter<CompanyDetailView>
         if (valueEventListener != null) {
             dbReference.removeEventListener(valueEventListener);
         }
+    }
+
+    public void getCompanyDetail(String companyID) {
+        requestCompanyDetail(companyID);
+    }
+
+    private void requestCompanyDetail(String companyID) {
+        Disposable request = restApi.company.getCompanyDetail(companyID)
+                .compose(RxUtils.httpSchedulers())
+                .subscribe(this::successGetCompanyDetails, this::handleError);
+
+        unSubscribeOnDestroy(request);
+    }
+
+    private void successGetCompanyDetails(CompanyDetail companyDetail) {
+        getViewState().showCompanyDetail(companyDetail);
     }
 }

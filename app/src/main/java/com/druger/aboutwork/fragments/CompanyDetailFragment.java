@@ -22,8 +22,10 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.adapters.ReviewAdapter;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
@@ -35,7 +37,7 @@ import com.druger.aboutwork.presenters.CompanyDetailPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.druger.aboutwork.Const.Bundles.COMPANY_DETAIL;
+import static com.druger.aboutwork.Const.Bundles.COMPANY_ID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,10 +64,17 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     private List<Review> reviews = new ArrayList<>();
     private ReviewAdapter reviewAdapter;
 
-    private CompanyDetail detail;
+    public static CompanyDetailFragment getInstance(String companyID) {
+        CompanyDetailFragment companyDetail = new CompanyDetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(COMPANY_ID, companyID);
+        companyDetail.setArguments(bundle);
+        return companyDetail;
+    }
 
-    public CompanyDetailFragment() {
-        // Required empty public constructor
+    @ProvidePresenter
+    CompanyDetailPresenter provideCompanyDetailPresenter() {
+        return App.getAppComponent().getCompanyDetailPresenter();
     }
 
     @Override
@@ -80,16 +89,13 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_company_detail, container, false);
-        detail = getActivity().getIntent().getExtras().getParcelable(COMPANY_DETAIL);
 
         setupToolbar();
         setupUI();
         setupUX();
-        loadImage();
-        setDescription();
         setupRecycler(reviews);
 
-        companyDetailPresenter.setReviews(detail);
+        companyDetailPresenter.getCompanyDetail(getArguments().getString(COMPANY_ID, ""));
         return rootView;
     }
 
@@ -111,40 +117,9 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
         fab = bindView(R.id.fabAddReview);
     }
 
-    private void setDescription() {
-        tvDescription.setVisibility(View.GONE);
-
-        String iSite = detail.getSite();
-        String iDescription = detail.getDescription();
-        if (iSite != null) {
-            site.setText(iSite);
-        }
-        if (iDescription != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                tvDescription.setText(Html.fromHtml(iDescription, Html.FROM_HTML_MODE_LEGACY));
-            } else {
-                tvDescription.setText(Html.fromHtml(iDescription));
-            }
-        }
-    }
-
-    private void loadImage() {
-        CompanyDetail.Logo logo = detail.getLogo();
-        Glide.with(this)
-                .load(logo != null ? logo.getOriginal() : "")
-                .placeholder(R.drawable.default_company)
-                .error(R.drawable.default_company)
-                .crossFade()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(ivToolbar);
-    }
-
     private void setupToolbar() {
         toolbar = bindView(R.id.toolbar);
         collapsingToolbar = bindView(R.id.collapsingToolbar);
-
-        collapsingToolbar.setTitle(detail.getName());
-        collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
     }
 
     private void setupRecycler(final List<Review> reviews) {
@@ -245,5 +220,47 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     @Override
     public void showCountReviews(int count) {
         tvCountReviews.setText(String.valueOf(count));
+    }
+
+    @Override
+    public void showCompanyDetail(CompanyDetail company) {
+        companyDetailPresenter.setReviews(company.getId());
+
+        setToolbarName(company.getName());
+        setDescription(company);
+        loadImage(company);
+    }
+
+    private void setToolbarName(String name) {
+        collapsingToolbar.setTitle(name);
+        collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
+    }
+
+    private void setDescription(CompanyDetail company) {
+        tvDescription.setVisibility(View.GONE);
+
+        String iSite = company.getSite();
+        String iDescription = company.getDescription();
+        if (iSite != null) {
+            site.setText(iSite);
+        }
+        if (iDescription != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                tvDescription.setText(Html.fromHtml(iDescription, Html.FROM_HTML_MODE_LEGACY));
+            } else {
+                tvDescription.setText(Html.fromHtml(iDescription));
+            }
+        }
+    }
+
+    private void loadImage(CompanyDetail company) {
+        CompanyDetail.Logo logo = company.getLogo();
+        Glide.with(this)
+                .load(logo != null ? logo.getOriginal() : "")
+                .placeholder(R.drawable.default_company)
+                .error(R.drawable.default_company)
+                .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(ivToolbar);
     }
 }

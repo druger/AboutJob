@@ -11,7 +11,7 @@ import retrofit2.http.Query;
 /**
  * Created by druger on 25.07.2016.
  */
-public interface Company {
+public interface CompanyEndPoint {
     @GET("/employers")
     Observable<CompanyResponse> getCompanies(@Query("text") String query,
                                              @Query("page") int page);

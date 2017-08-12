@@ -1,6 +1,7 @@
 package com.druger.aboutwork.interfaces.view;
 
 import com.arellomobile.mvp.MvpView;
+import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.Review;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface CompanyDetailView extends MvpView {
     void showRating(float rating);
 
     void showCountReviews(int count);
+
+    void showCompanyDetail(CompanyDetail company);
 }

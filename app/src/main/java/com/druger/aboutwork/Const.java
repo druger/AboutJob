@@ -15,6 +15,7 @@ public final class Const {
         public static final String REVIEW = "review";
         public static final String NAME = "name";
         public static final String COMPANY_DETAIL = "companyDetail";
+        public static final String COMPANY_ID = "companyID";
         public static final String USER_ID = "userId";
     }
 

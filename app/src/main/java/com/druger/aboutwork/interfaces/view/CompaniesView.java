@@ -2,7 +2,6 @@ package com.druger.aboutwork.interfaces.view;
 
 import com.arellomobile.mvp.MvpView;
 import com.druger.aboutwork.model.Company;
-import com.druger.aboutwork.model.CompanyDetail;
 
 import java.util.List;
 
@@ -13,6 +12,4 @@ import java.util.List;
 public interface CompaniesView extends MvpView, NetworkView {
 
     void showCompanies(List<Company> companies);
-
-    void showCompanyDetail(CompanyDetail companyDetail);
 }

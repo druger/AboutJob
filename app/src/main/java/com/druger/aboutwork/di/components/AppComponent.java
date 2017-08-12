@@ -5,6 +5,7 @@ import com.druger.aboutwork.di.modules.NetworkModule;
 import com.druger.aboutwork.fragments.AccountFragment;
 import com.druger.aboutwork.presenters.CommentsPresenter;
 import com.druger.aboutwork.presenters.CompaniesPresenter;
+import com.druger.aboutwork.presenters.CompanyDetailPresenter;
 import com.druger.aboutwork.presenters.SignupPresenter;
 
 import javax.inject.Singleton;
@@ -24,4 +25,6 @@ public interface AppComponent {
     void inject(SignupPresenter presenter);
 
     CompaniesPresenter getCompaniesPresenter();
+
+    CompanyDetailPresenter getCompanyDetailPresenter();
 }

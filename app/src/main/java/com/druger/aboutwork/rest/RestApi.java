@@ -1,6 +1,6 @@
 package com.druger.aboutwork.rest;
 
-import com.druger.aboutwork.rest.endpoints.Company;
+import com.druger.aboutwork.rest.endpoints.CompanyEndPoint;
 
 import java.util.concurrent.TimeUnit;
 
@@ -16,7 +16,7 @@ public class RestApi {
 
     public static final String BASE_URL = "https://api.hh.ru/";
 
-    public final Company company;
+    public final CompanyEndPoint company;
 
     public RestApi() {
         OkHttpClient client = new OkHttpClient.Builder()
@@ -32,6 +32,6 @@ public class RestApi {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
-        company = retrofit.create(Company.class);
+        company = retrofit.create(CompanyEndPoint.class);
     }
 }
