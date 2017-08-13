@@ -24,7 +24,6 @@ import com.druger.aboutwork.presenters.CompaniesPresenter;
 import com.druger.aboutwork.utils.rx.RxSearch;
 import com.mikepenz.fastadapter_extensions.scroll.EndlessRecyclerOnScrollListener;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -40,7 +39,6 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
     @InjectPresenter
     CompaniesPresenter companiesPresenter;
 
-    private List<Company> mCompanies;
     private CompanyAdapter adapter;
     private RecyclerView recyclerView;
     private EndlessRecyclerOnScrollListener scrollListener;
@@ -78,9 +76,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
     }
 
     private void setupRecycler() {
-        mCompanies = new ArrayList<>();
-        adapter = new CompanyAdapter(mCompanies);
-
+        adapter = new CompanyAdapter();
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -95,10 +91,9 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
         };
         recyclerView.addOnScrollListener(scrollListener);
 
-        adapter.setOnItemClickListener(new OnItemClickListener() {
+        adapter.setOnItemClickListener(new OnItemClickListener<Company>() {
             @Override
-            public void onClick(View view, int position) {
-                Company company = mCompanies.get(position);
+            public void onClick(Company company, int position) {
                 showCompanyDetail(company.getId());
             }
 
@@ -118,8 +113,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(newText -> {
                     query = newText;
-                    mCompanies.clear();
-                    adapter.notifyDataSetChanged();
+                    adapter.clear();
                     scrollListener.resetPageCount();
                 });
     }
@@ -140,8 +134,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
 
     @Override
     public void showCompanies(List<Company> companies) {
-        mCompanies.addAll(companies);
-        adapter.notifyDataSetChanged();
+        adapter.addItems(companies);
     }
 
     public void showCompanyDetail(String id) {

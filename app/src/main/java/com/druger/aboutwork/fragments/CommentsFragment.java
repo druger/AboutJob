@@ -2,7 +2,6 @@ package com.druger.aboutwork.fragments;
 
 
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -152,23 +151,25 @@ public class CommentsFragment extends BaseFragment implements CommentsView {
     }
 
     private void setupRecycler(List<Comment> comments) {
-        commentAdapter = new CommentAdapter(comments);
+        commentAdapter = new CommentAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(commentAdapter);
+        commentAdapter.addItems(comments);
         recyclerView.setNestedScrollingEnabled(false);
 
         changeComment();
     }
 
     private void changeComment() {
-        commentAdapter.setOnItemClickListener(new OnItemClickListener() {
+        commentAdapter.setOnItemClickListener(new OnItemClickListener<Comment>() {
             @Override
-            public void onClick(View view, int position) {
+            public void onClick(Comment item, int position) {
+
             }
 
             @Override
-            public boolean onLongClick(View view, final int position) {
+            public boolean onLongClick(View view, int position) {
                 return commentsPresenter.onLongClick(position);
             }
         });
@@ -217,21 +218,18 @@ public class CommentsFragment extends BaseFragment implements CommentsView {
     @Override
     public void showChangeDialog(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setItems(R.array.comments_change, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case 0:
-                        commentsPresenter.deleteComment(position);
-                        break;
-                    case 1:
-                        etMessage.setText(commentsPresenter.getComment().getMessage());
-                        Utils.showKeyboard(getActivity());
-                        etMessage.setFocusableInTouchMode(true);
-                        etMessage.setSelection(commentsPresenter.getComment().getMessage().length());
-                        type = UPDATE;
-                        break;
-                }
+        builder.setItems(R.array.comments_change, (dialog, which) -> {
+            switch (which) {
+                case 0:
+                    commentsPresenter.deleteComment(position);
+                    break;
+                case 1:
+                    etMessage.setText(commentsPresenter.getComment().getMessage());
+                    Utils.showKeyboard(getActivity());
+                    etMessage.setFocusableInTouchMode(true);
+                    etMessage.setSelection(commentsPresenter.getComment().getMessage().length());
+                    type = UPDATE;
+                    break;
             }
         });
         builder.show();

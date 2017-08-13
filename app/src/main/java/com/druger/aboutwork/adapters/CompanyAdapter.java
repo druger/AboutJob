@@ -11,27 +11,16 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.R;
-import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.model.Company;
-
-import java.util.List;
 
 /**
  * Created by druger on 28.01.2017.
  */
 
-public class CompanyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CompanyAdapter extends BaseRecyclerViewAdapter<Company, RecyclerView.ViewHolder> {
     // TODO Не отображается progress bar
     private final int TYPE_COMPANY = 0;
     private final int TYPE_LOADING = 1;
-
-    private List<Company> companies;
-
-    private OnItemClickListener clickListener;
-
-    public CompanyAdapter(List<Company> companies) {
-        this.companies = companies;
-    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -50,7 +39,7 @@ public class CompanyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof CompanyVH) {
             CompanyVH companyVH = (CompanyVH) holder;
-            Company company = companies.get(position);
+            Company company = getItem(position);
             companyVH.tvName.setText(company.getName());
 
             Glide.with(holder.itemView.getContext())
@@ -61,6 +50,15 @@ public class CompanyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(companyVH.ivLogo);
+
+            holder.itemView.setOnClickListener(v -> {
+                if (clickListener != null) {
+                    int pos = holder.getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        clickListener.onClick(company, pos);
+                    }
+                }
+            });
         } else if (holder instanceof LoadVH) {
             LoadVH loadVH = (LoadVH) holder;
             loadVH.progressBar.setVisibility(View.VISIBLE);
@@ -69,44 +67,27 @@ public class CompanyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public int getItemCount() {
-        return companies.size();
-    }
-
-    @Override
     public int getItemViewType(int position) {
-        return companies.get(position) == null ? TYPE_LOADING : TYPE_COMPANY;
+        return getItem(position) == null ? TYPE_LOADING : TYPE_COMPANY;
     }
 
-    public class CompanyVH extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private static class CompanyVH extends BaseViewHolder {
         ImageView ivLogo;
         TextView tvName;
 
-        public CompanyVH(View itemView) {
+        CompanyVH(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
-            ivLogo = (ImageView) itemView.findViewById(R.id.ivLogoComapny);
-            tvName = (TextView) itemView.findViewById(R.id.tvNameCompany);
-        }
-
-        @Override
-        public void onClick(View v) {
-            if (clickListener != null) {
-                clickListener.onClick(v, getAdapterPosition());
-            }
+            ivLogo = bindView(R.id.ivLogoComapny);
+            tvName = bindView(R.id.tvNameCompany);
         }
     }
 
-    class LoadVH extends RecyclerView.ViewHolder {
+    private static class LoadVH extends BaseViewHolder {
         ProgressBar progressBar;
 
-        public LoadVH(View itemView) {
+        LoadVH(View itemView) {
             super(itemView);
-            progressBar = (ProgressBar) itemView.findViewById(R.id.progress_bar);
+            progressBar = bindView(R.id.progress_bar);
         }
-    }
-
-    public void setOnItemClickListener(OnItemClickListener clickListener) {
-        this.clickListener = clickListener;
     }
 }

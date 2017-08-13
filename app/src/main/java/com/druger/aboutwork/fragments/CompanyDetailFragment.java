@@ -130,10 +130,9 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
         recyclerView.setAdapter(reviewAdapter);
         recyclerView.setNestedScrollingEnabled(false);
 
-        reviewAdapter.setOnClickListener(new OnItemClickListener() {
+        reviewAdapter.setOnClickListener(new OnItemClickListener<Review>() {
             @Override
-            public void onClick(View view, int position) {
-                Review review = reviews.get(position);
+            public void onClick(Review review, int position) {
                 SelectedReviewFragment reviewFragment = SelectedReviewFragment.newInstance(review, false);
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();

@@ -100,13 +100,12 @@ public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
         recyclerView.setAdapter(reviewAdapter);
         recyclerView.setNestedScrollingEnabled(false);
 
-        reviewAdapter.setOnClickListener(new OnItemClickListener() {
+        reviewAdapter.setOnClickListener(new OnItemClickListener<Review>() {
             @Override
-            public void onClick(View view, int position) {
+            public void onClick(Review review, int position) {
                 if (actionMode != null) {
                     toggleSelection(position);
                 } else {
-                    Review review = reviews.get(position);
                     showSelectedReview(review);
                 }
             }
