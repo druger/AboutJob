@@ -8,7 +8,6 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -151,10 +150,10 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
 
     private void setupToolbar() {
         toolbar = bindView(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setActionBar(toolbar);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         if (detail != null) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(detail.getName());
+            getActionBar().setTitle(detail.getName());
         }
 
     }

@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -144,11 +143,11 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
 
     private void setupToolbar() {
         toolbar = bindView(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setActionBar(toolbar);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         String companyName = getActivity().getIntent().getStringExtra(NAME);
         if (companyName != null) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(companyName);
+            getActionBar().setTitle(companyName);
         }
     }
 
