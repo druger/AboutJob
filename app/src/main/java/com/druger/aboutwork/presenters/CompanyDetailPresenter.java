@@ -124,6 +124,8 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
     }
 
     public void getCompanyDetail(String companyID) {
+        getViewState().showErrorScreen(false);
+        getViewState().showProgress(true);
         requestCompanyDetail(companyID);
     }
 
@@ -136,6 +138,14 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
     }
 
     private void successGetCompanyDetails(CompanyDetail companyDetail) {
+        getViewState().showProgress(false);
         getViewState().showCompanyDetail(companyDetail);
+    }
+
+    @Override
+    protected void handleError(Throwable throwable) {
+        super.handleError(throwable);
+        getViewState().showProgress(false);
+        getViewState().showErrorScreen(true);
     }
 }

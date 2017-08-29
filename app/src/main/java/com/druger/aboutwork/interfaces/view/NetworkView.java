@@ -11,4 +11,6 @@ public interface NetworkView {
     void showProgress(boolean show);
 
     void showMessage(String message, TypeMessage typeMessage);
+
+    void showErrorScreen(boolean show);
 }

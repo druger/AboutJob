@@ -10,7 +10,7 @@ import java.util.List;
  * Created by druger on 01.05.2017.
  */
 
-public interface CompanyDetailView extends MvpView {
+public interface CompanyDetailView extends MvpView, NetworkView {
 
     void showDescription();
 

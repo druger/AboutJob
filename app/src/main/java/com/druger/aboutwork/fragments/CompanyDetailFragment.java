@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -56,6 +57,7 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     private RatingBar ratingCompany;
     private ImageView ivToolbar;
     private FloatingActionButton fab;
+    private CoordinatorLayout ltContent;
 
     private CollapsingToolbarLayout collapsingToolbar;
     private RecyclerView recyclerView;
@@ -93,6 +95,7 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
         ivDownDrop.setOnClickListener(this);
         ivUpDrop.setOnClickListener(this);
         fab.setOnClickListener(this);
+        btnRetry.setOnClickListener(this);
     }
 
     private void setupUI() {
@@ -105,6 +108,10 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
         tvRating = bindView(R.id.tvRating);
         ratingCompany = bindView(R.id.rating_company);
         fab = bindView(R.id.fabAddReview);
+        ltContent = bindView(R.id.ltContent);
+        ltError = bindView(R.id.ltError);
+        progressBar = bindView(R.id.progressBar);
+        btnRetry = bindView(R.id.btnRetry);
     }
 
     private void setupToolbar() {
@@ -160,6 +167,9 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
                 break;
             case R.id.fabAddReview:
                 addReview();
+                break;
+            case R.id.btnRetry:
+                companyDetailPresenter.getCompanyDetail(getArguments().getString(COMPANY_ID, ""));
                 break;
         }
     }
@@ -253,5 +263,25 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(ivToolbar);
+    }
+
+    @Override
+    public void showProgress(boolean show) {
+        super.showProgress(show);
+        if (show) {
+            ltContent.setVisibility(View.INVISIBLE);
+        } else {
+            ltContent.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void showErrorScreen(boolean show) {
+        super.showErrorScreen(show);
+        if (show) {
+            ltContent.setVisibility(View.INVISIBLE);
+        } else {
+            ltContent.setVisibility(View.VISIBLE);
+        }
     }
 }

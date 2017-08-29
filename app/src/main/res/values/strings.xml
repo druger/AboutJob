@@ -91,4 +91,6 @@
     <string name="dislike_active" translatable="false">dislikeActive</string>
 
     <string name="network_error">Network error</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="retry">Try again</string>
 </resources>

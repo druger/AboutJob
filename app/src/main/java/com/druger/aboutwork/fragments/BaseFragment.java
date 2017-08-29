@@ -5,6 +5,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -26,6 +28,8 @@ public abstract class BaseFragment extends MvpFragment implements NetworkView {
     protected View rootView;
     protected ProgressBar progressBar;
     protected Toolbar toolbar;
+    protected LinearLayout ltError;
+    protected Button btnRetry;
 
     @SuppressWarnings("unchecked")
     protected <T extends View> T bindView(@IdRes int id) {
@@ -53,6 +57,15 @@ public abstract class BaseFragment extends MvpFragment implements NetworkView {
             case UNKNOW:
                 showToast(getString(R.string.network_error));
                 break;
+        }
+    }
+
+    @Override
+    public void showErrorScreen(boolean show) {
+        if (show) {
+            ltError.setVisibility(View.VISIBLE);
+        } else {
+            ltError.setVisibility(View.GONE);
         }
     }
 

@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="buttonStyle">@style/RegularButton</item>
 
         <item name="windowActionModeOverlay">true</item>
         <item name="actionModeBackground">@color/colorPrimary</item>
@@ -45,5 +46,10 @@
         <item name="android:progressDrawable">@drawable/ratingstars</item>
         <item name="android:minHeight">25dp</item>
     </style>
-
+    
+    <style name="RegularButton">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:padding">@dimen/middle_margin</item>
+    </style>
 </resources>
