@@ -67,7 +67,6 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
 
     private DatePickerFragment datePicker;
 
-    private View view;
     private CompanyDetail detail;
     private Review review;
     private boolean fromAccount;
@@ -97,7 +96,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         }
 
         if (!fromAccount) {
-            view = inflater.inflate(R.layout.fragment_review, container, false);
+            rootView = inflater.inflate(R.layout.fragment_review, container, false);
             detail = getActivity().getIntent().getExtras().getParcelable(COMPANY_DETAIL);
             if (detail != null) {
                 String companyId = detail.getId();
@@ -105,7 +104,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
             }
             setupToolbar();
         } else {
-            view = inflater.inflate(R.layout.fragment_review_no_actionbar, container, false);
+            rootView = inflater.inflate(R.layout.fragment_review_no_actionbar, container, false);
             ((MainActivity) getActivity()).hideBottomNavigation();
         }
         setupUI();
@@ -116,7 +115,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         if (fromAccount) {
             fillData();
         }
-        return view;
+        return rootView;
     }
 
     private void fillData() {
@@ -170,28 +169,28 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     private void setupUI() {
         datePicker = new DatePickerFragment();
 
-        etPluses = (TextInputEditText) view.findViewById(R.id.etPluses);
-        etMinuses = (TextInputEditText) view.findViewById(R.id.etMinuses);
-        etPosition = (TextInputEditText) view.findViewById(R.id.et_position);
+        etPluses = bindView(R.id.etPluses);
+        etMinuses = bindView(R.id.etMinuses);
+        etPosition = bindView(R.id.et_position);
 
-        salary = (RatingBar) view.findViewById(R.id.ratingbar_salary);
-        chief = (RatingBar) view.findViewById(R.id.ratingbar_chief);
-        workplace = (RatingBar) view.findViewById(R.id.ratingbar_workplace);
-        career = (RatingBar) view.findViewById(R.id.ratingbar_career);
-        collective = (RatingBar) view.findViewById(R.id.ratingbar_collective);
-        socialPackage = (RatingBar) view.findViewById(R.id.ratingbar_social_package);
+        salary = bindView(R.id.ratingbar_salary);
+        chief = bindView(R.id.ratingbar_chief);
+        workplace = bindView(R.id.ratingbar_workplace);
+        career = bindView(R.id.ratingbar_career);
+        collective = bindView(R.id.ratingbar_collective);
+        socialPackage = bindView(R.id.ratingbar_social_package);
 
-        radioGroup = (RadioGroup) view.findViewById(R.id.radio_group);
+        radioGroup = bindView(R.id.radio_group);
 
-        ltEmploymentDate = (TextInputLayout) view.findViewById(R.id.ltEmploymentDate);
-        ltDismissalDate = (TextInputLayout) view.findViewById(R.id.ltDismissalDate);
-        ltInterviewDate = (TextInputLayout) view.findViewById(R.id.ltInterviewDate);
-        etEmploymentDate = (EditText) view.findViewById(R.id.etEmploymentDate);
-        etDismissalDate = (EditText) view.findViewById(R.id.etDismissalDate);
-        etInterviewDate = (EditText) view.findViewById(R.id.etInterviewDate);
+        ltEmploymentDate = bindView(R.id.ltEmploymentDate);
+        ltDismissalDate = bindView(R.id.ltDismissalDate);
+        ltInterviewDate = bindView(R.id.ltInterviewDate);
+        etEmploymentDate = bindView(R.id.etEmploymentDate);
+        etDismissalDate = bindView(R.id.etDismissalDate);
+        etInterviewDate = bindView(R.id.etInterviewDate);
 
-        btnAdd = (Button) view.findViewById(R.id.btnAdd);
-        btnEdit = (Button) view.findViewById(R.id.btnEdit);
+        btnAdd = bindView(R.id.btnAdd);
+        btnEdit = bindView(R.id.btnEdit);
 
         ltEmploymentDate.setVisibility(View.GONE);
         ltDismissalDate.setVisibility(View.GONE);
@@ -206,7 +205,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unbindDrawables(view);
+        unbindDrawables(rootView);
         if (fromAccount) {
             ((MainActivity) getActivity()).showBottomNavigation();
         }
