@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">About Work</string>
-    <string name="email">Email</string>
+    <string name="email" translatable="false">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="create_account_text">No account yet? Create one</string>
@@ -43,7 +43,7 @@
     <string name="failed_reset_pass">Failed to send reset email!</string>
     <string name="query_hint">Search company</string>
 
-    <string name="title_activity_company_detail">CompanyDetailActivity</string>
+    <string name="title_activity_company_detail">CompanyDetail</string>
     <string name="reviews">reviews</string>
     <string name="salary">Salary</string>
     <string name="chief">Chief</string>
@@ -68,7 +68,7 @@
     <string name="cancel">Cancel</string>
     <string name="review_added">Review added</string>
     <string name="error_review_add">Fill in the required fields</string>
-    <string name="ok">OK</string>
+    <string name="ok" translatable="false">OK</string>
     <string name="delete">Delete</string>
     <string name="review_deleted">Review deleted</string>
     <string name="undo">Undo</string>
