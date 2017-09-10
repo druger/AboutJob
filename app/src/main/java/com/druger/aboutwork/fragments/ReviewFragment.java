@@ -67,7 +67,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
 
     private DatePickerFragment datePicker;
 
-    private CompanyDetail detail;
+    private CompanyDetail companyDetail;
     private Review review;
     private boolean fromAccount;
 
@@ -85,6 +85,16 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         return fragment;
     }
 
+    public static ReviewFragment newInstance(CompanyDetail companyDetail) {
+
+        Bundle args = new Bundle();
+        args.putParcelable(COMPANY_DETAIL, companyDetail);
+
+        ReviewFragment fragment = new ReviewFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -93,15 +103,14 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         if (bundle != null) {
             review = (Review) bundle.get(REVIEW);
             fromAccount = bundle.getBoolean(FROM_ACCOUNT);
+            companyDetail = (CompanyDetail) bundle.get(COMPANY_DETAIL);
         }
 
         if (!fromAccount) {
             rootView = inflater.inflate(R.layout.fragment_review, container, false);
-            detail = getActivity().getIntent().getExtras().getParcelable(COMPANY_DETAIL);
-            if (detail != null) {
-                String companyId = detail.getId();
-                reviewPresenter.setCompanyId(companyId);
-            }
+
+            String companyId = companyDetail.getId();
+            reviewPresenter.setCompanyId(companyId);
             setupToolbar();
         } else {
             rootView = inflater.inflate(R.layout.fragment_review_no_actionbar, container, false);
@@ -109,6 +118,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         }
         setupUI();
         setupListeners();
+        checkSelectedStatus();
 
         reviewPresenter.setCompanyRating(salary, chief, workplace, career, collective, socialPackage,
                 review, fromAccount);
@@ -116,6 +126,12 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
             fillData();
         }
         return rootView;
+    }
+
+    private void checkSelectedStatus() {
+        if (radioGroup.getCheckedRadioButtonId() == -1) {
+            setIsIndicator(true);
+        }
     }
 
     private void fillData() {
@@ -151,10 +167,9 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         toolbar = bindView(R.id.toolbar);
         setActionBar(toolbar);
         getActionBar().setDisplayHomeAsUpEnabled(true);
-        if (detail != null) {
-            getActionBar().setTitle(detail.getName());
+        if (companyDetail != null) {
+            getActionBar().setTitle(companyDetail.getName());
         }
-
     }
 
     private void setupListeners() {
@@ -257,7 +272,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         if (fromAccount) {
             reviewPresenter.checkReview(pluses, minuses, position, null, null, true);
         } else {
-            reviewPresenter.checkReview(pluses, minuses, position, detail.getId(), detail.getName(), false);
+            reviewPresenter.checkReview(pluses, minuses, position, companyDetail.getId(), companyDetail.getName(), false);
         }
     }
 
@@ -293,6 +308,30 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     public void showErrorAdding() {
         Toast.makeText(getActivity().getApplicationContext(), R.string.error_review_add,
                 Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setIsIndicatorRatingBar(boolean indicator) {
+        setIsIndicator(indicator);
+    }
+
+    @Override
+    public void clearRatingBar() {
+        salary.setRating(0F);
+        chief.setRating(0F);
+        workplace.setRating(0F);
+        career.setRating(0F);
+        collective.setRating(0F);
+        socialPackage.setRating(0F);
+    }
+
+    private void setIsIndicator(boolean indicator) {
+        salary.setIsIndicator(indicator);
+        chief.setIsIndicator(indicator);
+        workplace.setIsIndicator(indicator);
+        career.setIsIndicator(indicator);
+        collective.setIsIndicator(indicator);
+        socialPackage.setIsIndicator(indicator);
     }
 
     public static class DatePickerFragment extends DialogFragment

@@ -64,6 +64,8 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     private List<Review> reviews = new ArrayList<>();
     private ReviewAdapter reviewAdapter;
 
+    private CompanyDetail companyDetail;
+
     public static CompanyDetailFragment getInstance(String companyID) {
         CompanyDetailFragment companyDetail = new CompanyDetailFragment();
         Bundle bundle = new Bundle();
@@ -148,7 +150,7 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void addReview() {
-        ReviewFragment review = new ReviewFragment();
+        ReviewFragment review = ReviewFragment.newInstance(companyDetail);
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.company_container, review);
@@ -225,6 +227,7 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
 
     @Override
     public void showCompanyDetail(CompanyDetail company) {
+        companyDetail = company;
         companyDetailPresenter.setReviews(company.getId());
 
         setToolbarName(company.getName());

@@ -27,7 +27,12 @@ import java.util.Calendar;
 public class ReviewPresenter extends MvpPresenter<ReviewView>
         implements RadioGroup.OnCheckedChangeListener{
 
-    private int status = -1;
+    private static final int NOT_SELECTED_STATUS = -1;
+    private static final int WORKING_STATUS = 0;
+    private static final int WORKED_STATUS = 1;
+    private static final int INTERVIEW_STATUS = 2;
+
+    private int status = NOT_SELECTED_STATUS;
 
     private Review review;
     private MarkCompany mark;
@@ -47,18 +52,22 @@ public class ReviewPresenter extends MvpPresenter<ReviewView>
 
                 radioButton = group.findViewById(R.id.radio_working);
                 status = group.indexOfChild(radioButton);
+                getViewState().setIsIndicatorRatingBar(false);
                 break;
             case R.id.radio_worked:
                 getViewState().showWorkedDate();
 
                 radioButton = group.findViewById(R.id.radio_worked);
                 status = group.indexOfChild(radioButton);
+                getViewState().setIsIndicatorRatingBar(false);
                 break;
             case R.id.radio_interview:
                 getViewState().showInterviewDate();
 
                 radioButton = group.findViewById(R.id.radio_interview);
                 status = group.indexOfChild(radioButton);
+                getViewState().setIsIndicatorRatingBar(true);
+                getViewState().clearRatingBar();
                 break;
         }
     }
@@ -77,47 +86,12 @@ public class ReviewPresenter extends MvpPresenter<ReviewView>
             }
         }
 
-        salary.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                mark.setSalary(rating);
-            }
-        });
-
-        chief.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                mark.setChief(rating);
-            }
-        });
-
-        workplace.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                mark.setWorkplace(rating);
-            }
-        });
-
-        career.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                mark.setCareer(rating);
-            }
-        });
-
-        collective.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                mark.setCollective(rating);
-            }
-        });
-
-        socialPackage.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                mark.setSocialPackage(rating);
-            }
-        });
+        salary.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> mark.setSalary(rating));
+        chief.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> mark.setChief(rating));
+        workplace.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> mark.setWorkplace(rating));
+        career.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> mark.setCareer(rating));
+        collective.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> mark.setCollective(rating));
+        socialPackage.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> mark.setSocialPackage(rating));
 
         this.review.setMarkCompany(mark);
     }
@@ -133,21 +107,23 @@ public class ReviewPresenter extends MvpPresenter<ReviewView>
     public void checkReview(String pluses, String minuses, String position,
                             @Nullable String companyId, @Nullable String companyName,
                             boolean fromAccount) {
-        if (!TextUtils.isEmpty(pluses) && !TextUtils.isEmpty(minuses) && status > -1
-                && mark.getAverageMark() != 0) {
-            review.setPluses(pluses);
-            review.setMinuses(minuses);
-            review.setStatus(status);
+        if (((status == WORKING_STATUS || status == WORKED_STATUS) && mark.getAverageMark() != 0)
+                || (status == INTERVIEW_STATUS  && mark.getAverageMark() == 0)) {
+            if (!TextUtils.isEmpty(pluses) && !TextUtils.isEmpty(minuses)) {
+                review.setPluses(pluses);
+                review.setMinuses(minuses);
+                review.setStatus(status);
 
-            if (!TextUtils.isEmpty(position)) {
-                review.setPosition(position);
-            }
-            if (fromAccount) {
-                FirebaseHelper.updateReview(review);
-            } else {
-                FirebaseHelper.addReview(review);
-                FirebaseHelper.addCompany(companyId, companyName);
-                getViewState().successfulAddition();
+                if (!TextUtils.isEmpty(position)) {
+                    review.setPosition(position);
+                }
+                if (fromAccount) {
+                    FirebaseHelper.updateReview(review);
+                } else {
+                    FirebaseHelper.addReview(review);
+                    FirebaseHelper.addCompany(companyId, companyName);
+                    getViewState().successfulAddition();
+                }
             }
         } else {
             getViewState().showErrorAdding();

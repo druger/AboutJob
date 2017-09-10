@@ -17,4 +17,8 @@ public interface ReviewView extends MvpView {
     void successfulAddition();
 
     void showErrorAdding();
+
+    void setIsIndicatorRatingBar(boolean indicator);
+
+    void clearRatingBar();
 }
