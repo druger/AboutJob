@@ -20,7 +20,8 @@
             android:id="@+id/editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1" />
+            android:maxLines="1"
+            tools:ignore="TextFields" />
     </android.support.design.widget.TextInputLayout>
 
 

@@ -3,7 +3,6 @@ package com.druger.aboutwork.fragments;
 
 import android.Manifest;
 import android.app.FragmentTransaction;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -205,29 +204,23 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_change_name, null);
-        final EditText etName = (EditText) view.findViewById(R.id.etUserName);
+        final EditText etName = view.findViewById(R.id.etUserName);
         etName.setText(tvName.getText());
 
         builder.setTitle(R.string.name);
         builder.setView(view);
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String userName = etName.getText().toString();
-                if (!userName.trim().isEmpty()) {
-                    tvName.setText(userName);
-                    Utils.hideKeyboard(getActivity(), etName);
-                    preferencesHelper.saveUserName(userName);
-                    accountPresenter.changeUserName(userName, userId);
-                }
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+            String userName = etName.getText().toString();
+            if (!userName.trim().isEmpty()) {
+                tvName.setText(userName);
+                Utils.hideKeyboard(getActivity(), etName);
+                preferencesHelper.saveUserName(userName);
+                accountPresenter.changeUserName(userName, userId);
             }
         });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Utils.hideKeyboard(getActivity(), etName);
-                dialog.cancel();
-            }
+        builder.setNegativeButton(R.string.cancel, (dialog, which) -> {
+            Utils.hideKeyboard(getActivity(), etName);
+            dialog.cancel();
         });
         builder.show();
         Utils.showKeyboard(getActivity());

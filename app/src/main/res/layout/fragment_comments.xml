@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.CommentsFragment">
+    tools:context=".fragments.CommentsFragment"
+    tools:ignore="ContentDescription">
 
     <include layout="@layout/content_comments"/>
 
@@ -24,7 +25,6 @@
             android:hint="@string/your_message"
             android:inputType="textMultiLine"
             android:maxHeight="80dp"
-            android:paddingLeft="15dp"
             android:paddingStart="15dp" />
 
         <ImageView
@@ -32,7 +32,6 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
             android:layout_marginStart="15dp"
             android:layout_weight="0.1"
             android:clickable="false"

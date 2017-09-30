@@ -116,17 +116,14 @@ public class CommentsFragment extends BaseFragment implements CommentsView {
             }
         });
 
-        ivSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (type) {
-                    case 0:
-                        sendMessage(etMessage.getText().toString().trim(), NEW);
-                        break;
-                    case 1:
-                        sendMessage(etMessage.getText().toString().trim(), UPDATE);
-                        break;
-                }
+        ivSend.setOnClickListener(v -> {
+            switch (type) {
+                case 0:
+                    sendMessage(etMessage.getText().toString().trim(), NEW);
+                    break;
+                case 1:
+                    sendMessage(etMessage.getText().toString().trim(), UPDATE);
+                    break;
             }
         });
     }
@@ -142,7 +139,7 @@ public class CommentsFragment extends BaseFragment implements CommentsView {
         recyclerView = bindView(R.id.recycler_view);
         etMessage = bindView(R.id.etMessage);
         ivSend = bindView(R.id.ivSend);
-        bottomNavigation = (BottomNavigationView) getActivity().findViewById(R.id.bottom_navigation);
+        bottomNavigation = getActivity().findViewById(R.id.bottom_navigation);
     }
 
     private void retrieveComments() {
@@ -168,7 +165,7 @@ public class CommentsFragment extends BaseFragment implements CommentsView {
             }
 
             @Override
-            public boolean onLongClick(View view, int position) {
+            public boolean onLongClick(int position) {
                 return commentsPresenter.onLongClick(position);
             }
         });

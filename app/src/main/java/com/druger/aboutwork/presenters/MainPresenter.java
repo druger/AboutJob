@@ -36,8 +36,8 @@ public class MainPresenter extends MvpPresenter<MainView>
     }
 
     public void checkAuthUser() {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
+        FirebaseAuth.getInstance();
+        new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();

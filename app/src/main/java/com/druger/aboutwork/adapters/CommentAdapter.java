@@ -37,7 +37,7 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
         if (clickListener != null) {
             int pos = holder.getAdapterPosition();
             if (pos != RecyclerView.NO_POSITION) {
-                clickListener.onLongClick(v, pos);
+                clickListener.onLongClick(pos);
                 return true;
             }
         }

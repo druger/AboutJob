@@ -148,11 +148,9 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
             }
         });
 
-        holder.itemView.setOnClickListener(v -> {
-            itemClick(holder, review);
-        });
+        holder.itemView.setOnClickListener(v -> itemClick(holder, review));
         holder.itemView.setOnLongClickListener(v ->
-                clickListener != null && clickListener.onLongClick(v, holder.getAdapterPosition()));
+                clickListener != null && clickListener.onLongClick(holder.getAdapterPosition()));
     }
 
     private void itemClick(ReviewVH holder, Review review) {

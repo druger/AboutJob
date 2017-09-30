@@ -1,7 +1,6 @@
 package com.druger.aboutwork.presenters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -10,8 +9,6 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.interfaces.view.SettingsView;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -32,12 +29,9 @@ public class SettingPresenter extends MvpPresenter<SettingsView> {
     public void setupAuth() {
         auth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
-        authListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (user == null) {
-                    getViewState().showLoginActivity();
-                }
+        authListener = firebaseAuth -> {
+            if (user == null) {
+                getViewState().showLoginActivity();
             }
         };
     }
@@ -63,18 +57,15 @@ public class SettingPresenter extends MvpPresenter<SettingsView> {
 
     private void changeEmail(String newEmail) {
         user.updateEmail(newEmail)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "User email address updated.");
-                            getViewState().showToast(R.string.updated_email);
-                            logout();
-                        } else {
-                            getViewState().showToast(R.string.failed_update_email);
-                        }
-                        getViewState().hideProgress();
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "User email address updated.");
+                        getViewState().showToast(R.string.updated_email);
+                        logout();
+                    } else {
+                        getViewState().showToast(R.string.failed_update_email);
                     }
+                    getViewState().hideProgress();
                 });
     }
 
@@ -92,18 +83,15 @@ public class SettingPresenter extends MvpPresenter<SettingsView> {
             getViewState().showError(context.getString(R.string.pass_error));
         } else {
             user.updatePassword(password)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d(TAG, "User password updated.");
-                                getViewState().showToast(R.string.success_update_pass);
-                                logout();
-                            } else {
-                                getViewState().showToast(R.string.failed_update_pass);
-                            }
-                            getViewState().hideProgress();
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User password updated.");
+                            getViewState().showToast(R.string.success_update_pass);
+                            logout();
+                        } else {
+                            getViewState().showToast(R.string.failed_update_pass);
                         }
+                        getViewState().hideProgress();
                     });
         }
     }
@@ -116,18 +104,15 @@ public class SettingPresenter extends MvpPresenter<SettingsView> {
     public void deleteAccount() {
         if (user != null) {
             user.delete()
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d(TAG, "User account deleted.");
-                                getViewState().showToast(R.string.profile_deleted);
-                                getViewState().showSignupActivity();
-                            } else {
-                                getViewState().showToast(R.string.failed_delete_user);
-                            }
-                            getViewState().hideProgress();
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User account deleted.");
+                            getViewState().showToast(R.string.profile_deleted);
+                            getViewState().showSignupActivity();
+                        } else {
+                            getViewState().showToast(R.string.failed_delete_user);
                         }
+                        getViewState().hideProgress();
                     });
         }
     }

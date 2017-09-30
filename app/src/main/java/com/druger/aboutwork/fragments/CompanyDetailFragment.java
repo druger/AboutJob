@@ -60,6 +60,7 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     private CoordinatorLayout ltContent;
 
     private CollapsingToolbarLayout collapsingToolbar;
+    @SuppressWarnings("FieldCanBeLocal")
     private RecyclerView recyclerView;
     private List<Review> reviews = new ArrayList<>();
     private ReviewAdapter reviewAdapter;
@@ -143,7 +144,7 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
             }
 
             @Override
-            public boolean onLongClick(View view, int position) {
+            public boolean onLongClick(int position) {
                 return false;
             }
         });

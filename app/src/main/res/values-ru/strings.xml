@@ -20,7 +20,6 @@
     <string name="delete">Удалить</string>
     <string name="dismissal_date">Дата уволнения</string>
     <string name="edit">Редактировать</string>
-    <string name="email">Email</string>
     <string name="empoyment_date">Дата устройства</string>
     <string name="enter_pass">Введите пароль</string>
     <string name="error_email">Email некорректный</string>
@@ -45,7 +44,6 @@
     <string name="new_password">Новый пароль</string>
     <string name="no">Нет</string>
     <string name="not_description">У компании нет описания</string>
-    <string name="ok">ОК</string>
     <string name="pass_error">меньше 6 символов</string>
     <string name="password">Пароль</string>
     <string name="photo_crop_name">Обрезать фото</string>

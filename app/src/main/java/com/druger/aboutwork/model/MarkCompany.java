@@ -92,12 +92,12 @@ public class MarkCompany {
         if (salary != 0 && chief != 0 && workplace != 0
                 && career != 0 && collective != 0 && socialPackage != 0) {
             float rating = (salary + chief + workplace + career + collective + socialPackage) / 6;
-            return roundMark(rating, 2);
+            return roundMark(rating);
         }
         return 0;
     }
 
-    public static float roundMark(float rating, int scale) {
-        return BigDecimal.valueOf(rating).setScale(scale, BigDecimal.ROUND_HALF_UP).floatValue();
+    public static float roundMark(float rating) {
+        return BigDecimal.valueOf(rating).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
     }
 }

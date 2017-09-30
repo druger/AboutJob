@@ -42,28 +42,20 @@ public class SignupActivity extends MvpAppCompatActivity implements SignupView {
     }
 
     private void setUX() {
-        btnSignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "Signup");
+        btnSignup.setOnClickListener(view -> {
+            Log.d(TAG, "Signup");
 
-                String email = etEmail.getText().toString().trim();
-                String password = etPassword.getText().toString().trim();
+            String email = etEmail.getText().toString().trim();
+            String password = etPassword.getText().toString().trim();
 
-                if (!validate(email, password)) {
-                    onSignupFailed();
-                } else {
-                    signupPresenter.signupClick(email, password);
-                }
+            if (!validate(email, password)) {
+                onSignupFailed();
+            } else {
+                signupPresenter.signupClick(email, password);
             }
         });
 
-        tvLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        tvLogin.setOnClickListener(view -> finish());
     }
 
     private void setUI() {

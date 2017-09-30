@@ -1,15 +1,11 @@
 package com.druger.aboutwork.presenters;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.druger.aboutwork.interfaces.view.LoginView;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
@@ -34,18 +30,15 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
         getViewState().showProgress();
 
         auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-                        getViewState().hideProgress();
+                .addOnCompleteListener(activity, task -> {
+                    Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+                    getViewState().hideProgress();
 
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithEmail", task.getException());
-                            getViewState().onLoginFailed();
-                        } else {
-                            getViewState().onLoginSuccess();
-                        }
+                    if (!task.isSuccessful()) {
+                        Log.w(TAG, "signInWithEmail", task.getException());
+                        getViewState().onLoginFailed();
+                    } else {
+                        getViewState().onLoginSuccess();
                     }
                 });
     }

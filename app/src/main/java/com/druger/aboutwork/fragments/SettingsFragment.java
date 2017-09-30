@@ -1,7 +1,6 @@
 package com.druger.aboutwork.fragments;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -120,19 +119,13 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(R.string.remove_account_ask);
-                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        settingPresenter.deleteAccount();
-                        dialog.dismiss();
-                    }
+                builder.setPositiveButton(R.string.yes, (dialog, which) -> {
+                    settingPresenter.deleteAccount();
+                    dialog.dismiss();
                 });
-                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        progressBar.setVisibility(View.GONE);
-                    }
+                builder.setNegativeButton(R.string.no, (dialog, which) -> {
+                    dialog.dismiss();
+                    progressBar.setVisibility(View.GONE);
                 });
                 builder.show();
                 break;

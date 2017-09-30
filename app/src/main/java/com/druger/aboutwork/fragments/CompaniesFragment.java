@@ -98,7 +98,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
             }
 
             @Override
-            public boolean onLongClick(View view, int position) {
+            public boolean onLongClick(int position) {
                 return false;
             }
         });

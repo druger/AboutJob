@@ -3,7 +3,6 @@ package com.druger.aboutwork.presenters;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -12,8 +11,6 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.view.AccountView;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
@@ -38,6 +35,7 @@ public class AccountPresenter extends MvpPresenter<AccountView> {
     private FirebaseUser user;
     private FirebaseStorage storage;
     private StorageReference storageRef;
+    @SuppressWarnings("FieldCanBeLocal")
     private UploadTask uploadTask;
 
     private Context context;
@@ -46,18 +44,15 @@ public class AccountPresenter extends MvpPresenter<AccountView> {
     public void setupAuth() {
         auth = FirebaseAuth.getInstance();
 
-        authListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    getViewState().showEmail(user.getEmail());
-                    downloadPhoto();
-                } else {
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                    getViewState().showLoginActivity();
-                }
+        authListener = firebaseAuth -> {
+            user = firebaseAuth.getCurrentUser();
+            if (user != null) {
+                Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                getViewState().showEmail(user.getEmail());
+                downloadPhoto();
+            } else {
+                Log.d(TAG, "onAuthStateChanged:signed_out");
+                getViewState().showLoginActivity();
             }
         };
     }
@@ -116,17 +111,10 @@ public class AccountPresenter extends MvpPresenter<AccountView> {
         Uri file = Uri.fromFile(new File(selectedImgUri.getPath()));
         storageRef = FirebaseHelper.savePhoto(storage, user.getUid());
         uploadTask = storageRef.putFile(file);
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                getViewState().setupPhoto(selectedImgUri);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, e.getMessage());
-                Toast.makeText(context, R.string.upload_error, Toast.LENGTH_SHORT).show();
-            }
+        uploadTask.addOnSuccessListener(taskSnapshot ->
+                getViewState().setupPhoto(selectedImgUri)).addOnFailureListener(e -> {
+            Log.d(TAG, e.getMessage());
+            Toast.makeText(context, R.string.upload_error, Toast.LENGTH_SHORT).show();
         });
     }
 

@@ -43,7 +43,9 @@ public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
 
     private RecyclerView recyclerView;
     private ReviewAdapter reviewAdapter;
+    @SuppressWarnings("FieldCanBeLocal")
     private ItemTouchHelper touchHelper;
+    @SuppressWarnings("FieldCanBeLocal")
     private ItemTouchHelper.SimpleCallback simpleCallback;
 
     private ActionMode actionMode;
@@ -111,7 +113,7 @@ public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
             }
 
             @Override
-            public boolean onLongClick(View view, int position) {
+            public boolean onLongClick(int position) {
                 if (actionMode == null) {
                     actionMode = ((MainActivity) getActivity()).startSupportActionMode(actionModeCallback);
                     itemSwipe = false;
@@ -133,7 +135,7 @@ public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
 
     private void setupUI() {
         tvCountReviews = bindView(R.id.tvCountReviews);
-        bottomNavigation = (BottomNavigationView) getActivity().findViewById(R.id.bottom_navigation);
+        bottomNavigation = getActivity().findViewById(R.id.bottom_navigation);
         recyclerView = bindView(R.id.recycler_view);
     }
 
@@ -230,14 +232,11 @@ public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
                     }
                     Snackbar snackbar = Snackbar
                             .make(getActivity().findViewById(R.id.coordinator), R.string.review_deleted, Snackbar.LENGTH_LONG)
-                            .setAction(R.string.undo, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    myReviewsPresenter.addDeletedReviews(deletedReviews);
-                                    reviewAdapter.notifyDataSetChanged();
-                                    for (Review review : deletedReviews) {
-                                        myReviewsPresenter.addToFirebase(review);
-                                    }
+                            .setAction(R.string.undo, v -> {
+                                myReviewsPresenter.addDeletedReviews(deletedReviews);
+                                reviewAdapter.notifyDataSetChanged();
+                                for (Review review : deletedReviews) {
+                                    myReviewsPresenter.addToFirebase(review);
                                 }
                             });
                     showSnackbar(snackbar);

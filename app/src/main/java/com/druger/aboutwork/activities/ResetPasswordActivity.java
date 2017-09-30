@@ -37,19 +37,11 @@ public class ResetPasswordActivity extends MvpAppCompatActivity implements Reset
     }
 
     private void setUX() {
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        btnBack.setOnClickListener(v -> finish());
 
-        btnResetPass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = etEmail.getText().toString().trim();
-                resetPasswordPresenter.resetPassClick(email);
-            }
+        btnResetPass.setOnClickListener(v -> {
+            String email = etEmail.getText().toString().trim();
+            resetPasswordPresenter.resetPassClick(email);
         });
     }
 

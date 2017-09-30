@@ -36,8 +36,9 @@ public class FirebaseHelper {
     private static final String ID = "id";
     private static final String USER_ID = "userId";
 
+    @SuppressWarnings("unchecked")
     public static void addReview(Review review) {
-        ObjectMapper mapper = new ObjectMapper();;
+        ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         Map<String, Object> map = mapper.convertValue(review, Map.class);
         FirebaseDatabase.getInstance().getReference().child(REVIEWS).push().setValue(map);
@@ -69,6 +70,7 @@ public class FirebaseHelper {
         FirebaseDatabase.getInstance().getReference().child(USERS).child(key).setValue(user);
     }
 
+    @SuppressWarnings("unchecked")
     public static void addCompany(String key, String name) {
         Company company = new Company(key, name);
         ObjectMapper mapper = new ObjectMapper();

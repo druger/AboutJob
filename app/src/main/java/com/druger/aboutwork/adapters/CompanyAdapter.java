@@ -1,7 +1,6 @@
 package com.druger.aboutwork.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -24,12 +23,11 @@ public class CompanyAdapter extends BaseRecyclerViewAdapter<Company, RecyclerVie
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         if (viewType == TYPE_COMPANY) {
-            View view = inflater.inflate(R.layout.item_company, parent, false);
+            View view = inflate(R.layout.item_company, parent);
             return new CompanyVH(view);
         } else if (viewType == TYPE_LOADING) {
-            View view = inflater.inflate(R.layout.item_load, parent, false);
+            View view = inflate(R.layout.item_load, parent);
             return new LoadVH(view);
         }
         return null;

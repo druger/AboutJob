@@ -45,34 +45,23 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
     }
 
     private void setupUX() {
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email = etEmail.getText().toString().trim();
-                String password = etPassword.getText().toString().trim();
+        btnLogin.setOnClickListener(view -> {
+            String email = etEmail.getText().toString().trim();
+            String password = etPassword.getText().toString().trim();
 
-                if (!validate(email, password)) {
-                    onLoginFailed();
-                } else {
-                    loginPresenter.loginClick(email, password);
-                }
+            if (!validate(email, password)) {
+                onLoginFailed();
+            } else {
+                loginPresenter.loginClick(email, password);
             }
         });
 
-        tvSignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-                startActivityForResult(intent, REQUEST_SIGNUP);
-            }
+        tvSignup.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+            startActivityForResult(intent, REQUEST_SIGNUP);
         });
 
-        tvResetPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
-            }
-        });
+        tvResetPassword.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class)));
     }
 
     private void setupUI() {

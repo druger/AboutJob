@@ -106,7 +106,7 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
                 MarkCompany markCompany = review.getMarkCompany();
                 sum += markCompany != null ? markCompany.getAverageMark() : 0;
             }
-            mRating = MarkCompany.roundMark(sum / reviews.size(), 2);
+            mRating = MarkCompany.roundMark(sum / reviews.size());
         }
         getViewState().showRating(mRating);
     }
