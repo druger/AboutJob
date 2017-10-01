@@ -12,6 +12,9 @@ import io.reactivex.subjects.BehaviorSubject;
 
 public class RxSearch {
 
+    private RxSearch() {
+    }
+
     public static Observable<String> fromSearchView(@NonNull SearchView searchView) {
         final BehaviorSubject<String> subject = BehaviorSubject.create();
 

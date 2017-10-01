@@ -42,6 +42,7 @@ public class CompaniesPresenter extends BasePresenter<CompaniesView> {
         unSubscribeOnDestroy(request);
     }
 
+    @Override
     protected void handleError(Throwable throwable) {
         super.handleError(throwable);
         getViewState().showProgress(false);

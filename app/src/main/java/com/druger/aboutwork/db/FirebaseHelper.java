@@ -36,6 +36,9 @@ public class FirebaseHelper {
     private static final String ID = "id";
     private static final String USER_ID = "userId";
 
+    private FirebaseHelper() {
+    }
+
     @SuppressWarnings("unchecked")
     public static void addReview(Review review) {
         ObjectMapper mapper = new ObjectMapper();

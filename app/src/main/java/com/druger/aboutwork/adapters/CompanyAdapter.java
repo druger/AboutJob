@@ -18,8 +18,8 @@ import com.druger.aboutwork.model.Company;
 
 public class CompanyAdapter extends BaseRecyclerViewAdapter<Company, RecyclerView.ViewHolder> {
     // TODO Не отображается progress bar
-    private final int TYPE_COMPANY = 0;
-    private final int TYPE_LOADING = 1;
+    private static final int TYPE_COMPANY = 0;
+    private static final int TYPE_LOADING = 1;
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -41,7 +41,7 @@ public class CompanyAdapter extends BaseRecyclerViewAdapter<Company, RecyclerVie
             companyVH.tvName.setText(company.getName());
 
             Glide.with(holder.itemView.getContext())
-                    .load(company.getLogo().getLogo_90())
+                    .load(company.getLogo().getLogo90())
                     .placeholder(R.drawable.default_company)
                     .error(R.drawable.default_company)
                     .fitCenter()

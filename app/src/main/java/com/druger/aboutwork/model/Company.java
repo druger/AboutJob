@@ -50,25 +50,25 @@ public class Company {
 
      public class Logo {
         @SerializedName("90")
-        String logo_90;
+        String logo90;
         @SerializedName("240")
-        String logo_240;
+        String logo240;
         String original;
 
-        public String getLogo_90() {
-            return logo_90;
+        public String getLogo90() {
+            return logo90;
         }
 
-        public void setLogo_90(String logo_90) {
-            this.logo_90 = logo_90;
+        public void setLogo90(String logo90) {
+            this.logo90 = logo90;
         }
 
-        public String getLogo_240() {
-            return logo_240;
+        public String getLogo240() {
+            return logo240;
         }
 
-        public void setLogo_240(String logo_240) {
-            this.logo_240 = logo_240;
+        public void setLogo240(String logo240) {
+            this.logo240 = logo240;
         }
 
         public String getOriginal() {

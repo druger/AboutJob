@@ -38,10 +38,6 @@ public class ReviewPresenter extends MvpPresenter<ReviewView>
     private MarkCompany mark;
     private String companyId;
 
-    public ReviewPresenter() {
-
-    }
-
     @Override
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
         View radioButton;
@@ -68,6 +64,8 @@ public class ReviewPresenter extends MvpPresenter<ReviewView>
                 status = group.indexOfChild(radioButton);
                 getViewState().setIsIndicatorRatingBar(true);
                 getViewState().clearRatingBar();
+                break;
+            default:
                 break;
         }
     }

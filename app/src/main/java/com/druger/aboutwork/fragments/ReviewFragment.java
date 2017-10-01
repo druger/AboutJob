@@ -160,6 +160,8 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
             case 2:
                 radioGroup.check(R.id.radio_interview);
                 break;
+            default:
+                break;
         }
     }
 
@@ -261,6 +263,8 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
                 break;
             case R.id.btnEdit:
                 checkReview(true);
+                break;
+            default:
                 break;
         }
     }
@@ -382,6 +386,8 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
                     break;
                 case INTERVIEW_DATE:
                     review.setInterviewDate(date);
+                    break;
+                default:
                     break;
             }
         }

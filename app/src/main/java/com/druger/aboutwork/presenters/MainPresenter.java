@@ -31,6 +31,8 @@ public class MainPresenter extends MvpPresenter<MainView>
             case R.id.action_account:
                 getViewState().showAccount();
                 break;
+            default:
+                break;
         }
         return true;
     }

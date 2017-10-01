@@ -87,36 +87,15 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
             holder.ivDislike.setColorFilter(Color.parseColor(RED_500));
         }
 
-        holder.ivLike.setOnClickListener(v -> {
-            int like = review.getLike();
-            int dislike = review.getDislike();
-            String tagLike = holder.ivLike.getTag().toString();
-            String tagDislike = holder.ivDislike.getTag().toString();
-            if (tagLike.equalsIgnoreCase(context.getString(R.string.like_inactive))) {
-                holder.ivLike.setTag(context.getString(R.string.like_active));
-                holder.ivLike.setColorFilter(Color.parseColor(GREEN_500));
-                review.setLike(++like);
-                review.setMyLike(true);
-                holder.tvLike.setText(String.valueOf(like));
-                FirebaseHelper.setLike(review);
+        onLikeClick(holder, review);
+        onDislikeClick(holder, review);
 
-                if (tagDislike.equalsIgnoreCase(context.getString(R.string.dislike_active))) {
-                    holder.ivDislike.setTag(context.getString(R.string.dislike_inactive));
-                    holder.ivDislike.setColorFilter(Color.parseColor(GRAY_500));
-                    review.setDislike(--dislike);
-                    review.setMyDislike(false);
-                    holder.tvDislike.setText(String.valueOf(dislike));
-                    FirebaseHelper.setDislike(review);
-                }
-            } else {
-                holder.ivLike.setTag(context.getString(R.string.like_inactive));
-                holder.ivLike.setColorFilter(Color.parseColor(GRAY_500));
-                review.setLike(--like);
-                review.setMyLike(false);
-                holder.tvLike.setText(String.valueOf(like));
-                FirebaseHelper.setLike(review);
-            }
-        });
+        holder.itemView.setOnClickListener(v -> itemClick(holder, review));
+        holder.itemView.setOnLongClickListener(v ->
+                clickListener != null && clickListener.onLongClick(holder.getAdapterPosition()));
+    }
+
+    private void onDislikeClick(ReviewVH holder, Review review) {
         holder.ivDislike.setOnClickListener(v -> {
             int like = review.getLike();
             int dislike = review.getDislike();
@@ -147,10 +126,39 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
                 FirebaseHelper.setDislike(review);
             }
         });
+    }
 
-        holder.itemView.setOnClickListener(v -> itemClick(holder, review));
-        holder.itemView.setOnLongClickListener(v ->
-                clickListener != null && clickListener.onLongClick(holder.getAdapterPosition()));
+    private void onLikeClick(ReviewVH holder, Review review) {
+        holder.ivLike.setOnClickListener(v -> {
+            int like = review.getLike();
+            int dislike = review.getDislike();
+            String tagLike = holder.ivLike.getTag().toString();
+            String tagDislike = holder.ivDislike.getTag().toString();
+            if (tagLike.equalsIgnoreCase(context.getString(R.string.like_inactive))) {
+                holder.ivLike.setTag(context.getString(R.string.like_active));
+                holder.ivLike.setColorFilter(Color.parseColor(GREEN_500));
+                review.setLike(++like);
+                review.setMyLike(true);
+                holder.tvLike.setText(String.valueOf(like));
+                FirebaseHelper.setLike(review);
+
+                if (tagDislike.equalsIgnoreCase(context.getString(R.string.dislike_active))) {
+                    holder.ivDislike.setTag(context.getString(R.string.dislike_inactive));
+                    holder.ivDislike.setColorFilter(Color.parseColor(GRAY_500));
+                    review.setDislike(--dislike);
+                    review.setMyDislike(false);
+                    holder.tvDislike.setText(String.valueOf(dislike));
+                    FirebaseHelper.setDislike(review);
+                }
+            } else {
+                holder.ivLike.setTag(context.getString(R.string.like_inactive));
+                holder.ivLike.setColorFilter(Color.parseColor(GRAY_500));
+                review.setLike(--like);
+                review.setMyLike(false);
+                holder.tvLike.setText(String.valueOf(like));
+                FirebaseHelper.setLike(review);
+            }
+        });
     }
 
     private void itemClick(ReviewVH holder, Review review) {

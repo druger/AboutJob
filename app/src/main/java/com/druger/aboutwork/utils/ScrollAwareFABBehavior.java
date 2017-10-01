@@ -1,4 +1,4 @@
-package com.druger.aboutwork.recyclerview_helper;
+package com.druger.aboutwork.utils;
 
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;

@@ -129,6 +129,8 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
                 });
                 builder.show();
                 break;
+            default:
+                break;
         }
     }
 

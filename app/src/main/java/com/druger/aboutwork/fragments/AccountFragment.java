@@ -52,9 +52,6 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     private CircleImageView civAvatar;
     private TextView tvEmail;
 
-    public AccountFragment() {
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,6 +127,8 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
                 break;
             case R.id.civAvatar:
                 showPhotoPicker();
+                break;
+            default:
                 break;
         }
     }

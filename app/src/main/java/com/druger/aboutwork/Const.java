@@ -10,6 +10,9 @@ public final class Const {
     }
 
     public static final class Bundles {
+        private Bundles() {
+        }
+
         public static final String REVIEW_ID = "reviewId";
         public static final String FROM_ACCOUNT = "fromAccount";
         public static final String REVIEW = "review";
@@ -20,6 +23,9 @@ public final class Const {
     }
 
     public static final class Colors {
+        private Colors() {
+        }
+
         public static final String GREEN_500 = "#8BC34A";
         public static final String RED_500 = "#F44336";
         public static final String RED_200 = "#EF9A9A";

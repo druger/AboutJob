@@ -23,8 +23,6 @@ import com.squareup.leakcanary.RefWatcher;
  */
 
 public abstract class BaseFragment extends MvpFragment implements NetworkView {
-    protected String TAG = getClass().getSimpleName();
-
     protected View rootView;
     protected ProgressBar progressBar;
     protected Toolbar toolbar;

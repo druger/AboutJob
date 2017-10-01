@@ -30,10 +30,10 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
         holder.tvDdate.setText(Utils.getDate(comment.getDate()));
         holder.tvCountLikes.setText(String.valueOf(comment.getLike()));
 
-        holder.itemView.setOnLongClickListener(v -> longItemClick(holder, v));
+        holder.itemView.setOnLongClickListener(v -> longItemClick(holder));
     }
 
-    private boolean longItemClick(CommentVH holder, View v) {
+    private boolean longItemClick(CommentVH holder) {
         if (clickListener != null) {
             int pos = holder.getAdapterPosition();
             if (pos != RecyclerView.NO_POSITION) {

@@ -10,6 +10,9 @@ import io.reactivex.schedulers.Schedulers;
 
 public class RxUtils {
 
+    private RxUtils() {
+    }
+
     public static <T> ObservableTransformer<T, T> httpSchedulers() {
         return observable ->
                 observable.subscribeOn(Schedulers.io())

@@ -20,7 +20,6 @@ import com.druger.aboutwork.presenters.LoginPresenter;
 import com.squareup.leakcanary.RefWatcher;
 
 public class LoginActivity extends MvpAppCompatActivity implements LoginView {
-    private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int REQUEST_SIGNUP = 0;
 
     @InjectPresenter
@@ -75,10 +74,8 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SIGNUP) {
-            if (resultCode == RESULT_OK) {
-                showMainActivity();
-            }
+        if (requestCode == REQUEST_SIGNUP && resultCode == RESULT_OK) {
+            showMainActivity();
         }
     }
 

@@ -47,9 +47,6 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
     private SearchView searchView;
     private String query;
 
-    public CompaniesFragment() {
-    }
-
     @ProvidePresenter
     CompaniesPresenter provideCompaniesPresenter() {
         return App.getAppComponent().getCompaniesPresenter();

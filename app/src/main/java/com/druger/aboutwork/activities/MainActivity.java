@@ -113,7 +113,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }

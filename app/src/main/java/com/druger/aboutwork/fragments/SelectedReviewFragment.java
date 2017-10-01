@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -24,6 +23,7 @@ import com.druger.aboutwork.utils.Utils;
 import static com.druger.aboutwork.Const.Bundles.FROM_ACCOUNT;
 import static com.druger.aboutwork.Const.Bundles.NAME;
 import static com.druger.aboutwork.Const.Bundles.REVIEW;
+import static com.druger.aboutwork.Const.Colors.GRAY_500;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,7 +55,6 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
     private TextView tvLike;
     private TextView tvDislike;
     private ImageView ivComments;
-    private BottomNavigationView bottomNavigationView;
     private Review review;
     private FloatingActionButton fabEdit;
 
@@ -191,7 +190,7 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
             tvLike.setText(String.valueOf(review.getLike()));
             tvDislike.setText(String.valueOf(review.getDislike()));
 
-            ivComments.setColorFilter(Color.parseColor("#9E9E9E"));
+            ivComments.setColorFilter(Color.parseColor(GRAY_500));
 
             boolean myLike = review.isMyLike();
             boolean myDislike = review.isMyDislike();
@@ -225,6 +224,8 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
             case R.id.fabEdit:
                 showEditReview();
                 break;
+            default:
+                break;
         }
     }
 
@@ -252,7 +253,7 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
 
             if (tagLike.equalsIgnoreCase(getActivity().getString(R.string.like_active))) {
                 ivLike.setTag(getActivity().getString(R.string.like_inactive));
-                ivLike.setColorFilter(Color.parseColor("#9E9E9E"));
+                ivLike.setColorFilter(Color.parseColor(GRAY_500));
                 review.setLike(--likeCount);
                 review.setMyLike(false);
                 tvLike.setText(String.valueOf(likeCount));
@@ -260,7 +261,7 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
             }
         } else {
             ivDislike.setTag(getActivity().getString(R.string.dislike_inactive));
-            ivDislike.setColorFilter(Color.parseColor("#9E9E9E"));
+            ivDislike.setColorFilter(Color.parseColor(GRAY_500));
             review.setDislike(--dislikeCount);
             review.setMyDislike(false);
             tvDislike.setText(String.valueOf(dislikeCount));
@@ -283,7 +284,7 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
 
             if (tagDislike.equalsIgnoreCase(getActivity().getString(R.string.dislike_active))) {
                 ivDislike.setTag(getActivity().getString(R.string.dislike_inactive));
-                ivDislike.setColorFilter(Color.parseColor("#9E9E9E"));
+                ivDislike.setColorFilter(Color.parseColor(GRAY_500));
                 review.setDislike(--dislikeCount);
                 review.setMyDislike(false);
                 tvDislike.setText(String.valueOf(dislikeCount));
@@ -291,7 +292,7 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
             }
         } else {
             ivLike.setTag(getActivity().getString(R.string.like_inactive));
-            ivLike.setColorFilter(Color.parseColor("#9E9E9E"));
+            ivLike.setColorFilter(Color.parseColor(GRAY_500));
             review.setLike(--likeCount);
             review.setMyLike(false);
             tvLike.setText(String.valueOf(likeCount));

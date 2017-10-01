@@ -48,7 +48,8 @@ public class CompanyDetailActivity extends AppCompatActivity{
             case android.R.id.home:
                 super.onBackPressed();
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }

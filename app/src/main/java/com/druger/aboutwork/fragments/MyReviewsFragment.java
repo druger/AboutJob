@@ -3,6 +3,7 @@ package com.druger.aboutwork.fragments;
 
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -179,7 +180,7 @@ public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
 
     /**
      * Toggle the selection state of an item.
-     *
+     * <p>
      * If the item was the last one in the selection and is unselected, the selection is stopped.
      * Note that the selection must already be started (actionMode must not be null).
      *
@@ -226,24 +227,36 @@ public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
             switch (item.getItemId()) {
                 case R.id.menu_delete:
                     reviewAdapter.removeItems(reviewAdapter.getSelectedItems());
-                    final List<Review> deletedReviews = reviewAdapter.getDeletedReviews();
-                    for (Review review : deletedReviews) {
-                        FirebaseHelper.removeReview(review.getFirebaseKey());
-                    }
-                    Snackbar snackbar = Snackbar
-                            .make(getActivity().findViewById(R.id.coordinator), R.string.review_deleted, Snackbar.LENGTH_LONG)
-                            .setAction(R.string.undo, v -> {
-                                myReviewsPresenter.addDeletedReviews(deletedReviews);
-                                reviewAdapter.notifyDataSetChanged();
-                                for (Review review : deletedReviews) {
-                                    myReviewsPresenter.addToFirebase(review);
-                                }
-                            });
+                    final List<Review> deletedReviews = getDeletedReviews();
+                    Snackbar snackbar = makeSnackbar(deletedReviews);
                     showSnackbar(snackbar);
                     mode.finish();
                     return true;
+                default:
+                    return false;
             }
-            return false;
+        }
+
+        @NonNull
+        private List<Review> getDeletedReviews() {
+            final List<Review> deletedReviews = reviewAdapter.getDeletedReviews();
+            for (Review review : deletedReviews) {
+                FirebaseHelper.removeReview(review.getFirebaseKey());
+            }
+            return deletedReviews;
+        }
+
+        @NonNull
+        private Snackbar makeSnackbar(List<Review> deletedReviews) {
+            return Snackbar
+                    .make(getActivity().findViewById(R.id.coordinator), R.string.review_deleted, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.undo, v -> {
+                        myReviewsPresenter.addDeletedReviews(deletedReviews);
+                        reviewAdapter.notifyDataSetChanged();
+                        for (Review review : deletedReviews) {
+                            myReviewsPresenter.addToFirebase(review);
+                        }
+                    });
         }
 
         @Override

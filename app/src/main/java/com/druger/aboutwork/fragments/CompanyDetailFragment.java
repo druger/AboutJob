@@ -174,6 +174,8 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
             case R.id.btnRetry:
                 companyDetailPresenter.getCompanyDetail(getArguments().getString(COMPANY_ID, ""));
                 break;
+            default:
+                break;
         }
     }
 

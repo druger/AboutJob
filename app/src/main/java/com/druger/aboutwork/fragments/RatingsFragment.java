@@ -11,11 +11,6 @@ import com.druger.aboutwork.R;
 
 public class RatingsFragment extends BaseFragment {
 
-
-    public RatingsFragment() {
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
