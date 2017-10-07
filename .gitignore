@@ -7,3 +7,6 @@
 /build
 /captures
 /.idea/misc.xml
+/.idea/sonarIssues.xml
+.idea/sonarlint/
+app/src/main/res/xml/
