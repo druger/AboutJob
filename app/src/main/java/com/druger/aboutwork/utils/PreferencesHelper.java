@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
  */
 
 public class PreferencesHelper {
-    private static final String KEY_USERNAME = "userName";
 
     private SharedPreferences preferences;
 
@@ -15,13 +14,4 @@ public class PreferencesHelper {
         this.preferences = preferences;
     }
 
-    public void saveUserName(String name) {
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(KEY_USERNAME, name);
-        editor.apply();
-    }
-
-    public String getUserName() {
-        return preferences.getString(KEY_USERNAME, "");
-    }
 }

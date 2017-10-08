@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="buttonStyle">@style/RegularButton</item>
+        <item name="alertDialogTheme">@style/AlertDialogCustom</item>
 
         <item name="windowActionModeOverlay">true</item>
         <item name="actionModeBackground">@color/colorPrimary</item>
@@ -51,5 +52,10 @@
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:padding">@dimen/middle_margin</item>
+    </style>
+
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 </resources>

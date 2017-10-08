@@ -33,4 +33,6 @@ public interface AccountView extends MvpView {
     void setupPhoto(Uri imgUri);
 
     void showPhoto(StorageReference storageRef);
+
+    void showName(String name);
 }

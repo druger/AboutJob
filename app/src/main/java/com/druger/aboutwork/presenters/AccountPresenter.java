@@ -11,8 +11,15 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.view.AccountView;
+import com.druger.aboutwork.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -37,12 +44,15 @@ public class AccountPresenter extends MvpPresenter<AccountView> {
     private StorageReference storageRef;
     @SuppressWarnings("FieldCanBeLocal")
     private UploadTask uploadTask;
+    private DatabaseReference dbReference;
+    private ValueEventListener valueEventListener;
 
     private Context context;
     private Uri selectedImgUri;
 
-    public void setupAuth() {
+    public void getUserInfo() {
         auth = FirebaseAuth.getInstance();
+        dbReference = FirebaseDatabase.getInstance().getReference();
 
         authListener = firebaseAuth -> {
             user = firebaseAuth.getCurrentUser();
@@ -50,11 +60,33 @@ public class AccountPresenter extends MvpPresenter<AccountView> {
                 Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                 getViewState().showEmail(user.getEmail());
                 downloadPhoto();
+                getName();
             } else {
                 Log.d(TAG, "onAuthStateChanged:signed_out");
                 getViewState().showLoginActivity();
             }
         };
+    }
+
+    private void getName() {
+        Query queryUser = FirebaseHelper.getUser(dbReference, user.getUid());
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        User user = snapshot.getValue(User.class);
+                        getViewState().showName(user.getName());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        queryUser.addValueEventListener(valueEventListener);
     }
 
     public void clickChangeName() {
@@ -67,12 +99,6 @@ public class AccountPresenter extends MvpPresenter<AccountView> {
 
     public void addAuthListener() {
         auth.addAuthStateListener(authListener);
-    }
-
-    public void removeAuthListener() {
-        if (authListener != null) {
-            auth.removeAuthStateListener(authListener);
-        }
     }
 
     public void clickOpenSettings() {
@@ -136,5 +162,14 @@ public class AccountPresenter extends MvpPresenter<AccountView> {
     private void downloadPhoto() {
         storageRef = FirebaseHelper.downloadPhoto(storage, user.getUid());
         getViewState().showPhoto(storageRef);
+    }
+
+    public void removeListeners() {
+        if (authListener != null) {
+            auth.removeAuthStateListener(authListener);
+        }
+        if (valueEventListener != null) {
+            dbReference.removeEventListener(valueEventListener);
+        }
     }
 }

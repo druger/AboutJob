@@ -64,7 +64,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         rootView = inflater.inflate(R.layout.fragment_account, container, false);
 
         setupUI();
-        accountPresenter.setupAuth();
+        accountPresenter.getUserInfo();
         accountPresenter.setupStorage();
         setupListeners();
         setupToolbar();
@@ -94,8 +94,6 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         tvLogout = bindView(R.id.tvLogout);
         civAvatar = bindView(R.id.civAvatar);
         tvEmail = bindView(R.id.tvEmail);
-
-        tvName.setText(preferencesHelper.getUserName());
     }
 
     @Override
@@ -107,7 +105,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onStop() {
         super.onStop();
-        accountPresenter.removeAuthListener();
+        accountPresenter.removeListeners();
     }
 
     @Override
@@ -190,6 +188,11 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     }
 
     @Override
+    public void showName(String name) {
+        tvName.setText(name);
+    }
+
+    @Override
     public void openSettings() {
         SettingsFragment settings = new SettingsFragment();
         getFragmentManager().beginTransaction().replace(R.id.main_container, settings)
@@ -206,14 +209,13 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         final EditText etName = view.findViewById(R.id.etUserName);
         etName.setText(tvName.getText());
 
-        builder.setTitle(R.string.name);
+        builder.setTitle(R.string.new_name);
         builder.setView(view);
         builder.setPositiveButton(R.string.ok, (dialog, which) -> {
             String userName = etName.getText().toString();
             if (!userName.trim().isEmpty()) {
                 tvName.setText(userName);
                 Utils.hideKeyboard(getActivity(), etName);
-                preferencesHelper.saveUserName(userName);
                 accountPresenter.changeUserName(userName, userId);
             }
         });

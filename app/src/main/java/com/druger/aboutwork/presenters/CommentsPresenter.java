@@ -95,7 +95,6 @@ public class CommentsPresenter extends MvpPresenter<CommentsView> implements Val
     public void addComment(String message, String reviewId) {
         Calendar calendar = Calendar.getInstance();
         Comment comment = new Comment(message, calendar.getTimeInMillis());
-        comment.setUserName(preferencesHelper.getUserName());
         if (user != null) {
             comment.setUserId(user.getUid());
         }

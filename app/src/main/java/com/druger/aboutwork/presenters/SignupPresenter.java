@@ -67,6 +67,5 @@ public class SignupPresenter extends MvpPresenter<SignupView> {
         String name = Utils.getNameByEmail(firebaseUser.getEmail());
         User user = new User(id, name);
         FirebaseHelper.addUser(user, firebaseUser.getUid());
-        preferencesHelper.saveUserName(name);
     }
 }

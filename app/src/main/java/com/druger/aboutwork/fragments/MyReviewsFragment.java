@@ -209,6 +209,7 @@ public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
         reviewAdapter.notifyDataSetChanged();
     }
 
+    // TODO сделать класс статическим
     private class ActionModeCallback implements ActionMode.Callback {
 
         @Override
