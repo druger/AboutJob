@@ -14,9 +14,7 @@ public interface SettingsView extends MvpView {
 
     void showSignupActivity();
 
-    void showError(String error);
-
     void showToast(@StringRes int resId);
 
-    void hideProgress();
+    void showEmail(String email);
 }

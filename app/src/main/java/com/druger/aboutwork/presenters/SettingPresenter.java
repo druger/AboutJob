@@ -1,9 +1,7 @@
 package com.druger.aboutwork.presenters;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
-import android.util.Patterns;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
@@ -32,6 +30,8 @@ public class SettingPresenter extends MvpPresenter<SettingsView> {
         authListener = firebaseAuth -> {
             if (user == null) {
                 getViewState().showLoginActivity();
+            } else {
+                getViewState().showEmail(user.getEmail());
             }
         };
     }
@@ -46,41 +46,8 @@ public class SettingPresenter extends MvpPresenter<SettingsView> {
         }
     }
 
-    public void checkEmail(String email, Context context) {
-        if (user != null && Patterns.EMAIL_ADDRESS.matcher(email).matches()
-                && !TextUtils.isEmpty(email)) {
-            changeEmail(email);
-        } else if (TextUtils.isEmpty(email)) {
-            getViewState().showError(context.getString(R.string.valid_email));
-        }
-    }
-
-    private void changeEmail(String newEmail) {
-        user.updateEmail(newEmail)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Log.d(TAG, "User email address updated.");
-                        getViewState().showToast(R.string.updated_email);
-                        logout();
-                    } else {
-                        getViewState().showToast(R.string.failed_update_email);
-                    }
-                    getViewState().hideProgress();
-                });
-    }
-
-
-    public void checkPassword(String password, Context context) {
-        if (user != null && !TextUtils.isEmpty(password)) {
-            changePassword(password, context);
-        } else if (TextUtils.isEmpty(password)) {
-            getViewState().showError(context.getString(R.string.enter_pass));
-        }
-    }
-
     private void changePassword(String password, Context context) {
         if (password.length() < PASSWORD_LENGTH) {
-            getViewState().showError(context.getString(R.string.pass_error));
         } else {
             user.updatePassword(password)
                     .addOnCompleteListener(task -> {
@@ -91,7 +58,6 @@ public class SettingPresenter extends MvpPresenter<SettingsView> {
                         } else {
                             getViewState().showToast(R.string.failed_update_pass);
                         }
-                        getViewState().hideProgress();
                     });
         }
     }
@@ -112,7 +78,6 @@ public class SettingPresenter extends MvpPresenter<SettingsView> {
                         } else {
                             getViewState().showToast(R.string.failed_delete_user);
                         }
-                        getViewState().hideProgress();
                     });
         }
     }

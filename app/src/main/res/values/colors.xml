@@ -13,4 +13,5 @@
     <color name="tab3">#F63D2B</color>
 
     <color name="grey500">#9E9E9E</color>
+    <color name="color_separate_line">@color/grey500</color>
 </resources>
