@@ -1,6 +1,5 @@
 package com.druger.aboutwork.presenters;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
@@ -18,7 +17,6 @@ import com.google.firebase.auth.FirebaseUser;
 public class SettingPresenter extends MvpPresenter<SettingsView> {
 
     private static final String TAG = SettingPresenter.class.getSimpleName();
-    private static final int PASSWORD_LENGTH = 6;
 
     private FirebaseAuth auth;
     private FirebaseUser user;
@@ -44,27 +42,6 @@ public class SettingPresenter extends MvpPresenter<SettingsView> {
         if (authListener != null) {
             auth.removeAuthStateListener(authListener);
         }
-    }
-
-    private void changePassword(String password, Context context) {
-        if (password.length() < PASSWORD_LENGTH) {
-        } else {
-            user.updatePassword(password)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "User password updated.");
-                            getViewState().showToast(R.string.success_update_pass);
-                            logout();
-                        } else {
-                            getViewState().showToast(R.string.failed_update_pass);
-                        }
-                    });
-        }
-    }
-
-    private void logout() {
-        auth.signOut();
-        getViewState().showLoginActivity();
     }
 
     public void deleteAccount() {

@@ -26,6 +26,7 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
 
     private TextView tvEmail;
     private LinearLayout ltEmail;
+    private TextView tvChangePass;
 
     @Nullable
     @Override
@@ -48,11 +49,13 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
 
     private void setupUX() {
         ltEmail.setOnClickListener(this);
+        tvChangePass.setOnClickListener(this);
     }
 
     private void setupUI() {
         tvEmail = bindView(R.id.tvEmail);
         ltEmail = bindView(R.id.ltEmail);
+        tvChangePass = bindView(R.id.tvChangePass);
     }
 
     @Override
@@ -76,9 +79,20 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
             case R.id.ltEmail:
                 showChangeEmail();
                 break;
+            case R.id.tvChangePass:
+                showChangePassword();
+                break;
             default:
                 break;
         }
+    }
+
+    private void showChangePassword() {
+        ChangePasswordFragment passwordFragment = new ChangePasswordFragment();
+        getFragmentManager().beginTransaction()
+                .replace(R.id.main_container, passwordFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     private void showChangeEmail() {
@@ -94,11 +108,6 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
     public void onStart() {
         super.onStart();
         settingPresenter.addAuthStateListener();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override
