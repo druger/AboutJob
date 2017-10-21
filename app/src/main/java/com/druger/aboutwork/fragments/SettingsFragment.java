@@ -27,11 +27,12 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
     private TextView tvEmail;
     private LinearLayout ltEmail;
     private TextView tvChangePass;
+    private TextView tvRemoveAccount;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_settings2, container, false);
+        rootView = inflater.inflate(R.layout.fragment_settings, container, false);
 
         settingPresenter.setupAuth();
         setupUI();
@@ -50,31 +51,21 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
     private void setupUX() {
         ltEmail.setOnClickListener(this);
         tvChangePass.setOnClickListener(this);
+        tvRemoveAccount.setOnClickListener(this);
     }
 
     private void setupUI() {
         tvEmail = bindView(R.id.tvEmail);
         ltEmail = bindView(R.id.ltEmail);
         tvChangePass = bindView(R.id.tvChangePass);
+        tvRemoveAccount = bindView(R.id.tvRemoveAccount);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btnRemoveAccount:
-                progressBar.setVisibility(View.VISIBLE);
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle(R.string.remove_account_ask);
-                builder.setPositiveButton(R.string.yes, (dialog, which) -> {
-                    settingPresenter.deleteAccount();
-                    dialog.dismiss();
-                });
-                builder.setNegativeButton(R.string.no, (dialog, which) -> {
-                    dialog.dismiss();
-                    progressBar.setVisibility(View.GONE);
-                });
-                builder.show();
+            case R.id.tvRemoveAccount:
+                showRemoveDialog();
                 break;
             case R.id.ltEmail:
                 showChangeEmail();
@@ -85,6 +76,19 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
             default:
                 break;
         }
+    }
+
+    private void showRemoveDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.remove_account_ask);
+        builder.setPositiveButton(R.string.yes, (dialog, which) -> {
+            settingPresenter.deleteAccount();
+            dialog.dismiss();
+        });
+        builder.setNegativeButton(R.string.no, (dialog, which) -> {
+            dialog.dismiss();
+        });
+        builder.show();
     }
 
     private void showChangePassword() {
