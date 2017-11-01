@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,10 +86,16 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
             settingPresenter.deleteAccount();
             dialog.dismiss();
         });
-        builder.setNegativeButton(R.string.no, (dialog, which) -> {
-            dialog.dismiss();
-        });
-        builder.show();
+        builder.setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                .setTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
+
     }
 
     private void showChangePassword() {
