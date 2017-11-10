@@ -1,285 +1,292 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:ignore="ContentDescription">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:animateLayoutChanges="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        tools:context=".activities.CompanyDetailActivity"
-        android:focusableInTouchMode="true">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tvRating"
-            android:layout_width="wrap_content"
+        <RelativeLayout android:id="@+id/ltInfo"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@integer/default_rating"
-            android:textColor="@android:color/black"
-            android:textSize="50sp"
-            tools:ignore="RelativeOverlap" />
-
-        <RatingBar
-            android:id="@+id/rating_company"
-            style="@style/reviewRating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvRating"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:rating="0"
-            android:stepSize="0.5"
-            android:isIndicator="true"/>
-
-        <TextView
-            android:id="@+id/tvCountReviews"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/rating_company"
-            android:layout_marginEnd="5dp"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="5dp"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:text="@integer/default_rating" />
-
-        <TextView
-            android:id="@+id/tvReviews"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/rating_company"
-            android:layout_toEndOf="@+id/tvCountReviews"
-            android:layout_toRightOf="@+id/tvCountReviews"
-            android:text="@string/reviews" />
-
-        <TextView
-            android:id="@+id/tvSite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvSocialPackage"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:autoLink="web"
-            android:text="Site" />
-
-        <LinearLayout
-            android:id="@+id/ltDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvSite"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin">
+            android:animateLayoutChanges="true"
+            tools:context=".activities.CompanyDetailActivity">
 
             <TextView
+                android:id="@+id/tvRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@integer/default_rating"
+                android:textColor="@android:color/black"
+                android:textSize="50sp"
+                tools:ignore="RelativeOverlap" />
+
+            <RatingBar
+                android:id="@+id/rating_company"
+                style="@style/reviewRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvRating"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:isIndicator="true"
+                android:rating="0"
+                android:stepSize="0.5" />
+
+            <TextView
+                android:id="@+id/tvCountReviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rating_company"
                 android:layout_marginEnd="5dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="5dp"
-                android:text="Description"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:text="@integer/default_rating" />
+
+            <TextView
+                android:id="@+id/tvReviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rating_company"
+                android:layout_toEndOf="@+id/tvCountReviews"
+                android:layout_toRightOf="@+id/tvCountReviews"
+                android:text="@string/reviews" />
+
+            <TextView
+                android:id="@+id/tvSite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvSocialPackage"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:autoLink="web"
+                android:text="Site" />
+
+            <LinearLayout
+                android:id="@+id/ltDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvSite"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="Description"
+                    android:textColor="@android:color/black" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/ivDownDrop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/arrow_down_drop_circle" />
+
+                    <ImageView
+                        android:id="@+id/ivUpDrop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/arrow_up_drop_circle" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvContentDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ltDescription"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:text="@string/not_description" />
+
+            <TextView
+                android:id="@+id/tvSalary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/tvRating"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="70dp"
+                android:layout_marginRight="70dp"
+                android:text="@string/salary"
+                android:textColor="@android:color/black"
+                tools:ignore="RelativeOverlap" />
+
+            <TextView
+                android:id="@+id/tvSalaryMark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/tvSalary"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginRight="30dp"
+                android:text="0" />
+
+            <TextView
+                android:id="@+id/tvChief"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/tvSalary"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="70dp"
+                android:layout_marginRight="70dp"
+                android:text="@string/chief"
                 android:textColor="@android:color/black" />
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/tvChiefMark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/tvSalaryMark"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginRight="30dp"
+                android:text="0" />
 
-                <ImageView
-                    android:id="@+id/ivDownDrop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/arrow_down_drop_circle" />
+            <TextView
+                android:id="@+id/tvWorkplace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/tvChief"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="70dp"
+                android:layout_marginRight="70dp"
+                android:text="@string/workplace"
+                android:textColor="@android:color/black" />
 
-                <ImageView
-                    android:id="@+id/ivUpDrop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/arrow_up_drop_circle"
-                    android:visibility="invisible" />
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/tvWorkplaceMark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/tvChiefMark"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginRight="30dp"
+                android:text="0" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/tvCareer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/tvWorkplace"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="70dp"
+                android:layout_marginRight="70dp"
+                android:text="@string/career"
+                android:textColor="@android:color/black" />
 
-        <TextView
-            android:id="@+id/tvContentDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ltDescription"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:text="@string/not_description" />
+            <TextView
+                android:id="@+id/tvCareerMark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/tvWorkplaceMark"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginRight="30dp"
+                android:text="0" />
 
-        <TextView
-            android:id="@+id/tvSalary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/tvRating"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="70dp"
-            android:layout_marginRight="70dp"
-            android:text="@string/salary"
-            android:textColor="@android:color/black"
-            tools:ignore="RelativeOverlap"/>
+            <TextView
+                android:id="@+id/tvCollective"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/tvCareer"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="70dp"
+                android:layout_marginRight="70dp"
+                android:text="@string/collective"
+                android:textColor="@android:color/black" />
 
-        <TextView
-            android:id="@+id/tvSalaryMark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/tvSalary"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginRight="30dp"
-            android:text="0" />
+            <TextView
+                android:id="@+id/tvCollectiveMark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/tvCareerMark"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginRight="30dp"
+                android:text="0" />
 
-        <TextView
-            android:id="@+id/tvChief"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tvSalary"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="70dp"
-            android:layout_marginRight="70dp"
-            android:text="@string/chief"
-            android:textColor="@android:color/black" />
+            <TextView
+                android:id="@+id/tvSocialPackage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/tvCollective"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="70dp"
+                android:layout_marginRight="70dp"
+                android:text="@string/social_package"
+                android:textColor="@android:color/black" />
 
-        <TextView
-            android:id="@+id/tvChiefMark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tvSalaryMark"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginRight="30dp"
-            android:text="0" />
+            <TextView
+                android:id="@+id/tvSocialPackageMark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/tvCollectiveMark"
+                android:layout_marginEnd="30dp"
+                android:layout_marginRight="30dp"
+                android:text="0" />
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
 
-        <TextView
-            android:id="@+id/tvWorkplace"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tvChief"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="70dp"
-            android:layout_marginRight="70dp"
-            android:text="@string/workplace"
-            android:textColor="@android:color/black" />
 
-        <TextView
-            android:id="@+id/tvWorkplaceMark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tvChiefMark"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginRight="30dp"
-            android:text="0" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvReviews"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>
 
-        <TextView
-            android:id="@+id/tvCareer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tvWorkplace"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="70dp"
-            android:layout_marginRight="70dp"
-            android:text="@string/career"
-            android:textColor="@android:color/black" />
 
-        <TextView
-            android:id="@+id/tvCareerMark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tvWorkplaceMark"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginRight="30dp"
-            android:text="0" />
 
-        <TextView
-            android:id="@+id/tvCollective"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tvCareer"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="70dp"
-            android:layout_marginRight="70dp"
-            android:text="@string/collective"
-            android:textColor="@android:color/black" />
-
-        <TextView
-            android:id="@+id/tvCollectiveMark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tvCareerMark"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginRight="30dp"
-            android:text="0" />
-
-        <TextView
-            android:id="@+id/tvSocialPackage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tvCollective"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="70dp"
-            android:layout_marginRight="70dp"
-            android:text="@string/social_package"
-            android:textColor="@android:color/black" />
-
-        <TextView
-            android:id="@+id/tvSocialPackageMark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tvCollectiveMark"
-            android:layout_marginEnd="30dp"
-            android:layout_marginRight="30dp"
-            android:text="0" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvContentDescription"/>
-    </RelativeLayout>
-</android.support.v4.widget.NestedScrollView>
 
 
 

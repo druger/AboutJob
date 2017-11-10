@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -56,12 +58,14 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     private TextView site;
     private RatingBar ratingCompany;
     private ImageView ivToolbar;
-    private FloatingActionButton fab;
+    private FloatingActionButton fabAddReview;
     private CoordinatorLayout ltContent;
+    private RelativeLayout ltInfo;
 
     private CollapsingToolbarLayout collapsingToolbar;
+    private AppBarLayout appBarLayout;
     @SuppressWarnings("FieldCanBeLocal")
-    private RecyclerView recyclerView;
+    private RecyclerView rvReviews;
     private List<Review> reviews = new ArrayList<>();
     private ReviewAdapter reviewAdapter;
 
@@ -89,15 +93,46 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
         setupUI();
         setupUX();
         setupRecycler(reviews);
+        setupFabBehavior();
+        setupAppBarChanges();
 
         companyDetailPresenter.getCompanyDetail(getArguments().getString(COMPANY_ID, ""));
         return rootView;
     }
 
+    private void setupAppBarChanges() {
+        appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
+            if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
+                ltInfo.setVisibility(View.GONE);
+            } else if (verticalOffset == 0) {
+                ltInfo.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void setupFabBehavior() {
+        rvReviews.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    fabAddReview.show();
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 || dy < 0 && fabAddReview.isShown()) {
+                    fabAddReview.hide();
+                }
+            }
+        });
+    }
+
     private void setupUX() {
         ivDownDrop.setOnClickListener(this);
         ivUpDrop.setOnClickListener(this);
-        fab.setOnClickListener(this);
+        fabAddReview.setOnClickListener(this);
         btnRetry.setOnClickListener(this);
     }
 
@@ -110,11 +145,13 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
         tvCountReviews = bindView(R.id.tvCountReviews);
         tvRating = bindView(R.id.tvRating);
         ratingCompany = bindView(R.id.rating_company);
-        fab = bindView(R.id.fabAddReview);
+        fabAddReview = bindView(R.id.fabAddReview);
         ltContent = bindView(R.id.ltContent);
         ltError = bindView(R.id.ltError);
         progressBar = bindView(R.id.progressBar);
         btnRetry = bindView(R.id.btnRetry);
+        ltInfo = bindView(R.id.ltInfo);
+        appBarLayout = bindView(R.id.appBarLayout);
     }
 
     private void setupToolbar() {
@@ -125,12 +162,11 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void setupRecycler(final List<Review> reviews) {
-        recyclerView = bindView(R.id.recycler_view);
+        rvReviews = bindView(R.id.rvReviews);
         reviewAdapter = new ReviewAdapter(getActivity(), reviews);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(reviewAdapter);
-        recyclerView.setNestedScrollingEnabled(false);
+        rvReviews.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvReviews.setItemAnimator(new DefaultItemAnimator());
+        rvReviews.setAdapter(reviewAdapter);
 
         reviewAdapter.setOnClickListener(new OnItemClickListener<Review>() {
             @Override
