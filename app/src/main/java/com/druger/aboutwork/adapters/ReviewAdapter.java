@@ -2,18 +2,22 @@ package com.druger.aboutwork.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
+import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.utils.Utils;
@@ -30,11 +34,15 @@ import static com.druger.aboutwork.Const.Colors.RED_500;
  * Created by druger on 29.01.2017.
  */
 
-public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
+// TODO сделать адаптер для своих рецензий
+public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
+    private static final int TYPE_HEADER = 0;
+    private static final int TYPE_ITEM = 1;
 
     private List<Review> reviews;
     private List<Review> deletedReviews;
     private Context context;
+    private CompanyDetail companyDetail;
 
     private OnItemClickListener<Review> clickListener;
 
@@ -44,55 +52,77 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
         deletedReviews = new ArrayList<>();
     }
 
+    public void setCompanyDetail(CompanyDetail companyDetail) {
+        this.companyDetail = companyDetail;
+    }
+
     public List<Review> getDeletedReviews() {
         return deletedReviews;
     }
 
     @Override
-    public ReviewVH onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.review_card, parent, false);
-        return new ReviewVH(itemView);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        RecyclerView.ViewHolder viewHolder = null;
+        if (viewType == TYPE_ITEM) {
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.review_card, parent, false);
+            viewHolder = new ReviewVH(itemView);
+        } else if (viewType == TYPE_HEADER) {
+            View headerView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.header_reviews, parent, false);
+            viewHolder = new HeaderVH(headerView);
+        }
+        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(final ReviewVH holder, int position) {
-        final Review review = reviews.get(position);
-        holder.tvName.setText(review.getName());
-        holder.tvDate.setText(Utils.getDate(review.getDate()));
-        holder.tvCity.setText(review.getCity());
-        holder.tvPluses.setText(review.getPluses());
-        holder.tvMinuses.setText(review.getMinuses());
-        MarkCompany markCompany = review.getMarkCompany();
-        if (markCompany != null) {
-            holder.tvMark.setText(String.valueOf(markCompany.getAverageMark()));
-        }
-        holder.tvLike.setText(String.valueOf(review.getLike()));
-        holder.tvDislike.setText(String.valueOf(review.getDislike()));
-        holder.cardView.setCardBackgroundColor(isSelected(position)
-                ? ContextCompat.getColor(holder.cardView.getContext(), R.color.red200) : Color.WHITE);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        final int itemType = getItemViewType(position);
+        if (itemType == TYPE_ITEM) {
+            ReviewVH reviewVH = (ReviewVH) holder;
+            final Review review = reviews.get(position);
+            reviewVH.tvName.setText(review.getName());
+            reviewVH.tvDate.setText(Utils.getDate(review.getDate()));
+            reviewVH.tvCity.setText(review.getCity());
+            reviewVH.tvPluses.setText(review.getPluses());
+            reviewVH.tvMinuses.setText(review.getMinuses());
+            MarkCompany markCompany = review.getMarkCompany();
+            if (markCompany != null) {
+                reviewVH.tvMark.setText(String.valueOf(markCompany.getAverageMark()));
+            }
+            reviewVH.tvLike.setText(String.valueOf(review.getLike()));
+            reviewVH.tvDislike.setText(String.valueOf(review.getDislike()));
+            reviewVH.cardView.setCardBackgroundColor(isSelected(position)
+                    ? ContextCompat.getColor(reviewVH.cardView.getContext(), R.color.red200) : Color.WHITE);
 
-        boolean myLike = review.isMyLike();
-        boolean myDislike = review.isMyDislike();
-        if (!myLike) {
-            holder.ivLike.setTag(context.getString(R.string.like_inactive));
-        } else {
-            holder.ivLike.setTag(context.getString(R.string.like_active));
-            holder.ivLike.setColorFilter(Color.parseColor(GREEN_500));
-        }
-        if (!myDislike) {
-            holder.ivDislike.setTag(context.getString(R.string.dislike_inactive));
-        } else {
-            holder.ivDislike.setTag(context.getString(R.string.dislike_active));
-            holder.ivDislike.setColorFilter(Color.parseColor(RED_500));
-        }
+            boolean myLike = review.isMyLike();
+            boolean myDislike = review.isMyDislike();
+            if (!myLike) {
+                reviewVH.ivLike.setTag(context.getString(R.string.like_inactive));
+            } else {
+                reviewVH.ivLike.setTag(context.getString(R.string.like_active));
+                reviewVH.ivLike.setColorFilter(Color.parseColor(GREEN_500));
+            }
+            if (!myDislike) {
+                reviewVH.ivDislike.setTag(context.getString(R.string.dislike_inactive));
+            } else {
+                reviewVH.ivDislike.setTag(context.getString(R.string.dislike_active));
+                reviewVH.ivDislike.setColorFilter(Color.parseColor(RED_500));
+            }
 
-        onLikeClick(holder, review);
-        onDislikeClick(holder, review);
+            onLikeClick(reviewVH, review);
+            onDislikeClick(reviewVH, review);
 
-        holder.itemView.setOnClickListener(v -> itemClick(holder, review));
-        holder.itemView.setOnLongClickListener(v ->
-                clickListener != null && clickListener.onLongClick(holder.getAdapterPosition()));
+            holder.itemView.setOnClickListener(v -> itemClick(reviewVH, review));
+            holder.itemView.setOnLongClickListener(v ->
+                    clickListener != null && clickListener.onLongClick(reviewVH.getAdapterPosition()));
+        } else if (itemType == TYPE_HEADER) {
+            HeaderVH headerVH = (HeaderVH) holder;
+            headerVH.setDescription(companyDetail);
+            headerVH.showCountReviews(getItemCount());
+            headerVH.downDropClick();
+            headerVH.upDropClick();
+        }
     }
 
     private void onDislikeClick(ReviewVH holder, Review review) {
@@ -172,7 +202,19 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
 
     @Override
     public int getItemCount() {
-        return reviews.size();
+        return reviews.size() - 1;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (isHeaderPosition(position)) {
+            return TYPE_HEADER;
+        }
+        return TYPE_ITEM;
+    }
+
+    private boolean isHeaderPosition(int position) {
+        return position == 0;
     }
 
     static class ReviewVH extends BaseViewHolder {
@@ -244,5 +286,67 @@ public class ReviewAdapter extends SelectableAdapter<ReviewAdapter.ReviewVH> {
             deletedReviews.add(reviews.remove(positionStart));
         }
         notifyItemRangeRemoved(positionStart, itemCount);
+    }
+
+    static class HeaderVH extends BaseViewHolder {
+        TextView tvDescription;
+        ImageView ivDownDrop;
+        ImageView ivUpDrop;
+        TextView tvRating;
+        TextView tvCountReviews;
+        TextView site;
+        RatingBar ratingCompany;
+
+        HeaderVH(View itemView) {
+            super(itemView);
+            site = bindView(R.id.tvSite);
+            tvDescription = bindView(R.id.tvContentDescription);
+            ivDownDrop = bindView(R.id.ivDownDrop);
+            ivUpDrop = bindView(R.id.ivUpDrop);
+            tvCountReviews = bindView(R.id.tvCountReviews);
+            tvRating = bindView(R.id.tvRating);
+            ratingCompany = bindView(R.id.rating_company);
+        }
+
+        void setDescription(CompanyDetail company) {
+            tvDescription.setVisibility(View.GONE);
+
+            String iSite = company.getSite();
+            String iDescription = company.getDescription();
+            if (iSite != null) {
+                site.setText(iSite);
+            }
+            if (iDescription != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    tvDescription.setText(Html.fromHtml(iDescription, Html.FROM_HTML_MODE_LEGACY));
+                } else {
+                    tvDescription.setText(Html.fromHtml(iDescription));
+                }
+            }
+        }
+
+        void showCountReviews(int count) {
+            tvCountReviews.setText(String.valueOf(count));
+        }
+
+        void downDropClick() {
+            ivDownDrop.setOnClickListener(v -> showDescription());
+        }
+
+        private void showDescription() {
+            ivDownDrop.setVisibility(View.INVISIBLE);
+            ivUpDrop.setVisibility(View.VISIBLE);
+            tvDescription.setVisibility(View.VISIBLE);
+        }
+
+        void upDropClick() {
+            ivUpDrop.setOnClickListener(v -> hideDescription());
+        }
+
+        private void hideDescription() {
+            ivUpDrop.setVisibility(View.INVISIBLE);
+            ivDownDrop.setVisibility(View.VISIBLE);
+            tvDescription.setVisibility(View.GONE);
+        }
     }
 }

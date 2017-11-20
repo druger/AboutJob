@@ -5,7 +5,6 @@ import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.druger.aboutwork.interfaces.view.CompanyDetailView;
 import com.druger.aboutwork.model.CompanyDetail;
-import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.model.User;
 import com.druger.aboutwork.rest.RestApi;
@@ -46,14 +45,6 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
 
     private List<Review> reviews = new ArrayList<>();
 
-    public void downDropClick() {
-        getViewState().showDescription();
-    }
-
-    public void upDropClick() {
-        getViewState().hideDescription();
-    }
-
     public void setReviews(String companyID) {
         dbReference = FirebaseDatabase.getInstance().getReference();
         Query reviewsQuery = getReviewsForCompany(dbReference, companyID);
@@ -68,6 +59,7 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
     private void fetchReviews(DataSnapshot dataSnapshot) {
         reviews.clear();
 
+        int index = 0;
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
             final Review review = snapshot.getValue(Review.class);
             Query queryUser = getUser(dbReference, review.getUserId());
@@ -90,25 +82,15 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
             };
             queryUser.addValueEventListener(valueEventListener);
             review.setFirebaseKey(snapshot.getKey());
-            reviews.add(review);
-        }
-        getViewState().showCountReviews(reviews.size());
-        setRating();
-        getViewState().showReviews(reviews);
-    }
-
-    private void setRating() {
-        float sum = 0;
-        float mRating = 0;
-
-        if (!reviews.isEmpty()) {
-            for (Review review : reviews) {
-                MarkCompany markCompany = review.getMarkCompany();
-                sum += markCompany != null ? markCompany.getAverageMark() : 0;
+            if (index == 0) {
+                reviews.add(new Review());
+                reviews.add(1, review);
+            } else {
+                reviews.add(review);
             }
-            mRating = MarkCompany.roundMark(sum / reviews.size());
+            index++;
         }
-        getViewState().showRating(mRating);
+        getViewState().showReviews(reviews);
     }
 
     @Override
@@ -117,9 +99,11 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
     }
 
     public void removeListeners() {
-        dbReference.removeEventListener(this);
-        if (valueEventListener != null) {
-            dbReference.removeEventListener(valueEventListener);
+        if (dbReference != null) {
+            dbReference.removeEventListener(this);
+            if (valueEventListener != null) {
+                dbReference.removeEventListener(valueEventListener);
+            }
         }
     }
 

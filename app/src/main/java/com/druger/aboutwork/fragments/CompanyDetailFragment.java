@@ -3,9 +3,7 @@ package com.druger.aboutwork.fragments;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -13,14 +11,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -50,20 +44,11 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     @InjectPresenter
     CompanyDetailPresenter companyDetailPresenter;
 
-    private TextView tvDescription;
-    private ImageView ivDownDrop;
-    private ImageView ivUpDrop;
-    private TextView tvRating;
-    private TextView tvCountReviews;
-    private TextView site;
-    private RatingBar ratingCompany;
     private ImageView ivToolbar;
     private FloatingActionButton fabAddReview;
     private CoordinatorLayout ltContent;
-    private RelativeLayout ltInfo;
 
     private CollapsingToolbarLayout collapsingToolbar;
-    private AppBarLayout appBarLayout;
     @SuppressWarnings("FieldCanBeLocal")
     private RecyclerView rvReviews;
     private List<Review> reviews = new ArrayList<>();
@@ -94,20 +79,9 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
         setupUX();
         setupRecycler(reviews);
         setupFabBehavior();
-        setupAppBarChanges();
 
         companyDetailPresenter.getCompanyDetail(getArguments().getString(COMPANY_ID, ""));
         return rootView;
-    }
-
-    private void setupAppBarChanges() {
-        appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
-            if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
-                ltInfo.setVisibility(View.GONE);
-            } else if (verticalOffset == 0) {
-                ltInfo.setVisibility(View.VISIBLE);
-            }
-        });
     }
 
     private void setupFabBehavior() {
@@ -130,28 +104,17 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void setupUX() {
-        ivDownDrop.setOnClickListener(this);
-        ivUpDrop.setOnClickListener(this);
         fabAddReview.setOnClickListener(this);
         btnRetry.setOnClickListener(this);
     }
 
     private void setupUI() {
-        site = bindView(R.id.tvSite);
-        tvDescription = bindView(R.id.tvContentDescription);
-        ivDownDrop = bindView(R.id.ivDownDrop);
-        ivUpDrop = bindView(R.id.ivUpDrop);
         ivToolbar = bindView(R.id.ivToolbar);
-        tvCountReviews = bindView(R.id.tvCountReviews);
-        tvRating = bindView(R.id.tvRating);
-        ratingCompany = bindView(R.id.rating_company);
         fabAddReview = bindView(R.id.fabAddReview);
         ltContent = bindView(R.id.ltContent);
         ltError = bindView(R.id.ltError);
         progressBar = bindView(R.id.progressBar);
         btnRetry = bindView(R.id.btnRetry);
-        ltInfo = bindView(R.id.ltInfo);
-        appBarLayout = bindView(R.id.appBarLayout);
     }
 
     private void setupToolbar() {
@@ -198,12 +161,6 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ivDownDrop:
-                companyDetailPresenter.downDropClick();
-                break;
-            case R.id.ivUpDrop:
-                companyDetailPresenter.upDropClick();
-                break;
             case R.id.fabAddReview:
                 addReview();
                 break;
@@ -228,20 +185,6 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     @Override
-    public void showDescription() {
-        ivDownDrop.setVisibility(View.INVISIBLE);
-        ivUpDrop.setVisibility(View.VISIBLE);
-        tvDescription.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideDescription() {
-        ivUpDrop.setVisibility(View.INVISIBLE);
-        ivDownDrop.setVisibility(View.VISIBLE);
-        tvDescription.setVisibility(View.GONE);
-    }
-
-    @Override
     public void updateAdapter() {
         reviewAdapter.notifyDataSetChanged();
     }
@@ -254,46 +197,17 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     @Override
-    public void showRating(float rating) {
-        tvRating.setText(String.valueOf(rating));
-        ratingCompany.setRating(rating);
-    }
-
-    @Override
-    public void showCountReviews(int count) {
-        tvCountReviews.setText(String.valueOf(count));
-    }
-
-    @Override
     public void showCompanyDetail(CompanyDetail company) {
         companyDetail = company;
-        companyDetailPresenter.setReviews(company.getId());
-
+        reviewAdapter.setCompanyDetail(company);
         setToolbarName(company.getName());
-        setDescription(company);
         loadImage(company);
+        companyDetailPresenter.setReviews(company.getId());
     }
 
     private void setToolbarName(String name) {
         collapsingToolbar.setTitle(name);
         collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
-    }
-
-    private void setDescription(CompanyDetail company) {
-        tvDescription.setVisibility(View.GONE);
-
-        String iSite = company.getSite();
-        String iDescription = company.getDescription();
-        if (iSite != null) {
-            site.setText(iSite);
-        }
-        if (iDescription != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                tvDescription.setText(Html.fromHtml(iDescription, Html.FROM_HTML_MODE_LEGACY));
-            } else {
-                tvDescription.setText(Html.fromHtml(iDescription));
-            }
-        }
     }
 
     private void loadImage(CompanyDetail company) {

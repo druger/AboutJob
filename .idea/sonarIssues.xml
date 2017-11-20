@@ -63,6 +63,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/druger/aboutwork/adapters/SelectableAdapter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/druger/aboutwork/db/FirebaseHelper.java">
           <value>
             <set />
@@ -128,6 +133,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/druger/aboutwork/interfaces/CompanyDetailList.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/druger/aboutwork/interfaces/ListItem.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/druger/aboutwork/interfaces/view/ChageEmailView.java">
           <value>
             <set />
@@ -143,12 +158,32 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/druger/aboutwork/interfaces/view/CompanyDetailView.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/druger/aboutwork/interfaces/view/MyReviewsView.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/druger/aboutwork/interfaces/view/SettingsView.java">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/druger/aboutwork/model/Company.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/druger/aboutwork/model/CompanyDetail.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/druger/aboutwork/model/Review.java">
           <value>
             <set />
           </value>
@@ -173,7 +208,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/druger/aboutwork/presenters/CompanyDetailPresenter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/druger/aboutwork/presenters/MainPresenter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/druger/aboutwork/presenters/MyReviewsPresenter.java">
           <value>
             <set />
           </value>
@@ -239,6 +284,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/layout/fragment_settings2.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/layout/header_reviews.xml">
           <value>
             <set />
           </value>

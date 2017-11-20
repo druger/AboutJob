@@ -12,17 +12,9 @@ import java.util.List;
 
 public interface CompanyDetailView extends MvpView, NetworkView {
 
-    void showDescription();
-
-    void hideDescription();
-
     void updateAdapter();
 
     void showReviews(List<Review> reviews);
-
-    void showRating(float rating);
-
-    void showCountReviews(int count);
 
     void showCompanyDetail(CompanyDetail company);
 }
