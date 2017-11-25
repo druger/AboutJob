@@ -119,7 +119,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
         } else if (itemType == TYPE_HEADER) {
             HeaderVH headerVH = (HeaderVH) holder;
             headerVH.setDescription(companyDetail);
-            headerVH.showCountReviews(getItemCount());
+            headerVH.showCountReviews(getItemCount() - 1);
             headerVH.downDropClick();
             headerVH.upDropClick();
         }
@@ -202,7 +202,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return reviews.size() - 1;
+        return reviews.size();
     }
 
     @Override
