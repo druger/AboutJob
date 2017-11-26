@@ -249,7 +249,7 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
             review.setDislike(++dislikeCount);
             review.setMyDislike(true);
             tvDislike.setText(String.valueOf(dislikeCount));
-            FirebaseHelper.setDislike(review);
+            FirebaseHelper.dislikeReview(review);
 
             if (tagLike.equalsIgnoreCase(getActivity().getString(R.string.like_active))) {
                 ivLike.setTag(getActivity().getString(R.string.like_inactive));
@@ -257,7 +257,7 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
                 review.setLike(--likeCount);
                 review.setMyLike(false);
                 tvLike.setText(String.valueOf(likeCount));
-                FirebaseHelper.setLike(review);
+                FirebaseHelper.likeReview(review);
             }
         } else {
             ivDislike.setTag(getActivity().getString(R.string.dislike_inactive));
@@ -265,7 +265,7 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
             review.setDislike(--dislikeCount);
             review.setMyDislike(false);
             tvDislike.setText(String.valueOf(dislikeCount));
-            FirebaseHelper.setDislike(review);
+            FirebaseHelper.dislikeReview(review);
         }
     }
 
@@ -280,7 +280,7 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
             review.setLike(++likeCount);
             review.setMyLike(true);
             tvLike.setText(String.valueOf(likeCount));
-            FirebaseHelper.setLike(review);
+            FirebaseHelper.likeReview(review);
 
             if (tagDislike.equalsIgnoreCase(getActivity().getString(R.string.dislike_active))) {
                 ivDislike.setTag(getActivity().getString(R.string.dislike_inactive));
@@ -288,7 +288,7 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
                 review.setDislike(--dislikeCount);
                 review.setMyDislike(false);
                 tvDislike.setText(String.valueOf(dislikeCount));
-                FirebaseHelper.setDislike(review);
+                FirebaseHelper.dislikeReview(review);
             }
         } else {
             ivLike.setTag(getActivity().getString(R.string.like_inactive));
@@ -296,7 +296,7 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
             review.setLike(--likeCount);
             review.setMyLike(false);
             tvLike.setText(String.valueOf(likeCount));
-            FirebaseHelper.setLike(review);
+            FirebaseHelper.likeReview(review);
         }
 
     }

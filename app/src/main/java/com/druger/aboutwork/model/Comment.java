@@ -16,6 +16,7 @@ public class Comment {
     private String message;
     private int like;
     private boolean myLike;
+    private String replyId;
 
     public Comment() {
     }
@@ -87,5 +88,13 @@ public class Comment {
 
     public void setMyLike(boolean myLike) {
         this.myLike = myLike;
+    }
+
+    public String getReplyId() {
+        return replyId;
+    }
+
+    public void setReplyId(String replyId) {
+        this.replyId = replyId;
     }
 }

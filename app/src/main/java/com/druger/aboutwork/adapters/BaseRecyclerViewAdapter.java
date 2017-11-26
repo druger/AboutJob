@@ -50,7 +50,6 @@ public abstract class BaseRecyclerViewAdapter<T, VH extends RecyclerView.ViewHol
 
     public void addItems(List<T> items) {
         this.items.addAll(items);
-        notifyDataSetChanged();
     }
 
     protected View inflate(int layoutID, ViewGroup viewGroup) {

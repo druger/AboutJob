@@ -35,6 +35,7 @@ public class FirebaseHelper {
     private static final String COMPANY_ID = "companyId";
     private static final String ID = "id";
     private static final String USER_ID = "userId";
+    private static final String SLASH = "/";
 
     private FirebaseHelper() {
     }
@@ -47,25 +48,25 @@ public class FirebaseHelper {
         FirebaseDatabase.getInstance().getReference().child(REVIEWS).push().setValue(map);
     }
 
-    public static void setLike(Review review) {
+    public static void likeReview(Review review) {
         Map<String, Object> updateLike = new HashMap<>();
-        updateLike.put(REVIEWS + "/" + review.getFirebaseKey() + LIKE, review.getLike());
-        updateLike.put(REVIEWS + "/" + review.getFirebaseKey() + MY_LIKE, review.isMyLike());
+        updateLike.put(REVIEWS + SLASH + review.getFirebaseKey() + LIKE, review.getLike());
+        updateLike.put(REVIEWS + SLASH + review.getFirebaseKey() + MY_LIKE, review.isMyLike());
 
         FirebaseDatabase.getInstance().getReference().updateChildren(updateLike);
     }
 
-    public static void setDislike(Review review) {
+    public static void dislikeReview(Review review) {
         Map<String, Object> updateDislike = new HashMap<>();
-        updateDislike.put(REVIEWS + "/" + review.getFirebaseKey() + DISLIKE, review.getDislike());
-        updateDislike.put(REVIEWS + "/" + review.getFirebaseKey() + MY_DISLIKE, review.isMyDislike());
+        updateDislike.put(REVIEWS + SLASH + review.getFirebaseKey() + DISLIKE, review.getDislike());
+        updateDislike.put(REVIEWS + SLASH + review.getFirebaseKey() + MY_DISLIKE, review.isMyDislike());
 
         FirebaseDatabase.getInstance().getReference().updateChildren(updateDislike);
     }
 
     public static void changeUserName(String name, String key) {
         Map<String, Object> updateName = new HashMap<>();
-        updateName.put(USERS + "/" + key + NAME, name);
+        updateName.put(USERS + SLASH + key + NAME, name);
         FirebaseDatabase.getInstance().getReference().updateChildren(updateName);
     }
 
@@ -83,7 +84,7 @@ public class FirebaseHelper {
     }
 
     public static void removeReview(String id) {
-        FirebaseDatabase.getInstance().getReference().child(REVIEWS + "/" + id).removeValue();
+        FirebaseDatabase.getInstance().getReference().child(REVIEWS + SLASH + id).removeValue();
     }
 
     public static void addComment(Comment comment) {
@@ -91,18 +92,18 @@ public class FirebaseHelper {
     }
 
     public static void deleteComment(String id) {
-        FirebaseDatabase.getInstance().getReference().child(COMMENTS + "/" + id).removeValue();
+        FirebaseDatabase.getInstance().getReference().child(COMMENTS + SLASH + id).removeValue();
     }
 
     public static void updateComment(String id, String message) {
         Map<String, Object> updateComment = new HashMap<>();
-        updateComment.put(COMMENTS + "/" + id + MESSAGE, message);
+        updateComment.put(COMMENTS + SLASH + id + MESSAGE, message);
         FirebaseDatabase.getInstance().getReference().updateChildren(updateComment);
     }
 
     public static void updateReview(Review review) {
         Map<String, Object> updateReview = new HashMap<>();
-        updateReview.put(REVIEWS + "/" + review.getFirebaseKey(), review);
+        updateReview.put(REVIEWS + SLASH + review.getFirebaseKey(), review);
         FirebaseDatabase.getInstance().getReference().updateChildren(updateReview);
     }
 
@@ -132,5 +133,13 @@ public class FirebaseHelper {
 
     public static Query getCompanies(DatabaseReference dbReference, String companyId) {
         return dbReference.child(COMPANIES).orderByChild(ID).equalTo(companyId);
+    }
+
+    public static void likeComment(Comment comment) {
+        Map<String, Object> updateLike = new HashMap<>();
+        updateLike.put(COMMENTS + SLASH + comment.getId() + LIKE, comment.getLike());
+        updateLike.put(COMMENTS + SLASH + comment.getId() + MY_LIKE, comment.isMyLike());
+
+        FirebaseDatabase.getInstance().getReference().updateChildren(updateLike);
     }
 }

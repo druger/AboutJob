@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.Comment;
 import com.druger.aboutwork.utils.Utils;
 
@@ -31,6 +32,29 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
         holder.tvCountLikes.setText(String.valueOf(comment.getLike()));
 
         holder.itemView.setOnLongClickListener(v -> longItemClick(holder));
+        holder.ivLike.setOnClickListener(v -> likeClick(comment));
+
+        setColorLike(comment, holder);
+    }
+
+    private void setColorLike(Comment comment, CommentVH holder) {
+        if (comment.isMyLike()) {
+            holder.ivLike.setImageResource(R.drawable.ic_heart);
+        } else {
+            holder.ivLike.setImageResource(R.drawable.ic_heart_outline);
+        }
+    }
+
+    private void likeClick(Comment comment) {
+        int like = comment.getLike();
+        if (comment.isMyLike()) {
+            comment.setLike(--like);
+            comment.setMyLike(false);
+        } else {
+            comment.setLike(++like);
+            comment.setMyLike(true);
+        }
+        FirebaseHelper.likeComment(comment);
     }
 
     private boolean longItemClick(CommentVH holder) {

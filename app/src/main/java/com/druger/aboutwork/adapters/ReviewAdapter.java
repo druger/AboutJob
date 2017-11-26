@@ -137,7 +137,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
                 review.setDislike(++dislike);
                 review.setMyDislike(true);
                 holder.tvDislike.setText(String.valueOf(dislike));
-                FirebaseHelper.setDislike(review);
+                FirebaseHelper.dislikeReview(review);
 
                 if (tagLike.equalsIgnoreCase(context.getString(R.string.like_active))) {
                     holder.ivLike.setTag(context.getString(R.string.like_inactive));
@@ -145,7 +145,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
                     review.setLike(--like);
                     review.setMyLike(false);
                     holder.tvLike.setText(String.valueOf(like));
-                    FirebaseHelper.setLike(review);
+                    FirebaseHelper.likeReview(review);
                 }
             } else {
                 holder.ivDislike.setTag(context.getString(R.string.dislike_inactive));
@@ -153,7 +153,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
                 review.setDislike(--dislike);
                 review.setMyDislike(false);
                 holder.tvDislike.setText(String.valueOf(dislike));
-                FirebaseHelper.setDislike(review);
+                FirebaseHelper.dislikeReview(review);
             }
         });
     }
@@ -170,7 +170,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
                 review.setLike(++like);
                 review.setMyLike(true);
                 holder.tvLike.setText(String.valueOf(like));
-                FirebaseHelper.setLike(review);
+                FirebaseHelper.likeReview(review);
 
                 if (tagDislike.equalsIgnoreCase(context.getString(R.string.dislike_active))) {
                     holder.ivDislike.setTag(context.getString(R.string.dislike_inactive));
@@ -178,7 +178,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
                     review.setDislike(--dislike);
                     review.setMyDislike(false);
                     holder.tvDislike.setText(String.valueOf(dislike));
-                    FirebaseHelper.setDislike(review);
+                    FirebaseHelper.dislikeReview(review);
                 }
             } else {
                 holder.ivLike.setTag(context.getString(R.string.like_inactive));
@@ -186,7 +186,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
                 review.setLike(--like);
                 review.setMyLike(false);
                 holder.tvLike.setText(String.valueOf(like));
-                FirebaseHelper.setLike(review);
+                FirebaseHelper.likeReview(review);
             }
         });
     }

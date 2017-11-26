@@ -81,6 +81,7 @@ public class CommentsFragment extends BaseFragment implements CommentsView {
         setupToolbar();
         setupUI();
         setupListeners();
+        setupRecycler();
         retrieveComments();
         hideBottomNavigation();
         return rootView;
@@ -146,13 +147,11 @@ public class CommentsFragment extends BaseFragment implements CommentsView {
         commentsPresenter.retrieveComments(reviewId);
     }
 
-    private void setupRecycler(List<Comment> comments) {
+    private void setupRecycler() {
         commentAdapter = new CommentAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(commentAdapter);
-        commentAdapter.addItems(comments);
-        recyclerView.setNestedScrollingEnabled(false);
 
         changeComment();
     }
@@ -204,11 +203,8 @@ public class CommentsFragment extends BaseFragment implements CommentsView {
 
     @Override
     public void showComments(List<Comment> comments) {
-        if (commentAdapter == null) {
-            setupRecycler(comments);
-        } else {
-            commentAdapter.notifyDataSetChanged();
-        }
+        commentAdapter.clear();
+        commentAdapter.addItems(comments);
     }
 
     @Override
