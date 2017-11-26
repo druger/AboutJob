@@ -23,7 +23,7 @@ public class FirebaseHelper {
     private static final String LIKE = "/like";
     private static final String DISLIKE = "/dislike";
     private static final String MY_LIKE = "/myLike";
-    private static final String MY_DISLIKE = "/myDisLike";
+    private static final String MY_DISLIKE = "/myDislike";
     private static final String USERS = "users";
     private static final String NAME = "/name";
     private static final String COMPANIES = "companies";
