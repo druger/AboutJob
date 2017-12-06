@@ -65,7 +65,6 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
 
         setupUI();
         accountPresenter.getUserInfo();
-        accountPresenter.setupStorage();
         setupListeners();
         setupToolbar();
 

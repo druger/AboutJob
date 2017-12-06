@@ -148,7 +148,7 @@ public class CommentsFragment extends BaseFragment implements CommentsView {
     }
 
     private void setupRecycler() {
-        commentAdapter = new CommentAdapter();
+        commentAdapter = new CommentAdapter(getActivity());
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(commentAdapter);

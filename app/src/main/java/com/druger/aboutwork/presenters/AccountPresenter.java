@@ -50,6 +50,10 @@ public class AccountPresenter extends MvpPresenter<AccountView> {
     private Context context;
     private Uri selectedImgUri;
 
+    public AccountPresenter() {
+        storage = FirebaseStorage.getInstance();
+    }
+
     public void getUserInfo() {
         auth = FirebaseAuth.getInstance();
         dbReference = FirebaseDatabase.getInstance().getReference();
@@ -153,10 +157,6 @@ public class AccountPresenter extends MvpPresenter<AccountView> {
             Log.d(TAG, "pickImage: startCropImageActivity");
             getViewState().startCropImageActivity(imgUri);
         }
-    }
-
-    public void setupStorage() {
-        storage = FirebaseStorage.getInstance();
     }
 
     private void downloadPhoto() {

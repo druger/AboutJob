@@ -10,12 +10,11 @@
     android:layout_marginEnd="5dp"
     tools:ignore="ContentDescription">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivAvatar"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        app:srcCompat="@drawable/ic_account"
-        android:background="@color/grey500"
+        app:srcCompat="@drawable/ic_account_circle_black"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
