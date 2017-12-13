@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.MainActivity;
+import com.druger.aboutwork.adapters.MyReviewAdapter;
 import com.druger.aboutwork.adapters.ReviewAdapter;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
@@ -97,7 +98,7 @@ public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
     }
 
     private void setupRecycler(final List<Review> reviews) {
-        reviewAdapter = new ReviewAdapter(getActivity(), reviews);
+        reviewAdapter = new MyReviewAdapter(reviews);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(reviewAdapter);

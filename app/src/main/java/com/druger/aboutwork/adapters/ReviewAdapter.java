@@ -1,6 +1,5 @@
 package com.druger.aboutwork.adapters;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
@@ -34,20 +33,17 @@ import static com.druger.aboutwork.Const.Colors.RED_500;
  * Created by druger on 29.01.2017.
  */
 
-// TODO сделать адаптер для своих рецензий
 public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     private static final int TYPE_HEADER = 0;
-    private static final int TYPE_ITEM = 1;
+    protected static final int TYPE_ITEM = 1;
 
     private List<Review> reviews;
     private List<Review> deletedReviews;
-    private Context context;
     private CompanyDetail companyDetail;
 
     private OnItemClickListener<Review> clickListener;
 
-    public ReviewAdapter(Context context, List<Review> reviews) {
-        this.context = context;
+    public ReviewAdapter(List<Review> reviews) {
         this.reviews = reviews;
         deletedReviews = new ArrayList<>();
     }
@@ -293,18 +289,20 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
         }
 
         void setDescription(CompanyDetail company) {
-            tvDescription.setVisibility(View.GONE);
+            if (company != null) {
+                tvDescription.setVisibility(View.GONE);
 
-            String iSite = company.getSite();
-            String iDescription = company.getDescription();
-            if (iSite != null) {
-                site.setText(iSite);
-            }
-            if (iDescription != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    tvDescription.setText(Html.fromHtml(iDescription, Html.FROM_HTML_MODE_LEGACY));
-                } else {
-                    tvDescription.setText(Html.fromHtml(iDescription));
+                String iSite = company.getSite();
+                String iDescription = company.getDescription();
+                if (iSite != null) {
+                    site.setText(iSite);
+                }
+                if (iDescription != null) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        tvDescription.setText(Html.fromHtml(iDescription, Html.FROM_HTML_MODE_LEGACY));
+                    } else {
+                        tvDescription.setText(Html.fromHtml(iDescription));
+                    }
                 }
             }
         }

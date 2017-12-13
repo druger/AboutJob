@@ -126,7 +126,7 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
 
     private void setupRecycler(final List<Review> reviews) {
         rvReviews = bindView(R.id.rvReviews);
-        reviewAdapter = new ReviewAdapter(getActivity(), reviews);
+        reviewAdapter = new ReviewAdapter(reviews);
         rvReviews.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvReviews.setItemAnimator(new DefaultItemAnimator());
         rvReviews.setAdapter(reviewAdapter);
