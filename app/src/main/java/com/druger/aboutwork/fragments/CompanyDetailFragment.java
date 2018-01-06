@@ -28,6 +28,7 @@ import com.druger.aboutwork.interfaces.view.CompanyDetailView;
 import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.CompanyDetailPresenter;
+import com.druger.aboutwork.utils.EndlessRecyclerViewScrollListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,7 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     private RecyclerView rvReviews;
     private List<Review> reviews = new ArrayList<>();
     private ReviewAdapter reviewAdapter;
+    private int currentPage = 1;
 
     private CompanyDetail companyDetail;
 
@@ -125,9 +127,10 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void setupRecycler(final List<Review> reviews) {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvReviews = bindView(R.id.rvReviews);
         reviewAdapter = new ReviewAdapter(reviews);
-        rvReviews.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvReviews.setLayoutManager(layoutManager);
         rvReviews.setItemAnimator(new DefaultItemAnimator());
         rvReviews.setAdapter(reviewAdapter);
 
@@ -145,6 +148,14 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
             @Override
             public boolean onLongClick(int position) {
                 return false;
+            }
+        });
+
+        rvReviews.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView recyclerView) {
+                currentPage++;
+                companyDetailPresenter.getReviews(companyDetail.getId(), currentPage);
             }
         });
     }
@@ -202,7 +213,7 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
         reviewAdapter.setCompanyDetail(company);
         setToolbarName(company.getName());
         loadImage(company);
-        companyDetailPresenter.setReviews(company.getId());
+        companyDetailPresenter.getReviews(company.getId(), currentPage);
     }
 
     private void setToolbarName(String name) {

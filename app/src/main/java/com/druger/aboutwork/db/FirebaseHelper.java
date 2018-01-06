@@ -36,6 +36,7 @@ public class FirebaseHelper {
     private static final String ID = "id";
     private static final String USER_ID = "userId";
     private static final String SLASH = "/";
+    public static final int FIRST_COUNT_REVIEWS = 10;
 
     private FirebaseHelper() {
     }
@@ -119,8 +120,9 @@ public class FirebaseHelper {
         return reference.child(COMMENTS).orderByChild(REVIEW_ID).equalTo(reviewId);
     }
 
-    public static Query getReviewsForCompany(DatabaseReference dbReference, String companyId) {
-        return dbReference.child(REVIEWS).orderByChild(COMPANY_ID).equalTo(companyId);
+    public static Query getReviewsForCompany(DatabaseReference dbReference, String companyId, int currentPage) {
+        return dbReference.child(REVIEWS).orderByChild(COMPANY_ID)
+                .equalTo(companyId).limitToFirst(currentPage * FIRST_COUNT_REVIEWS);
     }
 
     public static Query getUser(DatabaseReference dbReference, String userId) {

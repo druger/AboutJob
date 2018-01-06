@@ -83,7 +83,7 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="5dp"
                 android:layout_marginRight="5dp"
-                android:text="Description"
+                android:text="@string/description"
                 android:textColor="@android:color/black" />
 
             <RelativeLayout
