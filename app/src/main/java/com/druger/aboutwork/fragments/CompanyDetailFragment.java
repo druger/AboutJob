@@ -54,7 +54,6 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     private RecyclerView rvReviews;
     private List<Review> reviews = new ArrayList<>();
     private ReviewAdapter reviewAdapter;
-    private int currentPage = 1;
 
     private CompanyDetail companyDetail;
 
@@ -153,9 +152,8 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
 
         rvReviews.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView recyclerView) {
-                currentPage++;
-                companyDetailPresenter.getReviews(companyDetail.getId(), currentPage);
+            public void onLoadMore(int page) {
+                companyDetailPresenter.getReviews(companyDetail.getId(), ++page);
             }
         });
     }
@@ -213,7 +211,7 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
         reviewAdapter.setCompanyDetail(company);
         setToolbarName(company.getName());
         loadImage(company);
-        companyDetailPresenter.getReviews(company.getId(), currentPage);
+        companyDetailPresenter.getReviews(company.getId(), 1);
     }
 
     private void setToolbarName(String name) {

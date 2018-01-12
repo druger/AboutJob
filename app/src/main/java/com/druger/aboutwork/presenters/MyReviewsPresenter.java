@@ -35,10 +35,10 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
         reviews = new ArrayList<>();
     }
 
-    public void fetchReviews(String userId) {
+    public void fetchReviews(String userId, int currentPage) {
         dbReference = FirebaseDatabase.getInstance().getReference();
 
-        Query reviewsQuery = getMyReviews(dbReference, userId);
+        Query reviewsQuery = getMyReviews(dbReference, userId, currentPage);
         reviewsQuery.addValueEventListener(this);
     }
 

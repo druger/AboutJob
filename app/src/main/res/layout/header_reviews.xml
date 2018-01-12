@@ -107,6 +107,15 @@
 
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/ivFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/ltDescription"
+            app:srcCompat="@drawable/ic_filter"/>
+
         <TextView
             android:id="@+id/tvContentDescription"
             android:layout_width="match_parent"

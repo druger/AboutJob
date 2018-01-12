@@ -1,45 +1,49 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <include layout="@layout/toolbar" />
 
-    <android.support.v4.widget.NestedScrollView
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        tools:context=".fragments.MyReviewsFragment">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvCountReviews"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="?attr/actionBarSize">
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:text="0" />
 
-            <TextView
-                android:id="@+id/tvCountReviews"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="5dp"
-                android:text="0" />
+        <TextView
+            android:id="@+id/tvReviews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/tvCountReviews"
+            android:layout_alignBottom="@+id/tvCountReviews"
+            android:text="@string/reviews" />
 
-            <TextView
-                android:id="@+id/tvReviews"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/tvCountReviews"
-                android:layout_toEndOf="@+id/tvCountReviews"
-                android:text="@string/reviews" />
+        <ImageView
+            android:id="@+id/ivFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            app:srcCompat="@drawable/ic_filter"/>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvCountReviews"
-                android:layout_marginBottom="105dp" />
-        </RelativeLayout>
-    </android.support.v4.widget.NestedScrollView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="?attr/actionBarSize"
+            android:layout_below="@+id/tvCountReviews" />
+    </RelativeLayout>
 </FrameLayout>
 

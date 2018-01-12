@@ -24,13 +24,14 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.adapters.MyReviewAdapter;
-import com.druger.aboutwork.adapters.ReviewAdapter;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.MyReviewsView;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.MyReviewsPresenter;
+import com.druger.aboutwork.utils.EndlessRecyclerViewScrollListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.druger.aboutwork.Const.Bundles.USER_ID;
@@ -43,8 +44,9 @@ public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
     @InjectPresenter
     MyReviewsPresenter myReviewsPresenter;
 
-    private RecyclerView recyclerView;
-    private ReviewAdapter reviewAdapter;
+    private RecyclerView rvReviews;
+    private MyReviewAdapter reviewAdapter;
+    private List<Review> reviews = new ArrayList<>();
     @SuppressWarnings("FieldCanBeLocal")
     private ItemTouchHelper touchHelper;
     @SuppressWarnings("FieldCanBeLocal")
@@ -79,6 +81,7 @@ public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
 
         setupUI();
         setupToolbar();
+        setupRecycler(reviews);
         initSwipe();
 
         Bundle bundle = this.getArguments();
@@ -86,7 +89,7 @@ public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
             userId = bundle.getString(USER_ID, userId);
         }
 
-        myReviewsPresenter.fetchReviews(userId);
+        myReviewsPresenter.fetchReviews(userId, 1);
         return rootView;
     }
 
@@ -98,11 +101,11 @@ public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
     }
 
     private void setupRecycler(final List<Review> reviews) {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         reviewAdapter = new MyReviewAdapter(reviews);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(reviewAdapter);
-        recyclerView.setNestedScrollingEnabled(false);
+        rvReviews.setLayoutManager(layoutManager);
+        rvReviews.setItemAnimator(new DefaultItemAnimator());
+        rvReviews.setAdapter(reviewAdapter);
 
         reviewAdapter.setOnClickListener(new OnItemClickListener<Review>() {
             @Override
@@ -124,6 +127,13 @@ public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
                 return true;
             }
         });
+
+        rvReviews.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page) {
+                myReviewsPresenter.fetchReviews(userId, ++page);
+            }
+        });
     }
 
     private void showSelectedReview(Review review) {
@@ -138,7 +148,7 @@ public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
     private void setupUI() {
         tvCountReviews = bindView(R.id.tvCountReviews);
         bottomNavigation = getActivity().findViewById(R.id.bottom_navigation);
-        recyclerView = bindView(R.id.recycler_view);
+        rvReviews = bindView(R.id.recycler_view);
     }
 
     private void initSwipe() {
@@ -157,7 +167,7 @@ public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
                         .setAction(R.string.undo, v -> {
                             myReviewsPresenter.addReview(position, review);
                             reviewAdapter.notifyItemInserted(position);
-                            recyclerView.scrollToPosition(position);
+                            rvReviews.scrollToPosition(position);
                         });
                 showSnackbar(snackbar);
                 myReviewsPresenter.removeReview(position);
@@ -170,7 +180,7 @@ public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
             }
         };
         touchHelper = new ItemTouchHelper(simpleCallback);
-        touchHelper.attachToRecyclerView(recyclerView);
+        touchHelper.attachToRecyclerView(rvReviews);
     }
 
     @Override
@@ -202,7 +212,9 @@ public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
     @Override
     public void showReviews(List<Review> reviews) {
         tvCountReviews.setText(String.valueOf(reviews.size()));
-        setupRecycler(reviews);
+        this.reviews.clear();
+        this.reviews.addAll(reviews);
+        reviewAdapter.notifyDataSetChanged();
     }
 
     @Override
