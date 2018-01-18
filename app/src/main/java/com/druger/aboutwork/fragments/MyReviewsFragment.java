@@ -29,7 +29,7 @@ import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.MyReviewsView;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.MyReviewsPresenter;
-import com.druger.aboutwork.utils.EndlessRecyclerViewScrollListener;
+import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -238,16 +238,16 @@ public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.menu_delete:
-                    reviewAdapter.removeItems(reviewAdapter.getSelectedItems());
-                    final List<Review> deletedReviews = getDeletedReviews();
-                    Snackbar snackbar = makeSnackbar(deletedReviews);
-                    showSnackbar(snackbar);
-                    mode.finish();
-                    return true;
-                default:
-                    return false;
+            int i = item.getItemId();
+            if (i == R.id.menu_delete) {
+                reviewAdapter.removeItems(reviewAdapter.getSelectedItems());
+                final List<Review> deletedReviews = getDeletedReviews();
+                Snackbar snackbar = makeSnackbar(deletedReviews);
+                showSnackbar(snackbar);
+                mode.finish();
+                return true;
+            } else {
+                return false;
             }
         }
 

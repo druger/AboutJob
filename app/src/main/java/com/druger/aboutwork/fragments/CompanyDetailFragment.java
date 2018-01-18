@@ -28,7 +28,7 @@ import com.druger.aboutwork.interfaces.view.CompanyDetailView;
 import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.CompanyDetailPresenter;
-import com.druger.aboutwork.utils.EndlessRecyclerViewScrollListener;
+import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener;
 
 import java.util.ArrayList;
 import java.util.List;

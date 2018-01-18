@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.druger.aboutwork.fragments.CompaniesFragment;
 import com.druger.aboutwork.fragments.RatingsFragment;
 import com.druger.aboutwork.interfaces.view.MainView;
 import com.druger.aboutwork.presenters.MainPresenter;
+import com.druger.aboutwork.utils.recycler.BottomNavigationBehavior;
 import com.squareup.leakcanary.RefWatcher;
 
 public class MainActivity extends MvpAppCompatActivity implements MainView {
@@ -37,10 +39,16 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         mainPresenter.checkAuthUser();
         setupUI();
         setupUX();
+        setupHidingBottomNavigation();
+    }
+
+    private void setupHidingBottomNavigation() {
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigation.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationBehavior());
     }
 
     private void setupToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
 
@@ -56,7 +64,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     }
 
     private void setupUI() {
-        bottomNavigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigation = findViewById(R.id.bottom_navigation);
 
         fragment = getFragmentManager().findFragmentById(R.id.main_container);
         if (fragment == null) {
@@ -116,5 +124,16 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        slideUpBottomNavigation();
+    }
+
+    public void slideUpBottomNavigation() {
+        bottomNavigation.clearAnimation();
+        bottomNavigation.animate().translationY(0);
     }
 }

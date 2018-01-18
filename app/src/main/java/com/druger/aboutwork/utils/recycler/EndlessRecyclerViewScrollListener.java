@@ -1,4 +1,4 @@
-package com.druger.aboutwork.utils;
+package com.druger.aboutwork.utils.recycler;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
