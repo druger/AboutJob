@@ -135,5 +135,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     public void slideUpBottomNavigation() {
         bottomNavigation.clearAnimation();
         bottomNavigation.animate().translationY(0);
+        bottomNavigation.setVisibility(View.VISIBLE);
     }
 }

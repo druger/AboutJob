@@ -283,7 +283,11 @@ public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
 
     private void showSnackbar(Snackbar snackbar) {
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) snackbar.getView().getLayoutParams();
-        params.setMargins(0, 0, 0, bottomNavigation.getHeight());
+        if (bottomNavigation.getVisibility() == View.VISIBLE) {
+            params.setMargins(0, 0, 0, bottomNavigation.getHeight());
+        } else {
+            params.setMargins(0, 0, 0, 0);
+        }
         snackbar.getView().setLayoutParams(params);
         snackbar.show();
     }
