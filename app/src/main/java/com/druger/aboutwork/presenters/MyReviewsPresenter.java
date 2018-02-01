@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.druger.aboutwork.db.FirebaseHelper.getCompanies;
-import static com.druger.aboutwork.db.FirebaseHelper.getMyReviews;
+import static com.druger.aboutwork.db.FirebaseHelper.getReviews;
 
 /**
  * Created by druger on 09.05.2017.
@@ -38,7 +38,7 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
     public void fetchReviews(String userId, int currentPage) {
         dbReference = FirebaseDatabase.getInstance().getReference();
 
-        Query reviewsQuery = getMyReviews(dbReference, userId, currentPage);
+        Query reviewsQuery = getReviews(dbReference, userId, currentPage);
         reviewsQuery.addValueEventListener(this);
     }
 

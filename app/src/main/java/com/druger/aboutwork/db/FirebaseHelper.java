@@ -129,7 +129,7 @@ public class FirebaseHelper {
         return dbReference.child(USERS).orderByChild(ID).equalTo(userId);
     }
 
-    public static Query getMyReviews(DatabaseReference dbReference, String userId, int currentPage) {
+    public static Query getReviews(DatabaseReference dbReference, String userId, int currentPage) {
         return dbReference.child(REVIEWS).orderByChild(USER_ID).equalTo(userId)
                 .limitToFirst(currentPage * FIRST_COUNT_REVIEWS);
     }

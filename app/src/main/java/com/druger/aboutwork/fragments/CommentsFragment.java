@@ -2,6 +2,7 @@ package com.druger.aboutwork.fragments;
 
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -154,6 +155,20 @@ public class CommentsFragment extends BaseFragment implements CommentsView {
         recyclerView.setAdapter(commentAdapter);
 
         changeComment();
+        avatarClick();
+    }
+
+    private void avatarClick() {
+        commentAdapter.setOnAvatarClickListener(comment -> showReviews(comment.getUserId()));
+    }
+
+    private void showReviews(String userId) {
+        UserReviewsFragment reviews = UserReviewsFragment.newInstance(userId);
+
+        FragmentTransaction transaction =getActivity().getFragmentManager().beginTransaction();
+        transaction.replace(R.id.company_container, reviews);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     private void changeComment() {

@@ -28,6 +28,8 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
     private FirebaseStorage firebaseStorage;
     private StorageReference storageRef;
 
+    private OnAvatarClickListener avatarClickListener;
+
     public CommentAdapter(Context context) {
         super();
         this.context = context;
@@ -50,6 +52,7 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
 
         holder.itemView.setOnLongClickListener(v -> longItemClick(holder));
         holder.ivLike.setOnClickListener(v -> likeClick(comment));
+        holder.ivAvatar.setOnClickListener(v -> avatarClickListener.onClick(comment));
 
         setColorLike(comment, holder);
         downLoadPhoto(comment.getUserId(), holder);
@@ -115,5 +118,13 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
             ivLike = bindView(R.id.ivLike);
             ivReply = bindView(R.id.ivReply);
         }
+    }
+
+    public void setOnAvatarClickListener(OnAvatarClickListener avatarClickListener) {
+        this.avatarClickListener = avatarClickListener;
+    }
+
+    public interface OnAvatarClickListener {
+        void onClick(Comment comment);
     }
 }
