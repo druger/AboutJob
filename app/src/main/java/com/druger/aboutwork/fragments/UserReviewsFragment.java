@@ -3,19 +3,27 @@ package com.druger.aboutwork.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.bumptech.glide.Glide;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.adapters.MyReviewAdapter;
 import com.druger.aboutwork.interfaces.view.UserReviews;
+import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.UserReviewsPresenter;
+import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -30,9 +38,12 @@ public class UserReviewsFragment extends BaseFragment implements UserReviews {
     UserReviewsPresenter reviewsPresenter;
 
     private CircleImageView civAvatar;
-    private TextureView tvName;
-    private TextureView tvCountReviews;
+    private TextView tvName;
+    private TextView tvCountReviews;
+
     private RecyclerView rvReviews;
+    private MyReviewAdapter reviewAdapter;
+    private List<Review> reviews = new ArrayList<>();
 
     public UserReviewsFragment() {
         // Required empty public constructor
@@ -54,12 +65,24 @@ public class UserReviewsFragment extends BaseFragment implements UserReviews {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_user_reviews, container, false);
         setupUI();
-        setupRecycler();
+        setupRecycler(reviews);
         reviewsPresenter.downloadPhoto(getArguments().getString(USER_ID));
         return rootView;
     }
 
-    private void setupRecycler() {
+    private void setupRecycler(final List<Review> reviews) {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        reviewAdapter = new MyReviewAdapter(reviews);
+        rvReviews.setLayoutManager(layoutManager);
+        rvReviews.setItemAnimator(new DefaultItemAnimator());
+        rvReviews.setAdapter(reviewAdapter);
+
+        rvReviews.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page) {
+                reviewsPresenter.fetchReviews(getArguments().getString(USER_ID), ++page);
+            }
+        });
 
     }
 
@@ -78,5 +101,25 @@ public class UserReviewsFragment extends BaseFragment implements UserReviews {
                 .crossFade()
                 .error(R.drawable.ic_account_circle_black)
                 .into(civAvatar);
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        reviewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showReviews(List<Review> reviews) {
+        tvCountReviews.setText(String.valueOf(reviews.size()));
+        this.reviews.clear();
+        this.reviews.addAll(reviews);
+        reviewAdapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        reviewsPresenter.removeListeners();
     }
 }
