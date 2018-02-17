@@ -67,6 +67,8 @@ public class UserReviewsFragment extends BaseFragment implements UserReviews {
         setupUI();
         setupRecycler(reviews);
         reviewsPresenter.downloadPhoto(getArguments().getString(USER_ID));
+        reviewsPresenter.fetchReviews(getArguments().getString(USER_ID), 1);
+        reviewsPresenter.getUserName(getArguments().getString(USER_ID));
         return rootView;
     }
 
@@ -115,6 +117,11 @@ public class UserReviewsFragment extends BaseFragment implements UserReviews {
         this.reviews.addAll(reviews);
         reviewAdapter.notifyDataSetChanged();
 
+    }
+
+    @Override
+    public void showName(String name) {
+        tvName.setText(name);
     }
 
     @Override

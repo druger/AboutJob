@@ -5,6 +5,7 @@ import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.view.UserReviews;
 import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.Review;
+import com.druger.aboutwork.model.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +32,7 @@ public class UserReviewsPresenter extends BasePresenter<UserReviews> implements 
     private StorageReference storageRef;
     private DatabaseReference dbReference;
     private ValueEventListener valueEventListener;
+    private ValueEventListener nameEventListener;
 
     private List<Review> reviews;
 
@@ -96,5 +98,35 @@ public class UserReviewsPresenter extends BasePresenter<UserReviews> implements 
         if (valueEventListener != null) {
             dbReference.removeEventListener(valueEventListener);
         }
+        if (nameEventListener != null) {
+            dbReference.removeEventListener(nameEventListener);
+        }
+    }
+
+    public void getUserName(String id) {
+        getName(id);
+    }
+
+    private void getName(String id) {
+        Query queryUser = FirebaseHelper.getUser(dbReference, id);
+        nameEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        User user = snapshot.getValue(User.class);
+                        if (user != null) {
+                            getViewState().showName(user.getName());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        queryUser.addValueEventListener(nameEventListener);
     }
 }

@@ -17,4 +17,6 @@ public interface UserReviews extends MvpView {
     void notifyDataSetChanged();
 
     void showReviews(List<Review> reviews);
+
+    void showName(String name);
 }
