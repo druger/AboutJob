@@ -1,6 +1,7 @@
 package com.druger.aboutwork.fragments;
 
 
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,6 +16,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.bumptech.glide.Glide;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.adapters.MyReviewAdapter;
+import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.UserReviews;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.UserReviewsPresenter;
@@ -79,13 +81,30 @@ public class UserReviewsFragment extends BaseFragment implements UserReviews {
         rvReviews.setItemAnimator(new DefaultItemAnimator());
         rvReviews.setAdapter(reviewAdapter);
 
+        reviewAdapter.setOnClickListener(new OnItemClickListener<Review>() {
+            @Override
+            public void onClick(Review review, int position) {
+                SelectedReviewFragment reviewFragment = SelectedReviewFragment.newInstance(review, false);
+
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.company_container, reviewFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+
+            @Override
+            public boolean onLongClick(int position) {
+                return false;
+            }
+        });
+
+
         rvReviews.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page) {
                 reviewsPresenter.fetchReviews(getArguments().getString(USER_ID), ++page);
             }
         });
-
     }
 
     private void setupUI() {
