@@ -6,6 +6,8 @@
     android:orientation="vertical"
     tools:context="com.druger.aboutwork.fragments.UserReviewsFragment">
 
+    <include layout="@layout/toolbar" />
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/civAvatar"
         android:layout_width="90dp"

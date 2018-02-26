@@ -71,7 +71,14 @@ public class UserReviewsFragment extends BaseFragment implements UserReviews {
         reviewsPresenter.downloadPhoto(getArguments().getString(USER_ID));
         reviewsPresenter.fetchReviews(getArguments().getString(USER_ID), 1);
         reviewsPresenter.getUserName(getArguments().getString(USER_ID));
+        setupToolbar();
         return rootView;
+    }
+
+    private void setupToolbar() {
+        toolbar = bindView(R.id.toolbar);
+        setActionBar(toolbar);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void setupRecycler(final List<Review> reviews) {
@@ -141,6 +148,7 @@ public class UserReviewsFragment extends BaseFragment implements UserReviews {
     @Override
     public void showName(String name) {
         tvName.setText(name);
+        getActionBar().setTitle(name);
     }
 
     @Override
