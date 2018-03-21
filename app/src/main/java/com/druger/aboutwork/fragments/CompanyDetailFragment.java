@@ -150,12 +150,25 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
             }
         });
 
+        reviewAdapter.setUrlClickListener((String site) -> {
+            showWebview(site);
+        });
+
         rvReviews.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page) {
                 companyDetailPresenter.getReviews(companyDetail.getId(), ++page);
             }
         });
+    }
+
+    private void showWebview(String site) {
+        WebviewFragment webviewFragment = WebviewFragment.Companion.getInstance(site);
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.company_container, webviewFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     private void addReview() {

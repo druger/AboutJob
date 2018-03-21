@@ -21,6 +21,7 @@ public final class Const {
         public static final String COMPANY_ID = "companyID";
         public static final String USER_ID = "userId";
         public static final String EMAIL = "email";
+        public static final String SITE_URL = "siteUrl";
     }
 
     public static final class Colors {

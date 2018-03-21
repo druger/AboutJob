@@ -42,6 +42,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     private CompanyDetail companyDetail;
 
     private OnItemClickListener<Review> clickListener;
+    private OnUrlClickListener urlClickListener;
 
     public ReviewAdapter(List<Review> reviews) {
         this.reviews = reviews;
@@ -105,6 +106,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             headerVH.showCountReviews(getItemCount() - 1);
             headerVH.downDropClick();
             headerVH.upDropClick();
+            headerVH.site.setOnClickListener(v -> urlClickListener.urlClick(companyDetail.getSite()));
         }
     }
 
@@ -330,5 +332,13 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             ivDownDrop.setVisibility(View.VISIBLE);
             tvDescription.setVisibility(View.GONE);
         }
+    }
+
+    public void setUrlClickListener(OnUrlClickListener urlClickListener) {
+        this.urlClickListener = urlClickListener;
+    }
+
+    public interface OnUrlClickListener {
+        void urlClick(String site);
     }
 }
