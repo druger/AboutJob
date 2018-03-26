@@ -294,11 +294,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             if (company != null) {
                 tvDescription.setVisibility(View.GONE);
 
-                String iSite = company.getSite();
                 String iDescription = company.getDescription();
-                if (iSite != null) {
-                    site.setText(iSite);
-                }
                 if (iDescription != null) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         tvDescription.setText(Html.fromHtml(iDescription, Html.FROM_HTML_MODE_LEGACY));

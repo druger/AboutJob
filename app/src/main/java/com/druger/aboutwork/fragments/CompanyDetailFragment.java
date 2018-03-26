@@ -29,6 +29,7 @@ import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.CompanyDetailPresenter;
 import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener;
+import com.thefinestartist.finestwebview.FinestWebView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,12 +164,14 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void showWebview(String site) {
-        WebviewFragment webviewFragment = WebviewFragment.Companion.getInstance(site);
-
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.company_container, webviewFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        new FinestWebView.Builder(getActivity())
+                .setCustomAnimations(R.anim.activity_open_enter,
+                        R.anim.activity_open_exit, R.anim.activity_close_enter, R.anim.activity_close_exit)
+                .webViewSupportZoom(true)
+                .webViewBuiltInZoomControls(true)
+                .theme(R.style.WebViewRedTheme)
+                .swipeRefreshColor(ContextCompat.getColor(getActivity(), R.color.primary))
+                .show(site);
     }
 
     private void addReview() {
