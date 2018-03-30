@@ -151,9 +151,7 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
             }
         });
 
-        reviewAdapter.setUrlClickListener((String site) -> {
-            showWebview(site);
-        });
+        reviewAdapter.setUrlClickListener((String site) -> showWebview(site));
 
         rvReviews.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
