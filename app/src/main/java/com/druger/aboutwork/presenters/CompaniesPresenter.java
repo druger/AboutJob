@@ -26,9 +26,6 @@ public class CompaniesPresenter extends BasePresenter<CompaniesView> {
         this.restApi = restApi;
     }
 
-    /**
-     * Get list companies from search on hh.ru
-     */
     public void getCompanies(String query, int page) {
         getViewState().showProgress(true);
         requestGetCompanies(query, page);

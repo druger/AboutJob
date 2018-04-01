@@ -30,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 import static com.druger.aboutwork.Const.Bundles.COMPANY_ID;
+import static com.druger.aboutwork.Const.Bundles.DEBOUNCE_SEARCH;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -105,7 +106,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
         searchView.setQueryHint(getResources().getString(R.string.query_hint));
 
         RxSearch.fromSearchView(searchView)
-                .debounce(300, TimeUnit.MILLISECONDS)
+                .debounce(DEBOUNCE_SEARCH, TimeUnit.MILLISECONDS)
                 .filter(item -> item.length() >= 2)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(newText -> {

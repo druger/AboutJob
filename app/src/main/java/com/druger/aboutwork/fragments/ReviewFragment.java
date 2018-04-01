@@ -8,6 +8,8 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +22,12 @@ import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.interfaces.view.ReviewView;
+import com.druger.aboutwork.model.City;
 import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
@@ -30,6 +35,7 @@ import com.druger.aboutwork.presenters.ReviewPresenter;
 import com.druger.aboutwork.utils.Utils;
 
 import java.util.Calendar;
+import java.util.List;
 
 import static com.druger.aboutwork.Const.Bundles.COMPANY_DETAIL;
 import static com.druger.aboutwork.Const.Bundles.FROM_ACCOUNT;
@@ -53,6 +59,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     private TextInputEditText etPluses;
     private TextInputEditText etMinuses;
     private TextInputEditText etPosition;
+    private TextInputEditText etCity;
 
     private TextInputLayout ltEmploymentDate;
     private TextInputLayout ltDismissalDate;
@@ -93,6 +100,11 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         ReviewFragment fragment = new ReviewFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @ProvidePresenter
+    ReviewPresenter provideReviewPresenter() {
+        return App.getAppComponent().getReviewPresenter();
     }
 
     @Override
@@ -181,6 +193,26 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         etDismissalDate.setOnClickListener(this);
         etInterviewDate.setOnClickListener(this);
         btnEdit.setOnClickListener(this);
+        cityChange();
+    }
+
+    private void cityChange() {
+        etCity.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                reviewPresenter.getCities(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     private void setupUI() {
@@ -189,6 +221,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         etPluses = bindView(R.id.etPluses);
         etMinuses = bindView(R.id.etMinuses);
         etPosition = bindView(R.id.et_position);
+        etCity = bindView(R.id.etCity);
 
         salary = bindView(R.id.ratingbar_salary);
         chief = bindView(R.id.ratingbar_chief);
@@ -327,6 +360,11 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         career.setRating(0F);
         collective.setRating(0F);
         socialPackage.setRating(0F);
+    }
+
+    @Override
+    public void showCities(List<City> cities) {
+
     }
 
     private void setIsIndicator(boolean indicator) {

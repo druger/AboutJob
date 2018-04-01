@@ -13,6 +13,8 @@ public final class Const {
         private Bundles() {
         }
 
+        public static final int DEBOUNCE_SEARCH = 300;
+
         public static final String REVIEW_ID = "reviewId";
         public static final String FROM_ACCOUNT = "fromAccount";
         public static final String REVIEW = "review";
@@ -21,7 +23,6 @@ public final class Const {
         public static final String COMPANY_ID = "companyID";
         public static final String USER_ID = "userId";
         public static final String EMAIL = "email";
-        public static final String SITE_URL = "siteUrl";
     }
 
     public static final class Colors {

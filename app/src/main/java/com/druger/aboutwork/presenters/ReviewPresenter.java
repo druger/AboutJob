@@ -8,24 +8,35 @@ import android.widget.RadioGroup;
 import android.widget.RatingBar;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.view.ReviewView;
+import com.druger.aboutwork.model.CityResponse;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
+import com.druger.aboutwork.rest.RestApi;
+import com.druger.aboutwork.utils.rx.RxUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Calendar;
+
+import javax.inject.Inject;
+
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by druger on 07.05.2017.
  */
 
 @InjectViewState
-public class ReviewPresenter extends MvpPresenter<ReviewView>
-        implements RadioGroup.OnCheckedChangeListener{
+public class ReviewPresenter extends BasePresenter<ReviewView>
+        implements RadioGroup.OnCheckedChangeListener {
+
+    @Inject
+    public ReviewPresenter(RestApi restApi) {
+        this.restApi = restApi;
+    }
 
     private static final int NOT_SELECTED_STATUS = -1;
     private static final int WORKING_STATUS = 0;
@@ -106,7 +117,7 @@ public class ReviewPresenter extends MvpPresenter<ReviewView>
                             @Nullable String companyId, @Nullable String companyName,
                             boolean fromAccount) {
         if (((status == WORKING_STATUS || status == WORKED_STATUS) && mark.getAverageMark() != 0)
-                || (status == INTERVIEW_STATUS  && mark.getAverageMark() == 0)) {
+                || (status == INTERVIEW_STATUS && mark.getAverageMark() == 0)) {
             if (!TextUtils.isEmpty(pluses) && !TextUtils.isEmpty(minuses)) {
                 review.setPluses(pluses);
                 review.setMinuses(minuses);
@@ -126,5 +137,21 @@ public class ReviewPresenter extends MvpPresenter<ReviewView>
         } else {
             getViewState().showErrorAdding();
         }
+    }
+
+    public void getCities(String city) {
+        queryGetCities(city);
+    }
+
+    private void queryGetCities(String city) {
+        Disposable request = restApi.cities.getCities(city)
+                .compose(RxUtils.httpSchedulers())
+                .subscribe(this::successGetCities, this::handleError);
+
+        unSubscribeOnDestroy(request);
+    }
+
+    private void successGetCities(CityResponse cityResponse) {
+        getViewState().showCities(cityResponse.getItems());
     }
 }
