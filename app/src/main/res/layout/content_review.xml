@@ -266,7 +266,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp">
 
-            <android.support.design.widget.TextInputEditText
+            <AutoCompleteTextView
                 android:id="@+id/etCity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -59,7 +61,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     private TextInputEditText etPluses;
     private TextInputEditText etMinuses;
     private TextInputEditText etPosition;
-    private TextInputEditText etCity;
+    private AutoCompleteTextView etCity;
 
     private TextInputLayout ltEmploymentDate;
     private TextInputLayout ltDismissalDate;
@@ -364,7 +366,13 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
 
     @Override
     public void showCities(List<City> cities) {
+        showSuggestions(cities);
+    }
 
+    private void showSuggestions(List<City> cities) {
+        ArrayAdapter<City> cityArrayAdapter = new ArrayAdapter<>(
+                getActivity(), android.R.layout.simple_dropdown_item_1line, cities);
+        etCity.setAdapter(cityArrayAdapter);
     }
 
     private void setIsIndicator(boolean indicator) {
