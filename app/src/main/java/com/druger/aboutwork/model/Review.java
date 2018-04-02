@@ -15,9 +15,9 @@ public class Review implements Parcelable {
     /**
      * Статусы работника
      */
-    public static final int WORKING = 0; // работает
-    public static final int WORKED = 1; // работал
-    public static final int INTERVIEW = 2; // проходил интервью
+    public static final int WORKING = 0;
+    public static final int WORKED = 1;
+    public static final int INTERVIEW = 2;
 
     private String companyId;
     private String userId;

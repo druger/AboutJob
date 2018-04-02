@@ -30,6 +30,7 @@ import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.interfaces.view.ReviewView;
 import com.druger.aboutwork.model.City;
+import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
@@ -305,14 +306,16 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     }
 
     private void checkReview(boolean fromAccount) {
-        String pluses = etPluses.getText().toString().trim();
-        String minuses = etMinuses.getText().toString().trim();
-        String position = etPosition.getText().toString().trim();
-        if (fromAccount) {
-            reviewPresenter.checkReview(pluses, minuses, position, null, null, true);
-        } else {
-            reviewPresenter.checkReview(pluses, minuses, position, companyDetail.getId(), companyDetail.getName(), false);
-        }
+        review = reviewPresenter.getReview();
+
+        review.setPluses(etPluses.getText().toString().trim());
+        review.setMinuses(etMinuses.getText().toString().trim());
+        review.setPosition(etPosition.getText().toString().trim());
+        review.setCity(etCity.getText().toString());
+
+        Company company = new Company(companyDetail.getId(), companyDetail.getName());
+
+        reviewPresenter.checkReview(review, company, fromAccount);
     }
 
     @Override

@@ -1,8 +1,6 @@
 package com.druger.aboutwork.presenters;
 
 import android.support.annotation.IdRes;
-import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
@@ -12,6 +10,7 @@ import com.druger.aboutwork.R;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.view.ReviewView;
 import com.druger.aboutwork.model.CityResponse;
+import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.rest.RestApi;
@@ -113,30 +112,29 @@ public class ReviewPresenter extends BasePresenter<ReviewView>
         return review;
     }
 
-    public void checkReview(String pluses, String minuses, String position,
-                            @Nullable String companyId, @Nullable String companyName,
-                            boolean fromAccount) {
+    // TODO: отрефакторить метод
+    public void checkReview(Review review, Company company, boolean fromAccount) {
         if (((status == WORKING_STATUS || status == WORKED_STATUS) && mark.getAverageMark() != 0)
-                || (status == INTERVIEW_STATUS && mark.getAverageMark() == 0)) {
-            if (!TextUtils.isEmpty(pluses) && !TextUtils.isEmpty(minuses)) {
-                review.setPluses(pluses);
-                review.setMinuses(minuses);
-                review.setStatus(status);
+                || (status == INTERVIEW_STATUS && mark.getAverageMark() == 0) && isCorrectReview(review)) {
 
-                if (!TextUtils.isEmpty(position)) {
-                    review.setPosition(position);
-                }
-                if (fromAccount) {
-                    FirebaseHelper.updateReview(review);
-                } else {
-                    FirebaseHelper.addReview(review);
-                    FirebaseHelper.addCompany(companyId, companyName);
-                    getViewState().successfulAddition();
-                }
+            review.setStatus(status);
+
+            if (fromAccount) {
+                FirebaseHelper.updateReview(review);
+            } else {
+                FirebaseHelper.addReview(review);
+                FirebaseHelper.addCompany(company);
+                getViewState().successfulAddition();
             }
+
         } else {
             getViewState().showErrorAdding();
         }
+    }
+
+    private boolean isCorrectReview(Review review) {
+        return review.getPluses() != null && review.getMinuses() != null
+                && review.getPosition() != null && review.getCity() != null;
     }
 
     public void getCities(String city) {

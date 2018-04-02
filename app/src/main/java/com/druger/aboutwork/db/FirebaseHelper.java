@@ -76,12 +76,11 @@ public class FirebaseHelper {
     }
 
     @SuppressWarnings("unchecked")
-    public static void addCompany(String key, String name) {
-        Company company = new Company(key, name);
+    public static void addCompany(Company company) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         Map<String, Object> map = mapper.convertValue(company, Map.class);
-        FirebaseDatabase.getInstance().getReference().child(COMPANIES).child(key).setValue(map);
+        FirebaseDatabase.getInstance().getReference().child(COMPANIES).child(company.getId()).setValue(map);
     }
 
     public static void removeReview(String id) {

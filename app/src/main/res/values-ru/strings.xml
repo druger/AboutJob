@@ -14,7 +14,7 @@
     <string name="collective">Коллектив</string>
     <string name="comments">Комментарии</string>
     <string name="companies">Компании</string>
-    <string name="company_rating">Рейтинг компании</string>
+    <string name="company_rating">Рейтинг компании*</string>
     <string name="create_account">Создать аккаунт</string>
     <string name="create_account_text">Нет аккаунта? Создать</string>
     <string name="delete">Удалить</string>
@@ -36,7 +36,7 @@
     <string name="log_out">Выход</string>
     <string name="login">Вход</string>
     <string name="login_failed">Ошибка входа</string>
-    <string name="minuses">Минусы</string>
+    <string name="minuses">Минусы*</string>
     <string name="my_reviews">Мои отзывы</string>
     <string name="name">Имя</string>
     <string name="network_error">Ошибка сети</string>
@@ -47,8 +47,8 @@
     <string name="pass_error">меньше 6 символов</string>
     <string name="password">Пароль</string>
     <string name="photo_crop_name">Обрезать фото</string>
-    <string name="pluses">Плюсы</string>
-    <string name="position">Должность</string>
+    <string name="pluses">Плюсы*</string>
+    <string name="position">Должность*</string>
     <string name="profile_deleted">Ваш профиль удален:(</string>
     <string name="query_hint">Поиск компании</string>
     <string name="ratings">Рейтинги</string>
@@ -80,5 +80,5 @@
     <string name="new_name">Новое имя</string>
     <string name="description">Описание</string>
     <string name="company_site">Сайт компании</string>
-    <string name="city">Город</string>
+    <string name="city">Город*</string>
 </resources>

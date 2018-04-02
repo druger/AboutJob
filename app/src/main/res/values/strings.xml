@@ -53,14 +53,14 @@
     <string name="social_package">Social package</string>
     <string name="not_description">Company has not description</string>
 
-    <string name="pluses">Pluses</string>
-    <string name="minuses">Minuses</string>
-    <string name="company_rating">Company rating</string>
+    <string name="pluses">Pluses*</string>
+    <string name="minuses">Minuses*</string>
+    <string name="company_rating">Company rating*</string>
     <string name="status">Status</string>
     <string name="working">Working</string>
     <string name="worked">Worked</string>
     <string name="interview">Interview</string>
-    <string name="position">Position</string>
+    <string name="position">Position*</string>
     <string name="empoyment_date">Employment date</string>
     <string name="dismissal_date">Dismissal date</string>
     <string name="interview_date">Interview date</string>
@@ -96,5 +96,5 @@
     <string name="new_name">New name</string>
     <string name="description">Description</string>
     <string name="company_site">Company\'s site</string>
-    <string name="city">City</string>
+    <string name="city">City*</string>
 </resources>
