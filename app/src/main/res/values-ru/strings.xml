@@ -48,7 +48,8 @@
     <string name="password">Пароль</string>
     <string name="photo_crop_name">Обрезать фото</string>
     <string name="pluses">Плюсы*</string>
-    <string name="position">Должность*</string>
+    <string name="position">Должность</string>
+    <string name="position_">Должность*</string>
     <string name="profile_deleted">Ваш профиль удален:(</string>
     <string name="query_hint">Поиск компании</string>
     <string name="ratings">Рейтинги</string>
@@ -65,7 +66,7 @@
     <string name="signup_failed">Ошибка регистрации</string>
     <string name="social_package">Соц. пакет</string>
     <string name="something_went_wrong">Что-то пошло не так</string>
-    <string name="status">Статус</string>
+    <string name="status">Статус*</string>
     <string name="success_update_pass">Пароль обновлен, войдите с новым паролем</string>
     <string name="title_activity_company_detail">О компании</string>
     <string name="undo">Вернуть</string>

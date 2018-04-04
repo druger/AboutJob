@@ -38,18 +38,52 @@
                 android:hint="@string/minuses" />
         </android.support.design.widget.TextInputLayout>
 
-
         <TextView
+            android:id="@+id/tvStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:textColor="@android:color/black"
-            android:text="@string/company_rating"/>
+            android:text="@string/status"/>
 
-        <RelativeLayout
+        <RadioGroup
+            android:id="@+id/radio_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp">
+
+            <RadioButton
+                android:id="@+id/radio_working"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/working"/>
+
+            <RadioButton
+                android:id="@+id/radio_worked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/worked"/>
+
+            <RadioButton
+                android:id="@+id/radio_interview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/interview"/>
+        </RadioGroup>
+
+        <RelativeLayout
+            android:id="@+id/ltRating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/tvRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:textColor="@android:color/black"
+                android:text="@string/company_rating"/>
 
             <TextView
                 android:id="@+id/tvSalary"
@@ -63,11 +97,11 @@
                 android:id="@+id/ratingbar_salary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/tvRating"
                 style="@style/reviewRating"
                 android:numStars="5"
                 android:stepSize="1"
                 android:isIndicator="false"
-                android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
 
@@ -162,39 +196,6 @@
                 android:layout_alignParentEnd="true" />
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tvStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:textColor="@android:color/black"
-            android:text="@string/status"/>
-
-        <RadioGroup
-            android:id="@+id/radio_group"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
-
-            <RadioButton
-                android:id="@+id/radio_working"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/working"/>
-
-            <RadioButton
-                android:id="@+id/radio_worked"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/worked"/>
-
-            <RadioButton
-                android:id="@+id/radio_interview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/interview"/>
-        </RadioGroup>
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -258,7 +259,7 @@
                 android:id="@+id/et_position"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/position" />
+                android:hint="@string/position_" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout

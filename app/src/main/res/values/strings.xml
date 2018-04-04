@@ -56,11 +56,12 @@
     <string name="pluses">Pluses*</string>
     <string name="minuses">Minuses*</string>
     <string name="company_rating">Company rating*</string>
-    <string name="status">Status</string>
+    <string name="status">Status*</string>
     <string name="working">Working</string>
     <string name="worked">Worked</string>
     <string name="interview">Interview</string>
-    <string name="position">Position*</string>
+    <string name="position">Position</string>
+    <string name="position_">Position*</string>
     <string name="empoyment_date">Employment date</string>
     <string name="dismissal_date">Dismissal date</string>
     <string name="interview_date">Interview date</string>

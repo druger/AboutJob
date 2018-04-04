@@ -1,6 +1,7 @@
 package com.druger.aboutwork.presenters;
 
 import android.support.annotation.IdRes;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
@@ -55,6 +56,7 @@ public class ReviewPresenter extends BasePresenter<ReviewView>
         switch (checkedId) {
             case R.id.radio_working:
                 getViewState().showWorkingDate();
+                getViewState().showRating(true);
 
                 radioButton = group.findViewById(R.id.radio_working);
                 status = group.indexOfChild(radioButton);
@@ -62,6 +64,7 @@ public class ReviewPresenter extends BasePresenter<ReviewView>
                 break;
             case R.id.radio_worked:
                 getViewState().showWorkedDate();
+                getViewState().showRating(true);
 
                 radioButton = group.findViewById(R.id.radio_worked);
                 status = group.indexOfChild(radioButton);
@@ -69,6 +72,7 @@ public class ReviewPresenter extends BasePresenter<ReviewView>
                 break;
             case R.id.radio_interview:
                 getViewState().showInterviewDate();
+                getViewState().showRating(false);
 
                 radioButton = group.findViewById(R.id.radio_interview);
                 status = group.indexOfChild(radioButton);
@@ -114,8 +118,7 @@ public class ReviewPresenter extends BasePresenter<ReviewView>
 
     // TODO: отрефакторить метод
     public void checkReview(Review review, Company company, boolean fromAccount) {
-        if (((status == WORKING_STATUS || status == WORKED_STATUS) && mark.getAverageMark() != 0)
-                || (status == INTERVIEW_STATUS && mark.getAverageMark() == 0) && isCorrectReview(review)) {
+        if (isCorrectStatus() && isCorrectReview(review)) {
 
             review.setStatus(status);
 
@@ -132,9 +135,14 @@ public class ReviewPresenter extends BasePresenter<ReviewView>
         }
     }
 
+    private boolean isCorrectStatus() {
+        return (status == WORKING_STATUS || status == WORKED_STATUS) && mark.getAverageMark() != 0
+                || (status == INTERVIEW_STATUS && mark.getAverageMark() == 0);
+    }
+
     private boolean isCorrectReview(Review review) {
-        return review.getPluses() != null && review.getMinuses() != null
-                && review.getPosition() != null && review.getCity() != null;
+        return !TextUtils.isEmpty(review.getPluses()) && !TextUtils.isEmpty(review.getMinuses())
+                && !TextUtils.isEmpty(review.getPosition()) && !TextUtils.isEmpty(review.getCity());
     }
 
     public void getCities(String city) {

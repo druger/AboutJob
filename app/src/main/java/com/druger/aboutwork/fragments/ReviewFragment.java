@@ -21,6 +21,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -52,6 +53,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     @InjectPresenter
     ReviewPresenter reviewPresenter;
 
+    private RelativeLayout ltRating;
     private RatingBar salary;
     private RatingBar chief;
     private RatingBar workplace;
@@ -221,6 +223,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     private void setupUI() {
         datePicker = new DatePickerFragment();
 
+        ltRating = bindView(R.id.ltRating);
         etPluses = bindView(R.id.etPluses);
         etMinuses = bindView(R.id.etMinuses);
         etPosition = bindView(R.id.et_position);
@@ -245,14 +248,19 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         btnAdd = bindView(R.id.btnAdd);
         btnEdit = bindView(R.id.btnEdit);
 
-        ltEmploymentDate.setVisibility(View.GONE);
-        ltDismissalDate.setVisibility(View.GONE);
-        ltInterviewDate.setVisibility(View.GONE);
+        setViewVisibility();
 
         if (fromAccount) {
             btnAdd.setVisibility(View.GONE);
             btnEdit.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void setViewVisibility() {
+        ltRating.setVisibility(View.GONE);
+        ltEmploymentDate.setVisibility(View.GONE);
+        ltDismissalDate.setVisibility(View.GONE);
+        ltInterviewDate.setVisibility(View.GONE);
     }
 
     @Override
@@ -370,6 +378,15 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     @Override
     public void showCities(List<City> cities) {
         showSuggestions(cities);
+    }
+
+    @Override
+    public void showRating(boolean show) {
+        if (show) {
+            ltRating.setVisibility(View.VISIBLE);
+        } else {
+            ltRating.setVisibility(View.GONE);
+        }
     }
 
     private void showSuggestions(List<City> cities) {

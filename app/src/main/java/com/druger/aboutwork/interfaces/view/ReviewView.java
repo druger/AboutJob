@@ -26,4 +26,6 @@ public interface ReviewView extends MvpView {
     void clearRatingBar();
 
     void showCities(List<City> cities);
+
+    void showRating(boolean show);
 }
