@@ -6,6 +6,10 @@ android {
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
 
+    dataBinding {
+        enabled = true
+    }
+
     defaultConfig {
         applicationId "com.druger.aboutwork"
         minSdkVersion 17
@@ -78,6 +82,7 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     compile 'com.thefinestartist:finestwebview:1.2.7'
+    compile 'com.android.support.constraint:constraint-layout:1.1.0'
 }
 
 
