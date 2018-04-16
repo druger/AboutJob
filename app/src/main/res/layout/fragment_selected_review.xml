@@ -1,12 +1,26 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+<layout xmlns:bind="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="com.druger.aboutwork.utils.Utils" />
+        <variable
+            name="review"
+            type="com.druger.aboutwork.model.Review" />
+        <variable
+            name="markCompany"
+            type="com.druger.aboutwork.model.MarkCompany" />
+    </data>
 
-    <include layout="@layout/toolbar" />
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
-    <include layout="@layout/content_selected_review" />
+        <include layout="@layout/toolbar" />
 
-    <include layout="@layout/bottom_selected_review" />
+        <include layout="@layout/content_selected_review"
+            bind:review="@{review}"/>
 
-</android.support.design.widget.CoordinatorLayout>
+        <include layout="@layout/bottom_selected_review" />
+
+    </android.support.design.widget.CoordinatorLayout>
+</layout>
+

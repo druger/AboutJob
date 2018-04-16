@@ -5,6 +5,9 @@
         <variable
             name="review"
             type="com.druger.aboutwork.model.Review" />
+        <variable
+            name="markCompany"
+            type="com.druger.aboutwork.model.MarkCompany" />
     </data>
 
     <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -36,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/tvUserName"
                 tools:text="Date"
-                android:text="@{Utils.getData(review.date)}"
+                android:text="@{Utils.getDate(review.date)}"
                 android:textColor="@android:color/black" />
 
             <TextView
@@ -87,7 +90,7 @@
                 android:layout_alignBottom="@+id/tvEmploymentDate"
                 android:layout_toEndOf="@+id/tvEmploymentDate"
                 android:textColor="@android:color/black"
-                android:text="@{Utils.getData(review.employmentDate)}"
+                android:text="@{Utils.getDate(review.employmentDate)}"
                 android:visibility="gone" />
 
             <TextView
@@ -107,7 +110,7 @@
                 android:layout_alignBottom="@+id/tvDismissalDate"
                 android:layout_toEndOf="@+id/tvDismissalDate"
                 android:textColor="@android:color/black"
-                android:text="@{Utils.getData(review.dismissalDate)}"
+                android:text="@{Utils.getDate(review.dismissalDate)}"
                 android:visibility="gone" />
 
             <TextView
@@ -127,7 +130,7 @@
                 android:layout_alignBottom="@+id/tvInterviewDate"
                 android:layout_toEndOf="@+id/tvInterviewDate"
                 android:textColor="@android:color/black"
-                android:text="@{Utils.getData(review.interviewDate)}"
+                android:text="@{Utils.getDate(review.interviewDate)}"
                 android:visibility="gone" />
 
             <TextView
@@ -168,7 +171,8 @@
                 android:layout_below="@+id/tvMinuses"
                 android:isIndicator="true"
                 android:numStars="5"
-                android:stepSize="1" />
+                android:stepSize="1"
+                android:rating="@{review.markCompany.salary}"/>
 
             <TextView
                 android:id="@+id/tvChief"
@@ -185,7 +189,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/ratingbar_salary"
                 android:isIndicator="true"
-                android:stepSize="1" />
+                android:stepSize="1"
+                android:rating="@{review.markCompany.chief}"/>
 
             <TextView
                 android:id="@+id/tvWorkplace"
@@ -202,7 +207,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/ratingbar_chief"
                 android:isIndicator="true"
-                android:stepSize="1" />
+                android:stepSize="1"
+                android:rating="@{review.markCompany.workplace}"/>
 
             <TextView
                 android:id="@+id/tvCareer"
@@ -219,7 +225,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/ratingbar_workplace"
                 android:isIndicator="true"
-                android:stepSize="1" />
+                android:stepSize="1"
+                android:rating="@{review.markCompany.career}"/>
 
             <TextView
                 android:id="@+id/tvCollective"
@@ -236,7 +243,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/ratingbar_career"
                 android:isIndicator="true"
-                android:stepSize="1" />
+                android:stepSize="1"
+                android:rating="@{review.markCompany.collective}"/>
 
             <TextView
                 android:id="@+id/tvSocialPackage"
@@ -253,7 +261,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/ratingbar_collective"
                 android:isIndicator="true"
-                android:stepSize="1" />
+                android:stepSize="1"
+                android:rating="@{review.markCompany.socialPackage}"/>
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 </layout>
