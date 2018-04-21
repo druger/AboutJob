@@ -1,5 +1,6 @@
 package com.druger.aboutwork.adapters;
 
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
@@ -14,12 +15,11 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.databinding.ReviewCardBinding;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.model.CompanyDetail;
-import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
-import com.druger.aboutwork.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,6 +44,8 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     private OnItemClickListener<Review> clickListener;
     private OnUrlClickListener urlClickListener;
 
+    private ReviewCardBinding itemBinding;
+
     public ReviewAdapter(List<Review> reviews) {
         this.reviews = reviews;
         deletedReviews = new ArrayList<>();
@@ -61,9 +63,9 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder viewHolder = null;
         if (viewType == TYPE_ITEM) {
-            View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.review_card, parent, false);
-            viewHolder = new ReviewVH(itemView);
+            itemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                    R.layout.review_card, parent, false);
+            viewHolder = new ReviewVH(itemBinding);
         } else if (viewType == TYPE_HEADER) {
             View headerView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.header_reviews, parent, false);
@@ -78,22 +80,11 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
         if (itemType == TYPE_ITEM) {
             ReviewVH reviewVH = (ReviewVH) holder;
             final Review review = reviews.get(position);
-            reviewVH.tvName.setText(review.getName());
-            reviewVH.tvDate.setText(Utils.getDate(review.getDate()));
-            reviewVH.tvCity.setText(review.getCity());
-            reviewVH.tvPluses.setText(review.getPluses());
-            reviewVH.tvMinuses.setText(review.getMinuses());
-            MarkCompany markCompany = review.getMarkCompany();
-            if (markCompany != null) {
-                reviewVH.tvMark.setText(String.valueOf(markCompany.getAverageMark()));
-            }
-            reviewVH.tvLike.setText(String.valueOf(review.getLike()));
-            reviewVH.tvDislike.setText(String.valueOf(review.getDislike()));
+            ((ReviewVH) holder).bind(review);
             reviewVH.cardView.setCardBackgroundColor(isSelected(position)
                     ? ContextCompat.getColor(reviewVH.cardView.getContext(), R.color.red200) : Color.WHITE);
 
             setColorLikeAndDislike(reviewVH, review);
-
             onLikeClick(reviewVH, review);
             onDislikeClick(reviewVH, review);
 
@@ -200,32 +191,23 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     }
 
     static class ReviewVH extends BaseViewHolder {
+        private final ReviewCardBinding binding;
         CardView cardView;
-        TextView tvName;
-        TextView tvDate;
-        TextView tvCity;
-        TextView tvPluses;
-        TextView tvMinuses;
-        TextView tvMark;
         ImageView ivLike;
         ImageView ivDislike;
-        TextView tvLike;
-        TextView tvDislike;
 
-        ReviewVH(View itemView) {
-            super(itemView);
+        ReviewVH(ReviewCardBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
 
             cardView = bindView(R.id.card_view);
-            tvName = bindView(R.id.tvUserName);
-            tvDate = bindView(R.id.tvDate);
-            tvCity = bindView(R.id.tvCity);
-            tvPluses = bindView(R.id.tvPluses);
-            tvMinuses = bindView(R.id.tvMinuses);
-            tvMark = bindView(R.id.tvMark);
             ivLike = bindView(R.id.ivLike);
             ivDislike = bindView(R.id.ivDislike);
-            tvLike =  bindView(R.id.tvLike);
-            tvDislike =  bindView(R.id.tvDislike);
+        }
+
+        void bind(Review review) {
+            binding.setReview(review);
+            binding.executePendingBindings();
         }
     }
 

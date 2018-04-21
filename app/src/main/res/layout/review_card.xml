@@ -2,6 +2,7 @@
 <layout>
     <data>
         <import type="com.druger.aboutwork.utils.Utils" />
+        <import type="com.druger.aboutwork.model.MarkCompany" />
         <variable
             name="review"
             type="com.druger.aboutwork.model.Review" />
@@ -86,7 +87,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvMinuses"
-                android:text="Mark" />
+                tools:text="Mark"
+                android:text="@{String.valueOf(review.markCompany.getAverageMark())}"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -119,7 +121,7 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="10dp"
                     tools:text="0"
-                    android:text="@{review.like}" />
+                    android:text="@{String.valueOf(review.like)}" />
 
                 <ImageView
                     android:id="@+id/ivDislike"
@@ -136,7 +138,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     tools:text="0"
-                    android:text="@{review.dislike}" />
+                    android:text="@{String.valueOf(review.dislike)}" />
             </LinearLayout>
         </RelativeLayout>
     </android.support.v7.widget.CardView>

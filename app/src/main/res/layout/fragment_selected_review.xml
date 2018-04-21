@@ -17,7 +17,8 @@
         <include layout="@layout/toolbar" />
 
         <include layout="@layout/content_selected_review"
-            bind:review="@{review}"/>
+            bind:review="@{review}"
+            bind:markCompany="@{markCompany}"/>
 
         <include layout="@layout/bottom_selected_review" />
 
