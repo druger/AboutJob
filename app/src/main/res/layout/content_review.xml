@@ -1,292 +1,311 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+<layout>
+    <data>
+        <import type="com.druger.aboutwork.utils.Utils" />
+        <variable
+            name="review"
+            type="com.druger.aboutwork.model.Review" />
+        <variable
+            name="markCompany"
+            type="com.druger.aboutwork.model.MarkCompany" />
+    </data>
 
-    <LinearLayout
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="?attr/actionBarSize"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.design.widget.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp">
+            android:padding="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="?attr/actionBarSize"
+            android:orientation="vertical">
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/etPluses"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/pluses" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_marginBottom="5dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/etPluses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/pluses"
+                    android:text="@{review.pluses}"/>
+            </android.support.design.widget.TextInputLayout>
 
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/etMinuses"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/minuses" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_marginBottom="10dp">
 
-        <TextView
-            android:id="@+id/tvStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:textColor="@android:color/black"
-            android:text="@string/status"/>
-
-        <RadioGroup
-            android:id="@+id/radio_group"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
-
-            <RadioButton
-                android:id="@+id/radio_working"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/working"/>
-
-            <RadioButton
-                android:id="@+id/radio_worked"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/worked"/>
-
-            <RadioButton
-                android:id="@+id/radio_interview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/interview"/>
-        </RadioGroup>
-
-        <RelativeLayout
-            android:id="@+id/ltRating"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/etMinuses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/minuses"
+                    android:text="@{review.minuses}"/>
+            </android.support.design.widget.TextInputLayout>
 
             <TextView
-                android:id="@+id/tvRating"
+                android:id="@+id/tvStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:textColor="@android:color/black"
-                android:text="@string/company_rating"/>
+                android:text="@string/status" />
 
-            <TextView
-                android:id="@+id/tvSalary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/ratingbar_salary"
-                android:text="@string/salary"
-                tools:ignore="RelativeOverlap" />
-
-            <RatingBar
-                android:id="@+id/ratingbar_salary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvRating"
-                style="@style/reviewRating"
-                android:numStars="5"
-                android:stepSize="1"
-                android:isIndicator="false"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-
-            <TextView
-                android:id="@+id/tvChief"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/ratingbar_chief"
-                android:text="@string/chief"/>
-
-            <RatingBar
-                android:id="@+id/ratingbar_chief"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/reviewRating"
-                android:stepSize="1"
-                android:isIndicator="false"
-                android:layout_below="@+id/ratingbar_salary"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-
-            <TextView
-                android:id="@+id/tvWorkplace"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/ratingbar_workplace"
-                android:text="@string/workplace"/>
-
-            <RatingBar
-                android:id="@+id/ratingbar_workplace"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/reviewRating"
-                android:stepSize="1"
-                android:isIndicator="false"
-                android:layout_below="@+id/ratingbar_chief"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-
-            <TextView
-                android:id="@+id/tvCareer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/ratingbar_career"
-                android:text="@string/career"/>
-
-            <RatingBar
-                android:id="@+id/ratingbar_career"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/reviewRating"
-                android:stepSize="1"
-                android:isIndicator="false"
-                android:layout_below="@+id/ratingbar_workplace"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-
-            <TextView
-                android:id="@+id/tvCollective"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/ratingbar_collective"
-                android:text="@string/collective"/>
-
-            <RatingBar
-                android:id="@+id/ratingbar_collective"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/reviewRating"
-                android:stepSize="1"
-                android:isIndicator="false"
-                android:layout_below="@+id/ratingbar_career"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-
-            <TextView
-                android:id="@+id/tvSocialPackage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/ratingbar_social_package"
-                android:text="@string/social_package"/>
-
-            <RatingBar
-                android:id="@+id/ratingbar_social_package"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/reviewRating"
-                android:stepSize="1"
-                android:isIndicator="false"
-                android:layout_below="@+id/ratingbar_collective"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/ltEmploymentDate"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/etEmploymentDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:hint="@string/empoyment_date"
-                    android:cursorVisible="false"
-                    android:focusableInTouchMode="false"/>
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/ltDismissalDate"
-                android:layout_width="130dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/etDismissalDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:hint="@string/dismissal_date"
-                    android:cursorVisible="false"
-                    android:focusableInTouchMode="false"/>
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/ltInterviewDate"
-                android:layout_width="130dp"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/etInterviewDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:cursorVisible="false"
-                    android:focusableInTouchMode="false"
-                    android:hint="@string/interview_date"
-                    android:inputType="none" />
-            </android.support.design.widget.TextInputLayout>
-        </RelativeLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/et_position"
+            <RadioGroup
+                android:id="@+id/radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/position_" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_marginBottom="10dp">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
+                <RadioButton
+                    android:id="@+id/radio_working"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/working" />
 
-            <AutoCompleteTextView
-                android:id="@+id/etCity"
+                <RadioButton
+                    android:id="@+id/radio_worked"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/worked" />
+
+                <RadioButton
+                    android:id="@+id/radio_interview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/interview" />
+            </RadioGroup>
+
+            <RelativeLayout
+                android:id="@+id/ltRating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/city" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_marginBottom="10dp">
 
-        <Button
-            android:id="@+id/btnAdd"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="@string/add"
-            android:layout_gravity="center"/>
+                <TextView
+                    android:id="@+id/tvRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="@android:color/black"
+                    android:text="@string/company_rating" />
 
-        <Button
-            android:id="@+id/btnEdit"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="@string/edit"
-            android:layout_gravity="center"
-            android:visibility="gone"/>
-    </LinearLayout>
-</ScrollView>
+                <TextView
+                    android:id="@+id/tvSalary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/ratingbar_salary"
+                    android:text="@string/salary"
+                    tools:ignore="RelativeOverlap" />
+
+                <RatingBar
+                    android:id="@+id/ratingbar_salary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvRating"
+                    style="@style/reviewRating"
+                    android:numStars="5"
+                    android:stepSize="1"
+                    android:isIndicator="false"
+                    android:layout_alignParentEnd="true"
+                    android:rating="@{review.markCompany.salary}"/>
+
+                <TextView
+                    android:id="@+id/tvChief"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/ratingbar_chief"
+                    android:text="@string/chief" />
+
+                <RatingBar
+                    android:id="@+id/ratingbar_chief"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/reviewRating"
+                    android:stepSize="1"
+                    android:isIndicator="false"
+                    android:layout_below="@+id/ratingbar_salary"
+                    android:layout_alignParentEnd="true"
+                    android:rating="@{review.markCompany.chief}"/>
+
+                <TextView
+                    android:id="@+id/tvWorkplace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/ratingbar_workplace"
+                    android:text="@string/workplace" />
+
+                <RatingBar
+                    android:id="@+id/ratingbar_workplace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/reviewRating"
+                    android:stepSize="1"
+                    android:isIndicator="false"
+                    android:layout_below="@+id/ratingbar_chief"
+                    android:layout_alignParentEnd="true"
+                    android:rating="@{review.markCompany.workplace}"/>
+
+                <TextView
+                    android:id="@+id/tvCareer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/ratingbar_career"
+                    android:text="@string/career" />
+
+                <RatingBar
+                    android:id="@+id/ratingbar_career"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/reviewRating"
+                    android:stepSize="1"
+                    android:isIndicator="false"
+                    android:layout_below="@+id/ratingbar_workplace"
+                    android:layout_alignParentEnd="true"
+                    android:rating="@{review.markCompany.career}"/>
+
+                <TextView
+                    android:id="@+id/tvCollective"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/ratingbar_collective"
+                    android:text="@string/collective" />
+
+                <RatingBar
+                    android:id="@+id/ratingbar_collective"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/reviewRating"
+                    android:stepSize="1"
+                    android:isIndicator="false"
+                    android:layout_below="@+id/ratingbar_career"
+                    android:layout_alignParentEnd="true"
+                    android:rating="@{review.markCompany.collective}"/>
+
+                <TextView
+                    android:id="@+id/tvSocialPackage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/ratingbar_social_package"
+                    android:text="@string/social_package" />
+
+                <RatingBar
+                    android:id="@+id/ratingbar_social_package"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/reviewRating"
+                    android:stepSize="1"
+                    android:isIndicator="false"
+                    android:layout_below="@+id/ratingbar_collective"
+                    android:layout_alignParentEnd="true"
+                    android:rating="@{review.markCompany.socialPackage}"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/ltEmploymentDate"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/etEmploymentDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:hint="@string/empoyment_date"
+                        android:cursorVisible="false"
+                        android:focusableInTouchMode="false"
+                        android:text="@{Utils.getDate(review.employmentDate)}"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/ltDismissalDate"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/etDismissalDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:hint="@string/dismissal_date"
+                        android:cursorVisible="false"
+                        android:focusableInTouchMode="false"
+                        android:text="@{Utils.getDate(review.dismissalDate)}"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/ltInterviewDate"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/etInterviewDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:cursorVisible="false"
+                        android:focusableInTouchMode="false"
+                        android:hint="@string/interview_date"
+                        android:inputType="none"
+                        android:text="@{Utils.getDate(review.interviewDate)}"/>
+                </android.support.design.widget.TextInputLayout>
+            </RelativeLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_position"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/position_"
+                    android:text="@{review.position}"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/etCity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/city"
+                    android:text="@{review.city}"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="@string/add"
+                android:layout_gravity="center" />
+
+            <Button
+                android:id="@+id/btnEdit"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="@string/edit"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+        </LinearLayout>
+    </ScrollView>
+</layout>
+

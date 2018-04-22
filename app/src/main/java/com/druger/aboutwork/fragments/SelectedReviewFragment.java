@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.databinding.FragmentSelectedReviewBinding;
+import com.druger.aboutwork.databinding.SelectedReviewNoActionbarBinding;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.Review;
 
@@ -30,7 +31,7 @@ import static com.druger.aboutwork.Const.Colors.RED_500;
 /**
  * A simple {@link Fragment} subclass.
  */
-// TODO добавить MVP
+// TODO добавить MVP, ValueEventListener from Firebase
 public class SelectedReviewFragment extends BaseFragment implements View.OnClickListener {
 
     private TextView tvPosition;
@@ -43,8 +44,6 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
     private TextView mInterviewDate;
     private ImageView ivLike;
     private ImageView ivDislike;
-    private TextView tvLike;
-    private TextView tvDislike;
     private ImageView ivComments;
     private Review review;
     private FloatingActionButton fabEdit;
@@ -52,6 +51,7 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
     private Bundle bundle;
     private boolean fromAccount;
     private FragmentSelectedReviewBinding binding;
+    private SelectedReviewNoActionbarBinding bindingNoBar;
 
     public SelectedReviewFragment() {
         // Required empty public constructor
@@ -75,13 +75,13 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
         setView(inflater, container);
         setUI();
         setUX();
-        setBinding();
         setReview();
         return rootView;
     }
 
     private void getBundles() {
         bundle = getArguments();
+        review = bundle.getParcelable(REVIEW);
         fromAccount = getArguments().getBoolean(FROM_ACCOUNT);
     }
 
@@ -89,12 +89,16 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
         if (!fromAccount) {
             binding = DataBindingUtil
                     .inflate(inflater, R.layout.fragment_selected_review, container, false);
+            binding.setReview(review);
+            binding.setMarkCompany(review.getMarkCompany());
             rootView = binding.getRoot();
             setupToolbar();
         } else {
-            binding = DataBindingUtil
+            bindingNoBar = DataBindingUtil
                     .inflate(inflater, R.layout.selected_review_no_actionbar, container, false);
-            rootView = binding.getRoot();
+            bindingNoBar.setReview(review);
+            bindingNoBar.setMarkCompany(review.getMarkCompany());
+            rootView = bindingNoBar.getRoot();
             ((MainActivity) getActivity()).hideBottomNavigation();
         }
     }
@@ -121,8 +125,6 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
         ivLike = bindView(R.id.ivLike);
         ivDislike = bindView(R.id.ivDislike);
         ivComments = bindView(R.id.ivComments);
-        tvLike = bindView(R.id.tvLike);
-        tvDislike = bindView(R.id.tvDislike);
 
         fabEdit = bindView(R.id.fabEdit);
 
@@ -160,10 +162,6 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
                 tvInterviewDate.setVisibility(View.GONE);
                 mInterviewDate.setVisibility(View.GONE);
             }
-
-            tvLike.setText(String.valueOf(review.getLike()));
-            tvDislike.setText(String.valueOf(review.getDislike()));
-
             ivComments.setColorFilter(Color.parseColor(GRAY_500));
 
             boolean myLike = review.isMyLike();
@@ -181,11 +179,6 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
                 ivDislike.setColorFilter(Color.parseColor(RED_500));
             }
         }
-    }
-
-    private void setBinding() {
-        review = bundle.getParcelable(REVIEW);
-        binding.setReview(review);
     }
 
     @Override
@@ -236,8 +229,6 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
             review.setDislike(--dislike);
             review.setMyDislike(false);
         }
-        tvLike.setText(String.valueOf(review.getLike()));
-        tvDislike.setText(String.valueOf(review.getDislike()));
         FirebaseHelper.dislikeReview(review);
     }
 
@@ -260,8 +251,6 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
             review.setLike(--like);
             review.setMyLike(false);
         }
-        tvLike.setText(String.valueOf(review.getLike()));
-        tvDislike.setText(String.valueOf(review.getDislike()));
         FirebaseHelper.likeReview(review);
     }
 

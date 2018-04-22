@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -29,11 +30,11 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.MainActivity;
+import com.druger.aboutwork.databinding.FragmentReviewNoActionbarBinding;
 import com.druger.aboutwork.interfaces.view.ReviewView;
 import com.druger.aboutwork.model.City;
 import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.CompanyDetail;
-import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.ReviewPresenter;
 import com.druger.aboutwork.utils.Utils;
@@ -83,6 +84,8 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     private Review review;
     private boolean fromAccount;
 
+    private FragmentReviewNoActionbarBinding binding;
+
     public ReviewFragment() {
         // Required empty public constructor
     }
@@ -116,12 +119,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            review = (Review) bundle.get(REVIEW);
-            fromAccount = bundle.getBoolean(FROM_ACCOUNT);
-            companyDetail = (CompanyDetail) bundle.get(COMPANY_DETAIL);
-        }
+        getBundles();
 
         if (!fromAccount) {
             rootView = inflater.inflate(R.layout.fragment_review, container, false);
@@ -130,7 +128,11 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
             reviewPresenter.setCompanyId(companyId);
             setupToolbar();
         } else {
-            rootView = inflater.inflate(R.layout.fragment_review_no_actionbar, container, false);
+            binding = DataBindingUtil
+                    .inflate(inflater, R.layout.fragment_review_no_actionbar, container, false);
+            binding.setReview(review);
+            binding.setMarkCompany(review.getMarkCompany());
+            rootView = binding.getRoot();
             ((MainActivity) getActivity()).hideBottomNavigation();
         }
         setupUI();
@@ -145,6 +147,15 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         return rootView;
     }
 
+    private void getBundles() {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            review = (Review) bundle.get(REVIEW);
+            fromAccount = bundle.getBoolean(FROM_ACCOUNT);
+            companyDetail = (CompanyDetail) bundle.get(COMPANY_DETAIL);
+        }
+    }
+
     private void checkSelectedStatus() {
         if (radioGroup.getCheckedRadioButtonId() == -1) {
             setIsIndicator(true);
@@ -152,21 +163,6 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     }
 
     private void fillData() {
-        etPluses.setText(review.getPluses());
-        etMinuses.setText(review.getMinuses());
-        etPosition.setText(review.getPosition());
-        etEmploymentDate.setText(Utils.getDate(review.getEmploymentDate()));
-        etDismissalDate.setText(Utils.getDate(review.getDismissalDate()));
-        etInterviewDate.setText(Utils.getDate(review.getInterviewDate()));
-
-        MarkCompany markCompany = review.getMarkCompany();
-        salary.setRating(markCompany.getSalary());
-        chief.setRating(markCompany.getChief());
-        workplace.setRating(markCompany.getWorkplace());
-        career.setRating(markCompany.getCareer());
-        collective.setRating(markCompany.getCollective());
-        socialPackage.setRating(markCompany.getSocialPackage());
-
         switch (review.getStatus()) {
             case 0:
                 radioGroup.check(R.id.radio_working);

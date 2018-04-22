@@ -1,10 +1,24 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical"
-    android:layout_marginTop="?attr/actionBarSize">
+<layout xmlns:bind="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="review"
+            type="com.druger.aboutwork.model.Review" />
+        <variable
+            name="markCompany"
+            type="com.druger.aboutwork.model.MarkCompany" />
+    </data>
 
-    <include layout="@layout/content_review" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        android:layout_marginTop="?attr/actionBarSize">
 
-</LinearLayout>
+        <include
+            layout="@layout/content_review"
+            bind:review="@{review}"
+            bind:markCompany="@{markCompany}" />
+
+    </LinearLayout>
+</layout>

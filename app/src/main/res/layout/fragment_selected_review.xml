@@ -20,7 +20,8 @@
             bind:review="@{review}"
             bind:markCompany="@{markCompany}"/>
 
-        <include layout="@layout/bottom_selected_review" />
+        <include layout="@layout/bottom_selected_review"
+            bind:review="@{review}"/>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>
