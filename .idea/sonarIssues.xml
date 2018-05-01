@@ -483,6 +483,86 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../StepikApp/app/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../StepikApp/app/src/main/AndroidManifest.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../StepikApp/app/src/main/java/org/stepik/stepikapp/App.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../StepikApp/app/src/main/java/org/stepik/stepikapp/db/RealmHelper.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../StepikApp/app/src/main/java/org/stepik/stepikapp/di/components/AppComponent.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../StepikApp/app/src/main/java/org/stepik/stepikapp/di/module/NetworkModule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../StepikApp/app/src/main/java/org/stepik/stepikapp/di/module/NeworkModule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../StepikApp/app/src/main/java/org/stepik/stepikapp/presentation/presenter/MainPresenter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../StepikApp/app/src/main/java/org/stepik/stepikapp/presentation/view/MainView.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../StepikApp/app/src/main/java/org/stepik/stepikapp/rest/RestApi.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../StepikApp/app/src/main/java/org/stepik/stepikapp/ui/activity/MainActivity.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../StepikApp/app/src/main/java/org/stepik/stepikapp/ui/fragment/CoursesFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../StepikApp/app/src/main/java/org/stepik/stepikapp/util/EndlessRecyclerViewScrollListener.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../StepikApp/app/src/main/res/layout/activity_main.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../StepikApp/app/src/main/res/layout/fragment_courses.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../StepikApp/app/src/main/res/layout/fragment_favorite.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
       </map>
     </option>
   </component>
