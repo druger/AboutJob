@@ -168,7 +168,7 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
                 .webViewSupportZoom(true)
                 .webViewBuiltInZoomControls(true)
                 .theme(R.style.WebViewRedTheme)
-                .swipeRefreshColor(ContextCompat.getColor(getActivity(), R.color.primary))
+                .swipeRefreshColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary))
                 .show(site);
     }
 

@@ -51,4 +51,15 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
     }
 
     public abstract void onLoadMore(int page);
+
+    private void resetPageCount(int page) {
+        previousTotalItemCount = 0;
+        loading = true;
+        currentPage = page;
+        onLoadMore(currentPage);
+    }
+
+    public void resetPageCount() {
+        resetPageCount(0);
+    }
 }

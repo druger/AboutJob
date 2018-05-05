@@ -92,9 +92,9 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
         dialog.show();
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                .setTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
+                .setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-                .setTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
+                .setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
 
     }
 

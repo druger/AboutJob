@@ -21,8 +21,8 @@ import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.CompaniesView;
 import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.presenters.CompaniesPresenter;
+import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener;
 import com.druger.aboutwork.utils.rx.RxSearch;
-import com.mikepenz.fastadapter_extensions.scroll.EndlessRecyclerOnScrollListener;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -42,7 +42,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
 
     private CompanyAdapter adapter;
     private RecyclerView recyclerView;
-    private EndlessRecyclerOnScrollListener scrollListener;
+    private EndlessRecyclerViewScrollListener scrollListener;
     private LinearLayoutManager layoutManager;
 
     private SearchView searchView;
@@ -81,7 +81,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
     }
 
     private void setupListeners() {
-        scrollListener = new EndlessRecyclerOnScrollListener(layoutManager) {
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int currentPage) {
                 companiesPresenter.getCompanies(query, currentPage);
