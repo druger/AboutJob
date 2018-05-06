@@ -1,7 +1,7 @@
 package com.druger.aboutwork.rest.endpoints;
 
 import com.druger.aboutwork.model.CompanyDetail;
-import com.druger.aboutwork.model.CompanyResponse;
+import com.druger.aboutwork.rest.models.CompanyResponse;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;

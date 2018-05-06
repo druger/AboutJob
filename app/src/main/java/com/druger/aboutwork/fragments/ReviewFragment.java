@@ -36,6 +36,7 @@ import com.druger.aboutwork.model.City;
 import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.Review;
+import com.druger.aboutwork.model.Vacancy;
 import com.druger.aboutwork.presenters.ReviewPresenter;
 import com.druger.aboutwork.utils.Utils;
 
@@ -64,7 +65,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
 
     private TextInputEditText etPluses;
     private TextInputEditText etMinuses;
-    private TextInputEditText etPosition;
+    private AutoCompleteTextView etPosition;
     private AutoCompleteTextView etCity;
 
     private TextInputLayout ltEmploymentDate;
@@ -194,10 +195,31 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         etDismissalDate.setOnClickListener(this);
         etInterviewDate.setOnClickListener(this);
         btnEdit.setOnClickListener(this);
-        cityChange();
+        cityChanges();
+        positionChanges();
     }
 
-    private void cityChange() {
+    private void positionChanges() {
+        etPosition.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                reviewPresenter.getVacancies(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+    }
+
+    private void cityChanges() {
         etCity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -373,7 +395,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
 
     @Override
     public void showCities(List<City> cities) {
-        showSuggestions(cities);
+        showSuggestions(cities, etCity);
     }
 
     @Override
@@ -385,10 +407,15 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         }
     }
 
-    private void showSuggestions(List<City> cities) {
-        ArrayAdapter<City> cityArrayAdapter = new ArrayAdapter<>(
-                getActivity(), android.R.layout.simple_dropdown_item_1line, cities);
-        etCity.setAdapter(cityArrayAdapter);
+    @Override
+    public void showVacancies(List<Vacancy> vacancies) {
+        showSuggestions(vacancies, etPosition);
+    }
+
+    private void showSuggestions(List<?> items, AutoCompleteTextView view) {
+        ArrayAdapter<?> arrayAdapter = new ArrayAdapter<>(
+                getActivity(), android.R.layout.simple_dropdown_item_1line, items);
+        view.setAdapter(arrayAdapter);
     }
 
     private void setIsIndicator(boolean indicator) {

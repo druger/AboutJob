@@ -4,8 +4,8 @@ import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.druger.aboutwork.interfaces.view.CompaniesView;
-import com.druger.aboutwork.model.CompanyResponse;
 import com.druger.aboutwork.rest.RestApi;
+import com.druger.aboutwork.rest.models.CompanyResponse;
 import com.druger.aboutwork.utils.rx.RxUtils;
 
 import java.util.List;

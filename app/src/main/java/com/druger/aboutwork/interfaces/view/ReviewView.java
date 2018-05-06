@@ -2,6 +2,7 @@ package com.druger.aboutwork.interfaces.view;
 
 import com.arellomobile.mvp.MvpView;
 import com.druger.aboutwork.model.City;
+import com.druger.aboutwork.model.Vacancy;
 
 import java.util.List;
 
@@ -28,4 +29,6 @@ public interface ReviewView extends MvpView {
     void showCities(List<City> cities);
 
     void showRating(boolean show);
+
+    void showVacancies(List<Vacancy> vacancies);
 }

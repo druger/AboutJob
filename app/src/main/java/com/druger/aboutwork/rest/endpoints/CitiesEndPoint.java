@@ -1,6 +1,6 @@
 package com.druger.aboutwork.rest.endpoints;
 
-import com.druger.aboutwork.model.CityResponse;
+import com.druger.aboutwork.rest.models.CityResponse;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;

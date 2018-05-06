@@ -1,4 +1,6 @@
-package com.druger.aboutwork.model;
+package com.druger.aboutwork.rest.models;
+
+import com.druger.aboutwork.model.City;
 
 import java.util.List;
 

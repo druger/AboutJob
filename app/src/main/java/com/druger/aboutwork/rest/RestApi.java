@@ -2,6 +2,7 @@ package com.druger.aboutwork.rest;
 
 import com.druger.aboutwork.rest.endpoints.CitiesEndPoint;
 import com.druger.aboutwork.rest.endpoints.CompanyEndPoint;
+import com.druger.aboutwork.rest.endpoints.VacancyEndpoint;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,6 +20,7 @@ public class RestApi {
 
     public final CompanyEndPoint company;
     public final CitiesEndPoint cities;
+    public final VacancyEndpoint vacancies;
 
     public RestApi() {
         OkHttpClient client = new OkHttpClient.Builder()
@@ -36,5 +38,6 @@ public class RestApi {
 
         company = retrofit.create(CompanyEndPoint.class);
         cities = retrofit.create(CitiesEndPoint.class);
+        vacancies = retrofit.create(VacancyEndpoint.class);
     }
 }

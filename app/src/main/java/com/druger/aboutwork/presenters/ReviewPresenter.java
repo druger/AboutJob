@@ -10,11 +10,12 @@ import com.arellomobile.mvp.InjectViewState;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.view.ReviewView;
-import com.druger.aboutwork.model.CityResponse;
 import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.rest.RestApi;
+import com.druger.aboutwork.rest.models.CityResponse;
+import com.druger.aboutwork.rest.models.VacancyResponse;
 import com.druger.aboutwork.utils.rx.RxUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -84,6 +85,7 @@ public class ReviewPresenter extends BasePresenter<ReviewView>
         }
     }
 
+    // TODO сократить кол-во параметров
     public void setCompanyRating(RatingBar salary, RatingBar chief, RatingBar workplace,
                                  RatingBar career, RatingBar collective, RatingBar socialPackage,
                                  Review review, boolean fromAccount) {
@@ -105,7 +107,9 @@ public class ReviewPresenter extends BasePresenter<ReviewView>
         collective.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> mark.setCollective(rating));
         socialPackage.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> mark.setSocialPackage(rating));
 
-        this.review.setMarkCompany(mark);
+        if (this.review != null) {
+            this.review.setMarkCompany(mark);
+        }
     }
 
     public void setCompanyId(String companyId) {
@@ -159,5 +163,17 @@ public class ReviewPresenter extends BasePresenter<ReviewView>
 
     private void successGetCities(CityResponse cityResponse) {
         getViewState().showCities(cityResponse.getItems());
+    }
+
+    public void getVacancies(String vacancy) {
+        Disposable request = restApi.vacancies.getVacancies(vacancy)
+                .compose(RxUtils.httpSchedulers())
+                .subscribe(this::successGetVacancies, this::handleError);
+
+        unSubscribeOnDestroy(request);
+    }
+
+    private void successGetVacancies(VacancyResponse vacancyResponse) {
+        getViewState().showVacancies(vacancyResponse.getItems());
     }
 }
