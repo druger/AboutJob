@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#F44336</color>
-    <color name="colorPrimaryDark">#D32F2F</color>
-    <color name="colorAccent">#F44336</color>
+    <color name="colorPrimary">#47379F</color>
+    <color name="colorPrimaryDark">#402C97</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="endAuthBg">#3F2B96</color>
+    <color name="startAuthBg">#A8C0FF</color>
 
     <color name="red900">#B71C1C</color>
     <color name="red200">#EF9A9A</color>
