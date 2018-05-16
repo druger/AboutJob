@@ -33,6 +33,7 @@
     <string name="forgot_password_msg">Введите ваш Email, чтобы отправить вам инструкции по сбросу пароля</string>
     <string name="interview">Интервью</string>
     <string name="interview_date">Дата интервю</string>
+    <string name="email_phone">Email / телефон</string>
     <string name="log_out">Выход</string>
     <string name="login">Вход</string>
     <string name="login_failed">Ошибка входа</string>
