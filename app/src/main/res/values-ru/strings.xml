@@ -16,6 +16,7 @@
     <string name="companies">Компании</string>
     <string name="company_rating">Рейтинг компании*</string>
     <string name="signup">Зарегестрироваться</string>
+    <string name="signup_u"><u>Зарегестрироваться</u></string>
     <string name="create_account_text">Нет аккаунта? Создать</string>
     <string name="delete">Удалить</string>
     <string name="dismissal_date">Дата уволнения</string>
