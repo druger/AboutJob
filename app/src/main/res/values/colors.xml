@@ -12,9 +12,7 @@
     <color name="red200">#EF9A9A</color>
     <color name="grey300">#E0E0E0</color>
 
-    <color name="tab1">#FF9800</color>
-    <color name="tab2">#009688</color>
-    <color name="tab3">#F63D2B</color>
+    <color name="bottom_navigation">@color/colorPrimary</color>
 
     <color name="grey500">#9E9E9E</color>
     <color name="color_separate_line">@color/grey500</color>

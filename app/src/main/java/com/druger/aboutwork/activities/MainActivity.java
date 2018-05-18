@@ -76,21 +76,18 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @Override
     public void showCompanies() {
-        bottomNavigation.setItemBackgroundResource(R.color.tab1);
         fragment = new CompaniesFragment();
         replaceFragment(fragment);
     }
 
     @Override
     public void showRatings() {
-        bottomNavigation.setItemBackgroundResource(R.color.tab2);
         fragment = new RatingsFragment();
         replaceFragment(fragment);
     }
 
     @Override
     public void showAccount() {
-        bottomNavigation.setItemBackgroundResource(R.color.tab3);
         fragment = new AccountFragment();
         replaceFragment(fragment);
     }

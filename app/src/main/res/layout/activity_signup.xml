@@ -57,7 +57,8 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
-            android:text="@string/signup"/>
+            android:text="@string/signup"
+            android:textColor="@color/colorPrimary"/>
 
         <TextView android:id="@+id/tvLogin"
             android:layout_width="match_parent"
