@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">О Работе</string>
-    <string name="account">Я</string>
+    <string name="profile">Профиль</string>
     <string name="add">Добавить</string>
     <string name="already_member">Есть аккаунт? Войти</string>
     <string name="back"><![CDATA[<< Назад]]></string>
@@ -13,7 +13,7 @@
     <string name="chief">Начальство</string>
     <string name="collective">Коллектив</string>
     <string name="comments">Комментарии</string>
-    <string name="companies">Компании</string>
+    <string name="search">Поиск</string>
     <string name="company_rating">Рейтинг компании*</string>
     <string name="signup">Зарегестрироваться</string>
     <string name="signup_u"><u>Зарегестрироваться</u></string>

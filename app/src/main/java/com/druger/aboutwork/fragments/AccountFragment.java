@@ -82,7 +82,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     private void setupToolbar() {
         toolbar = bindView(R.id.toolbar);
         setActionBar(toolbar);
-        getActionBar().setTitle(R.string.account);
+        getActionBar().setTitle(R.string.profile);
     }
 
     private void setupUI() {

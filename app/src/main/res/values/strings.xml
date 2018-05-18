@@ -13,9 +13,9 @@
     <string name="error_name">at least 3 characters</string>
     <string name="signup_failed">Signup failed</string>
     <string name="forgot_password">Forgot?</string>
-    <string name="companies">Companies</string>
+    <string name="search">Search</string>
     <string name="ratings">Ratings</string>
-    <string name="account">Me</string>
+    <string name="profile">Profile</string>
     <string name="log_out">Log out</string>
     <string name="name">Name</string>
     <string name="my_reviews">My reviews</string>
