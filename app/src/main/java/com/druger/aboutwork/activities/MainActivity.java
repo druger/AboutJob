@@ -36,10 +36,14 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         setContentView(R.layout.activity_main);
         setupToolbar();
 
-        mainPresenter.checkAuthUser();
+        checkAuthUser();
         setupUI();
         setupUX();
         setupHidingBottomNavigation();
+    }
+
+    private void checkAuthUser() {
+        mainPresenter.checkAuthUser();
     }
 
     private void setupHidingBottomNavigation() {
@@ -59,6 +63,15 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        initRefWatcher();
+        removeAuthListener();
+    }
+
+    private void removeAuthListener() {
+        mainPresenter.removeAuthListener();
+    }
+
+    private void initRefWatcher() {
         RefWatcher refWatcher = App.getRefWatcher(this);
         refWatcher.watch(this);
     }

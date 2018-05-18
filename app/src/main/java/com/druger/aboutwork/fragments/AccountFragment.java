@@ -96,12 +96,6 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        accountPresenter.addAuthListener();
-    }
-
-    @Override
     public void onStop() {
         super.onStop();
         accountPresenter.removeListeners();

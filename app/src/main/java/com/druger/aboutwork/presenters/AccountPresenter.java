@@ -37,8 +37,6 @@ import static android.app.Activity.RESULT_OK;
 public class AccountPresenter extends MvpPresenter<AccountView> {
     private static final String TAG = AccountPresenter.class.getSimpleName();
 
-    private FirebaseAuth auth;
-    private FirebaseAuth.AuthStateListener authListener;
     private FirebaseUser user;
     private FirebaseStorage storage;
     private StorageReference storageRef;
@@ -55,21 +53,15 @@ public class AccountPresenter extends MvpPresenter<AccountView> {
     }
 
     public void getUserInfo() {
-        auth = FirebaseAuth.getInstance();
         dbReference = FirebaseDatabase.getInstance().getReference();
 
-        authListener = firebaseAuth -> {
-            user = firebaseAuth.getCurrentUser();
-            if (user != null) {
-                Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                getViewState().showEmail(user.getEmail());
-                downloadPhoto();
-                getName();
-            } else {
-                Log.d(TAG, "onAuthStateChanged:signed_out");
-                getViewState().showLoginActivity();
-            }
-        };
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+            getViewState().showEmail(user.getEmail());
+            downloadPhoto();
+            getName();
+        }
     }
 
     private void getName() {
@@ -98,11 +90,7 @@ public class AccountPresenter extends MvpPresenter<AccountView> {
     }
 
     public void logout() {
-        auth.signOut();
-    }
-
-    public void addAuthListener() {
-        auth.addAuthStateListener(authListener);
+        FirebaseAuth.getInstance().signOut();
     }
 
     public void clickOpenSettings() {
@@ -132,7 +120,7 @@ public class AccountPresenter extends MvpPresenter<AccountView> {
         if (resultCode == RESULT_OK) {
             selectedImgUri = result.getUri();
             savePhoto();
-        }  else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+        } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
             Log.e(TAG, "Cropping failed: " + result.getError().getMessage());
         }
     }
@@ -165,9 +153,6 @@ public class AccountPresenter extends MvpPresenter<AccountView> {
     }
 
     public void removeListeners() {
-        if (authListener != null) {
-            auth.removeAuthStateListener(authListener);
-        }
         if (valueEventListener != null) {
             dbReference.removeEventListener(valueEventListener);
         }
