@@ -12,8 +12,14 @@
     <color name="red200">#EF9A9A</color>
     <color name="grey300">#E0E0E0</color>
 
-    <color name="bottom_navigation">@color/colorPrimary</color>
+    <color name="bottom_navigation">#7953D2</color>
 
     <color name="grey500">#9E9E9E</color>
     <color name="color_separate_line">@color/grey500</color>
+    <color name="hint_auth">#61FFFFFF</color>
+    <color name="hint_forgot">#8FFFFFFF</color>
+    <color name="text_edittext">#DEFFFFFF</color>
+    <color name="text_btn_auth">@color/endAuthBg</color>
+    <color name="text_btn_auth_disabled">#803F2B96</color>
+    <color name="control_normal_auth">#1FFFFFFF</color>
 </resources>

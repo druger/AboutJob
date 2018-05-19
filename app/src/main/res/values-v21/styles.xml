@@ -23,12 +23,12 @@
 
         <item name="android:windowBackground">@color/colorPrimary</item>
 
-        <item name="android:colorControlNormal">@color/grey300</item>
-        <item name="android:colorControlActivated">@android:color/white</item>
-        <item name="android:colorControlHighlight">@android:color/white</item>
-        <item name="android:textColorHint">@color/grey300</item>
+        <item name="android:colorControlNormal">@color/control_normal_auth</item>
+        <item name="android:colorControlActivated">@color/startAuthBg</item>
+        <item name="android:colorControlHighlight">@color/startAuthBg</item>
+        <item name="android:textColorHint">@color/hint_auth</item>
 
         <item name="colorButtonNormal">@drawable/auth_btn_state</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/text_edittext</item>
     </style>
 </resources>

@@ -398,6 +398,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/drawable/auth_btn_text_color.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/drawable/ic_delete_red.xml">
           <value>
             <set />
@@ -509,6 +514,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/layout/separate_line.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/menu/bottom_menu.xml">
           <value>
             <set />
           </value>

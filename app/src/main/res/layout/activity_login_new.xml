@@ -32,28 +32,27 @@
 
     <EditText
         android:id="@+id/etEmail"
-        android:layout_width="336dp"
+        android:layout_width="300dp"
         android:layout_height="55dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="48dp"
         android:hint="@string/email_phone"
-        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <Button
         android:id="@+id/btnLogin"
-        android:layout_width="332dp"
-        android:layout_height="58dp"
+        android:layout_width="300dp"
+        android:layout_height="65dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
+        android:enabled="false"
         android:gravity="center"
         android:text="@string/login"
-        android:textColor="@color/colorPrimary"
-        android:enabled="false"
+        android:textColor="@drawable/auth_btn_text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etPassword" />
@@ -73,36 +72,34 @@
 
     <EditText
         android:id="@+id/etPassword"
-        android:layout_width="336dp"
+        android:layout_width="300dp"
         android:layout_height="55dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:paddingEnd="81dp"
-        android:inputType="textPassword"
         android:hint="@string/password"
-        android:textColor="@android:color/white"
-        tools:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        android:inputType="textPassword"
+        android:paddingEnd="80dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/etEmail"
+        tools:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" />
 
     <EditText
         android:id="@+id/etForgot"
         android:layout_width="81dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginTop="20dp"
         android:background="@android:color/transparent"
-        android:gravity="end"
-        android:inputType="none"
-        android:hint="@string/forgot_password"
-        android:textColor="@android:color/white"
-        android:focusableInTouchMode="false"
         android:cursorVisible="false"
+        android:focusableInTouchMode="false"
+        android:gravity="end"
+        android:hint="@string/forgot_password"
+        android:inputType="none"
+        android:textColorHint="@color/hint_forgot"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etEmail">
-    </EditText>
+        app:layout_constraintTop_toBottomOf="@+id/etEmail" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
