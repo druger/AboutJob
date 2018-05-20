@@ -116,18 +116,6 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        settingPresenter.addAuthStateListener();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        settingPresenter.removeAuthStateListener();
-    }
-
-    @Override
     public void showLoginActivity() {
         startActivity(new Intent(getActivity(), LoginActivity.class));
     }

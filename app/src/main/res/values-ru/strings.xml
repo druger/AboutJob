@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">О Работе</string>
-    <string name="account">Я</string>
+    <string name="profile">Профиль</string>
     <string name="add">Добавить</string>
     <string name="already_member">Есть аккаунт? Войти</string>
     <string name="back"><![CDATA[<< Назад]]></string>
@@ -13,9 +13,10 @@
     <string name="chief">Начальство</string>
     <string name="collective">Коллектив</string>
     <string name="comments">Комментарии</string>
-    <string name="companies">Компании</string>
+    <string name="search">Поиск</string>
     <string name="company_rating">Рейтинг компании*</string>
-    <string name="create_account">Создать аккаунт</string>
+    <string name="signup">Зарегестрироваться</string>
+    <string name="signup_u"><u>Зарегестрироваться</u></string>
     <string name="create_account_text">Нет аккаунта? Создать</string>
     <string name="delete">Удалить</string>
     <string name="dismissal_date">Дата уволнения</string>
@@ -29,10 +30,11 @@
     <string name="failed_reset_pass">Ошибка сброса пароля</string>
     <string name="failed_update_email">Ошибка обновления почты</string>
     <string name="failed_update_pass">Ошибка обновления пароля</string>
-    <string name="forgot_password">Забыли пароль?</string>
+    <string name="forgot_password">Забыли?</string>
     <string name="forgot_password_msg">Введите ваш Email, чтобы отправить вам инструкции по сбросу пароля</string>
     <string name="interview">Интервью</string>
     <string name="interview_date">Дата интервю</string>
+    <string name="email_phone">Email / телефон</string>
     <string name="log_out">Выход</string>
     <string name="login">Вход</string>
     <string name="login_failed">Ошибка входа</string>

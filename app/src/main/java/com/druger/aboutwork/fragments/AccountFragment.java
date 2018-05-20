@@ -82,7 +82,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     private void setupToolbar() {
         toolbar = bindView(R.id.toolbar);
         setActionBar(toolbar);
-        getActionBar().setTitle(R.string.account);
+        getActionBar().setTitle(R.string.profile);
     }
 
     private void setupUI() {
@@ -93,12 +93,6 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         tvLogout = bindView(R.id.tvLogout);
         civAvatar = bindView(R.id.civAvatar);
         tvEmail = bindView(R.id.tvEmail);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        accountPresenter.addAuthListener();
     }
 
     @Override

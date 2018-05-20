@@ -19,6 +19,9 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainPresenter extends MvpPresenter<MainView>
         implements BottomNavigationView.OnNavigationItemSelectedListener {
 
+    private FirebaseAuth auth;
+    private FirebaseAuth.AuthStateListener authListener;
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -38,15 +41,21 @@ public class MainPresenter extends MvpPresenter<MainView>
     }
 
     public void checkAuthUser() {
-        FirebaseAuth.getInstance();
-        new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null) {
-                    getViewState().showLoginActivity();
-                }
+        auth = FirebaseAuth.getInstance();
+        initAuthListener();
+        auth.addAuthStateListener(authListener);
+    }
+
+    private void initAuthListener() {
+        authListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user == null) {
+                getViewState().showLoginActivity();
             }
         };
+    }
+
+    public void removeAuthListener() {
+        auth.removeAuthStateListener(authListener);
     }
 }

@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#F44336</color>
-    <color name="colorPrimaryDark">#D32F2F</color>
-    <color name="colorAccent">#F44336</color>
+    <color name="colorPrimary">#47379F</color>
+    <color name="colorPrimaryDark">#402C97</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="endAuthBg">#3F2B96</color>
+    <color name="startAuthBg">#A8C0FF</color>
+    <color name="btnDisabled">#CCFFFFFF</color>
 
     <color name="red900">#B71C1C</color>
     <color name="red200">#EF9A9A</color>
     <color name="grey300">#E0E0E0</color>
 
-    <color name="tab1">#FF9800</color>
-    <color name="tab2">#009688</color>
-    <color name="tab3">#F63D2B</color>
+    <color name="bottom_navigation">#7953D2</color>
 
     <color name="grey500">#9E9E9E</color>
     <color name="color_separate_line">@color/grey500</color>
+    <color name="hint_auth">#61FFFFFF</color>
+    <color name="hint_forgot">#8FFFFFFF</color>
+    <color name="text_edittext">#DEFFFFFF</color>
+    <color name="text_btn_auth">@color/endAuthBg</color>
+    <color name="text_btn_auth_disabled">#803F2B96</color>
+    <color name="control_normal_auth">#1FFFFFFF</color>
 </resources>

@@ -2,7 +2,9 @@ package com.druger.aboutwork.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -30,17 +32,61 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
     private Button btnLogin;
     private ProgressBar progressBar;
     private TextView tvSignup;
-    private TextView tvResetPassword;
+    private EditText etForgot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         loginPresenter.setAuth(this);
-
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login_new);
         setupUI();
         setupUX();
+        setTextWatcher();
+    }
+
+    private void setTextWatcher() {
+        etEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkCorrectFields();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        etPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkCorrectFields();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
+    private void checkCorrectFields() {
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+
+        if (validate(email, password)) {
+            btnLogin.setEnabled(true);
+        } else {
+            btnLogin.setEnabled(false);
+        }
     }
 
     private void setupUX() {
@@ -60,16 +106,17 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
             startActivityForResult(intent, REQUEST_SIGNUP);
         });
 
-        tvResetPassword.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class)));
+        etForgot.setOnClickListener(v ->
+                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class)));
     }
 
     private void setupUI() {
-        etEmail = (EditText) findViewById(R.id.etEmail);
-        etPassword = (EditText) findViewById(R.id.etPassword);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        tvSignup = (TextView) findViewById(R.id.tvSignup);
-        tvResetPassword = (TextView) findViewById(R.id.tvResetPassword);
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        etEmail = findViewById(R.id.etEmail);
+        etPassword = findViewById(R.id.etPassword);
+        btnLogin = findViewById(R.id.btnLogin);
+        tvSignup = findViewById(R.id.tvSignup);
+        etForgot = findViewById(R.id.etForgot);
+        progressBar = findViewById(R.id.progress_bar);
     }
 
     @Override
@@ -101,7 +148,6 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
     @Override
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), R.string.login_failed, Toast.LENGTH_SHORT).show();
-
         btnLogin.setEnabled(true);
     }
 
@@ -121,17 +167,11 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
 
         if (TextUtils.isEmpty(email) ||
                 !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            etEmail.setError(getString(R.string.error_email));
             valid = false;
-        } else {
-            etEmail.setError(null);
         }
 
-        if (TextUtils.isEmpty(password) || password.length() < 6) {
-            etPassword.setError(getString(R.string.pass_error));
+        if (TextUtils.isEmpty(password)) {
             valid = false;
-        } else {
-            etPassword.setError(null);
         }
         return valid;
     }

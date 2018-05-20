@@ -70,7 +70,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
     private void setupToolbar() {
         toolbar = bindView(R.id.toolbar);
         setActionBar(toolbar);
-        getActionBar().setTitle(R.string.companies);
+        getActionBar().setTitle(R.string.search);
     }
 
     private void setupRecycler() {

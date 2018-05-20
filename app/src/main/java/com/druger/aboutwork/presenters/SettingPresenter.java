@@ -18,29 +18,12 @@ public class SettingPresenter extends MvpPresenter<SettingsView> {
 
     private static final String TAG = SettingPresenter.class.getSimpleName();
 
-    private FirebaseAuth auth;
     private FirebaseUser user;
-    private FirebaseAuth.AuthStateListener authListener;
 
     public void setupAuth() {
-        auth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
-        authListener = firebaseAuth -> {
-            if (user == null) {
-                getViewState().showLoginActivity();
-            } else {
-                getViewState().showEmail(user.getEmail());
-            }
-        };
-    }
-
-    public void addAuthStateListener() {
-        auth.addAuthStateListener(authListener);
-    }
-
-    public void removeAuthStateListener() {
-        if (authListener != null) {
-            auth.removeAuthStateListener(authListener);
+        if (user != null) {
+            getViewState().showEmail(user.getEmail());
         }
     }
 
