@@ -84,4 +84,5 @@
     <string name="description">Описание</string>
     <string name="company_site">Сайт компании</string>
     <string name="city">Город*</string>
+    <string name="tvEmptySearch">Вы еще не смотрели никакой компании</string>
 </resources>

@@ -10,6 +10,8 @@ import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -41,9 +43,11 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
     CompaniesPresenter companiesPresenter;
 
     private CompanyAdapter adapter;
-    private RecyclerView recyclerView;
+    private RecyclerView rvCompanies;
     private EndlessRecyclerViewScrollListener scrollListener;
     private LinearLayoutManager layoutManager;
+    private ImageView ivEmptySearch;
+    private TextView tvEmptySearch;
 
     private SearchView searchView;
     private String query;
@@ -57,7 +61,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_companies, container, false);
+        rootView = inflater.inflate(R.layout.fragment_companies_new, container, false);
 
         setupToolbar();
         setupUI();
@@ -76,8 +80,8 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
     private void setupRecycler() {
         adapter = new CompanyAdapter();
         layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+        rvCompanies.setLayoutManager(layoutManager);
+        rvCompanies.setAdapter(adapter);
     }
 
     private void setupListeners() {
@@ -87,7 +91,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
                 companiesPresenter.getCompanies(query, currentPage);
             }
         };
-        recyclerView.addOnScrollListener(scrollListener);
+        rvCompanies.addOnScrollListener(scrollListener);
 
         adapter.setOnItemClickListener(new OnItemClickListener<Company>() {
             @Override
@@ -117,22 +121,27 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
     }
 
     private void setupUI() {
-        recyclerView = bindView(R.id.recycler_view);
+        rvCompanies = bindView(R.id.rvCompanies);
         searchView = bindView(R.id.search_view);
         progressBar = bindView(R.id.progressBar);
+        ivEmptySearch = bindView(R.id.ivEmptySearch);
+        tvEmptySearch = bindView(R.id.tvEmptySearch);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         searchView.setOnQueryTextListener(null);
-        recyclerView.removeOnScrollListener(scrollListener);
+        rvCompanies.removeOnScrollListener(scrollListener);
         adapter.setOnItemClickListener(null);
     }
 
     @Override
     public void showCompanies(List<Company> companies) {
         adapter.addItems(companies);
+        ivEmptySearch.setVisibility(View.INVISIBLE);
+        tvEmptySearch.setVisibility(View.INVISIBLE);
+        rvCompanies.setVisibility(View.VISIBLE);
     }
 
     public void showCompanyDetail(String id) {
@@ -147,9 +156,11 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
     public void showProgress(boolean show) {
         super.showProgress(show);
         if (show) {
-            recyclerView.setVisibility(View.INVISIBLE);
+            ivEmptySearch.setVisibility(View.INVISIBLE);
+            tvEmptySearch.setVisibility(View.INVISIBLE);
+            rvCompanies.setVisibility(View.INVISIBLE);
         } else {
-            recyclerView.setVisibility(View.VISIBLE);
+            rvCompanies.setVisibility(View.VISIBLE);
         }
     }
 }

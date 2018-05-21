@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'realm-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 27
@@ -77,8 +79,8 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'com.google.dagger:dagger:2.11'
     testImplementation 'junit:junit:4.12'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
-    annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.3'
+    kapt 'com.google.dagger:dagger-compiler:2.11'
+    kapt 'com.arello-mobile:moxy-compiler:1.5.3'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     implementation 'com.thefinestartist:finestwebview:1.2.7'
