@@ -43,7 +43,7 @@ public class CommentsPresenter extends MvpPresenter<CommentsView> implements Val
     public CommentsPresenter() {
         user = FirebaseAuth.getInstance().getCurrentUser();
         comments = new ArrayList<>();
-        App.getAppComponent().inject(this);
+        App.Companion.getAppComponent().inject(this);
     }
 
 

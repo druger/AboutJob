@@ -55,7 +55,7 @@ public class ResetPasswordActivity extends MvpAppCompatActivity implements Reset
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = App.getRefWatcher(this);
+        RefWatcher refWatcher = App.Companion.getRefWatcher(this);
         refWatcher.watch(this);
     }
 

@@ -68,7 +68,7 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
 
     @ProvidePresenter
     CompanyDetailPresenter provideCompanyDetailPresenter() {
-        return App.getAppComponent().getCompanyDetailPresenter();
+        return App.Companion.getAppComponent().getCompanyDetailPresenter();
     }
 
     @Override

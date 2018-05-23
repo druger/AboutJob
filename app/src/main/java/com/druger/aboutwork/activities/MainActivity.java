@@ -72,7 +72,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     }
 
     private void initRefWatcher() {
-        RefWatcher refWatcher = App.getRefWatcher(this);
+        RefWatcher refWatcher = App.Companion.getRefWatcher(this);
         refWatcher.watch(this);
     }
 

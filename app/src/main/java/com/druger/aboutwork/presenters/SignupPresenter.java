@@ -31,7 +31,7 @@ public class SignupPresenter extends MvpPresenter<SignupView> {
     PreferencesHelper preferencesHelper;
 
     public SignupPresenter() {
-        App.getAppComponent().inject(this);
+        App.Companion.getAppComponent().inject(this);
     }
 
     public void setAuth(Activity activity) {

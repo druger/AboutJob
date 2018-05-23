@@ -54,7 +54,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
 
     @ProvidePresenter
     CompaniesPresenter provideCompaniesPresenter() {
-        return App.getAppComponent().getCompaniesPresenter();
+        return App.Companion.getAppComponent().getCompaniesPresenter();
     }
 
 

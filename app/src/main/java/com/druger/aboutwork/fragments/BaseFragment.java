@@ -83,7 +83,7 @@ public abstract class BaseFragment extends MvpFragment implements NetworkView {
     public void onDestroy() {
         super.onDestroy();
         if (BuildConfig.DEBUG) {
-            RefWatcher refWatcher = App.getRefWatcher(getActivity());
+            RefWatcher refWatcher = App.Companion.getRefWatcher(getActivity());
             refWatcher.watch(this);
         }
     }

@@ -38,7 +38,7 @@ public class CompanyDetailActivity extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = App.getRefWatcher(this);
+        RefWatcher refWatcher = App.Companion.getRefWatcher(this);
         refWatcher.watch(this);
     }
 

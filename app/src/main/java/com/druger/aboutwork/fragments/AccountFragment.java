@@ -55,7 +55,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        App.getAppComponent().inject(this);
+        App.Companion.getAppComponent().inject(this);
     }
 
     @Override

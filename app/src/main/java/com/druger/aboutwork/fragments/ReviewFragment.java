@@ -113,7 +113,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
 
     @ProvidePresenter
     ReviewPresenter provideReviewPresenter() {
-        return App.getAppComponent().getReviewPresenter();
+        return App.Companion.getAppComponent().getReviewPresenter();
     }
 
     @Override

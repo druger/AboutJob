@@ -120,7 +120,7 @@ public class SignupActivity extends MvpAppCompatActivity implements SignupView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = App.getRefWatcher(this);
+        RefWatcher refWatcher = App.Companion.getRefWatcher(this);
         refWatcher.watch(this);
     }
 }

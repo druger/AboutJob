@@ -135,7 +135,7 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = App.getRefWatcher(this);
+        RefWatcher refWatcher = App.Companion.getRefWatcher(this);
         refWatcher.watch(this);
     }
 
