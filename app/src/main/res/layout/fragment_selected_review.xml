@@ -4,9 +4,6 @@
         <variable
             name="review"
             type="com.druger.aboutwork.model.Review" />
-        <variable
-            name="markCompany"
-            type="com.druger.aboutwork.model.MarkCompany" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -17,8 +14,7 @@
         <include layout="@layout/toolbar" />
 
         <include layout="@layout/content_selected_review"
-            bind:review="@{review}"
-            bind:markCompany="@{markCompany}"/>
+            bind:review="@{review}" />
 
         <include layout="@layout/bottom_selected_review"
             bind:review="@{review}"/>

@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:bind="http://schemas.android.com/tools">
+<layout xmlns:bind="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="review"
             type="com.druger.aboutwork.model.Review" />
-        <variable
-            name="markCompany"
-            type="com.druger.aboutwork.model.MarkCompany" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,8 +13,7 @@
         android:paddingTop="?android:attr/actionBarSize">
 
         <include layout="@layout/content_selected_review"
-            bind:review="@{review}"
-            bind:markCompany="@{markCompany}"/>
+            bind:review="@{review}" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabEdit"

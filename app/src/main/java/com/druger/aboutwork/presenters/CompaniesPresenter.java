@@ -3,7 +3,9 @@ package com.druger.aboutwork.presenters;
 import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.druger.aboutwork.db.RealmHelper;
 import com.druger.aboutwork.interfaces.view.CompaniesView;
+import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.rest.RestApi;
 import com.druger.aboutwork.rest.models.CompanyResponse;
 import com.druger.aboutwork.utils.rx.RxUtils;
@@ -22,8 +24,9 @@ import io.reactivex.disposables.Disposable;
 public class CompaniesPresenter extends BasePresenter<CompaniesView> {
 
     @Inject
-    public CompaniesPresenter(RestApi restApi) {
+    public CompaniesPresenter(RestApi restApi, RealmHelper realmHelper) {
         this.restApi = restApi;
+        this.realmHelper = realmHelper;
     }
 
     public void getCompanies(String query, int page) {
@@ -50,5 +53,16 @@ public class CompaniesPresenter extends BasePresenter<CompaniesView> {
         List<com.druger.aboutwork.model.Company> companies = response.getItems();
         getViewState().showCompanies(companies);
         Log.d(TAG, "Companies size = " + companies.size());
+    }
+
+    public void saveCompanyToDb(Company company) {
+        realmHelper.saveCompany(company);
+    }
+
+    public void getCompaniesFromDb() {
+        List<Company> companies = realmHelper.getCompanies();
+        if (!companies.isEmpty()) {
+            getViewState().showCompanies(companies);
+        }
     }
 }

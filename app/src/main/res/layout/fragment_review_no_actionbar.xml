@@ -3,9 +3,6 @@
         <variable
             name="review"
             type="com.druger.aboutwork.model.Review" />
-        <variable
-            name="markCompany"
-            type="com.druger.aboutwork.model.MarkCompany" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,12 +10,11 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         android:orientation="vertical"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:layout_marginTop="?android:actionBarSize">
 
         <include
             layout="@layout/content_review"
-            bind:review="@{review}"
-            bind:markCompany="@{markCompany}" />
+            bind:review="@{review}"/>
 
     </LinearLayout>
 </layout>

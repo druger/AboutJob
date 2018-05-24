@@ -1,5 +1,6 @@
 package com.druger.aboutwork.db
 
+import com.druger.aboutwork.model.Company
 import io.realm.Realm
 
 class RealmHelper {
@@ -10,4 +11,13 @@ class RealmHelper {
     }
 
     private var realm: Realm = Realm.getDefaultInstance()
+
+    fun saveCompany(company: Company) {
+        realm.beginTransaction()
+        realm.insert(company)
+        realm.commitTransaction()
+    }
+
+    fun getCompanies() : List<Company> = realm.where(Company::class.java).findAllAsync()
+
 }

@@ -90,14 +90,12 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
             binding = DataBindingUtil
                     .inflate(inflater, R.layout.fragment_selected_review, container, false);
             binding.setReview(review);
-            binding.setMarkCompany(review.getMarkCompany());
             rootView = binding.getRoot();
             setupToolbar();
         } else {
             bindingNoBar = DataBindingUtil
                     .inflate(inflater, R.layout.selected_review_no_actionbar, container, false);
             bindingNoBar.setReview(review);
-            bindingNoBar.setMarkCompany(review.getMarkCompany());
             rootView = bindingNoBar.getRoot();
             ((MainActivity) getActivity()).hideBottomNavigation();
         }

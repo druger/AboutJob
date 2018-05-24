@@ -68,7 +68,12 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
         setupRecycler();
         setupListeners();
         setupSearch();
+        getCompaniesFromDb();
         return rootView;
+    }
+
+    private void getCompaniesFromDb() {
+        companiesPresenter.getCompaniesFromDb();
     }
 
     private void setupToolbar() {
@@ -96,7 +101,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
         adapter.setOnItemClickListener(new OnItemClickListener<Company>() {
             @Override
             public void onClick(Company company, int position) {
-                showCompanyDetail(company.getId());
+                showCompanyDetail(company);
             }
 
             @Override
@@ -144,10 +149,15 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
         rvCompanies.setVisibility(View.VISIBLE);
     }
 
-    public void showCompanyDetail(String id) {
+    public void showCompanyDetail(Company company) {
+        companiesPresenter.saveCompanyToDb(company);
+        showActivity(company);
+    }
+
+    private void showActivity(Company company) {
         Intent intent = new Intent(getActivity(), CompanyDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString(COMPANY_ID, id);
+        bundle.putString(COMPANY_ID, company.getId());
         intent.putExtras(bundle);
         startActivity(intent);
     }

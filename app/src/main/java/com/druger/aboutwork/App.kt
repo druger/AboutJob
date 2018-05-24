@@ -9,6 +9,7 @@ import com.druger.aboutwork.di.components.AppComponent
 import com.druger.aboutwork.di.components.DaggerAppComponent
 import com.druger.aboutwork.di.modules.AppModule
 import com.druger.aboutwork.di.modules.NetworkModule
+import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
 
 import io.realm.Realm

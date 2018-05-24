@@ -5,9 +5,6 @@
         <variable
             name="review"
             type="com.druger.aboutwork.model.Review" />
-        <variable
-            name="markCompany"
-            type="com.druger.aboutwork.model.MarkCompany" />
     </data>
 
     <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"

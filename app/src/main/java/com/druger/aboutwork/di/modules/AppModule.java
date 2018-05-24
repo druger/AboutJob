@@ -4,6 +4,7 @@ import android.content.Context;
 import android.preference.PreferenceManager;
 
 import com.druger.aboutwork.App;
+import com.druger.aboutwork.db.RealmHelper;
 import com.druger.aboutwork.utils.PreferencesHelper;
 
 import javax.inject.Singleton;
@@ -20,6 +21,7 @@ public class AppModule {
 
     private App app;
     private PreferencesHelper preferencesHelper;
+    private RealmHelper realmHelper;
 
     public AppModule(App app) {
         this.app = app;
@@ -36,5 +38,11 @@ public class AppModule {
     @Provides
     PreferencesHelper providePreferenceHelper() {
         return preferencesHelper;
+    }
+
+    @Singleton
+    @Provides
+    RealmHelper provideRealmHelper() {
+        return realmHelper;
     }
 }

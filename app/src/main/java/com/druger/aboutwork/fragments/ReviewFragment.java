@@ -132,7 +132,6 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
             binding = DataBindingUtil
                     .inflate(inflater, R.layout.fragment_review_no_actionbar, container, false);
             binding.setReview(review);
-            binding.setMarkCompany(review.getMarkCompany());
             rootView = binding.getRoot();
             ((MainActivity) getActivity()).hideBottomNavigation();
         }

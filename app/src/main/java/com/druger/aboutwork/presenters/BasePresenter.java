@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.arellomobile.mvp.MvpPresenter;
 import com.arellomobile.mvp.MvpView;
+import com.druger.aboutwork.db.RealmHelper;
 import com.druger.aboutwork.rest.RestApi;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -19,6 +20,7 @@ public class BasePresenter<View extends MvpView> extends MvpPresenter<View> {
     protected String TAG = getClass().getSimpleName();
 
     protected RestApi restApi;
+    protected RealmHelper realmHelper;
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
