@@ -50,8 +50,6 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
 
     private Bundle bundle;
     private boolean fromAccount;
-    private FragmentSelectedReviewBinding binding;
-    private SelectedReviewNoActionbarBinding bindingNoBar;
 
     public SelectedReviewFragment() {
         // Required empty public constructor
@@ -87,13 +85,13 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
 
     private void setView(LayoutInflater inflater, ViewGroup container) {
         if (!fromAccount) {
-            binding = DataBindingUtil
+            FragmentSelectedReviewBinding binding = DataBindingUtil
                     .inflate(inflater, R.layout.fragment_selected_review, container, false);
             binding.setReview(review);
             rootView = binding.getRoot();
             setupToolbar();
         } else {
-            bindingNoBar = DataBindingUtil
+            SelectedReviewNoActionbarBinding bindingNoBar = DataBindingUtil
                     .inflate(inflater, R.layout.selected_review_no_actionbar, container, false);
             bindingNoBar.setReview(review);
             rootView = bindingNoBar.getRoot();

@@ -85,8 +85,6 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     private Review review;
     private boolean fromAccount;
 
-    private FragmentReviewNoActionbarBinding binding;
-
     public ReviewFragment() {
         // Required empty public constructor
     }
@@ -129,7 +127,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
             reviewPresenter.setCompanyId(companyId);
             setupToolbar();
         } else {
-            binding = DataBindingUtil
+            FragmentReviewNoActionbarBinding binding = DataBindingUtil
                     .inflate(inflater, R.layout.fragment_review_no_actionbar, container, false);
             binding.setReview(review);
             rootView = binding.getRoot();

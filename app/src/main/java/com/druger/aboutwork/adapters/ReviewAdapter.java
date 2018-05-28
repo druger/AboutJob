@@ -44,8 +44,6 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     private OnItemClickListener<Review> clickListener;
     private OnUrlClickListener urlClickListener;
 
-    private ReviewCardBinding itemBinding;
-
     public ReviewAdapter(List<Review> reviews) {
         this.reviews = reviews;
         deletedReviews = new ArrayList<>();
@@ -63,7 +61,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder viewHolder = null;
         if (viewType == TYPE_ITEM) {
-            itemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+            ReviewCardBinding itemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                     R.layout.review_card, parent, false);
             viewHolder = new ReviewVH(itemBinding);
         } else if (viewType == TYPE_HEADER) {
@@ -191,7 +189,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     }
 
     static class ReviewVH extends BaseViewHolder {
-        private final ReviewCardBinding binding;
+        ReviewCardBinding binding;
         CardView cardView;
         ImageView ivLike;
         ImageView ivDislike;

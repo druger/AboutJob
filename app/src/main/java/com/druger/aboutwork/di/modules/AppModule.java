@@ -26,6 +26,7 @@ public class AppModule {
     public AppModule(App app) {
         this.app = app;
         preferencesHelper = new PreferencesHelper(PreferenceManager.getDefaultSharedPreferences(app));
+        realmHelper = new RealmHelper();
     }
 
     @Singleton

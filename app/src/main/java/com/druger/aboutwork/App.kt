@@ -25,7 +25,6 @@ class App : Application() {
 
     companion object {
         lateinit var appComponent: AppComponent
-            private set
 
         fun getRefWatcher(context: Context): RefWatcher {
             val app: App = context.applicationContext as App
@@ -36,8 +35,8 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         setupLeakCanary()
-        setupDagger2()
         setupRealm()
+        setupDagger2()
     }
 
     private fun setupDagger2() {

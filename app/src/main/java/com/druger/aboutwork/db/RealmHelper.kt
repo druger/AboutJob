@@ -14,7 +14,7 @@ class RealmHelper {
 
     fun saveCompany(company: Company) {
         realm.beginTransaction()
-        realm.insert(company)
+        realm.insertOrUpdate(company)
         realm.commitTransaction()
     }
 
