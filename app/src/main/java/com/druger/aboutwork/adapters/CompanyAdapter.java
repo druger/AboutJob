@@ -38,10 +38,11 @@ public class CompanyAdapter extends BaseRecyclerViewAdapter<Company, RecyclerVie
         if (holder instanceof CompanyVH) {
             CompanyVH companyVH = (CompanyVH) holder;
             Company company = getItem(position);
+            Company.Logo logo = company.getLogo();
             companyVH.tvName.setText(company.getName());
 
             Glide.with(holder.itemView.getContext())
-                    .load(company.getLogo().getLogo90())
+                    .load(logo != null ? logo.getLogo90() : "")
                     .placeholder(R.drawable.default_company)
                     .error(R.drawable.default_company)
                     .fitCenter()

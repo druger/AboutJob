@@ -139,6 +139,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
         searchView.setOnQueryTextListener(null);
         rvCompanies.removeOnScrollListener(scrollListener);
         adapter.setOnItemClickListener(null);
+        companiesPresenter.removeRealmListener();
     }
 
     @Override

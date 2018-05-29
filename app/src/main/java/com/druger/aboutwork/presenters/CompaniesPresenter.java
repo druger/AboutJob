@@ -15,6 +15,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
+import io.realm.OrderedRealmCollectionChangeListener;
+import io.realm.RealmResults;
 
 /**
  * Created by druger on 01.05.2017.
@@ -22,6 +24,11 @@ import io.reactivex.disposables.Disposable;
 
 @InjectViewState
 public class CompaniesPresenter extends BasePresenter<CompaniesView> {
+
+    private RealmResults<Company> companies;
+
+    private OrderedRealmCollectionChangeListener<RealmResults<Company>> realmCallback =
+            (companies, changeSet) -> getViewState().showCompanies(companies);
 
     @Inject
     public CompaniesPresenter(RestApi restApi, RealmHelper realmHelper) {
@@ -60,9 +67,11 @@ public class CompaniesPresenter extends BasePresenter<CompaniesView> {
     }
 
     public void getCompaniesFromDb() {
-        List<Company> companies = realmHelper.getCompanies();
-        if (!companies.isEmpty()) {
-            getViewState().showCompanies(companies);
-        }
+        companies = realmHelper.getCompanies();
+        companies.addChangeListener(realmCallback);
+    }
+
+    public void removeRealmListener() {
+        companies.removeChangeListener(realmCallback);
     }
 }
