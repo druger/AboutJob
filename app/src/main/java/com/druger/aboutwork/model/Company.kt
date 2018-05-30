@@ -18,6 +18,8 @@ open class Company(@PrimaryKey var id: String = "", var name: String = "") : Rea
     @SerializedName("logo_urls")
     var logo: Logo? = null
 
+    var date: Long = 0
+
     inner class Logo {
         @SerializedName("90")
         var logo90: String = ""

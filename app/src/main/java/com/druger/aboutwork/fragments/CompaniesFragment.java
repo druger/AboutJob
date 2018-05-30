@@ -48,6 +48,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
     private LinearLayoutManager layoutManager;
     private ImageView ivEmptySearch;
     private TextView tvEmptySearch;
+    private TextView tvWatched;
 
     private SearchView searchView;
     private String query;
@@ -131,6 +132,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
         progressBar = bindView(R.id.progressBar);
         ivEmptySearch = bindView(R.id.ivEmptySearch);
         tvEmptySearch = bindView(R.id.tvEmptySearch);
+        tvWatched = bindView(R.id.tvWatched);
     }
 
     @Override
@@ -148,6 +150,11 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
         ivEmptySearch.setVisibility(View.INVISIBLE);
         tvEmptySearch.setVisibility(View.INVISIBLE);
         rvCompanies.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showWatchedRecently() {
+        tvWatched.setVisibility(View.VISIBLE);
     }
 
     public void showCompanyDetail(Company company) {
@@ -170,6 +177,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
             ivEmptySearch.setVisibility(View.INVISIBLE);
             tvEmptySearch.setVisibility(View.INVISIBLE);
             rvCompanies.setVisibility(View.INVISIBLE);
+            tvWatched.setVisibility(View.GONE);
         } else {
             rvCompanies.setVisibility(View.VISIBLE);
         }

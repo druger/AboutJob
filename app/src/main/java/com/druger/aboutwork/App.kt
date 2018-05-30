@@ -60,6 +60,7 @@ class App : Application() {
         val config = RealmConfiguration.Builder()
                 .schemaVersion(SCHEMA_VERSION)
                 .name(REALM_NAME)
+                .deleteRealmIfMigrationNeeded()
                 .build()
         Realm.setDefaultConfiguration(config)
     }

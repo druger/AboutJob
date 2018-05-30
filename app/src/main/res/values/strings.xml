@@ -101,4 +101,5 @@
     <string name="company_site">Company\'s site</string>
     <string name="city">City*</string>
     <string name="tvEmptySearch">You haven\'t seen any companies yet</string>
+    <string name="watched_recently">You\'ve watched recently</string>
 </resources>

@@ -28,7 +28,10 @@ public class CompaniesPresenter extends BasePresenter<CompaniesView> {
     private RealmResults<Company> companies;
 
     private OrderedRealmCollectionChangeListener<RealmResults<Company>> realmCallback =
-            (companies, changeSet) -> getViewState().showCompanies(companies);
+            (companies, changeSet) -> {
+                getViewState().showWatchedRecently();
+                getViewState().showCompanies(companies);
+            };
 
     @Inject
     public CompaniesPresenter(RestApi restApi, RealmHelper realmHelper) {
