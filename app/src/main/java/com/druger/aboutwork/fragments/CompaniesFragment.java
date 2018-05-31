@@ -19,6 +19,7 @@ import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.CompanyDetailActivity;
 import com.druger.aboutwork.adapters.CompanyAdapter;
+import com.druger.aboutwork.adapters.CompanyRealmAdapter;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.CompaniesView;
 import com.druger.aboutwork.model.Company;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.realm.RealmResults;
 
 import static com.druger.aboutwork.Const.Bundles.COMPANY_ID;
 import static com.druger.aboutwork.Const.Bundles.DEBOUNCE_SEARCH;
@@ -43,7 +45,9 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
     CompaniesPresenter companiesPresenter;
 
     private CompanyAdapter adapter;
+    private CompanyRealmAdapter realmAdapter;
     private RecyclerView rvCompanies;
+    private RecyclerView rvCompaniesRealm;
     private EndlessRecyclerViewScrollListener scrollListener;
     private LinearLayoutManager layoutManager;
     private ImageView ivEmptySearch;
@@ -62,19 +66,24 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_companies_new, container, false);
+        rootView = inflater.inflate(R.layout.fragment_companies, container, false);
 
         setupToolbar();
         setupUI();
+        initLayoutManager();
         setupRecycler();
+        setupRecyclerRealm();
         setupListeners();
         setupSearch();
-        getCompaniesFromDb();
         return rootView;
     }
 
-    private void getCompaniesFromDb() {
-        companiesPresenter.getCompaniesFromDb();
+    private void initLayoutManager() {
+        layoutManager = new LinearLayoutManager(getActivity());
+    }
+
+    private RealmResults<Company> getCompaniesFromDb() {
+        return companiesPresenter.getCompaniesFromDb();
     }
 
     private void setupToolbar() {
@@ -85,9 +94,14 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
 
     private void setupRecycler() {
         adapter = new CompanyAdapter();
-        layoutManager = new LinearLayoutManager(getActivity());
         rvCompanies.setLayoutManager(layoutManager);
         rvCompanies.setAdapter(adapter);
+    }
+
+    private void setupRecyclerRealm() {
+        realmAdapter = new CompanyRealmAdapter(getActivity(), getCompaniesFromDb());
+        rvCompaniesRealm.setLayoutManager(layoutManager);
+        rvCompaniesRealm.setAdapter(realmAdapter);
     }
 
     private void setupListeners() {
@@ -128,6 +142,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
 
     private void setupUI() {
         rvCompanies = bindView(R.id.rvCompanies);
+        rvCompaniesRealm = bindView(R.id.rvCompaniesRealm);
         searchView = bindView(R.id.search_view);
         progressBar = bindView(R.id.progressBar);
         ivEmptySearch = bindView(R.id.ivEmptySearch);

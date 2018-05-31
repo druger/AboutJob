@@ -85,6 +85,7 @@ dependencies {
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     implementation 'com.thefinestartist:finestwebview:1.2.7'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'io.realm:android-adapters:2.1.1'
 }
 
 

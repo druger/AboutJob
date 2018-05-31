@@ -69,9 +69,10 @@ public class CompaniesPresenter extends BasePresenter<CompaniesView> {
         realmHelper.saveCompany(company);
     }
 
-    public void getCompaniesFromDb() {
+    public RealmResults<Company> getCompaniesFromDb() {
         companies = realmHelper.getCompanies();
         companies.addChangeListener(realmCallback);
+        return companies;
     }
 
     public void removeRealmListener() {
