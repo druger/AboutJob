@@ -1,7 +1,7 @@
 package com.druger.aboutwork.db
 
 import android.util.Log
-import com.druger.aboutwork.model.Company
+import com.druger.aboutwork.model.realm.CompanyRealm
 import io.realm.Realm
 import io.realm.RealmResults
 import io.realm.Sort
@@ -17,7 +17,7 @@ class RealmHelper {
 
     private var realm: Realm = Realm.getDefaultInstance()
 
-    fun saveCompany(company: Company) {
+    fun saveCompany(company: CompanyRealm) {
         realm.executeTransactionAsync(
                 { realm ->
                     company.date = System.currentTimeMillis()
@@ -27,6 +27,6 @@ class RealmHelper {
         )
     }
 
-    fun getCompanies(): RealmResults<Company> = realm.where(Company::class.java)
+    fun getCompanies(): RealmResults<CompanyRealm> = realm.where(CompanyRealm::class.java)
             .sort(DATE_COLUMN, Sort.DESCENDING).findAllAsync()
 }

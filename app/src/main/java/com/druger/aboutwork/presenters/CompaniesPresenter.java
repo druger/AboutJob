@@ -5,7 +5,7 @@ import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.druger.aboutwork.db.RealmHelper;
 import com.druger.aboutwork.interfaces.view.CompaniesView;
-import com.druger.aboutwork.model.Company;
+import com.druger.aboutwork.model.realm.CompanyRealm;
 import com.druger.aboutwork.rest.RestApi;
 import com.druger.aboutwork.rest.models.CompanyResponse;
 import com.druger.aboutwork.utils.rx.RxUtils;
@@ -18,6 +18,8 @@ import io.reactivex.disposables.Disposable;
 import io.realm.OrderedRealmCollectionChangeListener;
 import io.realm.RealmResults;
 
+import static io.realm.OrderedCollectionChangeSet.State.INITIAL;
+
 /**
  * Created by druger on 01.05.2017.
  */
@@ -25,12 +27,14 @@ import io.realm.RealmResults;
 @InjectViewState
 public class CompaniesPresenter extends BasePresenter<CompaniesView> {
 
-    private RealmResults<Company> companies;
+    private RealmResults<CompanyRealm> companies;
 
-    private OrderedRealmCollectionChangeListener<RealmResults<Company>> realmCallback =
+    private OrderedRealmCollectionChangeListener<RealmResults<CompanyRealm>> realmCallback =
             (companies, changeSet) -> {
-                getViewState().showWatchedRecently();
-                getViewState().showCompanies(companies);
+                if (changeSet.getState() == INITIAL) {
+                    getViewState().showWatchedRecently();
+                    getViewState().showCompaniesRealm();
+                }
             };
 
     @Inject
@@ -65,11 +69,11 @@ public class CompaniesPresenter extends BasePresenter<CompaniesView> {
         Log.d(TAG, "Companies size = " + companies.size());
     }
 
-    public void saveCompanyToDb(Company company) {
+    public void saveCompanyToDb(CompanyRealm company) {
         realmHelper.saveCompany(company);
     }
 
-    public RealmResults<Company> getCompaniesFromDb() {
+    public RealmResults<CompanyRealm> getCompaniesFromDb() {
         companies = realmHelper.getCompanies();
         companies.addChangeListener(realmCallback);
         return companies;

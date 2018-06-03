@@ -3,7 +3,6 @@ package com.druger.aboutwork.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -23,6 +22,7 @@ import com.druger.aboutwork.adapters.CompanyRealmAdapter;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.CompaniesView;
 import com.druger.aboutwork.model.Company;
+import com.druger.aboutwork.model.realm.CompanyRealm;
 import com.druger.aboutwork.presenters.CompaniesPresenter;
 import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener;
 import com.druger.aboutwork.utils.rx.RxSearch;
@@ -36,9 +36,6 @@ import io.realm.RealmResults;
 import static com.druger.aboutwork.Const.Bundles.COMPANY_ID;
 import static com.druger.aboutwork.Const.Bundles.DEBOUNCE_SEARCH;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class CompaniesFragment extends BaseFragment implements CompaniesView {
 
     @InjectPresenter
@@ -49,7 +46,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
     private RecyclerView rvCompanies;
     private RecyclerView rvCompaniesRealm;
     private EndlessRecyclerViewScrollListener scrollListener;
-    private LinearLayoutManager layoutManager;
+    private OnItemClickListener<CompanyRealm> itemClickListener;
     private ImageView ivEmptySearch;
     private TextView tvEmptySearch;
     private TextView tvWatched;
@@ -62,7 +59,6 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
         return App.Companion.getAppComponent().getCompaniesPresenter();
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -70,19 +66,14 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
 
         setupToolbar();
         setupUI();
-        initLayoutManager();
         setupRecycler();
-        setupRecyclerRealm();
         setupListeners();
+        setupRecyclerRealm();
         setupSearch();
         return rootView;
     }
 
-    private void initLayoutManager() {
-        layoutManager = new LinearLayoutManager(getActivity());
-    }
-
-    private RealmResults<Company> getCompaniesFromDb() {
+    private RealmResults<CompanyRealm> getCompaniesFromDb() {
         return companiesPresenter.getCompaniesFromDb();
     }
 
@@ -94,18 +85,19 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
 
     private void setupRecycler() {
         adapter = new CompanyAdapter();
-        rvCompanies.setLayoutManager(layoutManager);
+        rvCompanies.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvCompanies.setAdapter(adapter);
     }
 
     private void setupRecyclerRealm() {
-        realmAdapter = new CompanyRealmAdapter(getActivity(), getCompaniesFromDb());
-        rvCompaniesRealm.setLayoutManager(layoutManager);
+        realmAdapter = new CompanyRealmAdapter(getCompaniesFromDb(), itemClickListener);
+        rvCompaniesRealm.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvCompaniesRealm.setAdapter(realmAdapter);
     }
 
     private void setupListeners() {
-        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+        scrollListener = new EndlessRecyclerViewScrollListener(
+                (LinearLayoutManager) rvCompanies.getLayoutManager()) {
             @Override
             public void onLoadMore(int currentPage) {
                 companiesPresenter.getCompanies(query, currentPage);
@@ -116,7 +108,8 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
         adapter.setOnItemClickListener(new OnItemClickListener<Company>() {
             @Override
             public void onClick(Company company, int position) {
-                showCompanyDetail(company);
+                saveCompanyToDb(setupCompanyRealm(company));
+                showCompanyDetail(company.getId());
             }
 
             @Override
@@ -124,6 +117,19 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
                 return false;
             }
         });
+
+        itemClickListener = new OnItemClickListener<CompanyRealm>() {
+            @Override
+            public void onClick(CompanyRealm company, int position) {
+                saveCompanyToDb(company);
+                showCompanyDetail(company.getId());
+            }
+
+            @Override
+            public boolean onLongClick(int position) {
+                return false;
+            }
+        };
     }
 
     private void setupSearch() {
@@ -162,8 +168,6 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
     @Override
     public void showCompanies(List<Company> companies) {
         adapter.addItems(companies);
-        ivEmptySearch.setVisibility(View.INVISIBLE);
-        tvEmptySearch.setVisibility(View.INVISIBLE);
         rvCompanies.setVisibility(View.VISIBLE);
     }
 
@@ -172,15 +176,29 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
         tvWatched.setVisibility(View.VISIBLE);
     }
 
-    public void showCompanyDetail(Company company) {
-        companiesPresenter.saveCompanyToDb(company);
-        showActivity(company);
+    @Override
+    public void showCompaniesRealm() {
+        rvCompaniesRealm.setVisibility(View.VISIBLE);
+        ivEmptySearch.setVisibility(View.INVISIBLE);
+        tvEmptySearch.setVisibility(View.INVISIBLE);
     }
 
-    private void showActivity(Company company) {
+    private void saveCompanyToDb(CompanyRealm company) {
+        companiesPresenter.saveCompanyToDb(company);
+    }
+
+    private CompanyRealm setupCompanyRealm(Company company) {
+        String id = company.getId();
+        String name = company.getName();
+        Company.Logo logo = company.getLogo();
+        String sLogo = logo != null ? logo.getLogo90() : "";
+        return new CompanyRealm(id, name, sLogo);
+    }
+
+    private void showCompanyDetail(String id) {
         Intent intent = new Intent(getActivity(), CompanyDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString(COMPANY_ID, company.getId());
+        bundle.putString(COMPANY_ID, id);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -192,6 +210,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
             ivEmptySearch.setVisibility(View.INVISIBLE);
             tvEmptySearch.setVisibility(View.INVISIBLE);
             rvCompanies.setVisibility(View.INVISIBLE);
+            rvCompaniesRealm.setVisibility(View.INVISIBLE);
             tvWatched.setVisibility(View.GONE);
         } else {
             rvCompanies.setVisibility(View.VISIBLE);

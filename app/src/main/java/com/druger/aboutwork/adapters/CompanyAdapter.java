@@ -76,7 +76,7 @@ public class CompanyAdapter extends BaseRecyclerViewAdapter<Company, RecyclerVie
 
         CompanyVH(View itemView) {
             super(itemView);
-            ivLogo = bindView(R.id.ivLogoComapny);
+            ivLogo = bindView(R.id.ivLogoCompany);
             tvName = bindView(R.id.tvNameCompany);
         }
     }

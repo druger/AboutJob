@@ -14,4 +14,6 @@ public interface CompaniesView extends MvpView, NetworkView {
     void showCompanies(List<Company> companies);
 
     void showWatchedRecently();
+
+    void showCompaniesRealm();
 }
