@@ -26,11 +26,12 @@ class CompanyRealmAdapter(data: OrderedRealmCollection<CompanyRealm>, var clickL
     override fun onBindViewHolder(holder: CompanyVH, position: Int) {
         val company = data?.get(position)
         holder.tvName.text = company!!.name
+        holder.tvCity.text = company.city
 
         Glide.with(holder.itemView.context)
                 .load(company.logo)
-                .placeholder(R.drawable.default_company)
-                .error(R.drawable.default_company)
+                .placeholder(R.drawable.ic_default_company)
+                .error(R.drawable.ic_default_company)
                 .fitCenter()
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -47,5 +48,6 @@ class CompanyRealmAdapter(data: OrderedRealmCollection<CompanyRealm>, var clickL
     inner class CompanyVH (itemView: View) : RecyclerView.ViewHolder(itemView){
         val ivLogo = itemView.ivLogoCompany
         val tvName = itemView.tvNameCompany
+        val tvCity = itemView.tvCity
     }
 }

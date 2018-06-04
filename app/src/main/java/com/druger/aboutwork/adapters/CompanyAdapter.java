@@ -40,11 +40,12 @@ public class CompanyAdapter extends BaseRecyclerViewAdapter<Company, RecyclerVie
             Company company = getItem(position);
             Company.Logo logo = company.getLogo();
             companyVH.tvName.setText(company.getName());
+            companyVH.tvCity.setText(company.getCity());
 
             Glide.with(holder.itemView.getContext())
                     .load(logo != null ? logo.getLogo90() : "")
-                    .placeholder(R.drawable.default_company)
-                    .error(R.drawable.default_company)
+                    .placeholder(R.drawable.ic_default_company)
+                    .error(R.drawable.ic_default_company)
                     .fitCenter()
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -73,11 +74,13 @@ public class CompanyAdapter extends BaseRecyclerViewAdapter<Company, RecyclerVie
     private static class CompanyVH extends BaseViewHolder {
         ImageView ivLogo;
         TextView tvName;
+        TextView tvCity;
 
         CompanyVH(View itemView) {
             super(itemView);
             ivLogo = bindView(R.id.ivLogoCompany);
             tvName = bindView(R.id.tvNameCompany);
+            tvCity = bindView(R.id.tvCity);
         }
     }
 

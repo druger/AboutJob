@@ -11,4 +11,5 @@ open class CompanyRealm(@PrimaryKey var id: String = "",
                         var logo: String = "") : RealmObject() {
 
     var date: Long = 0
+    var city: String = ""
 }

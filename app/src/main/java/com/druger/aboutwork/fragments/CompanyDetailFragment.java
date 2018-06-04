@@ -237,8 +237,8 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
         CompanyDetail.Logo logo = company.getLogo();
         Glide.with(this)
                 .load(logo != null ? logo.getOriginal() : "")
-                .placeholder(R.drawable.default_company)
-                .error(R.drawable.default_company)
+                .placeholder(R.drawable.ic_default_company)
+                .error(R.drawable.ic_default_company)
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(ivToolbar);

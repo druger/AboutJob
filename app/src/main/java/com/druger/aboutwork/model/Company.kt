@@ -12,6 +12,8 @@ class Company(var id: String, var name: String) {
     @JsonIgnore
     @SerializedName("logo_urls")
     var logo: Logo? = null
+    @JsonIgnore
+    var city = ""
 
     inner class Logo {
         @SerializedName("90")
