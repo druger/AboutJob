@@ -17,6 +17,7 @@ public class CompanyDetail implements Parcelable {
     private String description;
     @SerializedName("logo_urls")
     private Logo logo;
+    private Area area;
 
     public CompanyDetail() {
     }
@@ -81,6 +82,10 @@ public class CompanyDetail implements Parcelable {
         this.logo = logo;
     }
 
+    public Area getArea() {
+        return area;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -95,8 +100,11 @@ public class CompanyDetail implements Parcelable {
         dest.writeParcelable(logo, PARCELABLE_WRITE_RETURN_VALUE);
     }
 
+    // TODO вынести в отдельный класс, т.к аналогичный класс исп. в классе Company
     public static class Logo implements Parcelable {
         String original;
+        @SerializedName("90")
+        String logo90;
 
         protected Logo(Parcel in) {
             original = in.readString();
@@ -122,6 +130,10 @@ public class CompanyDetail implements Parcelable {
             this.original = original;
         }
 
+        public String getLogo90() {
+            return logo90;
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -130,6 +142,14 @@ public class CompanyDetail implements Parcelable {
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(original);
+        }
+    }
+
+    public static class Area {
+        String name;
+
+        public String getName() {
+            return name;
         }
     }
 }

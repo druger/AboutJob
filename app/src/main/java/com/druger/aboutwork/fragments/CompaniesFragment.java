@@ -167,6 +167,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
 
     @Override
     public void showCompanies(List<Company> companies) {
+        adapter.clear();
         adapter.addItems(companies);
         rvCompanies.setVisibility(View.VISIBLE);
     }
