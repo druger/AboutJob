@@ -193,7 +193,10 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
         String name = company.getName();
         Company.Logo logo = company.getLogo();
         String sLogo = logo != null ? logo.getLogo90() : "";
-        return new CompanyRealm(id, name, sLogo);
+
+        CompanyRealm companyRealm = new CompanyRealm(id, name, sLogo);
+        companyRealm.setCity(company.getCity());
+        return companyRealm;
     }
 
     private void showCompanyDetail(String id) {
