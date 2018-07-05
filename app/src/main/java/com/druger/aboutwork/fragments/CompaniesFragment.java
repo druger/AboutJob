@@ -85,6 +85,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
 
     private void setupRecycler() {
         adapter = new CompanyAdapter();
+        rvCompanies.setHasFixedSize(true);
         rvCompanies.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvCompanies.setAdapter(adapter);
     }
@@ -169,6 +170,7 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
     public void showCompanies(List<Company> companies) {
         adapter.clear();
         adapter.addItems(companies);
+        scrollListener.setLoaded();
         rvCompanies.setVisibility(View.VISIBLE);
     }
 

@@ -48,7 +48,6 @@ public class CompaniesPresenter extends BasePresenter<CompaniesView> {
     }
 
     public void getCompanies(String query, int page) {
-        getViewState().showProgress(true);
         requestGetCompanies(query, page);
         companiesWithCity.clear();
     }
@@ -78,7 +77,6 @@ public class CompaniesPresenter extends BasePresenter<CompaniesView> {
     }
 
     private void showCompanies() {
-        getViewState().showProgress(false);
         getViewState().showCompanies(companiesWithCity);
     }
 
