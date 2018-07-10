@@ -34,7 +34,7 @@ public class CompaniesPresenter extends BasePresenter<CompaniesView> {
 
     private OrderedRealmCollectionChangeListener<RealmResults<CompanyRealm>> realmCallback =
             (companies, changeSet) -> {
-                if (changeSet.getState() == INITIAL) {
+                if (companies.size() > 0 && changeSet.getState() == INITIAL) {
                     getViewState().showWatchedRecently();
                     getViewState().showCompaniesRealm();
                 }

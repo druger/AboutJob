@@ -172,6 +172,10 @@ public class CompaniesFragment extends BaseFragment implements CompaniesView {
         adapter.addItems(companies);
         scrollListener.setLoaded();
         rvCompanies.setVisibility(View.VISIBLE);
+        rvCompaniesRealm.setVisibility(View.INVISIBLE);
+        tvWatched.setVisibility(View.GONE);
+        ivEmptySearch.setVisibility(View.INVISIBLE);
+        tvEmptySearch.setVisibility(View.INVISIBLE);
     }
 
     @Override
