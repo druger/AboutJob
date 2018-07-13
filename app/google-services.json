@@ -19,7 +19,15 @@
           "client_type": 1,
           "android_info": {
             "package_name": "com.druger.aboutwork",
-            "certificate_hash": "D5D257CEDD455E7A387BA293B8FA87E23EB606E6"
+            "certificate_hash": "d5d257cedd455e7a387ba293b8fa87e23eb606e6"
+          }
+        },
+        {
+          "client_id": "603766486213-cbhh1a2b2oes1je77gnd1suqedf30a5m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.druger.aboutwork",
+            "certificate_hash": "d9389d6cd04ddc87cb87a7eb20bb1134f5729396"
           }
         },
         {
