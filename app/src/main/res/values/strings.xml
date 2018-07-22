@@ -102,4 +102,7 @@
     <string name="city">City*</string>
     <string name="tvEmptySearch">You haven\'t seen any companies yet</string>
     <string name="watched_recently">You\'ve watched recently</string>
+    <string name="sign_in_cancelled">Sign in cancelled</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="unknown_error">Unknown error</string>
 </resources>

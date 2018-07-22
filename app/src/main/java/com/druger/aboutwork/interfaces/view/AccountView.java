@@ -22,8 +22,6 @@ public interface AccountView extends MvpView {
     @StateStrategyType(OneExecutionStateStrategy.class)
     void openMyReviews(String userId);
 
-    void showLoginActivity();
-
     void showEmail(String email);
 
     void checkPermissionReadExternal();

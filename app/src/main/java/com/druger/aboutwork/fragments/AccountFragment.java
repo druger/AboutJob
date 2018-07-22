@@ -19,7 +19,6 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.bumptech.glide.Glide;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
-import com.druger.aboutwork.activities.LoginActivity;
 import com.druger.aboutwork.interfaces.view.AccountView;
 import com.druger.aboutwork.presenters.AccountPresenter;
 import com.druger.aboutwork.utils.PreferencesHelper;
@@ -134,12 +133,6 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         transaction.replace(R.id.main_container, MyReviewsFragment.newInstance(userId));
         transaction.addToBackStack(null);
         transaction.commit();
-    }
-
-    @Override
-    public void showLoginActivity() {
-        startActivity(new Intent(getActivity(), LoginActivity.class));
-        getActivity().finish();
     }
 
     @Override
