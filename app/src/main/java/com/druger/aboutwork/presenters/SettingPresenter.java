@@ -34,7 +34,7 @@ public class SettingPresenter extends MvpPresenter<SettingsView> {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "User account deleted.");
                             getViewState().showToast(R.string.profile_deleted);
-                            getViewState().showSignupActivity();
+                            getViewState().showMainActivity();
                         } else {
                             getViewState().showToast(R.string.failed_delete_user);
                         }

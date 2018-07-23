@@ -12,7 +12,7 @@ public interface SettingsView extends MvpView {
 
     void showLoginActivity();
 
-    void showSignupActivity();
+    void showMainActivity();
 
     void showToast(@StringRes int resId);
 

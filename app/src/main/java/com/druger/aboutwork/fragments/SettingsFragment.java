@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.LoginActivity;
-import com.druger.aboutwork.activities.SignupActivity;
+import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.interfaces.view.SettingsView;
 import com.druger.aboutwork.presenters.SettingPresenter;
 
@@ -121,8 +121,8 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
-    public void showSignupActivity() {
-        startActivity(new Intent(getActivity(), SignupActivity.class));
+    public void showMainActivity() {
+        startActivity(new Intent(getActivity(), MainActivity.class));
     }
 
     @Override

@@ -7,7 +7,6 @@ import com.druger.aboutwork.presenters.CommentsPresenter;
 import com.druger.aboutwork.presenters.CompaniesPresenter;
 import com.druger.aboutwork.presenters.CompanyDetailPresenter;
 import com.druger.aboutwork.presenters.ReviewPresenter;
-import com.druger.aboutwork.presenters.SignupPresenter;
 
 import javax.inject.Singleton;
 
@@ -23,7 +22,6 @@ public interface AppComponent {
 
     void inject(AccountFragment fragment);
     void inject(CommentsPresenter presenter);
-    void inject(SignupPresenter presenter);
 
     CompaniesPresenter getCompaniesPresenter();
 

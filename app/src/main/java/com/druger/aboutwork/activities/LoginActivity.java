@@ -9,9 +9,14 @@ import android.widget.Toast;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.BuildConfig;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.db.FirebaseHelper;
+import com.druger.aboutwork.model.User;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseUserMetadata;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.Arrays;
@@ -45,6 +50,9 @@ public class LoginActivity extends AppCompatActivity {
             IdpResponse idpResponse = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
+                if (isNewUser()) {
+                    saveNewUser();
+                }
                 finish();
             } else {
                 if (idpResponse == null) {
@@ -62,6 +70,22 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         }
+    }
+
+    private boolean isNewUser() {
+        FirebaseUserMetadata metadata = FirebaseAuth.getInstance().getCurrentUser().getMetadata();
+        if (metadata.getCreationTimestamp() == metadata.getLastSignInTimestamp()) {
+            return true;
+        }
+        return false;
+    }
+
+    private void saveNewUser() {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        String id = firebaseUser.getUid();
+        String name = firebaseUser.getDisplayName();
+        User user = new User(id, name);
+        FirebaseHelper.addUser(user, id);
     }
 
     @Override
