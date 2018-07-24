@@ -7,9 +7,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.db.FirebaseHelper;
+import com.druger.aboutwork.db.RealmHelper;
 import com.druger.aboutwork.interfaces.view.AccountView;
 import com.druger.aboutwork.model.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +27,8 @@ import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.File;
 
+import javax.inject.Inject;
+
 import static android.app.Activity.RESULT_OK;
 
 /**
@@ -34,8 +36,7 @@ import static android.app.Activity.RESULT_OK;
  */
 
 @InjectViewState
-public class AccountPresenter extends MvpPresenter<AccountView> {
-    private static final String TAG = AccountPresenter.class.getSimpleName();
+public class AccountPresenter extends BasePresenter<AccountView> {
 
     private FirebaseUser user;
     private FirebaseStorage storage;
@@ -48,8 +49,10 @@ public class AccountPresenter extends MvpPresenter<AccountView> {
     private Context context;
     private Uri selectedImgUri;
 
-    public AccountPresenter() {
+    @Inject
+    public AccountPresenter(RealmHelper realmHelper) {
         storage = FirebaseStorage.getInstance();
+        this.realmHelper = realmHelper;
     }
 
     public void getUserInfo() {
@@ -91,6 +94,7 @@ public class AccountPresenter extends MvpPresenter<AccountView> {
 
     public void logout() {
         FirebaseAuth.getInstance().signOut();
+        realmHelper.deleteAllData();
     }
 
     public void clickOpenSettings() {

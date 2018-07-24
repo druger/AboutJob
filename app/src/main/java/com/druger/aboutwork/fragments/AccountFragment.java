@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.bumptech.glide.Glide;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
@@ -50,6 +51,11 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     private TextView tvLogout;
     private CircleImageView civAvatar;
     private TextView tvEmail;
+
+    @ProvidePresenter
+    AccountPresenter getAccountPresenter() {
+        return App.Companion.getAppComponent().getAccountPresenter();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -29,4 +29,10 @@ class RealmHelper {
 
     fun getCompanies(): RealmResults<CompanyRealm> = realm.where(CompanyRealm::class.java)
             .sort(DATE_COLUMN, Sort.DESCENDING).findAllAsync()
+
+    fun deleteAllData() {
+        realm.beginTransaction()
+        realm.deleteAll()
+        realm.commitTransaction()
+    }
 }
