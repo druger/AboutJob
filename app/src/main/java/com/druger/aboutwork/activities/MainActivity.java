@@ -5,7 +5,6 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +18,6 @@ import com.druger.aboutwork.fragments.CompaniesFragment;
 import com.druger.aboutwork.fragments.RatingsFragment;
 import com.druger.aboutwork.interfaces.view.MainView;
 import com.druger.aboutwork.presenters.MainPresenter;
-import com.druger.aboutwork.utils.recycler.BottomNavigationBehavior;
 import com.squareup.leakcanary.RefWatcher;
 
 public class MainActivity extends MvpAppCompatActivity implements MainView {
@@ -39,16 +37,10 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         checkAuthUser();
         setupUI();
         setupUX();
-        setupHidingBottomNavigation();
     }
 
     private void checkAuthUser() {
         mainPresenter.checkAuthUser();
-    }
-
-    private void setupHidingBottomNavigation() {
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigation.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationBehavior());
     }
 
     private void setupToolbar() {
@@ -134,17 +126,5 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        slideUpBottomNavigation();
-    }
-
-    public void slideUpBottomNavigation() {
-        bottomNavigation.clearAnimation();
-        bottomNavigation.animate().translationY(0);
-        bottomNavigation.setVisibility(View.VISIBLE);
     }
 }
