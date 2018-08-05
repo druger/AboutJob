@@ -22,4 +22,7 @@
     <color name="text_btn_auth">@color/endAuthBg</color>
     <color name="text_btn_auth_disabled">#803F2B96</color>
     <color name="control_normal_auth">#1FFFFFFF</color>
+
+    <color name="review_positive">#64C934</color>
+    <color name="review_negative">#FF4747</color>
 </resources>
