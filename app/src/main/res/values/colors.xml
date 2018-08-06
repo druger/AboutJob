@@ -25,4 +25,5 @@
 
     <color name="review_positive">#64C934</color>
     <color name="review_negative">#FF4747</color>
+    <color name="star">#F2C94C</color>
 </resources>
