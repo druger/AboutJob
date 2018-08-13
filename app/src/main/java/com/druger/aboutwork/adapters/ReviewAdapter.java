@@ -3,8 +3,8 @@ package com.druger.aboutwork.adapters;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -15,7 +15,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.druger.aboutwork.R;
-import com.druger.aboutwork.databinding.ReviewCardBinding;
+import com.druger.aboutwork.databinding.ReviewCardNewBinding;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.model.CompanyDetail;
@@ -61,8 +61,8 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder viewHolder = null;
         if (viewType == TYPE_ITEM) {
-            ReviewCardBinding itemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                    R.layout.review_card, parent, false);
+            ReviewCardNewBinding itemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                    R.layout.review_card_new, parent, false);
             viewHolder = new ReviewVH(itemBinding);
         } else if (viewType == TYPE_HEADER) {
             View headerView = LayoutInflater.from(parent.getContext())
@@ -79,8 +79,8 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             ReviewVH reviewVH = (ReviewVH) holder;
             final Review review = reviews.get(position);
             ((ReviewVH) holder).bind(review);
-            reviewVH.cardView.setCardBackgroundColor(isSelected(position)
-                    ? ContextCompat.getColor(reviewVH.cardView.getContext(), R.color.red200) : Color.WHITE);
+            reviewVH.clReviewCard.setBackgroundColor(isSelected(position)
+                    ? ContextCompat.getColor(reviewVH.clReviewCard.getContext(), R.color.red200) : Color.WHITE);
 
             setColorLikeAndDislike(reviewVH, review);
             onLikeClick(reviewVH, review);
@@ -189,16 +189,16 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     }
 
     static class ReviewVH extends BaseViewHolder {
-        ReviewCardBinding binding;
-        CardView cardView;
+        ReviewCardNewBinding binding;
+        ConstraintLayout clReviewCard;
         ImageView ivLike;
         ImageView ivDislike;
 
-        ReviewVH(ReviewCardBinding binding) {
+        ReviewVH(ReviewCardNewBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
 
-            cardView = bindView(R.id.card_view);
+            clReviewCard = bindView(R.id.clReviewCard);
             ivLike = bindView(R.id.ivLike);
             ivDislike = bindView(R.id.ivDislike);
         }
