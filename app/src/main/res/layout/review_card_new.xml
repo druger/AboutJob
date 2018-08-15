@@ -2,17 +2,19 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <import type="com.druger.aboutwork.utils.Utils" />
+
         <import type="com.druger.aboutwork.model.MarkCompany" />
+
         <variable
             name="review"
             type="com.druger.aboutwork.model.Review" />
     </data>
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/clReviewCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,10 +26,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:text="@{review.name}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="druger"
-            android:text="@{review.name}"/>
+            tools:text="druger" />
 
         <TextView
             android:id="@+id/tvCity"
@@ -35,10 +37,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:text="@{review.city}"
             app:layout_constraintStart_toEndOf="@+id/tvName"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Moscow"
-            android:text="@{review.city}"/>
+            tools:text="Moscow" />
 
         <TextView
             android:id="@+id/tvDate"
@@ -46,10 +48,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
+            android:text="@{Utils.getDate(review.date)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="06.08.2018"
-            android:text="@{Utils.getDate(review.date)}"/>
+            tools:text="06.08.2018" />
 
         <TextView
             android:id="@+id/tvPosition"
@@ -57,10 +59,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:text="@{review.position}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvName"
-            tools:text="developer"
-            android:text="@{review.position}"/>
+            tools:text="developer" />
 
         <TextView
             android:id="@+id/tvStatus"
@@ -88,27 +90,27 @@
             android:id="@+id/tvPluses"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:drawablePadding="-15dp"
+            android:drawablePadding="-5dp"
             android:gravity="center"
+            android:drawableStart="@drawable/ic_verticalline_green"
+            android:text="@{review.pluses}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line"
-            tools:text="какие-то плюсы"
-            android:text="@{review.pluses}"/>
+            tools:text="какие-то плюсы" />
 
         <TextView
             android:id="@+id/tvMinuses"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:drawablePadding="-15dp"
+            android:drawablePadding="-5dp"
+            android:drawableStart="@drawable/ic_verticalline_red"
             android:gravity="center"
+            android:text="@{review.minuses}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvPluses"
-            tools:text="какие-то минусы"
-            android:text="@{review.minuses}"/>
+            tools:text="какие-то минусы" />
 
         <TextView
             android:id="@+id/tvRating"
@@ -119,10 +121,10 @@
             android:drawableEnd="@drawable/ic_star_orange"
             android:drawablePadding="@dimen/small_margin"
             android:gravity="center"
+            android:text="@{String.valueOf(review.markCompany.getAverageMark())}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
-            tools:text="3.0"
-            android:text="@{String.valueOf(review.markCompany.getAverageMark())}"/>
+            tools:text="3.0" />
 
         <TextView
             android:id="@+id/tvDislike"
@@ -131,10 +133,10 @@
             android:layout_marginEnd="8dp"
             android:layout_marginTop="16dp"
             android:gravity="center"
+            android:text="@{String.valueOf(review.dislike)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
-            tools:text="1"
-            android:text="@{String.valueOf(review.dislike)}"/>
+            tools:text="1" />
 
         <TextView
             android:id="@+id/tvLike"
@@ -144,7 +146,7 @@
             android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="@{String.valueOf(review.like)}"
-            app:layout_constraintEnd_toStartOf="@+id/imageView"
+            app:layout_constraintEnd_toStartOf="@+id/ivDislike"
             app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
             tools:text="2" />
 
@@ -155,12 +157,12 @@
             android:layout_marginEnd="8dp"
             android:layout_marginTop="16dp"
             android:gravity="center"
-            app:layout_constraintEnd_toStartOf="@+id/imageView2"
+            app:layout_constraintEnd_toStartOf="@+id/ivLike"
             app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
             tools:text="5" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/ivDislike"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/ultra_small_margin"
@@ -170,7 +172,7 @@
             app:srcCompat="@drawable/thumb_down" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/ivLike"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/ultra_small_margin"
@@ -180,7 +182,7 @@
             app:srcCompat="@drawable/thumb_up" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/ivComments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/ultra_small_margin"
