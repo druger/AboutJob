@@ -207,16 +207,16 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
             String userName = etName.getText().toString();
             if (!userName.trim().isEmpty()) {
                 tvName.setText(userName);
-                Utils.hideKeyboard(getActivity(), etName);
+                Utils.INSTANCE.hideKeyboard(getActivity(), etName);
                 accountPresenter.changeUserName(userName, userId);
             }
         });
         builder.setNegativeButton(R.string.cancel, (dialog, which) -> {
-            Utils.hideKeyboard(getActivity(), etName);
+            Utils.INSTANCE.hideKeyboard(getActivity(), etName);
             dialog.cancel();
         });
         builder.show();
-        Utils.showKeyboard(getActivity());
+        Utils.INSTANCE.showKeyboard(getActivity());
     }
 
     @Override

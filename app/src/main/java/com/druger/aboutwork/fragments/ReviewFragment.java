@@ -461,7 +461,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
             c.set(Calendar.MONTH, monthOfYear);
             c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             date = c.getTimeInMillis();
-            etDate.setText(Utils.getDate(date));
+            etDate.setText(Utils.INSTANCE.getDate(date));
 
             switch (flag) {
                 case EMPLOYMENT_DATE:

@@ -191,7 +191,7 @@ public class CommentsFragment extends BaseFragment implements CommentsView {
                 commentsPresenter.addComment(message, reviewId);
             } else if (type == UPDATE) {
                 commentsPresenter.updateComment(message);
-                Utils.hideKeyboard(getActivity(), this.etMessage);
+                Utils.INSTANCE.hideKeyboard(getActivity(), this.etMessage);
                 this.type = NEW;
             }
             this.etMessage.setText(null);
@@ -232,7 +232,7 @@ public class CommentsFragment extends BaseFragment implements CommentsView {
                     break;
                 case 1:
                     etMessage.setText(commentsPresenter.getComment().getMessage());
-                    Utils.showKeyboard(getActivity());
+                    Utils.INSTANCE.showKeyboard(getActivity());
                     etMessage.setFocusableInTouchMode(true);
                     etMessage.setSelection(commentsPresenter.getComment().getMessage().length());
                     type = UPDATE;

@@ -18,6 +18,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../Examples/Examples/ArcProgressStackView/app/src/main/java/devlight/io/sample/MainActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/build.gradle">
           <value>
             <set />
@@ -469,6 +474,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/druger/aboutwork/utils/Utils.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/druger/aboutwork/utils/Utils.kt">
           <value>
             <set />
           </value>
