@@ -2,11 +2,9 @@ package com.druger.aboutwork.adapters;
 
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
-import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +18,7 @@ import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.Review;
+import com.druger.aboutwork.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,7 +65,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             viewHolder = new ReviewVH(itemBinding);
         } else if (viewType == TYPE_HEADER) {
             View headerView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.header_reviews, parent, false);
+                    .inflate(R.layout.header_reviews_new, parent, false);
             viewHolder = new HeaderVH(headerView);
         }
         return viewHolder;
@@ -91,11 +90,9 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
                     clickListener != null && clickListener.onLongClick(reviewVH.getAdapterPosition()));
         } else if (itemType == TYPE_HEADER) {
             HeaderVH headerVH = (HeaderVH) holder;
-            headerVH.setDescription(companyDetail);
             headerVH.showCountReviews(getItemCount() - 1);
-            headerVH.downDropClick();
-            headerVH.upDropClick();
-            headerVH.site.setOnClickListener(v -> urlClickListener.urlClick(companyDetail.getSite()));
+            headerVH.tvSite.setOnClickListener(v -> urlClickListener.urlClick(companyDetail.getSite()));
+            headerVH.setSalaryRating(5);
         }
     }
 
@@ -251,62 +248,27 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     }
 
     static class HeaderVH extends BaseViewHolder {
-        TextView tvDescription;
-        ImageView ivDownDrop;
-        ImageView ivUpDrop;
         TextView tvRating;
         TextView tvCountReviews;
-        TextView site;
+        TextView tvSite;
         RatingBar ratingCompany;
+        ImageView ivRatingSalary;
 
         HeaderVH(View itemView) {
             super(itemView);
-            site = bindView(R.id.tvSite);
-            tvDescription = bindView(R.id.tvContentDescription);
-            ivDownDrop = bindView(R.id.ivDownDrop);
-            ivUpDrop = bindView(R.id.ivUpDrop);
+            tvSite = bindView(R.id.tvSite);
             tvCountReviews = bindView(R.id.tvCountReviews);
             tvRating = bindView(R.id.tvRating);
-            ratingCompany = bindView(R.id.rating_company);
-        }
-
-        void setDescription(CompanyDetail company) {
-            if (company != null) {
-                tvDescription.setVisibility(View.GONE);
-
-                String iDescription = company.getDescription();
-                if (iDescription != null) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        tvDescription.setText(Html.fromHtml(iDescription, Html.FROM_HTML_MODE_LEGACY));
-                    } else {
-                        tvDescription.setText(Html.fromHtml(iDescription));
-                    }
-                }
-            }
+            ratingCompany = bindView(R.id.ratingBarCompany);
+            ivRatingSalary = bindView(R.id.ivRatingSalary);
         }
 
         void showCountReviews(int count) {
             tvCountReviews.setText(String.valueOf(count));
         }
 
-        void downDropClick() {
-            ivDownDrop.setOnClickListener(v -> showDescription());
-        }
-
-        private void showDescription() {
-            ivDownDrop.setVisibility(View.INVISIBLE);
-            ivUpDrop.setVisibility(View.VISIBLE);
-            tvDescription.setVisibility(View.VISIBLE);
-        }
-
-        void upDropClick() {
-            ivUpDrop.setOnClickListener(v -> hideDescription());
-        }
-
-        private void hideDescription() {
-            ivUpDrop.setVisibility(View.INVISIBLE);
-            ivDownDrop.setVisibility(View.VISIBLE);
-            tvDescription.setVisibility(View.GONE);
+        void setSalaryRating(int percent) {
+            ivRatingSalary.setImageBitmap(Utils.INSTANCE.crateArcBitmap(itemView.getContext(), percent));
         }
     }
 

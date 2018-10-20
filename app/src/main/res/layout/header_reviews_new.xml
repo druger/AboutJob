@@ -119,4 +119,45 @@
         app:layout_constraintBottom_toBottomOf="@+id/tvRating"
         app:layout_constraintStart_toStartOf="@+id/tvSite"
         app:layout_constraintTop_toTopOf="@+id/tvRating" />
+
+    <ImageView
+        android:id="@+id/ivRatingSalary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view2"
+        tools:src="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/tvCountReviews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivRatingSalary"
+        tools:text="5" />
+
+    <TextView
+        android:id="@+id/tvReviews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/reviews"
+        app:layout_constraintStart_toEndOf="@+id/tvCountReviews"
+        app:layout_constraintTop_toBottomOf="@+id/ivRatingSalary" />
+
+    <ImageView
+        android:id="@+id/ivFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvReviews"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvReviews"
+        app:srcCompat="@drawable/ic_filter" />
 </android.support.constraint.ConstraintLayout>

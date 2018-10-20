@@ -14,6 +14,7 @@ import java.util.*
  */
 object Utils {
 
+    @JvmStatic
     fun getDate(date: Long): String {
         val dateFormat = SimpleDateFormat("dd.MM.yy", Locale.getDefault())
         return dateFormat.format(date)
@@ -37,8 +38,8 @@ object Utils {
     }
 
     fun crateArcBitmap(context: Context, percent: Int): Bitmap {
-        val width = 400
-        val height = 400
+        val width = 200
+        val height = 200
         val stroke = 20f
         val padding = 5
         val density = context.resources.displayMetrics.density
@@ -60,8 +61,10 @@ object Utils {
 
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
-        arcStroke.color = Color.argb(75, 255, 255, 255);
+        arcStroke.color = Color.argb(75, 0, 0, 255);
         canvas.drawArc(arc, 135f, 275f, false, arcStroke)
+        arcStroke.color = Color.BLUE
+        canvas.drawArc(arc, 135f, 200f, false, arcStroke)
         canvas.drawText(percent.toString() + "/5", (bitmap.width / 2).toFloat(),
                 (bitmap.height - text.ascent()) / 2,
                 text)
