@@ -12,7 +12,8 @@
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
         android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="@color/bg_company_detail">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvReviews"

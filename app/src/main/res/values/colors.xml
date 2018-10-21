@@ -26,4 +26,6 @@
     <color name="review_positive">#64C934</color>
     <color name="review_negative">#FF4747</color>
     <color name="star">#F2C94C</color>
+
+    <color name="bg_company_detail">#E5E5E5</color>
 </resources>

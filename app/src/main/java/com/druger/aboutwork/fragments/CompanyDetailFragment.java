@@ -4,7 +4,6 @@ package com.druger.aboutwork.fragments;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -14,12 +13,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.adapters.ReviewAdapter;
@@ -46,11 +42,9 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     @InjectPresenter
     CompanyDetailPresenter companyDetailPresenter;
 
-    private ImageView ivToolbar;
     private FloatingActionButton fabAddReview;
     private CoordinatorLayout ltContent;
 
-    private CollapsingToolbarLayout collapsingToolbar;
     @SuppressWarnings("FieldCanBeLocal")
     private RecyclerView rvReviews;
     private List<Review> reviews = new ArrayList<>();
@@ -111,7 +105,6 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void setupUI() {
-        ivToolbar = bindView(R.id.ivToolbar);
         fabAddReview = bindView(R.id.fabAddReview);
         ltContent = bindView(R.id.ltContent);
         ltError = bindView(R.id.ltError);
@@ -123,7 +116,6 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
         toolbar = bindView(R.id.toolbar);
         setActionBar(toolbar);
         getActionBar().setDisplayHomeAsUpEnabled(true);
-        collapsingToolbar = bindView(R.id.collapsingToolbar);
     }
 
     private void setupRecycler(final List<Review> reviews) {
@@ -223,25 +215,7 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     public void showCompanyDetail(CompanyDetail company) {
         companyDetail = company;
         reviewAdapter.setCompanyDetail(company);
-        setToolbarName(company.getName());
-        loadImage(company);
         companyDetailPresenter.getReviews(company.getId(), 1);
-    }
-
-    private void setToolbarName(String name) {
-        collapsingToolbar.setTitle(name);
-        collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
-    }
-
-    private void loadImage(CompanyDetail company) {
-        CompanyDetail.Logo logo = company.getLogo();
-        Glide.with(this)
-                .load(logo != null ? logo.getOriginal() : "")
-                .placeholder(R.drawable.ic_default_company)
-                .error(R.drawable.ic_default_company)
-                .crossFade()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(ivToolbar);
     }
 
     @Override

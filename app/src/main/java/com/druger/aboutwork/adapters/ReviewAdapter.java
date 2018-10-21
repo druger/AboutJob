@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.databinding.ReviewCardNewBinding;
 import com.druger.aboutwork.db.FirebaseHelper;
@@ -93,6 +95,8 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             headerVH.showCountReviews(getItemCount() - 1);
             headerVH.tvSite.setOnClickListener(v -> urlClickListener.urlClick(companyDetail.getSite()));
             headerVH.setSalaryRating(5);
+            headerVH.setCompanyName(companyDetail.getName());
+            headerVH.loadImage(companyDetail);
         }
     }
 
@@ -248,19 +252,23 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     }
 
     static class HeaderVH extends BaseViewHolder {
+        TextView tvCompanyName;
         TextView tvRating;
         TextView tvCountReviews;
         TextView tvSite;
         RatingBar ratingCompany;
         ImageView ivRatingSalary;
+        ImageView ivLogo;
 
         HeaderVH(View itemView) {
             super(itemView);
+            tvCompanyName = bindView(R.id.tvCompanyName);
             tvSite = bindView(R.id.tvSite);
             tvCountReviews = bindView(R.id.tvCountReviews);
             tvRating = bindView(R.id.tvRating);
             ratingCompany = bindView(R.id.ratingBarCompany);
             ivRatingSalary = bindView(R.id.ivRatingSalary);
+            ivLogo = bindView(R.id.ivLogo);
         }
 
         void showCountReviews(int count) {
@@ -269,6 +277,21 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
 
         void setSalaryRating(int percent) {
             ivRatingSalary.setImageBitmap(Utils.INSTANCE.crateArcBitmap(itemView.getContext(), percent));
+        }
+
+        void setCompanyName(String name) {
+            tvCompanyName.setText(name);
+        }
+
+        void loadImage(CompanyDetail company) {
+            CompanyDetail.Logo logo = company.getLogo();
+            Glide.with(itemView.getContext())
+                    .load(logo != null ? logo.getOriginal() : "")
+                    .placeholder(R.drawable.ic_default_company)
+                    .error(R.drawable.ic_default_company)
+                    .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(ivLogo);
         }
     }
 
