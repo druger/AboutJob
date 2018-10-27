@@ -94,6 +94,8 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             HeaderVH headerVH = (HeaderVH) holder;
             headerVH.showCountReviews(getItemCount() - 1);
             headerVH.tvSite.setOnClickListener(v -> urlClickListener.urlClick(companyDetail.getSite()));
+            headerVH.tvSite.setText(companyDetail.getSite());
+            headerVH.tvCity.setText(companyDetail.getArea().getName());
             headerVH.setSalaryRating(5);
             headerVH.setCompanyName(companyDetail.getName());
             headerVH.loadImage(companyDetail);
@@ -256,6 +258,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
         TextView tvRating;
         TextView tvCountReviews;
         TextView tvSite;
+        TextView tvCity;
         RatingBar ratingCompany;
         ImageView ivRatingSalary;
         ImageView ivLogo;
@@ -269,6 +272,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             ratingCompany = bindView(R.id.ratingBarCompany);
             ivRatingSalary = bindView(R.id.ivRatingSalary);
             ivLogo = bindView(R.id.ivLogo);
+            tvCity = bindView(R.id.tvCity);
         }
 
         void showCountReviews(int count) {

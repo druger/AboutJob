@@ -40,7 +40,7 @@ object Utils {
     fun crateArcBitmap(context: Context, percent: Int): Bitmap {
         val width = 200
         val height = 200
-        val stroke = 20f
+        val stroke = 10f
         val padding = 5
         val density = context.resources.displayMetrics.density
 

@@ -104,24 +104,43 @@
                 android:layout_marginTop="8dp"
                 android:drawablePadding="-5dp"
                 android:gravity="center"
-                android:drawableStart="@drawable/ic_verticalline_green"
                 android:text="@{review.pluses}"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/line"
+                card_view:layout_constraintStart_toEndOf="@+id/ivGreenLine"
                 tools:text="какие-то плюсы" />
+
+            <ImageView
+                android:id="@+id/ivGreenLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_verticalline_green"
+                card_view:layout_constraintBottom_toBottomOf="@+id/tvPluses"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toTopOf="@+id/tvPluses" />
+
 
             <TextView
                 android:id="@+id/tvMinuses"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:drawablePadding="-5dp"
-                android:drawableStart="@drawable/ic_verticalline_red"
                 android:gravity="center"
                 android:text="@{review.minuses}"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvPluses"
+                card_view:layout_constraintStart_toEndOf="@+id/ivRedLine"
                 tools:text="какие-то минусы" />
+
+            <ImageView
+                android:id="@+id/ivRedLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_verticalline_red"
+                card_view:layout_constraintBottom_toBottomOf="@+id/tvMinuses"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toTopOf="@+id/tvMinuses" />
+
 
             <TextView
                 android:id="@+id/tvRating"
@@ -201,7 +220,6 @@
                 app:layout_constraintEnd_toStartOf="@+id/tvComments"
                 app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
                 app:srcCompat="@drawable/ic_message_black" />
-
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 </layout>
