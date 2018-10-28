@@ -97,6 +97,11 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             headerVH.tvSite.setText(companyDetail.getSite());
             headerVH.tvCity.setText(companyDetail.getArea().getName());
             headerVH.setSalaryRating(5);
+            headerVH.setChiefRating(3);
+            headerVH.setWorkplaceRating(2);
+            headerVH.setCarrierRating(1);
+            headerVH.setCollectiveRating(4);
+            headerVH.setSocialPackageRating(5);
             headerVH.setCompanyName(companyDetail.getName());
             headerVH.loadImage(companyDetail);
         }
@@ -261,6 +266,11 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
         TextView tvCity;
         RatingBar ratingCompany;
         ImageView ivRatingSalary;
+        ImageView ivRatingChief;
+        ImageView ivRatingWorkPlace;
+        ImageView ivRatingCareer;
+        ImageView ivRatingCollective;
+        ImageView ivRatingSocialPackage;
         ImageView ivLogo;
 
         HeaderVH(View itemView) {
@@ -271,6 +281,11 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             tvRating = bindView(R.id.tvRating);
             ratingCompany = bindView(R.id.ratingBarCompany);
             ivRatingSalary = bindView(R.id.ivRatingSalary);
+            ivRatingChief = bindView(R.id.ivRatingChief);
+            ivRatingWorkPlace = bindView(R.id.ivRatingWorkPlace);
+            ivRatingCareer = bindView(R.id.ivRatingCareer);
+            ivRatingCollective = bindView(R.id.ivRatingCollective);
+            ivRatingSocialPackage = bindView(R.id.ivRatingSocialPackage);
             ivLogo = bindView(R.id.ivLogo);
             tvCity = bindView(R.id.tvCity);
         }
@@ -281,6 +296,26 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
 
         void setSalaryRating(int percent) {
             ivRatingSalary.setImageBitmap(Utils.INSTANCE.crateArcBitmap(itemView.getContext(), percent));
+        }
+
+        void setChiefRating(int percent) {
+            ivRatingChief.setImageBitmap(Utils.INSTANCE.crateArcBitmap(itemView.getContext(), percent));
+        }
+
+        void setWorkplaceRating(int percent) {
+            ivRatingWorkPlace.setImageBitmap(Utils.INSTANCE.crateArcBitmap(itemView.getContext(), percent));
+        }
+
+        void setCarrierRating(int percent) {
+            ivRatingCareer.setImageBitmap(Utils.INSTANCE.crateArcBitmap(itemView.getContext(), percent));
+        }
+
+        void setCollectiveRating(int percent) {
+            ivRatingCollective.setImageBitmap(Utils.INSTANCE.crateArcBitmap(itemView.getContext(), percent));
+        }
+
+        void setSocialPackageRating(int percent) {
+            ivRatingSocialPackage.setImageBitmap(Utils.INSTANCE.crateArcBitmap(itemView.getContext(), percent));
         }
 
         void setCompanyName(String name) {
