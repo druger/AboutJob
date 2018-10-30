@@ -65,12 +65,10 @@ object Utils {
         canvas.drawArc(arc, 135f, 275f, false, arcStroke)
         arcStroke.color = Color.BLUE
         canvas.drawArc(arc, 135f, 200f, false, arcStroke)
+        text.textSize = 150 / density
         canvas.drawText(percent.toString() + "/5", (bitmap.width / 2).toFloat(),
                 (bitmap.height - text.ascent()) / 2,
                 text)
-        canvas.drawText("Salary", (bitmap.width / 2).toFloat(),
-                bitmap.height - (stroke + padding), text)
-
         return bitmap
     }
 }

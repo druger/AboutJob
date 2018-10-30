@@ -86,6 +86,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             setColorLikeAndDislike(reviewVH, review);
             onLikeClick(reviewVH, review);
             onDislikeClick(reviewVH, review);
+            setStatus(reviewVH, review);
 
             holder.itemView.setOnClickListener(v -> itemClick(reviewVH, review));
             holder.itemView.setOnLongClickListener(v ->
@@ -104,6 +105,20 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             headerVH.setSocialPackageRating(5);
             headerVH.setCompanyName(companyDetail.getName());
             headerVH.loadImage(companyDetail);
+        }
+    }
+
+    private void setStatus(ReviewVH reviewVH, Review review) {
+        switch (review.getStatus()) {
+            case 0:
+                reviewVH.tvStatus.setText(R.string.working);
+                break;
+            case 1:
+                reviewVH.tvStatus.setText(R.string.worked);
+                break;
+            case 2:
+                reviewVH.tvStatus.setText(R.string.interview);
+                break;
         }
     }
 
@@ -201,6 +216,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
         ConstraintLayout clReviewCard;
         ImageView ivLike;
         ImageView ivDislike;
+        TextView tvStatus;
 
         ReviewVH(ReviewCardNewBinding binding) {
             super(binding.getRoot());
@@ -209,6 +225,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             clReviewCard = bindView(R.id.clReviewCard);
             ivLike = bindView(R.id.ivLike);
             ivDislike = bindView(R.id.ivDislike);
+            tvStatus = bindView(R.id.tvStatus);
         }
 
         void bind(Review review) {

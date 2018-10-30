@@ -101,13 +101,14 @@
 
             <TextView
                 android:id="@+id/tvPluses"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"
-                android:drawablePadding="-5dp"
-                android:gravity="center"
+                android:maxLines="3"
                 android:text="@{review.pluses}"
                 app:layout_constraintTop_toBottomOf="@+id/line"
+                card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintStart_toEndOf="@+id/ivGreenLine"
                 tools:text="какие-то плюсы" />
 
@@ -120,16 +121,16 @@
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="@+id/tvPluses" />
 
-
             <TextView
                 android:id="@+id/tvMinuses"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"
-                android:drawablePadding="-5dp"
-                android:gravity="center"
+                android:maxLines="3"
                 android:text="@{review.minuses}"
                 app:layout_constraintTop_toBottomOf="@+id/tvPluses"
+                card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintStart_toEndOf="@+id/ivRedLine"
                 tools:text="какие-то минусы" />
 
@@ -175,7 +176,7 @@
                 android:id="@+id/tvLike"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="10dp"
                 android:gravity="center"
                 android:text="@{String.valueOf(review.like)}"
                 app:layout_constraintEnd_toStartOf="@+id/ivDislike"
@@ -188,13 +189,13 @@
                 android:id="@+id/tvComments"
                 android:layout_width="6dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="10dp"
                 android:gravity="center"
+                android:text="0"
                 app:layout_constraintEnd_toStartOf="@+id/ivLike"
                 app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
                 card_view:layout_constraintBottom_toBottomOf="@+id/ivComments"
-                card_view:layout_constraintTop_toTopOf="@+id/ivComments"
-                tools:text="5" />
+                card_view:layout_constraintTop_toTopOf="@+id/ivComments" />
 
             <ImageView
                 android:id="@+id/ivDislike"
