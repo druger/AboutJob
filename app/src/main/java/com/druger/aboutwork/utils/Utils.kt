@@ -51,7 +51,7 @@ object Utils {
 
         val text = Paint(Paint.ANTI_ALIAS_FLAG)
         text.textSize = 5f / density
-        text.color = Color.BLUE
+        text.color = Color.BLACK
         text.textAlign = Paint.Align.CENTER
 
         val arc = RectF()
@@ -65,7 +65,7 @@ object Utils {
         canvas.drawArc(arc, 135f, 275f, false, arcStroke)
         arcStroke.color = Color.BLUE
         canvas.drawArc(arc, 135f, 200f, false, arcStroke)
-        text.textSize = 150 / density
+        text.textSize = 180 / density
         canvas.drawText(percent.toString() + "/5", (bitmap.width / 2).toFloat(),
                 (bitmap.height - text.ascent()) / 2,
                 text)
