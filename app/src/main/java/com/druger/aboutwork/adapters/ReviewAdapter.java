@@ -63,11 +63,11 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
         RecyclerView.ViewHolder viewHolder = null;
         if (viewType == TYPE_ITEM) {
             ReviewCardNewBinding itemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                    R.layout.review_card_new, parent, false);
+                    R.layout.review_card, parent, false);
             viewHolder = new ReviewVH(itemBinding);
         } else if (viewType == TYPE_HEADER) {
             View headerView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.header_reviews_new, parent, false);
+                    .inflate(R.layout.header_reviews, parent, false);
             viewHolder = new HeaderVH(headerView);
         }
         return viewHolder;
