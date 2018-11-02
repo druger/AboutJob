@@ -5,6 +5,9 @@ import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.QuoteSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +18,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.R;
-import com.druger.aboutwork.databinding.ReviewCardNewBinding;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.model.CompanyDetail;
@@ -62,7 +64,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder viewHolder = null;
         if (viewType == TYPE_ITEM) {
-            ReviewCardNewBinding itemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+            ReviewCardBinding itemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                     R.layout.review_card, parent, false);
             viewHolder = new ReviewVH(itemBinding);
         } else if (viewType == TYPE_HEADER) {
@@ -87,6 +89,8 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             onLikeClick(reviewVH, review);
             onDislikeClick(reviewVH, review);
             setStatus(reviewVH, review);
+            reviewVH.tvPluses.setText(getQuoteSpan(review.getPluses(), Color.GREEN));
+            reviewVH.tvMinuses.setText(getQuoteSpan(review.getMinuses(), Color.RED));
 
             holder.itemView.setOnClickListener(v -> itemClick(reviewVH, review));
             holder.itemView.setOnLongClickListener(v ->
@@ -106,6 +110,12 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             headerVH.setCompanyName(companyDetail.getName());
             headerVH.loadImage(companyDetail);
         }
+    }
+
+    private SpannableString getQuoteSpan(String text, int color) {
+        SpannableString string = new SpannableString(text);
+        string.setSpan(new QuoteSpan(color), 0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return string;
     }
 
     private void setStatus(ReviewVH reviewVH, Review review) {
@@ -212,13 +222,15 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     }
 
     static class ReviewVH extends BaseViewHolder {
-        ReviewCardNewBinding binding;
+        ReviewCardBinding binding;
         ConstraintLayout clReviewCard;
         ImageView ivLike;
         ImageView ivDislike;
         TextView tvStatus;
+        TextView tvPluses;
+        TextView tvMinuses;
 
-        ReviewVH(ReviewCardNewBinding binding) {
+        ReviewVH(ReviewCardBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
 
@@ -226,6 +238,8 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             ivLike = bindView(R.id.ivLike);
             ivDislike = bindView(R.id.ivDislike);
             tvStatus = bindView(R.id.tvStatus);
+            tvPluses = bindView(R.id.tvPluses);
+            tvMinuses = bindView(R.id.tvMinuses);
         }
 
         void bind(Review review) {

@@ -105,44 +105,26 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:maxLines="3"
-                android:text="@{review.pluses}"
                 app:layout_constraintTop_toBottomOf="@+id/line"
                 card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintStart_toEndOf="@+id/ivGreenLine"
-                tools:text="какие-то плюсы" />
-
-            <ImageView
-                android:id="@+id/ivGreenLine"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_verticalline_green"
-                card_view:layout_constraintBottom_toBottomOf="@+id/tvPluses"
                 card_view:layout_constraintStart_toStartOf="parent"
-                card_view:layout_constraintTop_toTopOf="@+id/tvPluses" />
+                tools:text="какие-то плюсы" />
 
             <TextView
                 android:id="@+id/tvMinuses"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:maxLines="3"
-                android:text="@{review.minuses}"
                 app:layout_constraintTop_toBottomOf="@+id/tvPluses"
                 card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintStart_toEndOf="@+id/ivRedLine"
-                tools:text="какие-то минусы" />
-
-            <ImageView
-                android:id="@+id/ivRedLine"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_verticalline_red"
-                card_view:layout_constraintBottom_toBottomOf="@+id/tvMinuses"
                 card_view:layout_constraintStart_toStartOf="parent"
-                card_view:layout_constraintTop_toTopOf="@+id/tvMinuses" />
+                tools:text="какие-то минусы" />
 
 
             <TextView
