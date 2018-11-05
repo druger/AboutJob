@@ -2,6 +2,7 @@ package com.druger.aboutwork.adapters;
 
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.databinding.ReviewCardBinding;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.model.CompanyDetail;
@@ -89,8 +91,8 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             onLikeClick(reviewVH, review);
             onDislikeClick(reviewVH, review);
             setStatus(reviewVH, review);
-            reviewVH.tvPluses.setText(getQuoteSpan(review.getPluses(), Color.GREEN));
-            reviewVH.tvMinuses.setText(getQuoteSpan(review.getMinuses(), Color.RED));
+            reviewVH.tvPluses.setText(reviewVH.getQuoteSpan(review.getPluses(), R.color.review_positive));
+            reviewVH.tvMinuses.setText(reviewVH.getQuoteSpan(review.getMinuses(), R.color.review_negative));
 
             holder.itemView.setOnClickListener(v -> itemClick(reviewVH, review));
             holder.itemView.setOnLongClickListener(v ->
@@ -110,12 +112,6 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             headerVH.setCompanyName(companyDetail.getName());
             headerVH.loadImage(companyDetail);
         }
-    }
-
-    private SpannableString getQuoteSpan(String text, int color) {
-        SpannableString string = new SpannableString(text);
-        string.setSpan(new QuoteSpan(color), 0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return string;
     }
 
     private void setStatus(ReviewVH reviewVH, Review review) {
@@ -245,6 +241,17 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
         void bind(Review review) {
             binding.setReview(review);
             binding.executePendingBindings();
+        }
+
+        // TODO добавить реализацию для api<28
+        private SpannableString getQuoteSpan(String text, int color) {
+            SpannableString string = new SpannableString(text);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                string.setSpan(new QuoteSpan(ContextCompat.getColor(itemView.getContext(), color),
+                                15, 30),
+                        0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+            return string;
         }
     }
 
