@@ -30,4 +30,6 @@
     <color name="bg_company_detail">#F7F6FB</color>
     <color name="icFilter">#3F2B96</color>
     <color name="fab_add">#7C4DFF</color>
+    <color name="bg_line_profile">#CC969AA2</color>
 </resources>
+
