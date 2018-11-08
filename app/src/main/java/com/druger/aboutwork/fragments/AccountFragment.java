@@ -66,12 +66,12 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_account, container, false);
+        rootView = inflater.inflate(R.layout.fragment_account_new, container, false);
 
-        setupUI();
-        accountPresenter.getUserInfo();
-        setupListeners();
-        setupToolbar();
+//        setupUI();
+//        accountPresenter.getUserInfo();
+//        setupListeners();
+//        setupToolbar();
 
         return rootView;
     }
