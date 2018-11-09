@@ -45,12 +45,11 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     PreferencesHelper preferencesHelper;
 
     private TextView tvName;
-    private ImageView ivEditName;
+    private ImageView ivEdit;
     private TextView tvMyReviews;
     private TextView tvSettings;
     private TextView tvLogout;
     private CircleImageView civAvatar;
-    private TextView tvEmail;
 
     @ProvidePresenter
     AccountPresenter getAccountPresenter() {
@@ -68,10 +67,9 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_account_new, container, false);
 
-//        setupUI();
-//        accountPresenter.getUserInfo();
-//        setupListeners();
-//        setupToolbar();
+        setupUI();
+        accountPresenter.getUserInfo();
+        setupListeners();
 
         return rootView;
     }
@@ -79,25 +77,18 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     private void setupListeners() {
         tvSettings.setOnClickListener(this);
         tvLogout.setOnClickListener(this);
-        ivEditName.setOnClickListener(this);
+        ivEdit.setOnClickListener(this);
         tvMyReviews.setOnClickListener(this);
         civAvatar.setOnClickListener(this);
     }
 
-    private void setupToolbar() {
-        toolbar = bindView(R.id.toolbar);
-        setActionBar(toolbar);
-        getActionBar().setTitle(R.string.profile);
-    }
-
     private void setupUI() {
         tvName = bindView(R.id.tvName);
-        ivEditName = bindView(R.id.ivEditName);
+        ivEdit = bindView(R.id.ivEdit);
         tvMyReviews = bindView(R.id.tvMyReviews);
         tvSettings =  bindView(R.id.tvSettings);
         tvLogout = bindView(R.id.tvLogout);
         civAvatar = bindView(R.id.civAvatar);
-        tvEmail = bindView(R.id.tvEmail);
     }
 
     @Override
@@ -109,8 +100,8 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.ivEditName:
-                accountPresenter.clickChangeName();
+            case R.id.ivEdit:
+//                accountPresenter.clickChangeName();
                 break;
             case R.id.tvSettings:
                 accountPresenter.clickOpenSettings();
@@ -139,11 +130,6 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         transaction.replace(R.id.main_container, MyReviewsFragment.newInstance(userId));
         transaction.addToBackStack(null);
         transaction.commit();
-    }
-
-    @Override
-    public void showEmail(String email) {
-        tvEmail.setText(email);
     }
 
     @Override

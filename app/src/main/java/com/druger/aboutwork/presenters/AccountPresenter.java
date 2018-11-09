@@ -61,7 +61,6 @@ public class AccountPresenter extends BasePresenter<AccountView> {
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-            getViewState().showEmail(user.getEmail());
             downloadPhoto();
             getName();
         }
