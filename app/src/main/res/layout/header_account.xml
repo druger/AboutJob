@@ -4,16 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@drawable/account_toolbar_gradient"
-    android:layout_height="wrap_content"
+    android:layout_height="180dp"
     android:layout_width="match_parent">
 
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
-        android:layout_height="17dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="@string/profile"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,7 +23,7 @@
         android:id="@+id/civAvatar"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tvTitle"
@@ -35,6 +36,7 @@
         android:layout_marginStart="16dp"
         android:layout_width="wrap_content"
         android:textColor="@android:color/white"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         app:layout_constraintBottom_toBottomOf="@+id/civAvatar"
         app:layout_constraintStart_toEndOf="@+id/civAvatar"
         app:layout_constraintTop_toTopOf="@+id/civAvatar"
