@@ -87,10 +87,6 @@ public class AccountPresenter extends BasePresenter<AccountView> {
         queryUser.addValueEventListener(valueEventListener);
     }
 
-    public void clickChangeName() {
-        getViewState().changeName(user.getUid());
-    }
-
     public void logout() {
         FirebaseAuth.getInstance().signOut();
         realmHelper.deleteAllData();
@@ -102,10 +98,6 @@ public class AccountPresenter extends BasePresenter<AccountView> {
 
     public void clickOpenMyReviews() {
         getViewState().openMyReviews(user.getUid());
-    }
-
-    public void changeUserName(String userName, String userId) {
-        FirebaseHelper.changeUserName(userName, userId);
     }
 
     public void checkActivityResult(Context context, int requestCode, int resultCode, Intent data) {

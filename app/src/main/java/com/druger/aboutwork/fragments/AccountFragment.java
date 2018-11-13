@@ -7,12 +7,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -23,7 +20,6 @@ import com.druger.aboutwork.R;
 import com.druger.aboutwork.interfaces.view.AccountView;
 import com.druger.aboutwork.presenters.AccountPresenter;
 import com.druger.aboutwork.utils.PreferencesHelper;
-import com.druger.aboutwork.utils.Utils;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.StorageReference;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -45,7 +41,6 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     PreferencesHelper preferencesHelper;
 
     private TextView tvName;
-    private ImageView ivEdit;
     private TextView tvMyReviews;
     private TextView tvSettings;
     private TextView tvLogout;
@@ -65,7 +60,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_account_new, container, false);
+        rootView = inflater.inflate(R.layout.fragment_account, container, false);
 
         setupUI();
         accountPresenter.getUserInfo();
@@ -77,14 +72,12 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     private void setupListeners() {
         tvSettings.setOnClickListener(this);
         tvLogout.setOnClickListener(this);
-        ivEdit.setOnClickListener(this);
         tvMyReviews.setOnClickListener(this);
         civAvatar.setOnClickListener(this);
     }
 
     private void setupUI() {
         tvName = bindView(R.id.tvName);
-        ivEdit = bindView(R.id.ivEdit);
         tvMyReviews = bindView(R.id.tvMyReviews);
         tvSettings =  bindView(R.id.tvSettings);
         tvLogout = bindView(R.id.tvLogout);
@@ -100,9 +93,6 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.ivEdit:
-//                accountPresenter.clickChangeName();
-                break;
             case R.id.tvSettings:
                 accountPresenter.clickOpenSettings();
                 break;
@@ -177,32 +167,6 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
                 .addToBackStack(null)
                 .commit();
 
-    }
-
-    @Override
-    public void changeName(final String userId) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_change_name, null);
-        final EditText etName = view.findViewById(R.id.etUserName);
-        etName.setText(tvName.getText());
-
-        builder.setTitle(R.string.new_name);
-        builder.setView(view);
-        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
-            String userName = etName.getText().toString();
-            if (!userName.trim().isEmpty()) {
-                tvName.setText(userName);
-                Utils.INSTANCE.hideKeyboard(getActivity(), etName);
-                accountPresenter.changeUserName(userName, userId);
-            }
-        });
-        builder.setNegativeButton(R.string.cancel, (dialog, which) -> {
-            Utils.INSTANCE.hideKeyboard(getActivity(), etName);
-            dialog.cancel();
-        });
-        builder.show();
-        Utils.INSTANCE.showKeyboard(getActivity());
     }
 
     @Override

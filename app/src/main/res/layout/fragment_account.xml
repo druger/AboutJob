@@ -1,119 +1,149 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/account_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.AccountFragment"
-    tools:ignore="ContentDescription">
+    android:layout_height="match_parent">
 
-    <include layout="@layout/toolbar" />
+    <include
+        android:id="@+id/header"
+        layout="@layout/header_account"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_gravity="bottom"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:layout_marginBottom="70dp"
-        android:clickable="true">
-
-        <TextView
-            android:id="@+id/tvLogout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:drawableLeft="@drawable/ic_logout"
-            android:drawableStart="@drawable/ic_logout"
-            android:drawablePadding="20dp"
-            android:text="@string/log_out"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black" />
-    </LinearLayout>
-
-    <LinearLayout
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:orientation="vertical">
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/civAvatar"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/small_margin"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            app:srcCompat="@drawable/ic_account_circle_black" />
-
-        <TextView
-            android:id="@+id/tvEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="35dp"
-            android:layout_marginBottom="20dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tvName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:drawableLeft="@drawable/ic_account_name"
-                android:drawableStart="@drawable/ic_account_name"
-                android:drawablePadding="20dp"
-                android:text="@string/name"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/black" />
 
             <ImageView
-                android:id="@+id/ivEditName"
+                android:id="@+id/ivMyReviews"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_gravity="center"
-                android:clickable="true"
-                app:srcCompat="@drawable/ic_edit"/>
-        </LinearLayout>
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tvMyReviews"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvMyReviews"
+                app:srcCompat="@drawable/ic_my_reviews" />
 
-        <TextView
-            android:id="@+id/tvMyReviews"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginBottom="20dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:gravity="center"
-            android:drawableLeft="@drawable/ic_message"
-            android:drawableStart="@drawable/ic_message"
-            android:drawablePadding="20dp"
-            android:text="@string/my_reviews"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black"
-            android:clickable="true"/>
+            <TextView
+                android:id="@+id/tvMyReviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="26dp"
+                android:text="@string/my_reviews"
+                android:textColor="@android:color/black"
+                app:layout_constraintStart_toEndOf="@+id/ivMyReviews"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tvSettings"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:gravity="center"
-            android:drawableLeft="@drawable/ic_settings"
-            android:drawableStart="@drawable/ic_settings"
-            android:drawablePadding="20dp"
-            android:text="@string/settings"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black"
-            android:clickable="true"/>
-    </LinearLayout>
-</FrameLayout>
+            <ImageView
+                android:id="@+id/ivArrowRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tvMyReviews"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvMyReviews"
+                app:srcCompat="@drawable/ic_arrow_right" />
+
+            <View
+                android:id="@+id/view3"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="24dp"
+                android:background="@color/bg_line_profile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tvMyReviews"
+                app:layout_constraintTop_toBottomOf="@+id/tvMyReviews" />
+
+            <ImageView
+                android:id="@+id/ivSettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tvSettings"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvSettings"
+                app:srcCompat="@drawable/ic_settings" />
+
+            <TextView
+                android:id="@+id/tvSettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="26dp"
+                android:text="@string/settings"
+                android:textColor="@android:color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivSettings"
+                app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tvSettings"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvSettings"
+                app:srcCompat="@drawable/ic_arrow_right" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/ivLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tvLogout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvLogout"
+                app:srcCompat="@drawable/ic_logout" />
+
+            <TextView
+                android:id="@+id/tvLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="26dp"
+                android:layout_marginBottom="26dp"
+                android:text="@string/log_out"
+                android:textColor="@android:color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivLogout"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+</android.support.constraint.ConstraintLayout>

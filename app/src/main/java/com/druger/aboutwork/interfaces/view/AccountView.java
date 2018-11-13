@@ -14,9 +14,6 @@ import com.google.firebase.storage.StorageReference;
 public interface AccountView extends MvpView {
 
     @StateStrategyType(OneExecutionStateStrategy.class)
-    void changeName(String userId);
-
-    @StateStrategyType(OneExecutionStateStrategy.class)
     void openSettings();
 
     @StateStrategyType(OneExecutionStateStrategy.class)
