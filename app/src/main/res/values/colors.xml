@@ -33,5 +33,6 @@
     <color name="bg_line_profile">#CC969AA2</color>
     <color name="startAccountToolbar">#563BCB</color>
     <color name="endAccountToolbar">#9873FF</color>
+    <color name="remove">#EB5757</color>
 </resources>
 

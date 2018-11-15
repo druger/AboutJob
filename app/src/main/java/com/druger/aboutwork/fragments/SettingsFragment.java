@@ -9,7 +9,6 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +25,7 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
     SettingPresenter settingPresenter;
 
     private TextView tvEmail;
-    private LinearLayout ltEmail;
+    private TextView tvName;
     private TextView tvChangePass;
     private TextView tvRemoveAccount;
 
@@ -50,14 +49,15 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void setupUX() {
-        ltEmail.setOnClickListener(this);
+        tvEmail.setOnClickListener(this);
+        tvName.setOnClickListener(this);
         tvChangePass.setOnClickListener(this);
         tvRemoveAccount.setOnClickListener(this);
     }
 
     private void setupUI() {
         tvEmail = bindView(R.id.tvEmail);
-        ltEmail = bindView(R.id.ltEmail);
+        tvName = bindView(R.id.tvName);
         tvChangePass = bindView(R.id.tvChangePass);
         tvRemoveAccount = bindView(R.id.tvRemoveAccount);
     }
@@ -68,15 +68,27 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
             case R.id.tvRemoveAccount:
                 showRemoveDialog();
                 break;
-            case R.id.ltEmail:
+            case R.id.tvEmail:
                 showChangeEmail();
                 break;
             case R.id.tvChangePass:
                 showChangePassword();
                 break;
+            case R.id.tvName:
+                showChangeName();
+                break;
             default:
                 break;
         }
+    }
+
+    private void showChangeName() {
+        ChangeNameFragment nameFragment = new ChangeNameFragment();
+        getFragmentManager().beginTransaction()
+                .replace(R.id.main_container, nameFragment)
+                .addToBackStack(null)
+                .commit();
+
     }
 
     private void showRemoveDialog() {
@@ -133,5 +145,10 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void showEmail(String email) {
         tvEmail.setText(email);
+    }
+
+    @Override
+    public void showName(String name) {
+        tvName.setText(name);
     }
 }

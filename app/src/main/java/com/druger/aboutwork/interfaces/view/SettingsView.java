@@ -17,4 +17,6 @@ public interface SettingsView extends MvpView {
     void showToast(@StringRes int resId);
 
     void showEmail(String email);
+
+    void showName(String name);
 }

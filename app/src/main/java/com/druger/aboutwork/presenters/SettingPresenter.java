@@ -24,6 +24,7 @@ public class SettingPresenter extends MvpPresenter<SettingsView> {
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             getViewState().showEmail(user.getEmail());
+            getViewState().showName(user.getDisplayName());
         }
     }
 
