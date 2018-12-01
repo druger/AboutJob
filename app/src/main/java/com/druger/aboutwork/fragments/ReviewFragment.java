@@ -20,9 +20,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -50,7 +50,8 @@ import static com.druger.aboutwork.Const.Bundles.REVIEW;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ReviewFragment extends BaseFragment implements ReviewView, View.OnClickListener {
+public class ReviewFragment extends BaseFragment implements ReviewView, View.OnClickListener,
+        AdapterView.OnItemSelectedListener {
 
     @InjectPresenter
     ReviewPresenter reviewPresenter;
@@ -75,7 +76,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     private EditText etDismissalDate;
     private EditText etInterviewDate;
 
-    private RadioGroup radioGroup;
+    private Spinner workStatus;
     private Button btnAdd;
     private Button btnEdit;
 
@@ -134,8 +135,8 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
             ((MainActivity) getActivity()).hideBottomNavigation();
         }
         setupUI();
+        setupWorkStatus();
         setupListeners();
-        checkSelectedStatus();
 
         reviewPresenter.setCompanyRating(salary, chief, workplace, career, collective, socialPackage,
                 review, fromAccount);
@@ -143,6 +144,14 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
             fillData();
         }
         return rootView;
+    }
+
+    private void setupWorkStatus() {
+        workStatus = bindView(R.id.spinnerStatus);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.work_status, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        workStatus.setAdapter(adapter);
     }
 
     private void getBundles() {
@@ -154,22 +163,16 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         }
     }
 
-    private void checkSelectedStatus() {
-        if (radioGroup.getCheckedRadioButtonId() == -1) {
-            setIsIndicator(true);
-        }
-    }
-
     private void fillData() {
         switch (review.getStatus()) {
             case 0:
-                radioGroup.check(R.id.radio_working);
+                workStatus.setPromptId(getString(R.string.working));
                 break;
             case 1:
-                radioGroup.check(R.id.radio_worked);
+                workStatus.setPromptId(getString(R.string.worked));
                 break;
             case 2:
-                radioGroup.check(R.id.radio_interview);
+                workStatus.setPromptId(getString(R.string.interview));
                 break;
             default:
                 break;
@@ -186,7 +189,6 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     }
 
     private void setupListeners() {
-        radioGroup.setOnCheckedChangeListener(reviewPresenter);
         btnAdd.setOnClickListener(this);
         etEmploymentDate.setOnClickListener(this);
         etDismissalDate.setOnClickListener(this);
@@ -194,6 +196,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         btnEdit.setOnClickListener(this);
         cityChanges();
         positionChanges();
+        workStatus.setOnItemSelectedListener(this);
     }
 
     private void positionChanges() {
@@ -250,8 +253,6 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         career = bindView(R.id.ratingbar_career);
         collective = bindView(R.id.ratingbar_collective);
         socialPackage = bindView(R.id.ratingbar_social_package);
-
-        radioGroup = bindView(R.id.radio_group);
 
         ltEmploymentDate = bindView(R.id.ltEmploymentDate);
         ltDismissalDate = bindView(R.id.ltDismissalDate);
@@ -422,6 +423,27 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         career.setIsIndicator(indicator);
         collective.setIsIndicator(indicator);
         socialPackage.setIsIndicator(indicator);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        switch (position) {
+            case 0:
+                reviewPresenter.onSelectedWorkingStatus(position);
+                break;
+            case 1:
+                reviewPresenter.onSelectedWorkedStatus(position);
+                break;
+            case 2:
+                reviewPresenter.onSelectedInterviewStatus(position);
+                break;
+            default: break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        setIsIndicator(true);
     }
 
     public static class DatePickerFragment extends DialogFragment

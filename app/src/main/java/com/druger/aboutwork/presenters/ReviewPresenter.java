@@ -1,13 +1,9 @@
 package com.druger.aboutwork.presenters;
 
-import android.support.annotation.IdRes;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.RadioGroup;
 import android.widget.RatingBar;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.druger.aboutwork.R;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.view.ReviewView;
 import com.druger.aboutwork.model.Company;
@@ -31,8 +27,7 @@ import io.reactivex.disposables.Disposable;
  */
 
 @InjectViewState
-public class ReviewPresenter extends BasePresenter<ReviewView>
-        implements RadioGroup.OnCheckedChangeListener {
+public class ReviewPresenter extends BasePresenter<ReviewView> {
 
     @Inject
     public ReviewPresenter(RestApi restApi) {
@@ -49,41 +44,6 @@ public class ReviewPresenter extends BasePresenter<ReviewView>
     private Review review;
     private MarkCompany mark;
     private String companyId;
-
-    @Override
-    public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-        View radioButton;
-
-        switch (checkedId) {
-            case R.id.radio_working:
-                getViewState().showWorkingDate();
-                getViewState().showRating(true);
-
-                radioButton = group.findViewById(R.id.radio_working);
-                status = group.indexOfChild(radioButton);
-                getViewState().setIsIndicatorRatingBar(false);
-                break;
-            case R.id.radio_worked:
-                getViewState().showWorkedDate();
-                getViewState().showRating(true);
-
-                radioButton = group.findViewById(R.id.radio_worked);
-                status = group.indexOfChild(radioButton);
-                getViewState().setIsIndicatorRatingBar(false);
-                break;
-            case R.id.radio_interview:
-                getViewState().showInterviewDate();
-                getViewState().showRating(false);
-
-                radioButton = group.findViewById(R.id.radio_interview);
-                status = group.indexOfChild(radioButton);
-                getViewState().setIsIndicatorRatingBar(true);
-                getViewState().clearRatingBar();
-                break;
-            default:
-                break;
-        }
-    }
 
     // TODO сократить кол-во параметров
     public void setCompanyRating(RatingBar salary, RatingBar chief, RatingBar workplace,
@@ -175,5 +135,30 @@ public class ReviewPresenter extends BasePresenter<ReviewView>
 
     private void successGetVacancies(VacancyResponse vacancyResponse) {
         getViewState().showVacancies(vacancyResponse.getItems());
+    }
+
+    public void onSelectedWorkingStatus(int position) {
+        getViewState().showWorkingDate();
+        getViewState().showRating(true);
+
+        status = position;
+        getViewState().setIsIndicatorRatingBar(false);
+    }
+
+    public void onSelectedWorkedStatus(int position) {
+        getViewState().showWorkedDate();
+        getViewState().showRating(true);
+
+        status = position;
+        getViewState().setIsIndicatorRatingBar(false);
+    }
+
+    public void onSelectedInterviewStatus(int position) {
+        getViewState().showInterviewDate();
+        getViewState().showRating(false);
+
+        status = position;
+        getViewState().setIsIndicatorRatingBar(true);
+        getViewState().clearRatingBar();
     }
 }
