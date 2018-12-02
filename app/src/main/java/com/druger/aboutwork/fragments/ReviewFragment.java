@@ -182,8 +182,6 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
 
     private void setupToolbar() {
         toolbar = bindView(R.id.toolbar);
-        setActionBar(toolbar);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         ivDone = bindView(R.id.ivDone);
         ivEdit = bindView(R.id.ivEdit);
