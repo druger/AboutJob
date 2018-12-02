@@ -139,7 +139,6 @@ public class ReviewPresenter extends BasePresenter<ReviewView> {
 
     public void onSelectedWorkingStatus(int position) {
         getViewState().showWorkingDate();
-        getViewState().showRating(true);
 
         status = position;
         getViewState().setIsIndicatorRatingBar(false);
@@ -147,7 +146,6 @@ public class ReviewPresenter extends BasePresenter<ReviewView> {
 
     public void onSelectedWorkedStatus(int position) {
         getViewState().showWorkedDate();
-        getViewState().showRating(true);
 
         status = position;
         getViewState().setIsIndicatorRatingBar(false);
@@ -155,7 +153,6 @@ public class ReviewPresenter extends BasePresenter<ReviewView> {
 
     public void onSelectedInterviewStatus(int position) {
         getViewState().showInterviewDate();
-        getViewState().showRating(false);
 
         status = position;
         getViewState().setIsIndicatorRatingBar(true);

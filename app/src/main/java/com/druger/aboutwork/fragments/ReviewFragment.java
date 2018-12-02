@@ -17,12 +17,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -56,7 +56,6 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     @InjectPresenter
     ReviewPresenter reviewPresenter;
 
-    private RelativeLayout ltRating;
     private RatingBar salary;
     private RatingBar chief;
     private RatingBar workplace;
@@ -77,8 +76,10 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     private EditText etInterviewDate;
 
     private Spinner workStatus;
-    private Button btnAdd;
-    private Button btnEdit;
+    private ImageView ivClose;
+    private ImageView ivDone;
+    private ImageView ivEdit;
+    private TextView tvTitle;
 
     private DatePickerFragment datePicker;
 
@@ -126,7 +127,6 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
 
             String companyId = companyDetail.getId();
             reviewPresenter.setCompanyId(companyId);
-            setupToolbar();
         } else {
             FragmentReviewNoActionbarBinding binding = DataBindingUtil
                     .inflate(inflater, R.layout.fragment_review_no_actionbar, container, false);
@@ -134,6 +134,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
             rootView = binding.getRoot();
             ((MainActivity) getActivity()).hideBottomNavigation();
         }
+        setupToolbar();
         setupUI();
         setupWorkStatus();
         setupListeners();
@@ -166,13 +167,13 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     private void fillData() {
         switch (review.getStatus()) {
             case 0:
-                workStatus.setPromptId(getString(R.string.working));
+                workStatus.setPromptId(R.string.working);
                 break;
             case 1:
-                workStatus.setPromptId(getString(R.string.worked));
+                workStatus.setPromptId(R.string.worked);
                 break;
             case 2:
-                workStatus.setPromptId(getString(R.string.interview));
+                workStatus.setPromptId(R.string.interview);
                 break;
             default:
                 break;
@@ -183,17 +184,23 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         toolbar = bindView(R.id.toolbar);
         setActionBar(toolbar);
         getActionBar().setDisplayHomeAsUpEnabled(true);
-        if (companyDetail != null) {
-            getActionBar().setTitle(companyDetail.getName());
-        }
+
+        ivDone = bindView(R.id.ivDone);
+        ivEdit = bindView(R.id.ivEdit);
+        ivClose = bindView(R.id.ivClose);
+        tvTitle = bindView(R.id.tvTitle);
+
+        tvTitle.setText(R.string.add_review);
+
+        ivDone.setOnClickListener(this);
+        ivEdit.setOnClickListener(this);
+        ivClose.setOnClickListener(this);
     }
 
     private void setupListeners() {
-        btnAdd.setOnClickListener(this);
         etEmploymentDate.setOnClickListener(this);
         etDismissalDate.setOnClickListener(this);
         etInterviewDate.setOnClickListener(this);
-        btnEdit.setOnClickListener(this);
         cityChanges();
         positionChanges();
         workStatus.setOnItemSelectedListener(this);
@@ -241,7 +248,6 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     private void setupUI() {
         datePicker = new DatePickerFragment();
 
-        ltRating = bindView(R.id.ltRating);
         etPluses = bindView(R.id.etPluses);
         etMinuses = bindView(R.id.etMinuses);
         etPosition = bindView(R.id.et_position);
@@ -261,19 +267,15 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         etDismissalDate = bindView(R.id.etDismissalDate);
         etInterviewDate = bindView(R.id.etInterviewDate);
 
-        btnAdd = bindView(R.id.btnAdd);
-        btnEdit = bindView(R.id.btnEdit);
-
-        setViewVisibility();
+        setDateVisibility();
 
         if (fromAccount) {
-            btnAdd.setVisibility(View.GONE);
-            btnEdit.setVisibility(View.VISIBLE);
+            ivDone.setVisibility(View.GONE);
+            ivEdit.setVisibility(View.VISIBLE);
         }
     }
 
-    private void setViewVisibility() {
-        ltRating.setVisibility(View.GONE);
+    private void setDateVisibility() {
         ltEmploymentDate.setVisibility(View.GONE);
         ltDismissalDate.setVisibility(View.GONE);
         ltInterviewDate.setVisibility(View.GONE);
@@ -303,7 +305,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnAdd:
+            case R.id.ivDone:
                 checkReview(false);
                 break;
             case R.id.etEmploymentDate:
@@ -321,8 +323,11 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
                 datePicker.show(getFragmentManager(), DatePickerFragment.TAG);
                 datePicker.setData(etInterviewDate, reviewPresenter.getReview());
                 break;
-            case R.id.btnEdit:
+            case R.id.ivEdit:
                 checkReview(true);
+                break;
+            case R.id.ivClose:
+                getFragmentManager().popBackStackImmediate();
                 break;
             default:
                 break;
@@ -394,15 +399,6 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     @Override
     public void showCities(List<City> cities) {
         showSuggestions(cities, etCity);
-    }
-
-    @Override
-    public void showRating(boolean show) {
-        if (show) {
-            ltRating.setVisibility(View.VISIBLE);
-        } else {
-            ltRating.setVisibility(View.GONE);
-        }
     }
 
     @Override

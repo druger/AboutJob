@@ -11,7 +11,9 @@
         android:fitsSystemWindows="true"
         android:orientation="vertical">
 
-        <include layout="@layout/toolbar_add_review" />
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar_add_review" />
 
         <include layout="@layout/content_review"
             bind:review="@{review}"/>
