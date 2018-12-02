@@ -106,7 +106,8 @@
     <string name="no_internet_connection">No internet connection</string>
     <string name="unknown_error">Unknown error</string>
     <string name="add_review">Add review</string>
-    
+    <string name="edit_review">Edit review</string>
+
     <string-array name="work_status">
         <item>@string/working</item>
         <item>@string/worked</item>

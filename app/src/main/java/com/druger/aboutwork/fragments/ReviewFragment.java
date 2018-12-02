@@ -30,7 +30,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.MainActivity;
-import com.druger.aboutwork.databinding.FragmentReviewNoActionbarBinding;
+import com.druger.aboutwork.databinding.FragmentReviewBinding;
 import com.druger.aboutwork.interfaces.view.ReviewView;
 import com.druger.aboutwork.model.City;
 import com.druger.aboutwork.model.Company;
@@ -85,7 +85,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
 
     private CompanyDetail companyDetail;
     private Review review;
-    private boolean fromAccount;
+    private boolean editMode;
 
     public ReviewFragment() {
         // Required empty public constructor
@@ -121,15 +121,14 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
                              Bundle savedInstanceState) {
 
         getBundles();
+        rootView = inflater.inflate(R.layout.fragment_review, container, false);
 
-        if (!fromAccount) {
-            rootView = inflater.inflate(R.layout.fragment_review, container, false);
-
+        if (!editMode) {
             String companyId = companyDetail.getId();
             reviewPresenter.setCompanyId(companyId);
         } else {
-            FragmentReviewNoActionbarBinding binding = DataBindingUtil
-                    .inflate(inflater, R.layout.fragment_review_no_actionbar, container, false);
+            FragmentReviewBinding binding = DataBindingUtil
+                    .inflate(inflater, R.layout.fragment_review, container, false);
             binding.setReview(review);
             rootView = binding.getRoot();
             ((MainActivity) getActivity()).hideBottomNavigation();
@@ -140,8 +139,8 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         setupListeners();
 
         reviewPresenter.setCompanyRating(salary, chief, workplace, career, collective, socialPackage,
-                review, fromAccount);
-        if (fromAccount) {
+                review, editMode);
+        if (editMode) {
             fillData();
         }
         return rootView;
@@ -159,7 +158,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         Bundle bundle = getArguments();
         if (bundle != null) {
             review = (Review) bundle.get(REVIEW);
-            fromAccount = bundle.getBoolean(FROM_ACCOUNT);
+            editMode = bundle.getBoolean(FROM_ACCOUNT);
             companyDetail = (CompanyDetail) bundle.get(COMPANY_DETAIL);
         }
     }
@@ -188,7 +187,11 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         ivClose = bindView(R.id.ivClose);
         tvTitle = bindView(R.id.tvTitle);
 
-        tvTitle.setText(R.string.add_review);
+        if (editMode) {
+            tvTitle.setText(R.string.edit_review);
+        } else {
+            tvTitle.setText(R.string.add_review);
+        }
 
         ivDone.setOnClickListener(this);
         ivEdit.setOnClickListener(this);
@@ -267,7 +270,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
 
         setDateVisibility();
 
-        if (fromAccount) {
+        if (editMode) {
             ivDone.setVisibility(View.GONE);
             ivEdit.setVisibility(View.VISIBLE);
         }
@@ -283,7 +286,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     public void onDestroy() {
         super.onDestroy();
         unbindDrawables(rootView);
-        if (fromAccount) {
+        if (editMode) {
             ((MainActivity) getActivity()).showBottomNavigation();
         }
     }
