@@ -67,4 +67,13 @@
         <item name="android:textColorPrimary">@color/finestWhite</item>
         <item name="android:textColorSecondary">@color/finestWhite</item>
     </style>
+
+    <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem">
+        <item name="android:layout_height">50dp</item>
+    </style>
+
+    <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+        <item name="android:layout_height">50dp</item>
+        <item name="android:gravity">center</item>
+    </style>
 </resources>

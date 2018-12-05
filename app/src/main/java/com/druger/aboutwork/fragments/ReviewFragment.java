@@ -75,7 +75,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     private EditText etDismissalDate;
     private EditText etInterviewDate;
 
-    private Spinner workStatus;
+    private Spinner spinnerWorkStatus;
     private ImageView ivClose;
     private ImageView ivDone;
     private ImageView ivEdit;
@@ -147,11 +147,11 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     }
 
     private void setupWorkStatus() {
-        workStatus = bindView(R.id.spinnerStatus);
+        spinnerWorkStatus = bindView(R.id.spinnerStatus);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.work_status, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        workStatus.setAdapter(adapter);
+                R.array.work_status, R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+        spinnerWorkStatus.setAdapter(adapter);
     }
 
     private void getBundles() {
@@ -166,13 +166,13 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     private void fillData() {
         switch (review.getStatus()) {
             case 0:
-                workStatus.setPromptId(R.string.working);
+                spinnerWorkStatus.setPromptId(R.string.working);
                 break;
             case 1:
-                workStatus.setPromptId(R.string.worked);
+                spinnerWorkStatus.setPromptId(R.string.worked);
                 break;
             case 2:
-                workStatus.setPromptId(R.string.interview);
+                spinnerWorkStatus.setPromptId(R.string.interview);
                 break;
             default:
                 break;
@@ -204,7 +204,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         etInterviewDate.setOnClickListener(this);
         cityChanges();
         positionChanges();
-        workStatus.setOnItemSelectedListener(this);
+        spinnerWorkStatus.setOnItemSelectedListener(this);
     }
 
     private void positionChanges() {
