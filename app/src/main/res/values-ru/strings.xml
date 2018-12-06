@@ -91,4 +91,6 @@
     <string name="unknown_error">Неизвестная ошибка</string>
     <string name="add_review">Добавить отзыв</string>
     <string name="edit_review">Редактировать отзыв</string>
+    <string name="review_edited">Отзыв отредактирован</string>
+    <string name="error_review_edit">@string/error_review_add</string>
 </resources>

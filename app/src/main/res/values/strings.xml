@@ -107,6 +107,8 @@
     <string name="unknown_error">Unknown error</string>
     <string name="add_review">Add review</string>
     <string name="edit_review">Edit review</string>
+    <string name="review_edited">Review edited</string>
+    <string name="error_review_edit">@string/error_review_add</string>
 
     <string-array name="work_status">
         <item>@string/working</item>

@@ -78,7 +78,6 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     private Spinner spinnerWorkStatus;
     private ImageView ivClose;
     private ImageView ivDone;
-    private ImageView ivEdit;
     private TextView tvTitle;
 
     private DatePickerFragment datePicker;
@@ -135,6 +134,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         }
         setupToolbar();
         setupUI();
+        setDateVisibility();
         setupWorkStatus();
         setupListeners();
 
@@ -183,7 +183,6 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         toolbar = bindView(R.id.toolbar);
 
         ivDone = bindView(R.id.ivDone);
-        ivEdit = bindView(R.id.ivEdit);
         ivClose = bindView(R.id.ivClose);
         tvTitle = bindView(R.id.tvTitle);
 
@@ -194,7 +193,6 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         }
 
         ivDone.setOnClickListener(this);
-        ivEdit.setOnClickListener(this);
         ivClose.setOnClickListener(this);
     }
 
@@ -267,13 +265,6 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         etEmploymentDate = bindView(R.id.etEmploymentDate);
         etDismissalDate = bindView(R.id.etDismissalDate);
         etInterviewDate = bindView(R.id.etInterviewDate);
-
-        setDateVisibility();
-
-        if (editMode) {
-            ivDone.setVisibility(View.GONE);
-            ivEdit.setVisibility(View.VISIBLE);
-        }
     }
 
     private void setDateVisibility() {
@@ -307,7 +298,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ivDone:
-                checkReview(false);
+                checkReview(editMode);
                 break;
             case R.id.etEmploymentDate:
                 datePicker.flag = DatePickerFragment.EMPLOYMENT_DATE;
@@ -324,9 +315,6 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
                 datePicker.show(getFragmentManager(), DatePickerFragment.TAG);
                 datePicker.setData(etInterviewDate, reviewPresenter.getReview());
                 break;
-            case R.id.ivEdit:
-                checkReview(true);
-                break;
             case R.id.ivClose:
                 getFragmentManager().popBackStackImmediate();
                 break;
@@ -335,7 +323,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         }
     }
 
-    private void checkReview(boolean fromAccount) {
+    private void checkReview(boolean editMode) {
         review = reviewPresenter.getReview();
 
         review.setPluses(etPluses.getText().toString().trim());
@@ -343,9 +331,12 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         review.setPosition(etPosition.getText().toString().trim());
         review.setCity(etCity.getText().toString());
 
-        Company company = new Company(companyDetail.getId(), companyDetail.getName());
-
-        reviewPresenter.checkReview(review, company, fromAccount);
+        if (editMode) {
+            reviewPresenter.updateReview(review);
+        } else {
+            Company company = new Company(companyDetail.getId(), companyDetail.getName());
+            reviewPresenter.addReview(review, company);
+        }
     }
 
     @Override
@@ -405,6 +396,19 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     @Override
     public void showVacancies(List<Vacancy> vacancies) {
         showSuggestions(vacancies, etPosition);
+    }
+
+    @Override
+    public void successfulEditing() {
+        Toast.makeText(getActivity().getApplicationContext(), R.string.review_edited,
+                Toast.LENGTH_SHORT).show();
+        getFragmentManager().popBackStackImmediate();
+    }
+
+    @Override
+    public void showErrorEditing() {
+        Toast.makeText(getActivity().getApplicationContext(), R.string.error_review_edit,
+                Toast.LENGTH_SHORT).show();
     }
 
     private void showSuggestions(List<?> items, AutoCompleteTextView view) {

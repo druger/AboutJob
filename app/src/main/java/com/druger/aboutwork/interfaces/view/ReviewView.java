@@ -29,4 +29,8 @@ public interface ReviewView extends MvpView {
     void showCities(List<City> cities);
 
     void showVacancies(List<Vacancy> vacancies);
+
+    void successfulEditing();
+
+    void showErrorEditing();
 }

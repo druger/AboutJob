@@ -80,22 +80,24 @@ public class ReviewPresenter extends BasePresenter<ReviewView> {
         return review;
     }
 
-    // TODO: отрефакторить метод
-    public void checkReview(Review review, Company company, boolean fromAccount) {
+    public void addReview(Review review, Company company) {
         if (isCorrectStatus() && isCorrectReview(review)) {
-
             review.setStatus(status);
-
-            if (fromAccount) {
-                FirebaseHelper.updateReview(review);
-            } else {
-                FirebaseHelper.addReview(review);
-                FirebaseHelper.addCompany(company);
-                getViewState().successfulAddition();
-            }
-
+            FirebaseHelper.addReview(review);
+            FirebaseHelper.addCompany(company);
+            getViewState().successfulAddition();
         } else {
             getViewState().showErrorAdding();
+        }
+    }
+
+    public void updateReview(Review review) {
+        if (isCorrectStatus() && isCorrectReview(review)) {
+            review.setStatus(status);
+            FirebaseHelper.updateReview(review);
+            getViewState().successfulEditing();
+        } else {
+            getViewState().showErrorEditing();
         }
     }
 
