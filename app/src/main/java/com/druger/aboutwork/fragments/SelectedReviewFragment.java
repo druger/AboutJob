@@ -7,15 +7,19 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.text.TextUtils;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.MainActivity;
+import com.druger.aboutwork.adapters.CommentAdapter;
 import com.druger.aboutwork.databinding.FragmentSelectedReviewBinding;
 import com.druger.aboutwork.databinding.SelectedReviewNoActionbarBinding;
 import com.druger.aboutwork.db.FirebaseHelper;
@@ -34,22 +38,18 @@ import static com.druger.aboutwork.Const.Colors.RED_500;
 // TODO добавить MVP, ValueEventListener from Firebase
 public class SelectedReviewFragment extends BaseFragment implements View.OnClickListener {
 
-    private TextView tvPosition;
-    private TextView mPosition;
-    private TextView tvEmploymentDate;
-    private TextView mEmploymentDate;
-    private TextView tvDismissalDate;
-    private TextView mDismissalDate;
-    private TextView tvInterviewDate;
-    private TextView mInterviewDate;
+    private TextView tvDescriptionStatus;
     private ImageView ivLike;
     private ImageView ivDislike;
-    private ImageView ivComments;
     private Review review;
     private FloatingActionButton fabEdit;
+    private EditText etMessage;
+    private ImageView ivSend;
+    private RecyclerView rvComments;
+    private CommentAdapter commentAdapter;
 
     private Bundle bundle;
-    private boolean fromAccount;
+    private boolean editMode;
 
     public SelectedReviewFragment() {
         // Required empty public constructor
@@ -74,17 +74,18 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
         setUI();
         setUX();
         setReview();
+        showComments();
         return rootView;
     }
 
     private void getBundles() {
         bundle = getArguments();
         review = bundle.getParcelable(REVIEW);
-        fromAccount = getArguments().getBoolean(FROM_ACCOUNT);
+        editMode = getArguments().getBoolean(FROM_ACCOUNT);
     }
 
     private void setView(LayoutInflater inflater, ViewGroup container) {
-        if (!fromAccount) {
+        if (!editMode) {
             FragmentSelectedReviewBinding binding = DataBindingUtil
                     .inflate(inflater, R.layout.fragment_selected_review, container, false);
             binding.setReview(review);
@@ -102,32 +103,19 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
     private void setUX() {
         ivLike.setOnClickListener(this);
         ivDislike.setOnClickListener(this);
-        ivComments.setOnClickListener(this);
-        if (fromAccount) {
+        if (editMode) {
             fabEdit.setOnClickListener(this);
         }
     }
 
     private void setUI() {
-        tvPosition = bindView(R.id.tvPosition);
-        mPosition = bindView(R.id.tv_position);
-        tvEmploymentDate = bindView(R.id.tvEmploymentDate);
-        mEmploymentDate = bindView(R.id.tv_employment_date);
-        tvDismissalDate = bindView(R.id.tvDismissalDate);
-        mDismissalDate = bindView(R.id.tv_dismissal_date);
-        tvInterviewDate = bindView(R.id.tvInterviewDate);
-        mInterviewDate = bindView(R.id.tv_interview_date);
-
+        tvDescriptionStatus = bindView(R.id.tvDescriptionStatus);
         ivLike = bindView(R.id.ivLike);
         ivDislike = bindView(R.id.ivDislike);
-        ivComments = bindView(R.id.ivComments);
-
         fabEdit = bindView(R.id.fabEdit);
-
-        tvPosition.setVisibility(View.GONE);
-        tvEmploymentDate.setVisibility(View.GONE);
-        tvDismissalDate.setVisibility(View.GONE);
-        tvInterviewDate.setVisibility(View.GONE);
+        etMessage = bindView(R.id.etMessage);
+        ivSend = bindView(R.id.ivSend);
+        rvComments = bindView(R.id.rvComments);
     }
 
     private void setupToolbar() {
@@ -142,24 +130,6 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
 
     private void setReview() {
         if (review != null) {
-            if (!TextUtils.isEmpty(review.getPosition())) {
-                tvPosition.setVisibility(View.VISIBLE);
-                mPosition.setVisibility(View.VISIBLE);
-            }
-            if (review.getEmploymentDate() != 0) {
-                tvEmploymentDate.setVisibility(View.GONE);
-                mEmploymentDate.setVisibility(View.GONE);
-            }
-            if (review.getDismissalDate() != 0) {
-                tvDismissalDate.setVisibility(View.GONE);
-                mDismissalDate.setVisibility(View.GONE);
-            }
-            if (review.getInterviewDate() != 0) {
-                tvInterviewDate.setVisibility(View.GONE);
-                mInterviewDate.setVisibility(View.GONE);
-            }
-            ivComments.setColorFilter(Color.parseColor(GRAY_500));
-
             boolean myLike = review.isMyLike();
             boolean myDislike = review.isMyDislike();
             if (!myLike) {
@@ -185,9 +155,6 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
                 break;
             case R.id.ivDislike:
                 clickDislike();
-                break;
-            case R.id.ivComments:
-                showComments();
                 break;
             case R.id.fabEdit:
                 showEditReview();
@@ -251,24 +218,16 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
     }
 
     private void showComments() {
-        CommentsFragment comments;
-
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        if (getArguments().getBoolean(FROM_ACCOUNT)) {
-            comments = CommentsFragment.newInstance(review.getFirebaseKey(), true);
-            transaction.replace(R.id.main_container, comments);
-        } else {
-            comments = CommentsFragment.newInstance(review.getFirebaseKey(), false);
-            transaction.replace(R.id.company_container, comments);
-        }
-        transaction.addToBackStack(null);
-        transaction.commit();
+        commentAdapter = new CommentAdapter(getActivity());
+        rvComments.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvComments.setItemAnimator(new DefaultItemAnimator());
+        rvComments.setAdapter(commentAdapter);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (fromAccount) {
+        if (editMode) {
             ((MainActivity) getActivity()).showBottomNavigation();
         }
     }

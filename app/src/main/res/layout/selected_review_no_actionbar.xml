@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:paddingTop="?android:attr/actionBarSize">
 
-        <include layout="@layout/content_selected_review"
+        <include layout="@layout/content_selected_review_new"
             bind:review="@{review}" />
 
         <android.support.design.widget.FloatingActionButton
@@ -24,9 +24,6 @@
             android:layout_marginBottom="50dp"
             app:srcCompat="@drawable/ic_edit_white"
             android:layout_gravity="bottom|end" />
-
-        <include layout="@layout/bottom_selected_review"
-            bind:review="@{review}"/>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>
