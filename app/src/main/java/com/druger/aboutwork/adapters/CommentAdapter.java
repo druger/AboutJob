@@ -16,25 +16,13 @@ import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 /**
  * Created by druger on 04.03.2017.
  */
 
 public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdapter.CommentVH> {
 
-    private Context context;
-    private FirebaseStorage firebaseStorage;
-    private StorageReference storageRef;
-
-    private OnAvatarClickListener avatarClickListener;
-
-    public CommentAdapter(Context context) {
-        super();
-        this.context = context;
-        firebaseStorage = FirebaseStorage.getInstance();
-    }
+    private OnNameClickListener nameClickListener;
 
     @Override
     public CommentVH onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -47,25 +35,14 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
         Comment comment = getItem(position);
         holder.tvUserName.setText(comment.getUserName());
         holder.tvComment.setText(comment.getMessage());
-        holder.tvDdate.setText(Utils.INSTANCE.getDate(comment.getDate()));
+        holder.tvDate.setText(Utils.INSTANCE.getDate(comment.getDate()));
         holder.tvCountLikes.setText(String.valueOf(comment.getLike()));
 
         holder.itemView.setOnLongClickListener(v -> longItemClick(holder));
         holder.ivLike.setOnClickListener(v -> likeClick(comment));
-        holder.ivAvatar.setOnClickListener(v -> avatarClickListener.onClick(comment));
+        holder.tvUserName.setOnClickListener(v -> nameClickListener.onClick(comment));
 
         setColorLike(comment, holder);
-        downLoadPhoto(comment.getUserId(), holder);
-    }
-
-    private void downLoadPhoto(String userId, CommentVH holder) {
-        storageRef = FirebaseHelper.downloadPhoto(firebaseStorage, userId);
-        Glide.with(context)
-                .using(new FirebaseImageLoader())
-                .load(storageRef)
-                .crossFade()
-                .error(R.drawable.ic_account_circle_black)
-                .into(holder.ivAvatar);
     }
 
     private void setColorLike(Comment comment, CommentVH holder) {
@@ -100,31 +77,33 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
     }
 
     static class CommentVH extends BaseViewHolder {
-        CircleImageView ivAvatar;
         TextView tvUserName;
         TextView tvComment;
-        TextView tvDdate;
+        TextView tvDate;
         TextView tvCountLikes;
+        TextView tvCountDislikes;
         ImageView ivLike;
+        ImageView ivDislike;
         ImageView ivReply;
 
         CommentVH(View itemView) {
             super(itemView);
-            ivAvatar =  bindView(R.id.ivAvatar);
             tvUserName =  bindView(R.id.tvUserName);
             tvComment =  bindView(R.id.tvComment);
-            tvDdate = bindView(R.id.tvDate);
+            tvDate = bindView(R.id.tvDate);
             tvCountLikes = bindView(R.id.tvCountLikes);
+            tvCountDislikes = bindView(R.id.tvCountDislikes);
             ivLike = bindView(R.id.ivLike);
+            ivDislike = bindView(R.id.ivDislike);
             ivReply = bindView(R.id.ivReply);
         }
     }
 
-    public void setOnAvatarClickListener(OnAvatarClickListener avatarClickListener) {
-        this.avatarClickListener = avatarClickListener;
+    public void setOnNameClickListener(OnNameClickListener nameClickListener) {
+        this.nameClickListener = nameClickListener;
     }
 
-    public interface OnAvatarClickListener {
+    public interface OnNameClickListener {
         void onClick(Comment comment);
     }
 }

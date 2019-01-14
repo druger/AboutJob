@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.adapters.CommentAdapter;
@@ -24,6 +25,7 @@ import com.druger.aboutwork.databinding.FragmentSelectedReviewBinding;
 import com.druger.aboutwork.databinding.SelectedReviewNoActionbarBinding;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.Review;
+import com.druger.aboutwork.presenters.SelectedReviewPresenter;
 
 import static com.druger.aboutwork.Const.Bundles.FROM_ACCOUNT;
 import static com.druger.aboutwork.Const.Bundles.NAME;
@@ -37,6 +39,9 @@ import static com.druger.aboutwork.Const.Colors.RED_500;
  */
 // TODO добавить MVP, ValueEventListener from Firebase
 public class SelectedReviewFragment extends BaseFragment implements View.OnClickListener {
+
+    @InjectPresenter
+    SelectedReviewPresenter presenter;
 
     private TextView tvDescriptionStatus;
     private ImageView ivLike;
@@ -218,10 +223,20 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
     }
 
     private void showComments() {
-        commentAdapter = new CommentAdapter(getActivity());
+        commentAdapter = new CommentAdapter();
         rvComments.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvComments.setItemAnimator(new DefaultItemAnimator());
         rvComments.setAdapter(commentAdapter);
+        commentAdapter.setOnNameClickListener(comment -> showReviews(comment.getUserId()));
+    }
+
+    private void showReviews(String userId) {
+        UserReviewsFragment reviews = UserReviewsFragment.newInstance(userId);
+
+        FragmentTransaction transaction =getActivity().getFragmentManager().beginTransaction();
+        transaction.replace(R.id.company_container, reviews);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override

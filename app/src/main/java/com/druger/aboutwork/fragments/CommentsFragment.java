@@ -149,26 +149,12 @@ public class CommentsFragment extends BaseFragment implements CommentsView {
     }
 
     private void setupRecycler() {
-        commentAdapter = new CommentAdapter(getActivity());
+        commentAdapter = new CommentAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(commentAdapter);
 
         changeComment();
-        avatarClick();
-    }
-
-    private void avatarClick() {
-        commentAdapter.setOnAvatarClickListener(comment -> showReviews(comment.getUserId()));
-    }
-
-    private void showReviews(String userId) {
-        UserReviewsFragment reviews = UserReviewsFragment.newInstance(userId);
-
-        FragmentTransaction transaction =getActivity().getFragmentManager().beginTransaction();
-        transaction.replace(R.id.company_container, reviews);
-        transaction.addToBackStack(null);
-        transaction.commit();
     }
 
     private void changeComment() {
