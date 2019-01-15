@@ -7,9 +7,12 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,21 +27,31 @@ import com.druger.aboutwork.adapters.CommentAdapter;
 import com.druger.aboutwork.databinding.FragmentSelectedReviewBinding;
 import com.druger.aboutwork.databinding.SelectedReviewNoActionbarBinding;
 import com.druger.aboutwork.db.FirebaseHelper;
+import com.druger.aboutwork.interfaces.OnItemClickListener;
+import com.druger.aboutwork.interfaces.view.SelectedReview;
+import com.druger.aboutwork.model.Comment;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.SelectedReviewPresenter;
+import com.druger.aboutwork.utils.Utils;
+
+import java.util.List;
 
 import static com.druger.aboutwork.Const.Bundles.FROM_ACCOUNT;
 import static com.druger.aboutwork.Const.Bundles.NAME;
 import static com.druger.aboutwork.Const.Bundles.REVIEW;
 import static com.druger.aboutwork.Const.Colors.GRAY_500;
 import static com.druger.aboutwork.Const.Colors.GREEN_500;
+import static com.druger.aboutwork.Const.Colors.RED_200;
 import static com.druger.aboutwork.Const.Colors.RED_500;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-// TODO добавить MVP, ValueEventListener from Firebase
-public class SelectedReviewFragment extends BaseFragment implements View.OnClickListener {
+// TODO добавить ValueEventListener from Firebase
+public class SelectedReviewFragment extends BaseFragment implements View.OnClickListener, SelectedReview {
+    private static final int NEW = 0;
+    private static final int UPDATE = 1;
+    private int type = NEW;
 
     @InjectPresenter
     SelectedReviewPresenter presenter;
@@ -80,6 +93,8 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
         setUX();
         setReview();
         showComments();
+        retrieveComments();
+        setupListeners();
         return rootView;
     }
 
@@ -87,6 +102,72 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
         bundle = getArguments();
         review = bundle.getParcelable(REVIEW);
         editMode = getArguments().getBoolean(FROM_ACCOUNT);
+    }
+
+    private void retrieveComments() {
+        presenter.retrieveComments(reviewId);
+    }
+
+    private void setupListeners() {
+        etMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0) {
+                    ivSend.setClickable(true);
+                    ivSend.setColorFilter(Color.parseColor(RED_500));
+                } else {
+                    ivSend.setClickable(false);
+                    ivSend.setColorFilter(Color.parseColor(RED_200));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        ivSend.setOnClickListener(v -> {
+            switch (type) {
+                case 0:
+                    sendMessage(etMessage.getText().toString().trim(), NEW);
+                    break;
+                case 1:
+                    sendMessage(etMessage.getText().toString().trim(), UPDATE);
+                    break;
+            }
+        });
+
+        commentAdapter.setOnItemClickListener(new OnItemClickListener<Comment>() {
+            @Override
+            public void onClick(Comment item, int position) {
+
+            }
+
+            @Override
+            public boolean onLongClick(int position) {
+                return presenter.onLongClick(position);
+            }
+        });
+
+    }
+
+    private void sendMessage(String message, int type) {
+        if (message.length() > 0) {
+            if (type == NEW) {
+                presenter.addComment(message, review.getFirebaseKey());
+            } else if (type == UPDATE) {
+                presenter.updateComment(message);
+                Utils.INSTANCE.hideKeyboard(getActivity(), this.etMessage);
+                this.type = NEW;
+            }
+            this.etMessage.setText(null);
+        }
     }
 
     private void setView(LayoutInflater inflater, ViewGroup container) {
@@ -245,5 +326,43 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
         if (editMode) {
             ((MainActivity) getActivity()).showBottomNavigation();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.removeListeners();
+    }
+
+    @Override
+    public void showChangeDialog(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setItems(R.array.comments_change, (dialog, which) -> {
+            switch (which) {
+                case 0:
+                    presenter.deleteComment(position);
+                    break;
+                case 1:
+                    etMessage.setText(presenter.getComment().getMessage());
+                    Utils.INSTANCE.showKeyboard(getActivity());
+                    etMessage.setFocusableInTouchMode(true);
+                    etMessage.setSelection(presenter.getComment().getMessage().length());
+                    type = UPDATE;
+                    break;
+            }
+        });
+        builder.show();
+    }
+
+    @Override
+    public void notifyItemRemoved(int position, int size) {
+        commentAdapter.notifyItemRemoved(position);
+        commentAdapter.notifyItemRangeChanged(position, size);
+    }
+
+    @Override
+    public void showComments(List<Comment> comments) {
+        commentAdapter.clear();
+        commentAdapter.addItems(comments);
     }
 }
