@@ -16,7 +16,7 @@ public final class Const {
         public static final int DEBOUNCE_SEARCH = 300;
 
         public static final String REVIEW_ID = "reviewId";
-        public static final String FROM_ACCOUNT = "fromAccount";
+        public static final String EDIT_MODE = "editMode";
         public static final String REVIEW = "review";
         public static final String NAME = "name";
         public static final String COMPANY_DETAIL = "companyDetail";

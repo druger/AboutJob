@@ -92,7 +92,7 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
             tvComment =  bindView(R.id.tvComment);
             tvDate = bindView(R.id.tvDate);
             tvCountLikes = bindView(R.id.tvCountLikes);
-            tvCountDislikes = bindView(R.id.tvCountDislikes);
+            tvCountDislikes = bindView(R.id.tvCountDislike);
             ivLike = bindView(R.id.ivLike);
             ivDislike = bindView(R.id.ivDislike);
             ivReply = bindView(R.id.ivReply);

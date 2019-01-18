@@ -4,7 +4,6 @@ import com.druger.aboutwork.di.modules.AppModule;
 import com.druger.aboutwork.di.modules.NetworkModule;
 import com.druger.aboutwork.fragments.AccountFragment;
 import com.druger.aboutwork.presenters.AccountPresenter;
-import com.druger.aboutwork.presenters.CommentsPresenter;
 import com.druger.aboutwork.presenters.CompaniesPresenter;
 import com.druger.aboutwork.presenters.CompanyDetailPresenter;
 import com.druger.aboutwork.presenters.ReviewPresenter;
@@ -22,7 +21,6 @@ import dagger.Component;
 public interface AppComponent {
 
     void inject(AccountFragment fragment);
-    void inject(CommentsPresenter presenter);
 
     CompaniesPresenter getCompaniesPresenter();
 

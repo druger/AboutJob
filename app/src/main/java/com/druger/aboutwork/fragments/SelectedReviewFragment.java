@@ -1,7 +1,6 @@
 package com.druger.aboutwork.fragments;
 
 
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -36,7 +35,7 @@ import com.druger.aboutwork.utils.Utils;
 
 import java.util.List;
 
-import static com.druger.aboutwork.Const.Bundles.FROM_ACCOUNT;
+import static com.druger.aboutwork.Const.Bundles.EDIT_MODE;
 import static com.druger.aboutwork.Const.Bundles.NAME;
 import static com.druger.aboutwork.Const.Bundles.REVIEW;
 import static com.druger.aboutwork.Const.Colors.GRAY_500;
@@ -44,10 +43,6 @@ import static com.druger.aboutwork.Const.Colors.GREEN_500;
 import static com.druger.aboutwork.Const.Colors.RED_200;
 import static com.druger.aboutwork.Const.Colors.RED_500;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-// TODO добавить ValueEventListener from Firebase
 public class SelectedReviewFragment extends BaseFragment implements View.OnClickListener, SelectedReview {
     private static final int NEW = 0;
     private static final int UPDATE = 1;
@@ -77,7 +72,7 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
 
         Bundle args = new Bundle();
         args.putParcelable(REVIEW, review);
-        args.putBoolean(FROM_ACCOUNT, fromAccount);
+        args.putBoolean(EDIT_MODE, fromAccount);
 
         SelectedReviewFragment fragment = new SelectedReviewFragment();
         fragment.setArguments(args);
@@ -92,7 +87,7 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
         setUI();
         setUX();
         setReview();
-        showComments();
+        setupComments();
         retrieveComments();
         setupListeners();
         return rootView;
@@ -101,11 +96,11 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
     private void getBundles() {
         bundle = getArguments();
         review = bundle.getParcelable(REVIEW);
-        editMode = getArguments().getBoolean(FROM_ACCOUNT);
+        editMode = getArguments().getBoolean(EDIT_MODE);
     }
 
     private void retrieveComments() {
-        presenter.retrieveComments(reviewId);
+        presenter.retrieveComments(review.getFirebaseKey());
     }
 
     private void setupListeners() {
@@ -134,10 +129,10 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
 
         ivSend.setOnClickListener(v -> {
             switch (type) {
-                case 0:
+                case NEW:
                     sendMessage(etMessage.getText().toString().trim(), NEW);
                     break;
-                case 1:
+                case UPDATE:
                     sendMessage(etMessage.getText().toString().trim(), UPDATE);
                     break;
             }
@@ -303,7 +298,7 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
         FirebaseHelper.likeReview(review);
     }
 
-    private void showComments() {
+    private void setupComments() {
         commentAdapter = new CommentAdapter();
         rvComments.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvComments.setItemAnimator(new DefaultItemAnimator());

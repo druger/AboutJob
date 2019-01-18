@@ -44,7 +44,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import static com.druger.aboutwork.Const.Bundles.COMPANY_DETAIL;
-import static com.druger.aboutwork.Const.Bundles.FROM_ACCOUNT;
+import static com.druger.aboutwork.Const.Bundles.EDIT_MODE;
 import static com.druger.aboutwork.Const.Bundles.REVIEW;
 
 /**
@@ -95,7 +95,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
 
         ReviewFragment fragment = new ReviewFragment();
         args.putParcelable(REVIEW, review);
-        args.putBoolean(FROM_ACCOUNT, fromAccount);
+        args.putBoolean(EDIT_MODE, fromAccount);
         fragment.setArguments(args);
         return fragment;
     }
@@ -158,7 +158,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         Bundle bundle = getArguments();
         if (bundle != null) {
             review = (Review) bundle.get(REVIEW);
-            editMode = bundle.getBoolean(FROM_ACCOUNT);
+            editMode = bundle.getBoolean(EDIT_MODE);
             companyDetail = (CompanyDetail) bundle.get(COMPANY_DETAIL);
         }
     }

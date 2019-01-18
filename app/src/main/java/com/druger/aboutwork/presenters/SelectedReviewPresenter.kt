@@ -16,13 +16,13 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
     private var dbReference: DatabaseReference? = null
 
     private lateinit var comments: MutableList<Comment>
-    private var comment: Comment? = null
+    var comment: Comment? = null
 
     fun addComment(message: String, reviewId: String) {
         val calendar = Calendar.getInstance()
         val comment = Comment(message, calendar.timeInMillis)
         if (user != null) {
-            comment.userId = user.getUid()
+            comment.userId = user.uid
         }
         comment.reviewId = reviewId
         FirebaseHelper.addComment(comment)
@@ -42,7 +42,7 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
     }
 
     fun deleteComment(position: Int) {
-        FirebaseHelper.deleteComment(comment.id)
+        FirebaseHelper.deleteComment(comment?.id)
         comments.removeAt(position)
         viewState.notifyItemRemoved(position, comments.size)
     }
@@ -63,8 +63,7 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
         viewState.showComments(comments)
     }
 
-    override fun onCancelled(p0: DatabaseError) {
-    }
+    override fun onCancelled(p0: DatabaseError) {}
 
     fun removeListeners() {
         dbReference?.removeEventListener(this)
