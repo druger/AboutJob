@@ -13,7 +13,7 @@
 
         <include layout="@layout/toolbar" />
 
-        <include layout="@layout/content_selected_review_new"
+        <include layout="@layout/content_selected_review"
             bind:review="@{review}" />
 
     </android.support.design.widget.CoordinatorLayout>

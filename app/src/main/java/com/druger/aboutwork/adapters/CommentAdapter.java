@@ -1,6 +1,7 @@
 package com.druger.aboutwork.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.druger.aboutwork.Const;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.Comment;
@@ -47,9 +49,9 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
 
     private void setColorLike(Comment comment, CommentVH holder) {
         if (comment.isMyLike()) {
-            holder.ivLike.setImageResource(R.drawable.ic_heart);
+            holder.ivLike.setColorFilter(Color.parseColor(Const.Colors.LIKE));
         } else {
-            holder.ivLike.setImageResource(R.drawable.ic_heart_outline);
+            holder.ivLike.setImageResource(R.drawable.thumb_up);
         }
     }
 

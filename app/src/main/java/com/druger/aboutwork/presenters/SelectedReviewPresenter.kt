@@ -15,7 +15,7 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
     private val user: FirebaseUser? = null
     private var dbReference: DatabaseReference? = null
 
-    private lateinit var comments: MutableList<Comment>
+    private var comments: List<Comment> = emptyList()
     var comment: Comment? = null
 
     fun addComment(message: String, reviewId: String) {
@@ -43,7 +43,7 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
 
     fun deleteComment(position: Int) {
         FirebaseHelper.deleteComment(comment?.id)
-        comments.removeAt(position)
+        comments = comments.toMutableList().apply { removeAt(position) }
         viewState.notifyItemRemoved(position, comments.size)
     }
 
@@ -54,11 +54,11 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
     }
 
     override fun onDataChange(dataSnapshot: DataSnapshot) {
-        comments.clear()
+        comments = comments.toMutableList().apply { clear() }
         for (snapshot in dataSnapshot.children) {
             val comment = snapshot.getValue(Comment::class.java)
             comment!!.id = snapshot.key
-            comments.add(comment)
+            comments = comments.toMutableList().apply { add(comment) }
         }
         viewState.showComments(comments)
     }

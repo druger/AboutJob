@@ -33,5 +33,6 @@ public final class Const {
         public static final String RED_500 = "#F44336";
         public static final String RED_200 = "#EF9A9A";
         public static final String GRAY_500 = "#9E9E9E";
+        public static final String LIKE = "#3F2B96";
     }
 }
