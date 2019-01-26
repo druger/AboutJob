@@ -28,11 +28,10 @@ public final class Const {
     public static final class Colors {
         private Colors() {
         }
-
-        public static final String GREEN_500 = "#8BC34A";
         public static final String RED_500 = "#F44336";
         public static final String RED_200 = "#EF9A9A";
         public static final String GRAY_500 = "#9E9E9E";
         public static final String LIKE = "#3F2B96";
+        public static final String DISLIKE = "#EB5757";
     }
 }

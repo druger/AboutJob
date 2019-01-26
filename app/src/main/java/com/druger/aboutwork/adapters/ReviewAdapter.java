@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.druger.aboutwork.Const.Colors.DISLIKE;
 import static com.druger.aboutwork.Const.Colors.GRAY_500;
-import static com.druger.aboutwork.Const.Colors.GREEN_500;
-import static com.druger.aboutwork.Const.Colors.RED_500;
+import static com.druger.aboutwork.Const.Colors.LIKE;
 
 /**
  * Created by druger on 29.01.2017.
@@ -91,8 +91,10 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             onLikeClick(reviewVH, review);
             onDislikeClick(reviewVH, review);
             setStatus(reviewVH, review);
-            reviewVH.tvPluses.setText(reviewVH.getQuoteSpan(review.getPluses(), R.color.review_positive));
-            reviewVH.tvMinuses.setText(reviewVH.getQuoteSpan(review.getMinuses(), R.color.review_negative));
+            reviewVH.tvPluses.setText(Utils.getQuoteSpan(reviewVH.itemView.getContext(),
+                    review.getPluses(), R.color.review_positive));
+            reviewVH.tvMinuses.setText(Utils.getQuoteSpan(reviewVH.itemView.getContext(),
+                    review.getMinuses(), R.color.review_negative));
 
             holder.itemView.setOnClickListener(v -> itemClick(reviewVH, review));
             holder.itemView.setOnLongClickListener(v ->
@@ -134,12 +136,12 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
         if (!myLike) {
             reviewVH.ivLike.setColorFilter(Color.parseColor(GRAY_500));
         } else {
-            reviewVH.ivLike.setColorFilter(Color.parseColor(GREEN_500));
+            reviewVH.ivLike.setColorFilter(Color.parseColor(LIKE));
         }
         if (!myDislike) {
             reviewVH.ivDislike.setColorFilter(Color.parseColor(GRAY_500));
         } else {
-            reviewVH.ivDislike.setColorFilter(Color.parseColor(RED_500));
+            reviewVH.ivDislike.setColorFilter(Color.parseColor(DISLIKE));
         }
     }
 
@@ -148,7 +150,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             int like = review.getLike();
             int dislike = review.getDislike();
             if (!review.isMyDislike()) {
-                holder.ivDislike.setColorFilter(Color.parseColor(RED_500));
+                holder.ivDislike.setColorFilter(Color.parseColor(DISLIKE));
                 review.setDislike(++dislike);
                 review.setMyDislike(true);
 
@@ -172,7 +174,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             int like = review.getLike();
             int dislike = review.getDislike();
             if (!review.isMyLike()) {
-                holder.ivLike.setColorFilter(Color.parseColor(GREEN_500));
+                holder.ivLike.setColorFilter(Color.parseColor(LIKE));
                 review.setLike(++like);
                 review.setMyLike(true);
 
@@ -241,17 +243,6 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
         void bind(Review review) {
             binding.setReview(review);
             binding.executePendingBindings();
-        }
-
-        // TODO добавить реализацию для api<28
-        private SpannableString getQuoteSpan(String text, int color) {
-            SpannableString string = new SpannableString(text);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                string.setSpan(new QuoteSpan(ContextCompat.getColor(itemView.getContext(), color),
-                                15, 30),
-                        0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-            return string;
         }
     }
 

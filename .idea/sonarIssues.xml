@@ -23,6 +23,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$USER_HOME$/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-28.0.0.aar/6be7f27b4553bee97f131f4568c5505d/jars/classes.jar!/android/support/v7/widget/RecyclerView.class">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../Examples/Examples/ArcProgressStackView/app/src/main/java/devlight/io/sample/MainActivity.java">
           <value>
             <set />

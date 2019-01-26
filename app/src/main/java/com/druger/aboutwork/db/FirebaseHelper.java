@@ -144,4 +144,12 @@ public class FirebaseHelper {
 
         FirebaseDatabase.getInstance().getReference().updateChildren(updateLike);
     }
+
+    public static void dislikeComment(Comment comment) {
+        Map<String, Object> updateLike = new HashMap<>();
+        updateLike.put(COMMENTS + SLASH + comment.getId() + DISLIKE, comment.getDislike());
+        updateLike.put(COMMENTS + SLASH + comment.getId() + MY_DISLIKE, comment.isMyDislike());
+
+        FirebaseDatabase.getInstance().getReference().updateChildren(updateLike);
+    }
 }

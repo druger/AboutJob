@@ -53,7 +53,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvComment"
-            tools:text="5" />
+            android:text="0" />
 
         <ImageView
             android:id="@+id/ivDislike"
@@ -73,7 +73,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/tvCountDislike"
             app:layout_constraintEnd_toStartOf="@+id/ivDislike"
             app:layout_constraintTop_toTopOf="@+id/tvCountDislike"
-            tools:text="2" />
+            android:text="0" />
 
         <ImageView
             android:id="@+id/ivLike"

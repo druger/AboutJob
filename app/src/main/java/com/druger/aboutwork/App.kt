@@ -34,7 +34,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        setupLeakCanary()
+//        setupLeakCanary()
         setupRealm()
         setupDagger2()
     }

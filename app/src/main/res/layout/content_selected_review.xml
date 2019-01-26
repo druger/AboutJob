@@ -14,9 +14,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="?attr/actionBarSize">
 
-        <ScrollView
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_above="@+id/ltSend">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -249,27 +250,46 @@
                             android:id="@+id/tvPluses"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             android:maxLines="3"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/line2"
-                            tools:text="какие-то плюсы"
+
                             android:text="@{review.pluses}"
-                            android:textColor="@android:color/black"/>
+                            android:textColor="@android:color/black"
+                            card_view:layout_constraintStart_toStartOf="@+id/tvPlusesDesc"
+                            card_view:layout_constraintTop_toBottomOf="@+id/tvPlusesDesc"
+                            tools:text="какие-то плюсы" />
+
+                        <TextView
+                            android:id="@+id/tvPlusesDesc"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/pluses"
+                            card_view:layout_constraintStart_toStartOf="parent"
+                            card_view:layout_constraintTop_toBottomOf="@+id/line2" />
 
                         <TextView
                             android:id="@+id/tvMinuses"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             android:maxLines="3"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tvPluses"
-                            tools:text="какие-то минусы"
                             android:text="@{review.minuses}"
-                            android:textColor="@android:color/black"/>
+                            android:textColor="@android:color/black"
+                            card_view:layout_constraintStart_toStartOf="@+id/tvMinusesDescp"
+                            card_view:layout_constraintTop_toBottomOf="@+id/tvMinusesDescp"
+                            tools:text="какие-то минусы" />
+
+                        <TextView
+                            android:id="@+id/tvMinusesDescp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/minuses"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvPluses" />
 
                         <TextView
                             android:id="@+id/tvDislike"
@@ -326,7 +346,7 @@
                     android:layout_below="@+id/cvContent"
                     android:layout_marginTop="10dp" />
             </RelativeLayout>
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
 
         <LinearLayout
             android:id="@+id/ltSend"
@@ -360,5 +380,4 @@
                 app:srcCompat="@drawable/ic_send" />
         </LinearLayout>
     </RelativeLayout>
-
 </layout>

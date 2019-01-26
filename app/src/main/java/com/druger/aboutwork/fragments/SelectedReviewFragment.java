@@ -38,8 +38,9 @@ import java.util.List;
 import static com.druger.aboutwork.Const.Bundles.EDIT_MODE;
 import static com.druger.aboutwork.Const.Bundles.NAME;
 import static com.druger.aboutwork.Const.Bundles.REVIEW;
+import static com.druger.aboutwork.Const.Colors.DISLIKE;
 import static com.druger.aboutwork.Const.Colors.GRAY_500;
-import static com.druger.aboutwork.Const.Colors.GREEN_500;
+import static com.druger.aboutwork.Const.Colors.LIKE;
 import static com.druger.aboutwork.Const.Colors.RED_200;
 import static com.druger.aboutwork.Const.Colors.RED_500;
 
@@ -58,6 +59,8 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
     private FloatingActionButton fabEdit;
     private EditText etMessage;
     private ImageView ivSend;
+    private TextView tvPluses;
+    private TextView tvMinuses;
     private RecyclerView rvComments;
     private CommentAdapter commentAdapter;
 
@@ -197,6 +200,8 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
         etMessage = bindView(R.id.etMessage);
         ivSend = bindView(R.id.ivSend);
         rvComments = bindView(R.id.rvComments);
+        tvPluses = bindView(R.id.tvPluses);
+        tvMinuses = bindView(R.id.tvMinuses);
     }
 
     private void setupToolbar() {
@@ -217,15 +222,17 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
                 ivLike.setTag(getActivity().getString(R.string.like_inactive));
             } else {
                 ivLike.setTag(getActivity().getString(R.string.like_active));
-                ivLike.setColorFilter(Color.parseColor(GREEN_500));
+                ivLike.setColorFilter(Color.parseColor(LIKE));
             }
             if (!myDislike) {
                 ivDislike.setTag(getActivity().getString(R.string.dislike_inactive));
             } else {
                 ivDislike.setTag(getActivity().getString(R.string.dislike_active));
-                ivDislike.setColorFilter(Color.parseColor(RED_500));
+                ivDislike.setColorFilter(Color.parseColor(DISLIKE));
             }
         }
+        tvPluses.setText(Utils.getQuoteSpan(getActivity(), review.getPluses(), R.color.review_positive));
+        tvMinuses.setText(Utils.getQuoteSpan(getActivity(), review.getMinuses(), R.color.review_negative));
     }
 
     @Override
@@ -258,7 +265,7 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
         int like = review.getLike();
         int dislike = review.getDislike();
         if (!review.isMyDislike()) {
-            ivDislike.setColorFilter(Color.parseColor(RED_500));
+            ivDislike.setColorFilter(Color.parseColor(DISLIKE));
             review.setDislike(++dislike);
             review.setMyDislike(true);
 
@@ -280,7 +287,7 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
         int like = review.getLike();
         int dislike = review.getDislike();
         if (!review.isMyLike()) {
-            ivLike.setColorFilter(Color.parseColor(GREEN_500));
+            ivLike.setColorFilter(Color.parseColor(LIKE));
             review.setLike(++like);
             review.setMyLike(true);
 

@@ -39,12 +39,35 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
         holder.tvComment.setText(comment.getMessage());
         holder.tvDate.setText(Utils.INSTANCE.getDate(comment.getDate()));
         holder.tvCountLikes.setText(String.valueOf(comment.getLike()));
+        holder.tvCountDislikes.setText(String.valueOf(comment.getDislike()));
 
         holder.itemView.setOnLongClickListener(v -> longItemClick(holder));
         holder.ivLike.setOnClickListener(v -> likeClick(comment));
+        holder.ivDislike.setOnClickListener(v -> dislikeClick(comment));
         holder.tvUserName.setOnClickListener(v -> nameClickListener.onClick(comment));
 
         setColorLike(comment, holder);
+        setColorDislike(comment, holder);
+    }
+
+    private void setColorDislike(Comment comment, CommentVH holder) {
+        if (comment.isMyDislike()) {
+            holder.ivDislike.setColorFilter(Color.parseColor(Const.Colors.DISLIKE));
+        } else {
+            holder.ivDislike.setImageResource(R.drawable.thumb_down);
+        }
+    }
+
+    private void dislikeClick(Comment comment) {
+        int dislike = comment.getDislike();
+        if (comment.isMyDislike()) {
+            comment.setDislike(--dislike);
+            comment.setMyDislike(false);
+        } else {
+            comment.setDislike(++dislike);
+            comment.setMyDislike(true);
+        }
+        FirebaseHelper.dislikeComment(comment);
     }
 
     private void setColorLike(Comment comment, CommentVH holder) {

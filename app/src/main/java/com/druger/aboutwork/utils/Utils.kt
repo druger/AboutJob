@@ -2,6 +2,11 @@ package com.druger.aboutwork.utils
 
 import android.content.Context
 import android.graphics.*
+import android.os.Build
+import android.support.v4.content.ContextCompat
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.QuoteSpan
 import android.util.Patterns
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -70,5 +75,17 @@ object Utils {
                 (bitmap.height - text.ascent()) / 2,
                 text)
         return bitmap
+    }
+
+    // TODO добавить реализацию для api<28
+    @JvmStatic
+    fun getQuoteSpan(context: Context, text: String, color: Int): SpannableString {
+        val string = SpannableString(text)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            string.setSpan(QuoteSpan(ContextCompat.getColor(context, color),
+                    15, 30),
+                    0, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+        return string
     }
 }
