@@ -55,7 +55,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        initRefWatcher();
+//        initRefWatcher();
         removeAuthListener();
     }
 

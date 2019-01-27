@@ -94,10 +94,10 @@ public class LoginActivity extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        RefWatcher refWatcher = App.Companion.getRefWatcher(this);
-        refWatcher.watch(this);
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        RefWatcher refWatcher = App.Companion.getRefWatcher(this);
+//        refWatcher.watch(this);
+//    }
 }

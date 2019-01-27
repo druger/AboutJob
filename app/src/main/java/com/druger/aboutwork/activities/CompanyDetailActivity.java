@@ -35,12 +35,12 @@ public class CompanyDetailActivity extends AppCompatActivity{
                 .add(R.id.company_container, company).commit();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        RefWatcher refWatcher = App.Companion.getRefWatcher(this);
-        refWatcher.watch(this);
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        RefWatcher refWatcher = App.Companion.getRefWatcher(this);
+//        refWatcher.watch(this);
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

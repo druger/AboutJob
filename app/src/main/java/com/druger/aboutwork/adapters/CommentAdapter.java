@@ -18,6 +18,10 @@ import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import static com.druger.aboutwork.Const.Colors.DISLIKE;
+import static com.druger.aboutwork.Const.Colors.GRAY_500;
+import static com.druger.aboutwork.Const.Colors.LIKE;
+
 /**
  * Created by druger on 04.03.2017.
  */
@@ -42,8 +46,8 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
         holder.tvCountDislikes.setText(String.valueOf(comment.getDislike()));
 
         holder.itemView.setOnLongClickListener(v -> longItemClick(holder));
-        holder.ivLike.setOnClickListener(v -> likeClick(comment));
-        holder.ivDislike.setOnClickListener(v -> dislikeClick(comment));
+        holder.ivLike.setOnClickListener(v -> likeClick(holder, comment));
+        holder.ivDislike.setOnClickListener(v -> dislikeClick(holder, comment));
         holder.tvUserName.setOnClickListener(v -> nameClickListener.onClick(comment));
 
         setColorLike(comment, holder);
@@ -58,14 +62,24 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
         }
     }
 
-    private void dislikeClick(Comment comment) {
+    private void dislikeClick(CommentVH holder, Comment comment) {
         int dislike = comment.getDislike();
+        int like = comment.getLike();
         if (comment.isMyDislike()) {
             comment.setDislike(--dislike);
             comment.setMyDislike(false);
+            holder.ivDislike.setColorFilter(Color.parseColor(GRAY_500));
         } else {
             comment.setDislike(++dislike);
             comment.setMyDislike(true);
+            holder.ivDislike.setColorFilter(Color.parseColor(DISLIKE));
+
+            if (comment.isMyLike()) {
+                holder.ivLike.setColorFilter(Color.parseColor(GRAY_500));
+                comment.setLike(--like);
+                comment.setMyLike(false);
+                FirebaseHelper.likeComment(comment);
+            }
         }
         FirebaseHelper.dislikeComment(comment);
     }
@@ -78,14 +92,24 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
         }
     }
 
-    private void likeClick(Comment comment) {
+    private void likeClick(CommentVH holder, Comment comment) {
         int like = comment.getLike();
+        int dislike = comment.getDislike();
         if (comment.isMyLike()) {
             comment.setLike(--like);
             comment.setMyLike(false);
+            holder.ivLike.setColorFilter(Color.parseColor(GRAY_500));
         } else {
             comment.setLike(++like);
             comment.setMyLike(true);
+            holder.ivLike.setColorFilter(Color.parseColor(LIKE));
+
+            if (comment.isMyDislike()) {
+                holder.ivDislike.setColorFilter(Color.parseColor(GRAY_500));
+                comment.setDislike(--dislike);
+                comment.setMyDislike(false);
+                FirebaseHelper.dislikeComment(comment);
+            }
         }
         FirebaseHelper.likeComment(comment);
     }
