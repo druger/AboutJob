@@ -165,7 +165,7 @@ public class CompanyDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void addReview() {
-        ReviewFragment review = ReviewFragment.newInstance(companyDetail);
+        AddReviewFragment review = AddReviewFragment.Companion.newInstance(companyDetail);
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.company_container, review);

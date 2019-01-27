@@ -41,40 +41,8 @@ public class ReviewPresenter extends BasePresenter<ReviewView> {
 
     private int status = NOT_SELECTED_STATUS;
 
-    private Review review;
-    private MarkCompany mark;
-    private String companyId;
-
-    // TODO сократить кол-во параметров
-    public void setCompanyRating(RatingBar salary, RatingBar chief, RatingBar workplace,
-                                 RatingBar career, RatingBar collective, RatingBar socialPackage,
-                                 Review review, boolean fromAccount) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            if (fromAccount) {
-                this.review = review;
-                mark = review.getMarkCompany();
-            } else {
-                this.review = new Review(companyId, user.getUid(), Calendar.getInstance().getTimeInMillis());
-                mark = new MarkCompany(user.getUid(), companyId);
-            }
-        }
-
-        salary.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> mark.setSalary(rating));
-        chief.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> mark.setChief(rating));
-        workplace.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> mark.setWorkplace(rating));
-        career.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> mark.setCareer(rating));
-        collective.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> mark.setCollective(rating));
-        socialPackage.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> mark.setSocialPackage(rating));
-
-        if (this.review != null) {
-            this.review.setMarkCompany(mark);
-        }
-    }
-
-    public void setCompanyId(String companyId) {
-        this.companyId = companyId;
-    }
+    protected Review review;
+    protected MarkCompany mark;
 
     public Review getReview() {
         return review;
@@ -159,5 +127,29 @@ public class ReviewPresenter extends BasePresenter<ReviewView> {
         status = position;
         getViewState().setIsIndicatorRatingBar(true);
         getViewState().clearRatingBar();
+    }
+
+    public void setSalary(float rating) {
+        mark.setSalary(rating);
+    }
+
+    public void setChief(float rating) {
+        mark.setChief(rating);
+    }
+
+    public void setWorkplace(float rating) {
+        mark.setWorkplace(rating);
+    }
+
+    public void setCareer(float rating) {
+        mark.setCareer(rating);
+    }
+
+    public void setCollective(float rating) {
+        mark.setCollective(rating);
+    }
+
+    public void setSocialPackage(float rating) {
+        mark.setSocialPackage(rating);
     }
 }

@@ -47,10 +47,7 @@ import static com.druger.aboutwork.Const.Bundles.COMPANY_DETAIL;
 import static com.druger.aboutwork.Const.Bundles.EDIT_MODE;
 import static com.druger.aboutwork.Const.Bundles.REVIEW;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class ReviewFragment extends BaseFragment implements ReviewView, View.OnClickListener,
+public abstract class ReviewFragment extends BaseFragment implements ReviewView, View.OnClickListener,
         AdapterView.OnItemSelectedListener {
 
     @InjectPresenter
@@ -75,39 +72,16 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     private EditText etDismissalDate;
     private EditText etInterviewDate;
 
-    private Spinner spinnerWorkStatus;
+    protected Spinner spinnerWorkStatus;
     private ImageView ivClose;
     private ImageView ivDone;
-    private TextView tvTitle;
+    protected TextView tvTitle;
 
     private DatePickerFragment datePicker;
-
-    private CompanyDetail companyDetail;
     private Review review;
-    private boolean editMode;
 
     public ReviewFragment() {
         // Required empty public constructor
-    }
-
-    public static ReviewFragment newInstance(Review review, boolean fromAccount) {
-        Bundle args = new Bundle();
-
-        ReviewFragment fragment = new ReviewFragment();
-        args.putParcelable(REVIEW, review);
-        args.putBoolean(EDIT_MODE, fromAccount);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public static ReviewFragment newInstance(CompanyDetail companyDetail) {
-
-        Bundle args = new Bundle();
-        args.putParcelable(COMPANY_DETAIL, companyDetail);
-
-        ReviewFragment fragment = new ReviewFragment();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @ProvidePresenter
@@ -118,33 +92,18 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         getBundles();
         rootView = inflater.inflate(R.layout.fragment_review, container, false);
-
-        if (!editMode) {
-            String companyId = companyDetail.getId();
-            reviewPresenter.setCompanyId(companyId);
-        } else {
-            FragmentReviewBinding binding = DataBindingUtil
-                    .inflate(inflater, R.layout.fragment_review, container, false);
-            binding.setReview(review);
-            rootView = binding.getRoot();
-            ((MainActivity) getActivity()).hideBottomNavigation();
-        }
         setupToolbar();
         setupUI();
         setDateVisibility();
         setupWorkStatus();
         setupListeners();
-
-        reviewPresenter.setCompanyRating(salary, chief, workplace, career, collective, socialPackage,
-                review, editMode);
-        if (editMode) {
-            fillData();
-        }
+        setupCompanyRating();
         return rootView;
     }
+
+    protected abstract void setupCompanyRating();
 
     private void setupWorkStatus() {
         spinnerWorkStatus = bindView(R.id.spinnerStatus);
@@ -154,43 +113,13 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         spinnerWorkStatus.setAdapter(adapter);
     }
 
-    private void getBundles() {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            review = (Review) bundle.get(REVIEW);
-            editMode = bundle.getBoolean(EDIT_MODE);
-            companyDetail = (CompanyDetail) bundle.get(COMPANY_DETAIL);
-        }
-    }
+    protected abstract void getBundles();
 
-    private void fillData() {
-        switch (review.getStatus()) {
-            case 0:
-                spinnerWorkStatus.setPromptId(R.string.working);
-                break;
-            case 1:
-                spinnerWorkStatus.setPromptId(R.string.worked);
-                break;
-            case 2:
-                spinnerWorkStatus.setPromptId(R.string.interview);
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void setupToolbar() {
+    protected void setupToolbar() {
         toolbar = bindView(R.id.toolbar);
-
         ivDone = bindView(R.id.ivDone);
         ivClose = bindView(R.id.ivClose);
         tvTitle = bindView(R.id.tvTitle);
-
-        if (editMode) {
-            tvTitle.setText(R.string.edit_review);
-        } else {
-            tvTitle.setText(R.string.add_review);
-        }
 
         ivDone.setOnClickListener(this);
         ivClose.setOnClickListener(this);
@@ -203,6 +132,16 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         cityChanges();
         positionChanges();
         spinnerWorkStatus.setOnItemSelectedListener(this);
+        setupRatingChanges();
+    }
+
+    private void setupRatingChanges() {
+        salary.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> reviewPresenter.setSalary(rating));
+        chief.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> reviewPresenter.setChief(rating));
+        workplace.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> reviewPresenter.setWorkplace(rating));
+        career.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> reviewPresenter.setCareer(rating));
+        collective.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> reviewPresenter.setCollective(rating));
+        socialPackage.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> reviewPresenter.setSocialPackage(rating));
     }
 
     private void positionChanges() {
@@ -277,9 +216,6 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     public void onDestroy() {
         super.onDestroy();
         unbindDrawables(rootView);
-        if (editMode) {
-            ((MainActivity) getActivity()).showBottomNavigation();
-        }
     }
 
     private void unbindDrawables(View view) {
@@ -298,7 +234,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ivDone:
-                checkReview(editMode);
+                checkReview();
                 break;
             case R.id.etEmploymentDate:
                 datePicker.flag = DatePickerFragment.EMPLOYMENT_DATE;
@@ -323,7 +259,7 @@ public class ReviewFragment extends BaseFragment implements ReviewView, View.OnC
         }
     }
 
-    private void checkReview(boolean editMode) {
+    private void checkReview() {
         review = reviewPresenter.getReview();
 
         review.setPluses(etPluses.getText().toString().trim());

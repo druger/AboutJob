@@ -253,7 +253,7 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
     }
 
     private void showEditReview() {
-        ReviewFragment reviewFragment = ReviewFragment.newInstance(review, true);
+        EditReviewFragment reviewFragment = EditReviewFragment.Companion.newInstance(review);
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.main_container, reviewFragment);
