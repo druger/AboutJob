@@ -17,8 +17,6 @@ class AddReviewFragment : ReviewFragment() {
     @InjectPresenter
     lateinit var presenter: AddReviewPresenter
 
-    private var companyDetail: CompanyDetail? = null
-
     companion object{
         fun newInstance(companyDetail: CompanyDetail): AddReviewFragment {
 
@@ -31,16 +29,10 @@ class AddReviewFragment : ReviewFragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        presenter.companyId = companyDetail?.id
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
     override fun getBundles() {
         val bundle = arguments
         if (bundle != null) {
-            companyDetail = bundle.get(COMPANY_DETAIL) as CompanyDetail
+            presenter.companyDetail = bundle.get(COMPANY_DETAIL) as CompanyDetail
         }
     }
 

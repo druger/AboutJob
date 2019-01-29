@@ -4,8 +4,6 @@ package com.druger.aboutwork.fragments;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -29,12 +27,9 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
-import com.druger.aboutwork.activities.MainActivity;
-import com.druger.aboutwork.databinding.FragmentReviewBinding;
 import com.druger.aboutwork.interfaces.view.ReviewView;
 import com.druger.aboutwork.model.City;
 import com.druger.aboutwork.model.Company;
-import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.model.Vacancy;
 import com.druger.aboutwork.presenters.ReviewPresenter;
@@ -42,10 +37,6 @@ import com.druger.aboutwork.utils.Utils;
 
 import java.util.Calendar;
 import java.util.List;
-
-import static com.druger.aboutwork.Const.Bundles.COMPANY_DETAIL;
-import static com.druger.aboutwork.Const.Bundles.EDIT_MODE;
-import static com.druger.aboutwork.Const.Bundles.REVIEW;
 
 public abstract class ReviewFragment extends BaseFragment implements ReviewView, View.OnClickListener,
         AdapterView.OnItemSelectedListener {
@@ -234,7 +225,7 @@ public abstract class ReviewFragment extends BaseFragment implements ReviewView,
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ivDone:
-                checkReview();
+                doneClick();
                 break;
             case R.id.etEmploymentDate:
                 datePicker.flag = DatePickerFragment.EMPLOYMENT_DATE;
@@ -259,7 +250,7 @@ public abstract class ReviewFragment extends BaseFragment implements ReviewView,
         }
     }
 
-    private void checkReview() {
+    private void doneClick() {
         review = reviewPresenter.getReview();
 
         review.setPluses(etPluses.getText().toString().trim());
@@ -267,12 +258,7 @@ public abstract class ReviewFragment extends BaseFragment implements ReviewView,
         review.setPosition(etPosition.getText().toString().trim());
         review.setCity(etCity.getText().toString());
 
-        if (editMode) {
-            reviewPresenter.updateReview(review);
-        } else {
-            Company company = new Company(companyDetail.getId(), companyDetail.getName());
-            reviewPresenter.addReview(review, company);
-        }
+        reviewPresenter.doneClick();
     }
 
     @Override

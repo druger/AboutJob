@@ -27,7 +27,7 @@ import io.reactivex.disposables.Disposable;
  */
 
 @InjectViewState
-public class ReviewPresenter extends BasePresenter<ReviewView> {
+public abstract class ReviewPresenter extends BasePresenter<ReviewView> {
 
     @Inject
     public ReviewPresenter(RestApi restApi) {
@@ -39,7 +39,7 @@ public class ReviewPresenter extends BasePresenter<ReviewView> {
     private static final int WORKED_STATUS = 1;
     private static final int INTERVIEW_STATUS = 2;
 
-    private int status = NOT_SELECTED_STATUS;
+    protected int status = NOT_SELECTED_STATUS;
 
     protected Review review;
     protected MarkCompany mark;
@@ -48,33 +48,12 @@ public class ReviewPresenter extends BasePresenter<ReviewView> {
         return review;
     }
 
-    public void addReview(Review review, Company company) {
-        if (isCorrectStatus() && isCorrectReview(review)) {
-            review.setStatus(status);
-            FirebaseHelper.addReview(review);
-            FirebaseHelper.addCompany(company);
-            getViewState().successfulAddition();
-        } else {
-            getViewState().showErrorAdding();
-        }
-    }
-
-    public void updateReview(Review review) {
-        if (isCorrectStatus() && isCorrectReview(review)) {
-            review.setStatus(status);
-            FirebaseHelper.updateReview(review);
-            getViewState().successfulEditing();
-        } else {
-            getViewState().showErrorEditing();
-        }
-    }
-
-    private boolean isCorrectStatus() {
+    protected boolean isCorrectStatus() {
         return (status == WORKING_STATUS || status == WORKED_STATUS) && mark.getAverageMark() != 0
                 || (status == INTERVIEW_STATUS && mark.getAverageMark() == 0);
     }
 
-    private boolean isCorrectReview(Review review) {
+    protected boolean isCorrectReview(Review review) {
         return !TextUtils.isEmpty(review.getPluses()) && !TextUtils.isEmpty(review.getMinuses())
                 && !TextUtils.isEmpty(review.getPosition()) && !TextUtils.isEmpty(review.getCity());
     }
@@ -152,4 +131,6 @@ public class ReviewPresenter extends BasePresenter<ReviewView> {
     public void setSocialPackage(float rating) {
         mark.setSocialPackage(rating);
     }
+
+    public abstract void doneClick();
 }
