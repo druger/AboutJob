@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
+import com.druger.aboutwork.App
 import com.druger.aboutwork.Const.Bundles.COMPANY_DETAIL
 import com.druger.aboutwork.R
 import com.druger.aboutwork.model.CompanyDetail
@@ -16,6 +18,11 @@ class AddReviewFragment : ReviewFragment() {
 
     @InjectPresenter
     lateinit var presenter: AddReviewPresenter
+
+    @ProvidePresenter
+    fun provideAddReviewPresenter(): AddReviewPresenter {
+        return App.appComponent.addReviewPresenter
+    }
 
     companion object{
         fun newInstance(companyDetail: CompanyDetail): AddReviewFragment {

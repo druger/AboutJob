@@ -11,16 +11,12 @@ import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.rest.RestApi
 import com.google.firebase.auth.FirebaseAuth
 import java.util.*
+import javax.inject.Inject
 
 @InjectViewState
-class AddReviewPresenter(restApi: RestApi): ReviewPresenter(restApi) {
+class AddReviewPresenter @Inject constructor(): ReviewPresenter() {
 
     lateinit var companyDetail: CompanyDetail
-
-    @ProvidePresenter
-    internal fun provideAddReviewPresenter(): AddReviewPresenter {
-        return App.appComponent.addReviewPresenter
-    }
 
     fun setupReview() {
         val user = FirebaseAuth.getInstance().currentUser

@@ -1,305 +1,287 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-        <import type="com.druger.aboutwork.utils.Utils" />
-
-        <variable
-            name="review"
-            type="com.druger.aboutwork.model.Review" />
-    </data>
-
-    <ScrollView
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <android.support.constraint.ConstraintLayout
+        <TextView
+            android:id="@+id/tvSalary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/salary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include2" />
+
+        <TextView
+            android:id="@+id/tvCareer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/career"
+            app:layout_constraintStart_toStartOf="@+id/ratingbar_career"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerStatus" />
+
+        <TextView
+            android:id="@+id/tvCollective"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/collective"
+            app:layout_constraintStart_toStartOf="@+id/ratingbar_collective"
+            app:layout_constraintTop_toBottomOf="@+id/ratingbar_career" />
+
+        <TextView
+            android:id="@+id/tvSocialPackage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/social_package"
+            app:layout_constraintStart_toStartOf="@+id/ratingbar_social_package"
+            app:layout_constraintTop_toBottomOf="@+id/ratingbar_collective" />
+
+        <Spinner
+            android:id="@+id/spinnerStatus"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tvSalary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/salary"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/include2" />
+        <include
+            android:id="@+id/include2"
+            layout="@layout/separate_line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerStatus" />
 
-            <TextView
-                android:id="@+id/tvCareer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/career"
-                app:layout_constraintStart_toStartOf="@+id/ratingbar_career"
-                app:layout_constraintTop_toBottomOf="@+id/spinnerStatus" />
+        <RatingBar
+            android:id="@+id/ratingbar_salary"
+            style="@style/reviewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@+id/tvSalary"
+            app:layout_constraintTop_toBottomOf="@+id/tvSalary" />
 
-            <TextView
-                android:id="@+id/tvCollective"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/collective"
-                app:layout_constraintStart_toStartOf="@+id/ratingbar_collective"
-                app:layout_constraintTop_toBottomOf="@+id/ratingbar_career" />
+        <RatingBar
+            android:id="@+id/ratingbar_career"
+            style="@style/reviewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCareer" />
 
-            <TextView
-                android:id="@+id/tvSocialPackage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/social_package"
-                app:layout_constraintStart_toStartOf="@+id/ratingbar_social_package"
-                app:layout_constraintTop_toBottomOf="@+id/ratingbar_collective" />
+        <RatingBar
+            android:id="@+id/ratingbar_collective"
+            style="@style/reviewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCollective" />
 
-            <Spinner
-                android:id="@+id/spinnerStatus"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <RatingBar
+            android:id="@+id/ratingbar_social_package"
+            style="@style/reviewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvSocialPackage" />
 
-            <include
-                android:id="@+id/include2"
-                layout="@layout/separate_line"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinnerStatus" />
+        <RatingBar
+            android:id="@+id/ratingbar_chief"
+            style="@style/reviewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@+id/tvChief"
+            app:layout_constraintTop_toBottomOf="@+id/tvChief" />
 
-            <RatingBar
-                android:id="@+id/ratingbar_salary"
-                style="@style/reviewRating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="@+id/tvSalary"
-                app:layout_constraintTop_toBottomOf="@+id/tvSalary" />
+        <RatingBar
+            android:id="@+id/ratingbar_workplace"
+            style="@style/reviewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvWorkplace" />
 
-            <RatingBar
-                android:id="@+id/ratingbar_career"
-                style="@style/reviewRating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCareer" />
+        <TextView
+            android:id="@+id/tvChief"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/chief"
+            app:layout_constraintStart_toStartOf="@+id/ratingbar_salary"
+            app:layout_constraintTop_toBottomOf="@+id/ratingbar_salary" />
 
-            <RatingBar
-                android:id="@+id/ratingbar_collective"
-                style="@style/reviewRating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCollective" />
+        <TextView
+            android:id="@+id/tvWorkplace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/workplace"
+            app:layout_constraintStart_toStartOf="@+id/ratingbar_chief"
+            app:layout_constraintTop_toBottomOf="@+id/ratingbar_chief" />
 
-            <RatingBar
-                android:id="@+id/ratingbar_social_package"
-                style="@style/reviewRating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvSocialPackage" />
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/color_separate_line"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ratingbar_social_package" />
 
-            <RatingBar
-                android:id="@+id/ratingbar_chief"
-                style="@style/reviewRating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="@+id/tvChief"
-                app:layout_constraintTop_toBottomOf="@+id/tvChief" />
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/position"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view">
 
-            <RatingBar
-                android:id="@+id/ratingbar_workplace"
-                style="@style/reviewRating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvWorkplace" />
-
-            <TextView
-                android:id="@+id/tvChief"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/chief"
-                app:layout_constraintStart_toStartOf="@+id/ratingbar_salary"
-                app:layout_constraintTop_toBottomOf="@+id/ratingbar_salary" />
-
-            <TextView
-                android:id="@+id/tvWorkplace"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/workplace"
-                app:layout_constraintStart_toStartOf="@+id/ratingbar_chief"
-                app:layout_constraintTop_toBottomOf="@+id/ratingbar_chief" />
-
-            <View xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/view"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:background="@color/color_separate_line"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ratingbar_social_package" />
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/position"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view">
-
-                <AutoCompleteTextView
-                    android:id="@+id/et_position"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/position_"
-                    android:text="@{review.position}" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/textInputLayout"
+            <AutoCompleteTextView
+                android:id="@+id/etPosition"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/position">
+                android:hint="@string/position_" />
+        </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/etPluses"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/pluses"
-                    android:text="@{review.pluses}" />
-            </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/position">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/textInputLayout2"
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/etPluses"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+                android:hint="@string/pluses" />
+        </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/etMinuses"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/minuses"
-                    android:text="@{review.minuses}" />
-            </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/textInputLayout3"
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/etMinuses"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
+                android:hint="@string/minuses" />
+        </android.support.design.widget.TextInputLayout>
 
-                <AutoCompleteTextView
-                    android:id="@+id/etCity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/city"
-                    android:text="@{review.city}" />
-            </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/ltEmploymentDate"
-                android:layout_width="160dp"
+            <AutoCompleteTextView
+                android:id="@+id/etCity"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
+                android:hint="@string/city"/>
+        </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/etEmploymentDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:cursorVisible="false"
-                    android:focusableInTouchMode="false"
-                    android:hint="@string/empoyment_date"
-                    android:inputType="none"
-                    android:text="@{Utils.getDate(review.employmentDate)}" />
-            </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/ltEmploymentDate"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/ltDismissalDate"
-                android:layout_width="150dp"
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/etEmploymentDate"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
+                android:cursorVisible="false"
+                android:focusableInTouchMode="false"
+                android:hint="@string/empoyment_date"
+                android:inputType="none" />
+        </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/etDismissalDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:cursorVisible="false"
-                    android:focusableInTouchMode="false"
-                    android:hint="@string/dismissal_date"
-                    android:inputType="none"
-                    android:text="@{Utils.getDate(review.dismissalDate)}" />
-            </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/ltDismissalDate"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/ltInterviewDate"
-                android:layout_width="150dp"
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/etDismissalDate"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="8dp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
+                android:cursorVisible="false"
+                android:focusableInTouchMode="false"
+                android:hint="@string/dismissal_date"
+                android:inputType="none" />
+        </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/etInterviewDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:cursorVisible="false"
-                    android:focusableInTouchMode="false"
-                    android:hint="@string/interview_date"
-                    android:inputType="none"
-                    android:text="@{Utils.getDate(review.interviewDate)}" />
-            </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/ltInterviewDate"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
 
-        </android.support.constraint.ConstraintLayout>
-    </ScrollView>
-</layout>
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/etInterviewDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:focusableInTouchMode="false"
+                android:hint="@string/interview_date"
+                android:inputType="none" />
+        </android.support.design.widget.TextInputLayout>
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
 

@@ -1,22 +1,29 @@
 package com.druger.aboutwork.fragments
 
-import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
+import com.druger.aboutwork.App
 import com.druger.aboutwork.Const.Bundles.REVIEW
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
-import com.druger.aboutwork.databinding.FragmentReviewBinding
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.EditReviewPresenter
+import com.druger.aboutwork.utils.Utils
+import kotlinx.android.synthetic.main.content_review.*
 
 class EditReviewFragment: ReviewFragment() {
 
     @InjectPresenter
     lateinit var presenter: EditReviewPresenter
+
+    @ProvidePresenter
+    fun provideEditReviewPresenter(): EditReviewPresenter {
+        return App.appComponent.editReviewPresenter
+    }
 
     private var review: Review? = null
 
@@ -32,13 +39,21 @@ class EditReviewFragment: ReviewFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = DataBindingUtil
-                .inflate<FragmentReviewBinding>(inflater, R.layout.fragment_review, container, false)
-        binding.review = review
-        rootView = binding.root
+
+        setUI()
         (activity as MainActivity).hideBottomNavigation()
         setStatus()
-        return super.onCreateView(inflater, container, savedInstanceState)
+        return rootView
+    }
+
+    private fun setUI() {
+        etPosition.setText(review?.position)
+        etPluses.setText(review?.pluses)
+        etMinuses.setText(review?.minuses)
+        etCity.setText(review?.city)
+        etEmploymentDate.setText(review?.employmentDate?.let { Utils.getDate(it) })
+        etDismissalDate.setText(review?.dismissalDate?.let { Utils.getDate(it) })
+        etInterviewDate.setText(review?.interviewDate?.let { Utils.getDate(it) })
     }
 
     override fun getBundles() {

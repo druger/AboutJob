@@ -6,15 +6,10 @@ import com.druger.aboutwork.App
 import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.rest.RestApi
+import javax.inject.Inject
 
 @InjectViewState
-class EditReviewPresenter(restApi: RestApi): ReviewPresenter(restApi) {
-
-    @ProvidePresenter
-    internal fun provideEditReviewPresenter(): EditReviewPresenter {
-        return App.appComponent.editReviewPresenter
-    }
-
+class EditReviewPresenter @Inject constructor(): ReviewPresenter() {
 
     fun setupRating(review: Review?) {
          this.review = review

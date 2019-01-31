@@ -27,9 +27,12 @@ import io.reactivex.disposables.Disposable;
  */
 
 @InjectViewState
-public abstract class ReviewPresenter extends BasePresenter<ReviewView> {
+public class ReviewPresenter extends BasePresenter<ReviewView> {
 
-    @Inject
+    public ReviewPresenter() {
+
+    }
+
     public ReviewPresenter(RestApi restApi) {
         this.restApi = restApi;
     }
@@ -132,5 +135,6 @@ public abstract class ReviewPresenter extends BasePresenter<ReviewView> {
         mark.setSocialPackage(rating);
     }
 
-    public abstract void doneClick();
+    //TODO сделать абстрактым(пока есть проблеммы с дагером)
+    public void doneClick() {}
 }

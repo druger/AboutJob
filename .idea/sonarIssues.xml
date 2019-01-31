@@ -18,6 +18,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.databinding/library/3.2.1/7eaacdd57d5f1503553abfde567be3e5c525f863/library-3.2.1-sources.jar!/android/databinding/DataBindingUtil.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.2.71/d9717625bb3c731561251f8dd2c67a1011d6764c/kotlin-stdlib-1.2.71.jar!/kotlin/collections/CollectionsKt.class">
           <value>
             <set />

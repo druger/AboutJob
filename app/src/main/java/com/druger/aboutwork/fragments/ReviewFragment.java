@@ -29,7 +29,6 @@ import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.interfaces.view.ReviewView;
 import com.druger.aboutwork.model.City;
-import com.druger.aboutwork.model.Company;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.model.Vacancy;
 import com.druger.aboutwork.presenters.ReviewPresenter;
@@ -179,7 +178,7 @@ public abstract class ReviewFragment extends BaseFragment implements ReviewView,
 
         etPluses = bindView(R.id.etPluses);
         etMinuses = bindView(R.id.etMinuses);
-        etPosition = bindView(R.id.et_position);
+        etPosition = bindView(R.id.etPosition);
         etCity = bindView(R.id.etCity);
 
         salary = bindView(R.id.ratingbar_salary);
