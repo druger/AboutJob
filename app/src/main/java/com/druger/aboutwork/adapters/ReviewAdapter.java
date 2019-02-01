@@ -1,14 +1,9 @@
 package com.druger.aboutwork.adapters;
 
-import android.databinding.DataBindingUtil;
 import android.graphics.Color;
-import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.QuoteSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +14,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.R;
-import com.druger.aboutwork.databinding.ReviewCardBinding;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.model.CompanyDetail;
@@ -66,9 +60,9 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder viewHolder = null;
         if (viewType == TYPE_ITEM) {
-            ReviewCardBinding itemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                    R.layout.review_card, parent, false);
-            viewHolder = new ReviewVH(itemBinding);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.review_card, parent, false);
+            viewHolder = new ReviewVH(itemView);
         } else if (viewType == TYPE_HEADER) {
             View headerView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.header_reviews, parent, false);
@@ -83,7 +77,6 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
         if (itemType == TYPE_ITEM) {
             ReviewVH reviewVH = (ReviewVH) holder;
             final Review review = reviews.get(position);
-            ((ReviewVH) holder).bind(review);
             reviewVH.clReviewCard.setBackgroundColor(isSelected(position)
                     ? ContextCompat.getColor(reviewVH.clReviewCard.getContext(), R.color.red200) : Color.WHITE);
 
@@ -95,6 +88,13 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
                     review.getPluses(), R.color.review_positive));
             reviewVH.tvMinuses.setText(Utils.getQuoteSpan(reviewVH.itemView.getContext(),
                     review.getMinuses(), R.color.review_negative));
+            reviewVH.tvName.setText(review.getName());
+            reviewVH.tvCity.setText(review.getCity());
+            reviewVH.tvDate.setText(Utils.getDate(review.getDate()));
+            reviewVH.tvPosition.setText(review.getPosition());
+            reviewVH.tvRating.setText(String.valueOf(review.getMarkCompany().getAverageMark()));
+            reviewVH.tvDislike.setText(review.getDislike());
+            reviewVH.tvLike.setText(review.getLike());
 
             holder.itemView.setOnClickListener(v -> itemClick(reviewVH, review));
             holder.itemView.setOnLongClickListener(v ->
@@ -220,17 +220,22 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     }
 
     static class ReviewVH extends BaseViewHolder {
-        ReviewCardBinding binding;
         ConstraintLayout clReviewCard;
         ImageView ivLike;
         ImageView ivDislike;
         TextView tvStatus;
         TextView tvPluses;
         TextView tvMinuses;
+        TextView tvName;
+        TextView tvCity;
+        TextView tvDate;
+        TextView tvPosition;
+        TextView tvRating;
+        TextView tvDislike;
+        TextView tvLike;
 
-        ReviewVH(ReviewCardBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
+        ReviewVH(View itemView) {
+            super(itemView);
 
             clReviewCard = bindView(R.id.clReviewCard);
             ivLike = bindView(R.id.ivLike);
@@ -238,11 +243,13 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             tvStatus = bindView(R.id.tvStatus);
             tvPluses = bindView(R.id.tvPluses);
             tvMinuses = bindView(R.id.tvMinuses);
-        }
-
-        void bind(Review review) {
-            binding.setReview(review);
-            binding.executePendingBindings();
+            tvName = bindView(R.id.tvName);
+            tvCity = bindView(R.id.tvCity);
+            tvDate = bindView(R.id.tvDate);
+            tvPosition = bindView(R.id.tvPosition);
+            tvRating = bindView(R.id.tvRating);
+            tvDislike = bindView(R.id.tvDislike);
+            tvLike = bindView(R.id.tvLike);
         }
     }
 

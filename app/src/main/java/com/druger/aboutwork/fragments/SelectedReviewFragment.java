@@ -2,7 +2,6 @@ package com.druger.aboutwork.fragments;
 
 
 import android.app.FragmentTransaction;
-import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,14 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.adapters.CommentAdapter;
-import com.druger.aboutwork.databinding.FragmentSelectedReviewBinding;
-import com.druger.aboutwork.databinding.SelectedReviewNoActionbarBinding;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.SelectedReview;
@@ -61,6 +59,17 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
     private ImageView ivSend;
     private TextView tvPluses;
     private TextView tvMinuses;
+    private TextView tvName;
+    private TextView tvDate;
+    private TextView tvPosition;
+    private RatingBar rbSalary;
+    private RatingBar rbCareer;
+    private RatingBar rbCollective;
+    private RatingBar rbSocialPackage;
+    private RatingBar rbChief;
+    private RatingBar rbWorkplace;
+    private TextView tvDislike;
+    private TextView tvLike;
     private RecyclerView rvComments;
     private CommentAdapter commentAdapter;
 
@@ -170,16 +179,10 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
 
     private void setView(LayoutInflater inflater, ViewGroup container) {
         if (!editMode) {
-            FragmentSelectedReviewBinding binding = DataBindingUtil
-                    .inflate(inflater, R.layout.fragment_selected_review, container, false);
-            binding.setReview(review);
-            rootView = binding.getRoot();
+            rootView = inflater.inflate(R.layout.fragment_selected_review, container, false);
             setupToolbar();
         } else {
-            SelectedReviewNoActionbarBinding bindingNoBar = DataBindingUtil
-                    .inflate(inflater, R.layout.selected_review_no_actionbar, container, false);
-            bindingNoBar.setReview(review);
-            rootView = bindingNoBar.getRoot();
+            rootView = inflater.inflate(R.layout.selected_review_no_actionbar, container, false);
             ((MainActivity) getActivity()).hideBottomNavigation();
         }
     }
@@ -202,6 +205,17 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
         rvComments = bindView(R.id.rvComments);
         tvPluses = bindView(R.id.tvPluses);
         tvMinuses = bindView(R.id.tvMinuses);
+        tvName = bindView(R.id.tvName);
+        tvDate = bindView(R.id.tvDate);
+        tvPosition = bindView(R.id.tvPosition);
+        rbSalary = bindView(R.id.ratingbar_salary);
+        rbCareer = bindView(R.id.ratingbar_career);
+        rbCollective = bindView(R.id.ratingbar_collective);
+        rbSocialPackage = bindView(R.id.ratingbar_social_package);
+        rbChief = bindView(R.id.ratingbar_chief);
+        rbWorkplace = bindView(R.id.ratingbar_workplace);
+        tvDislike = bindView(R.id.tvDislike);
+        tvLike = bindView(R.id.tvLike);
     }
 
     private void setupToolbar() {
@@ -233,6 +247,17 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
         }
         tvPluses.setText(Utils.getQuoteSpan(getActivity(), review.getPluses(), R.color.review_positive));
         tvMinuses.setText(Utils.getQuoteSpan(getActivity(), review.getMinuses(), R.color.review_negative));
+        tvName.setText(review.getName());
+        tvDate.setText(Utils.getDate(review.getDate()));
+        tvPosition.setText(review.getPosition());
+        rbSalary.setRating(review.getMarkCompany().getSalary());
+        rbCareer.setRating(review.getMarkCompany().getCareer());
+        rbCollective.setRating(review.getMarkCompany().getCollective());
+        rbSocialPackage.setRating(review.getMarkCompany().getSocialPackage());
+        rbChief.setRating(review.getMarkCompany().getChief());
+        rbWorkplace.setRating(review.getMarkCompany().getWorkplace());
+        tvDislike.setText(String.valueOf(review.getDislike()));
+        tvLike.setText(String.valueOf(review.getLike()));
     }
 
     @Override

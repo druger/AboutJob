@@ -1,11 +1,4 @@
 <layout xmlns:bind="http://schemas.android.com/apk/res-auto">
-    <data>
-        <import type="com.druger.aboutwork.utils.Utils" />
-        <variable
-            name="review"
-            type="com.druger.aboutwork.model.Review" />
-    </data>
-
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,8 +6,7 @@
 
         <include layout="@layout/toolbar" />
 
-        <include layout="@layout/content_selected_review"
-            bind:review="@{review}" />
+        <include layout="@layout/content_selected_review" />
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>
