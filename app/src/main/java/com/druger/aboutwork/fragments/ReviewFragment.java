@@ -126,13 +126,25 @@ public abstract class ReviewFragment extends BaseFragment implements ReviewView,
     }
 
     private void setupRatingChanges() {
-        salary.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> reviewPresenter.setSalary(rating));
-        chief.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> reviewPresenter.setChief(rating));
-        workplace.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> reviewPresenter.setWorkplace(rating));
-        career.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> reviewPresenter.setCareer(rating));
-        collective.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> reviewPresenter.setCollective(rating));
-        socialPackage.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> reviewPresenter.setSocialPackage(rating));
+        salary.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> setSalary(rating));
+        chief.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> setChief(rating));
+        workplace.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> setWorkplace(rating));
+        career.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> setCareer(rating));
+        collective.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> setCollective(rating));
+        socialPackage.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> setSocialPackage(rating));
     }
+
+    protected abstract void setSocialPackage(float rating);
+
+    protected abstract void setCollective(float rating);
+
+    protected abstract void setCareer(float rating);
+
+    protected abstract void setWorkplace(float rating);
+
+    protected abstract void setChief(float rating);
+
+    protected abstract void setSalary(float rating);
 
     private void positionChanges() {
         etPosition.addTextChangedListener(new TextWatcher() {
@@ -229,17 +241,17 @@ public abstract class ReviewFragment extends BaseFragment implements ReviewView,
             case R.id.etEmploymentDate:
                 datePicker.flag = DatePickerFragment.EMPLOYMENT_DATE;
                 datePicker.show(getFragmentManager(), DatePickerFragment.TAG);
-                datePicker.setData(etEmploymentDate, reviewPresenter.getReview());
+                datePicker.setData(etEmploymentDate, getReview());
                 break;
             case R.id.etDismissalDate:
                 datePicker.flag = DatePickerFragment.DISMISSAL_DATE;
                 datePicker.show(getFragmentManager(), DatePickerFragment.TAG);
-                datePicker.setData(etDismissalDate, reviewPresenter.getReview());
+                datePicker.setData(etDismissalDate, getReview());
                 break;
             case R.id.etInterviewDate:
                 datePicker.flag = DatePickerFragment.INTERVIEW_DATE;
                 datePicker.show(getFragmentManager(), DatePickerFragment.TAG);
-                datePicker.setData(etInterviewDate, reviewPresenter.getReview());
+                datePicker.setData(etInterviewDate, getReview());
                 break;
             case R.id.ivClose:
                 getFragmentManager().popBackStackImmediate();
@@ -249,8 +261,10 @@ public abstract class ReviewFragment extends BaseFragment implements ReviewView,
         }
     }
 
+    protected abstract Review getReview();
+
     private void doneClick() {
-        review = reviewPresenter.getReview();
+        review = getReview();
 
         review.setPluses(etPluses.getText().toString().trim());
         review.setMinuses(etMinuses.getText().toString().trim());

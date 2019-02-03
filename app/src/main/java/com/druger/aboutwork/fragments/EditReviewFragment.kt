@@ -25,7 +25,7 @@ class EditReviewFragment: ReviewFragment() {
         return App.appComponent.editReviewPresenter
     }
 
-    private var review: Review? = null
+    private lateinit var review: Review
 
     companion object{
         fun newInstance(review: Review): EditReviewFragment {
@@ -50,10 +50,10 @@ class EditReviewFragment: ReviewFragment() {
     }
 
     private fun setUI() {
-        etPosition.setText(review?.position)
-        etPluses.setText(review?.pluses)
-        etMinuses.setText(review?.minuses)
-        etCity.setText(review?.city)
+        etPosition.setText(review.position)
+        etPluses.setText(review.pluses)
+        etMinuses.setText(review.minuses)
+        etCity.setText(review.city)
         etEmploymentDate.setText(review?.employmentDate?.let { Utils.getDate(it) })
         etDismissalDate.setText(review?.dismissalDate?.let { Utils.getDate(it) })
         etInterviewDate.setText(review?.interviewDate?.let { Utils.getDate(it) })
@@ -87,4 +87,18 @@ class EditReviewFragment: ReviewFragment() {
         super.onDestroy()
         (activity as MainActivity).showBottomNavigation()
     }
+
+    override fun getReview(): Review = review
+
+    override fun setSocialPackage(rating: Float) = presenter.setSocialPackage(rating)
+
+    override fun setCollective(rating: Float) = presenter.setCollective(rating)
+
+    override fun setCareer(rating: Float) = presenter.setCareer(rating)
+
+    override fun setWorkplace(rating: Float) = presenter.setWorkplace(rating)
+
+    override fun setChief(rating: Float) = presenter.setChief(rating)
+
+    override fun setSalary(rating: Float) = presenter.setSalary(rating)
 }

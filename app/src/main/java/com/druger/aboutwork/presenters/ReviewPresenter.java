@@ -39,23 +39,15 @@ public class ReviewPresenter extends BasePresenter<ReviewView> {
     }
 
     private static final int NOT_SELECTED_STATUS = -1;
-    private static final int WORKING_STATUS = 0;
-    private static final int WORKED_STATUS = 1;
-    private static final int INTERVIEW_STATUS = 2;
+    protected static final int WORKING_STATUS = 0;
+    protected static final int WORKED_STATUS = 1;
+    protected static final int INTERVIEW_STATUS = 2;
 
     protected int status = NOT_SELECTED_STATUS;
 
-    protected Review review;
-    protected MarkCompany mark;
-
-    public Review getReview() {
-        return review;
-    }
-
-    protected boolean isCorrectStatus() {
-        return (status == WORKING_STATUS || status == WORKED_STATUS) && mark.getAverageMark() != 0
-                || (status == INTERVIEW_STATUS && mark.getAverageMark() == 0);
-    }
+//    public Review getReview() {
+//        return review;
+//    }
 
     protected boolean isCorrectReview(Review review) {
         return !TextUtils.isEmpty(review.getPluses()) && !TextUtils.isEmpty(review.getMinuses())
@@ -110,30 +102,6 @@ public class ReviewPresenter extends BasePresenter<ReviewView> {
         status = position;
         getViewState().setIsIndicatorRatingBar(true);
         getViewState().clearRatingBar();
-    }
-
-    public void setSalary(float rating) {
-        mark.setSalary(rating);
-    }
-
-    public void setChief(float rating) {
-        mark.setChief(rating);
-    }
-
-    public void setWorkplace(float rating) {
-        mark.setWorkplace(rating);
-    }
-
-    public void setCareer(float rating) {
-        mark.setCareer(rating);
-    }
-
-    public void setCollective(float rating) {
-        mark.setCollective(rating);
-    }
-
-    public void setSocialPackage(float rating) {
-        mark.setSocialPackage(rating);
     }
 
     //TODO сделать абстрактым(пока есть проблеммы с дагером)

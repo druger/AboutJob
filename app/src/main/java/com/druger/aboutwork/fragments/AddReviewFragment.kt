@@ -11,6 +11,7 @@ import com.druger.aboutwork.App
 import com.druger.aboutwork.Const.Bundles.COMPANY_DETAIL
 import com.druger.aboutwork.R
 import com.druger.aboutwork.model.CompanyDetail
+import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.AddReviewPresenter
 
 
@@ -50,4 +51,17 @@ class AddReviewFragment : ReviewFragment() {
 
     override fun setupCompanyRating() = presenter.setupReview()
 
+    override fun getReview(): Review  = presenter.review
+
+    override fun setSocialPackage(rating: Float) = presenter.setSocialPackage(rating)
+
+    override fun setCollective(rating: Float) = presenter.setCollective(rating)
+
+    override fun setCareer(rating: Float) = presenter.setCareer(rating)
+
+    override fun setWorkplace(rating: Float) = presenter.setWorkplace(rating)
+
+    override fun setChief(rating: Float) = presenter.setChief(rating)
+
+    override fun setSalary(rating: Float) = presenter.setSalary(rating)
 }
