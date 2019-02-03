@@ -1,11 +1,8 @@
 package com.druger.aboutwork.model;
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.android.databinding.library.baseAdapters.BR;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -13,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * Created by druger on 10.08.2016.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Review extends BaseObservable implements Parcelable {
+public class Review implements Parcelable {
 
     /**
      * Статусы работника
@@ -169,24 +166,20 @@ public class Review extends BaseObservable implements Parcelable {
         this.interviewDate = interviewDate;
     }
 
-    @Bindable
     public int getLike() {
         return like;
     }
 
     public void setLike(int like) {
         this.like = like;
-        notifyPropertyChanged(BR.like);
     }
 
-    @Bindable
     public int getDislike() {
         return dislike;
     }
 
     public void setDislike(int dislike) {
         this.dislike = dislike;
-        notifyPropertyChanged(BR.dislike);
     }
 
     public void setName(String name) {

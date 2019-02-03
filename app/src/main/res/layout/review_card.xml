@@ -1,199 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@android:color/white">
 
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="3dp"
+    android:layout_marginRight="3dp"
+    android:background="@android:color/white"
+    android:foreground="?android:attr/selectableItemBackground"
+    card_view:cardCornerRadius="3dp"
+    card_view:cardUseCompatPadding="true"
+    card_view:contentPadding="5dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/clReviewCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="3dp"
-        android:foreground="?android:attr/selectableItemBackground"
-        card_view:cardUseCompatPadding="true"
-        card_view:cardCornerRadius="3dp"
-        card_view:contentPadding="5dp">
+        android:layout_marginBottom="5dp">
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/clReviewCard"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp">
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="druger" />
 
-            <TextView
-                android:id="@+id/tvName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="druger"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/tvCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toEndOf="@+id/tvName"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Moscow" />
 
-            <TextView
-                android:id="@+id/tvCity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintStart_toEndOf="@+id/tvName"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Moscow" />
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="06.08.2018" />
 
-            <TextView
-                android:id="@+id/tvDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="06.08.2018" />
+        <TextView
+            android:id="@+id/tvPosition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvName"
+            tools:text="developer" />
 
-            <TextView
-                android:id="@+id/tvPosition"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvName"
-                tools:text="developer" />
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDate"
+            tools:text="@string/working" />
 
-            <TextView
-                android:id="@+id/tvStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvDate"
-                tools:text="@string/working" />
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/grey500"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvPosition" />
 
-            <View
-                android:id="@+id/line"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@color/grey500"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvPosition" />
+        <TextView
+            android:id="@+id/tvPluses"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:maxLines="3"
+            app:layout_constraintTop_toBottomOf="@+id/line"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            tools:text="какие-то плюсы" />
 
-            <TextView
-                android:id="@+id/tvPluses"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:maxLines="3"
-                app:layout_constraintTop_toBottomOf="@+id/line"
-                card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintStart_toStartOf="parent"
-                tools:text="какие-то плюсы" />
-
-            <TextView
-                android:id="@+id/tvMinuses"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:maxLines="3"
-                app:layout_constraintTop_toBottomOf="@+id/tvPluses"
-                card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintStart_toStartOf="parent"
-                tools:text="какие-то минусы" />
+        <TextView
+            android:id="@+id/tvMinuses"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:maxLines="3"
+            app:layout_constraintTop_toBottomOf="@+id/tvPluses"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            tools:text="какие-то минусы" />
 
 
-            <TextView
-                android:id="@+id/tvRating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:drawableEnd="@drawable/ic_star_orange"
-                android:drawablePadding="@dimen/small_margin"
-                android:gravity="center"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
-                card_view:layout_constraintBottom_toBottomOf="parent"
-                tools:text="3.0" />
+        <TextView
+            android:id="@+id/tvRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:drawableEnd="@drawable/ic_star_orange"
+            android:drawablePadding="@dimen/small_margin"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            tools:text="3.0" />
 
-            <TextView
-                android:id="@+id/tvDislike"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:gravity="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
-                card_view:layout_constraintBottom_toBottomOf="@+id/ivDislike"
-                card_view:layout_constraintTop_toTopOf="@+id/ivDislike"
-                tools:text="1" />
+        <TextView
+            android:id="@+id/tvDislike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
+            card_view:layout_constraintBottom_toBottomOf="@+id/ivDislike"
+            card_view:layout_constraintTop_toTopOf="@+id/ivDislike"
+            tools:text="1" />
 
-            <TextView
-                android:id="@+id/tvLike"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:gravity="center"
-                app:layout_constraintEnd_toStartOf="@+id/ivDislike"
-                app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
-                card_view:layout_constraintBottom_toBottomOf="@+id/ivLike"
-                card_view:layout_constraintTop_toTopOf="@+id/ivLike"
-                tools:text="2" />
+        <TextView
+            android:id="@+id/tvLike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toStartOf="@+id/ivDislike"
+            app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
+            card_view:layout_constraintBottom_toBottomOf="@+id/ivLike"
+            card_view:layout_constraintTop_toTopOf="@+id/ivLike"
+            tools:text="2" />
 
-            <TextView
-                android:id="@+id/tvComments"
-                android:layout_width="6dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:gravity="center"
-                android:text="0"
-                app:layout_constraintEnd_toStartOf="@+id/ivLike"
-                app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
-                card_view:layout_constraintBottom_toBottomOf="@+id/ivComments"
-                card_view:layout_constraintTop_toTopOf="@+id/ivComments" />
+        <TextView
+            android:id="@+id/tvComments"
+            android:layout_width="6dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            android:text="0"
+            app:layout_constraintEnd_toStartOf="@+id/ivLike"
+            app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
+            card_view:layout_constraintBottom_toBottomOf="@+id/ivComments"
+            card_view:layout_constraintTop_toTopOf="@+id/ivComments" />
 
-            <ImageView
-                android:id="@+id/ivDislike"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/ultra_small_margin"
-                app:layout_constraintEnd_toStartOf="@+id/tvDislike"
-                app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
-                app:srcCompat="@drawable/thumb_down"
-                card_view:layout_constraintBottom_toBottomOf="@+id/tvRating"
-                card_view:layout_constraintTop_toTopOf="@+id/tvRating" />
+        <ImageView
+            android:id="@+id/ivDislike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/ultra_small_margin"
+            app:layout_constraintEnd_toStartOf="@+id/tvDislike"
+            app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
+            app:srcCompat="@drawable/thumb_down"
+            card_view:layout_constraintBottom_toBottomOf="@+id/tvRating"
+            card_view:layout_constraintTop_toTopOf="@+id/tvRating" />
 
-            <ImageView
-                android:id="@+id/ivLike"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/ultra_small_margin"
-                app:layout_constraintEnd_toStartOf="@+id/tvLike"
-                app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
-                app:srcCompat="@drawable/thumb_up"
-                card_view:layout_constraintBottom_toBottomOf="@+id/tvRating"
-                card_view:layout_constraintTop_toTopOf="@+id/tvRating" />
+        <ImageView
+            android:id="@+id/ivLike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/ultra_small_margin"
+            app:layout_constraintEnd_toStartOf="@+id/tvLike"
+            app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
+            app:srcCompat="@drawable/thumb_up"
+            card_view:layout_constraintBottom_toBottomOf="@+id/tvRating"
+            card_view:layout_constraintTop_toTopOf="@+id/tvRating" />
 
-            <ImageView
-                android:id="@+id/ivComments"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="3dp"
-                app:layout_constraintEnd_toStartOf="@+id/tvComments"
-                app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
-                app:srcCompat="@drawable/ic_message_black"
-                card_view:layout_constraintBottom_toBottomOf="@+id/tvRating"
-                card_view:layout_constraintTop_toTopOf="@+id/tvRating" />
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
-</layout>
+        <ImageView
+            android:id="@+id/ivComments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            app:layout_constraintEnd_toStartOf="@+id/tvComments"
+            app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
+            app:srcCompat="@drawable/ic_message_black"
+            card_view:layout_constraintBottom_toBottomOf="@+id/tvRating"
+            card_view:layout_constraintTop_toTopOf="@+id/tvRating" />
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>

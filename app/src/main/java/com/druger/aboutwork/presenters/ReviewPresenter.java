@@ -33,6 +33,7 @@ public class ReviewPresenter extends BasePresenter<ReviewView> {
 
     }
 
+    @Inject
     public ReviewPresenter(RestApi restApi) {
         this.restApi = restApi;
     }

@@ -7,10 +7,6 @@ android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
 
-    dataBinding {
-        enabled = true
-    }
-
     defaultConfig {
         applicationId "com.druger.aboutwork"
         minSdkVersion 17

@@ -39,11 +39,14 @@ class EditReviewFragment: ReviewFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-        setUI()
         (activity as MainActivity).hideBottomNavigation()
         setStatus()
         return rootView
+    }
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUI()
     }
 
     private fun setUI() {
