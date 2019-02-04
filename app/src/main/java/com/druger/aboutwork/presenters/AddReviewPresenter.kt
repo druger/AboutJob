@@ -26,7 +26,7 @@ class AddReviewPresenter @Inject constructor(): ReviewPresenter() {
         review.markCompany = mark
     }
 
-    override fun doneClick() {
+    fun doneClick() {
         val company = Company(companyDetail.id, companyDetail.name)
         addReview(company)
     }

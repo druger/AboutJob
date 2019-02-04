@@ -103,7 +103,4 @@ public class ReviewPresenter extends BasePresenter<ReviewView> {
         getViewState().setIsIndicatorRatingBar(true);
         getViewState().clearRatingBar();
     }
-
-    //TODO сделать абстрактым(пока есть проблеммы с дагером)
-    public void doneClick() {}
 }
