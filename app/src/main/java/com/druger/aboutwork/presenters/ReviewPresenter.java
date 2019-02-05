@@ -70,18 +70,6 @@ public class ReviewPresenter extends BasePresenter<ReviewView> {
         getViewState().showCities(cityResponse.getItems());
     }
 
-    public void getVacancies(String vacancy) {
-        Disposable request = restApi.vacancies.getVacancies(vacancy)
-                .compose(RxUtils.httpSchedulers())
-                .subscribe(this::successGetVacancies, this::handleError);
-
-        unSubscribeOnDestroy(request);
-    }
-
-    private void successGetVacancies(VacancyResponse vacancyResponse) {
-        getViewState().showVacancies(vacancyResponse.getItems());
-    }
-
     public void onSelectedWorkingStatus(int position) {
         getViewState().showWorkingDate();
 

@@ -263,6 +263,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/druger/aboutwork/interfaces/view/AddReviewView.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/druger/aboutwork/interfaces/view/ChageEmailView.java">
           <value>
             <set />

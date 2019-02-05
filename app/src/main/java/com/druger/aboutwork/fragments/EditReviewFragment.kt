@@ -15,7 +15,7 @@ import com.druger.aboutwork.presenters.EditReviewPresenter
 import com.druger.aboutwork.utils.Utils
 import kotlinx.android.synthetic.main.content_review.*
 
-class EditReviewFragment: ReviewFragment() {
+class EditReviewFragment: BaseFragment() {
 
     @InjectPresenter
     lateinit var presenter: EditReviewPresenter

@@ -9,19 +9,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.druger.aboutwork.App
 import com.druger.aboutwork.Const.Bundles.COMPANY_DETAIL
 import com.druger.aboutwork.R
+import com.druger.aboutwork.interfaces.view.AddReviewView
+import com.druger.aboutwork.model.City
 import com.druger.aboutwork.model.CompanyDetail
 import com.druger.aboutwork.model.Review
+import com.druger.aboutwork.model.Vacancy
 import com.druger.aboutwork.presenters.AddReviewPresenter
 import kotlinx.android.synthetic.main.content_review.*
 import kotlinx.android.synthetic.main.toolbar_review.*
 
 
-class AddReviewFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
+class AddReviewFragment : BaseFragment(), AdapterView.OnItemSelectedListener, AddReviewView {
 
     @InjectPresenter
     lateinit var presenter: AddReviewPresenter
@@ -68,44 +73,35 @@ class AddReviewFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     }
 
     private fun setupRatingChanges() {
-        ratingbar_salary.setOnRatingBarChangeListener { _, rating, _ -> setSalary(rating) }
-        ratingbar_chief.setOnRatingBarChangeListener { _, rating, _ -> setChief(rating) }
-        ratingbar_workplace.setOnRatingBarChangeListener { _, rating, _ -> setWorkplace(rating) }
-        ratingbar_career.setOnRatingBarChangeListener { _, rating, _ -> setCareer(rating) }
-        ratingbar_collective.setOnRatingBarChangeListener { _, rating, _ -> setCollective(rating) }
-        ratingbar_social_package.setOnRatingBarChangeListener { _, rating, _ -> setSocialPackage(rating) }
+        ratingbar_salary.setOnRatingBarChangeListener { _, rating, _ -> presenter.setSalary(rating) }
+        ratingbar_chief.setOnRatingBarChangeListener { _, rating, _ -> presenter.setChief(rating) }
+        ratingbar_workplace.setOnRatingBarChangeListener { _, rating, _ -> presenter.setWorkplace(rating) }
+        ratingbar_career.setOnRatingBarChangeListener { _, rating, _ -> presenter.setCareer(rating) }
+        ratingbar_collective.setOnRatingBarChangeListener { _, rating, _ -> presenter.setCollective(rating) }
+        ratingbar_social_package.setOnRatingBarChangeListener { _, rating, _ -> presenter.setSocialPackage(rating) }
     }
 
     private fun positionChanges() {
         etPosition.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-
-            }
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                reviewPresenter.getVacancies(s.toString())
+                presenter.getVacancies(s.toString())
             }
 
-            override fun afterTextChanged(s: Editable) {
-
-            }
+            override fun afterTextChanged(s: Editable) {}
         })
-
     }
 
     private fun cityChanges() {
         etCity.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-
-            }
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                reviewPresenter.getCities(s.toString())
+                presenter.getCities(s.toString())
             }
 
-            override fun afterTextChanged(s: Editable) {
-
-            }
+            override fun afterTextChanged(s: Editable) {}
         })
     }
 
@@ -169,11 +165,10 @@ class AddReviewFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
     override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
         when (position) {
-            0 -> reviewPresenter.onSelectedWorkingStatus(position)
-            1 -> reviewPresenter.onSelectedWorkedStatus(position)
-            2 -> reviewPresenter.onSelectedInterviewStatus(position)
-            else -> {
-            }
+            0 -> presenter.onSelectedWorkingStatus(position)
+            1 -> presenter.onSelectedWorkedStatus(position)
+            2 -> presenter.onSelectedInterviewStatus(position)
+            else -> { }
         }
     }
 
@@ -181,19 +176,70 @@ class AddReviewFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         setIsIndicator(true)
     }
 
+    private fun setIsIndicator(indicator: Boolean) {
+        ratingbar_salary.setIsIndicator(indicator)
+        ratingbar_chief.setIsIndicator(indicator)
+        ratingbar_workplace.setIsIndicator(indicator)
+        ratingbar_career.setIsIndicator(indicator)
+        ratingbar_collective.setIsIndicator(indicator)
+        ratingbar_social_package.setIsIndicator(indicator)
+    }
+
     private fun setupCompanyRating() = presenter.setupReview()
 
-    override fun    getReview(): Review  = presenter.review
+    fun    getReview(): Review  = presenter.review
 
-    override fun setSocialPackage(rating: Float) = presenter.setSocialPackage(rating)
+    override fun showVacancies(vacancies: List<Vacancy>) {
+        showSuggestions(vacancies, etPosition)
+    }
 
-    override fun setCollective(rating: Float) = presenter.setCollective(rating)
+    private fun showSuggestions(items: List<Any>, view: AutoCompleteTextView) {
+        val arrayAdapter = ArrayAdapter<Any>(
+                activity, android.R.layout.simple_dropdown_item_1line, items)
+        view.setAdapter<ArrayAdapter<*>>(arrayAdapter)
+    }
 
-    override fun setCareer(rating: Float) = presenter.setCareer(rating)
+    override fun showCities(cities: List<City>) {
+        showSuggestions(cities, etCity)
+    }
 
-    override fun setWorkplace(rating: Float) = presenter.setWorkplace(rating)
+    override fun successfulAddition() {
+        Toast.makeText(activity.applicationContext, R.string.review_added,
+                Toast.LENGTH_SHORT).show()
+        fragmentManager.popBackStackImmediate()
+    }
 
-    override fun setChief(rating: Float) = presenter.setChief(rating)
+    override fun showErrorAdding() {
+        Toast.makeText(activity.applicationContext, R.string.error_review_add,
+                Toast.LENGTH_SHORT).show()
+    }
 
-    override fun setSalary(rating: Float) = presenter.setSalary(rating)
+    override fun showWorkingDate() {
+        ltEmploymentDate.visibility = View.VISIBLE
+        ltDismissalDate.visibility = View.GONE
+        ltInterviewDate.visibility = View.GONE
+    }
+
+    override fun setIsIndicatorRatingBar(indicator: Boolean) = setIsIndicator(indicator)
+
+    override fun showWorkedDate() {
+        ltEmploymentDate.visibility = View.VISIBLE
+        ltDismissalDate.visibility = View.VISIBLE
+        ltInterviewDate.visibility = View.GONE
+    }
+
+    override fun showInterviewDate() {
+        ltInterviewDate.visibility = View.VISIBLE
+        ltEmploymentDate.visibility = View.GONE
+        ltDismissalDate.visibility = View.GONE
+    }
+
+    override fun clearRatingBar() {
+        ratingbar_salary.rating = 0f
+        ratingbar_chief.rating = 0f
+        ratingbar_workplace.rating = 0f
+        ratingbar_career.rating = 0f
+        ratingbar_collective.rating = 0f
+        ratingbar_social_package.rating = 0f
+    }
 }

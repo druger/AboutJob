@@ -163,7 +163,6 @@ public abstract class ReviewFragment extends BaseFragment implements ReviewView,
 
             }
         });
-
     }
 
     private void cityChanges() {
