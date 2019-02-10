@@ -62,6 +62,23 @@ class AddReviewFragment : BaseFragment(), AdapterView.OnItemSelectedListener, Ad
         return rootView
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        unbindDrawables(rootView)
+    }
+
+    private fun unbindDrawables(view: View) {
+        if (view.background != null) {
+            view.background.callback = null
+        }
+        if (view is ViewGroup && view !is AdapterView<*>) {
+            for (i in 0 until view.childCount) {
+                unbindDrawables(view.getChildAt(i))
+            }
+            view.removeAllViews()
+        }
+    }
+
     private fun setupListeners() {
         etEmploymentDate.setOnClickListener{ employmentDateClick() }
         etDismissalDate.setOnClickListener{ dismissalDateClick() }

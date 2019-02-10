@@ -2,12 +2,16 @@ package com.druger.aboutwork.presenters
 
 import com.arellomobile.mvp.InjectViewState
 import com.druger.aboutwork.db.FirebaseHelper
+import com.druger.aboutwork.interfaces.view.EditReviewView
 import com.druger.aboutwork.model.MarkCompany
 import com.druger.aboutwork.model.Review
+import com.druger.aboutwork.rest.models.CityResponse
+import com.druger.aboutwork.rest.models.VacancyResponse
+import com.druger.aboutwork.utils.rx.RxUtils
 import javax.inject.Inject
 
 @InjectViewState
-class EditReviewPresenter @Inject constructor(): ReviewPresenter() {
+class EditReviewPresenter @Inject constructor(): BasePresenter<EditReviewView>() {
 
     private lateinit var review: Review
     private lateinit var mark: MarkCompany
@@ -18,7 +22,7 @@ class EditReviewPresenter @Inject constructor(): ReviewPresenter() {
          review.markCompany = mark
     }
 
-    override fun doneClick() {
+    fun doneClick() {
         updateReview()
     }
 
@@ -60,4 +64,29 @@ class EditReviewPresenter @Inject constructor(): ReviewPresenter() {
     fun setSocialPackage(rating: Float) {
         mark.socialPackage = rating
     }
+
+    fun getCities(city: String) {
+        val request = restApi.cities.getCities(city)
+                .compose(RxUtils.httpSchedulers())
+                .subscribe({ successGetCities(it) }, { this.handleError(it) })
+        unSubscribeOnDestroy(request)
+
+    }
+
+    fun getVacancies(vacancy: String) {
+        val request = restApi.vacancies.getVacancies(vacancy)
+                .compose(RxUtils.httpSchedulers())
+                .subscribe({ successGetVacancies(it) }, { this.handleError(it) })
+        unSubscribeOnDestroy(request)
+
+    }
+
+    private fun successGetVacancies(vacancyResponse: VacancyResponse) {
+        viewState.showVacancies(vacancyResponse.items)
+    }
+
+    private fun successGetCities(cityResponse: CityResponse) {
+        viewState.showCities(cityResponse.items)
+    }
+
 }
