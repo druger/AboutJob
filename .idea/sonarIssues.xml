@@ -23,6 +23,21 @@
             <set />
           </value>
         </entry>
+        <entry key="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.arello-mobile/moxy-android/1.5.3/1f0ddc58c7a25c58c22a7f5da8cefed8b076add8/moxy-android-1.5.3-sources.jar!/com/arellomobile/mvp/MvpFragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.arello-mobile/moxy-app-compat/1.5.3/14eeca7d0bd64d61bc4cafd73c5f37dd8fefeb92/moxy-app-compat-1.5.3-sources.jar!/com/arellomobile/mvp/MvpAppCompatFragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.reactivex.rxjava2/rxjava/2.1.9/890fc9ef77d78ac270f322b024c0e660a8f57ea0/rxjava-2.1.9-sources.jar!/io/reactivex/Observable.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.2.71/ff62b6a76e3200cac3d7df0859d7665fe6d54955/kotlin-stdlib-common-1.2.71-sources.jar!/kotlin/text/Strings.kt">
           <value>
             <set />
@@ -34,6 +49,21 @@
           </value>
         </entry>
         <entry key="$USER_HOME$/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-28.0.0.aar/6be7f27b4553bee97f131f4568c5505d/jars/classes.jar!/android/support/v7/widget/RecyclerView.class">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-fragment-28.0.0.aar/e9576cb3c27e0ea2d937edcb1b49e8f2/jars/classes.jar!/android/support/v4/app/DialogFragment.class">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-fragment-28.0.0.aar/e9576cb3c27e0ea2d937edcb1b49e8f2/jars/classes.jar!/android/support/v4/app/Fragment.class">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-fragment-28.0.0.aar/e9576cb3c27e0ea2d937edcb1b49e8f2/jars/classes.jar!/android/support/v4/app/FragmentTransaction.class">
           <value>
             <set />
           </value>
@@ -169,6 +199,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/druger/aboutwork/fragments/BaseFragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/druger/aboutwork/fragments/BaseSupportFragment.java">
           <value>
             <set />
           </value>

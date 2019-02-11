@@ -1,11 +1,10 @@
 package com.druger.aboutwork.fragments;
 
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,10 +31,7 @@ import java.util.List;
 
 import static com.druger.aboutwork.Const.Bundles.COMPANY_ID;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class CompanyDetailFragment extends BaseFragment implements View.OnClickListener,
+public class CompanyDetailFragment extends BaseSupportFragment implements View.OnClickListener,
         CompanyDetailView {
     public static final int REVIEW_REQUEST = 0;
 

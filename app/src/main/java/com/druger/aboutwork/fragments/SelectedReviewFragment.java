@@ -1,10 +1,9 @@
 package com.druger.aboutwork.fragments;
 
-
-import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,7 +41,7 @@ import static com.druger.aboutwork.Const.Colors.LIKE;
 import static com.druger.aboutwork.Const.Colors.RED_200;
 import static com.druger.aboutwork.Const.Colors.RED_500;
 
-public class SelectedReviewFragment extends BaseFragment implements View.OnClickListener, SelectedReview {
+public class SelectedReviewFragment extends BaseSupportFragment implements View.OnClickListener, SelectedReview {
     private static final int NEW = 0;
     private static final int UPDATE = 1;
     private int type = NEW;
@@ -341,7 +340,7 @@ public class SelectedReviewFragment extends BaseFragment implements View.OnClick
     private void showReviews(String userId) {
         UserReviewsFragment reviews = UserReviewsFragment.newInstance(userId);
 
-        FragmentTransaction transaction =getActivity().getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.company_container, reviews);
         transaction.addToBackStack(null);
         transaction.commit();

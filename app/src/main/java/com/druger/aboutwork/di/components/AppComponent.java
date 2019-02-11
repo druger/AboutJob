@@ -8,7 +8,6 @@ import com.druger.aboutwork.presenters.AddReviewPresenter;
 import com.druger.aboutwork.presenters.CompaniesPresenter;
 import com.druger.aboutwork.presenters.CompanyDetailPresenter;
 import com.druger.aboutwork.presenters.EditReviewPresenter;
-import com.druger.aboutwork.presenters.ReviewPresenter;
 
 import javax.inject.Singleton;
 
@@ -27,8 +26,6 @@ public interface AppComponent {
     CompaniesPresenter getCompaniesPresenter();
 
     CompanyDetailPresenter getCompanyDetailPresenter();
-
-    ReviewPresenter getReviewPresenter();
 
     EditReviewPresenter getEditReviewPresenter();
 

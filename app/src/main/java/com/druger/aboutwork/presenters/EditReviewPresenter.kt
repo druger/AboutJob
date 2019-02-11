@@ -1,6 +1,9 @@
 package com.druger.aboutwork.presenters
 
+import android.text.TextUtils
 import com.arellomobile.mvp.InjectViewState
+import com.druger.aboutwork.Const
+import com.druger.aboutwork.Const.ReviewStatus.*
 import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.interfaces.view.EditReviewView
 import com.druger.aboutwork.model.MarkCompany
@@ -12,6 +15,8 @@ import javax.inject.Inject
 
 @InjectViewState
 class EditReviewPresenter @Inject constructor(): BasePresenter<EditReviewView>() {
+
+    private var status = NOT_SELECTED_STATUS
 
     private lateinit var review: Review
     private lateinit var mark: MarkCompany
@@ -34,6 +39,11 @@ class EditReviewPresenter @Inject constructor(): BasePresenter<EditReviewView>()
         } else {
             viewState.showErrorEditing()
         }
+    }
+
+    private fun isCorrectReview(review: Review): Boolean {
+        return (!TextUtils.isEmpty(review.pluses) && !TextUtils.isEmpty(review.minuses)
+                && !TextUtils.isEmpty(review.position) && !TextUtils.isEmpty(review.city))
     }
 
     private fun isCorrectStatus(): Boolean {
@@ -89,4 +99,25 @@ class EditReviewPresenter @Inject constructor(): BasePresenter<EditReviewView>()
         viewState.showCities(cityResponse.items)
     }
 
+    fun onSelectedWorkingStatus(position: Int) {
+        viewState.showWorkingDate()
+
+        status = position
+        viewState.setIsIndicatorRatingBar(false)
+    }
+
+    fun onSelectedWorkedStatus(position: Int) {
+        viewState.showWorkedDate()
+
+        status = position
+        viewState.setIsIndicatorRatingBar(false)
+    }
+
+    fun onSelectedInterviewStatus(position: Int) {
+        viewState.showInterviewDate()
+
+        status = position
+        viewState.setIsIndicatorRatingBar(true)
+        viewState.clearRatingBar()
+    }
 }

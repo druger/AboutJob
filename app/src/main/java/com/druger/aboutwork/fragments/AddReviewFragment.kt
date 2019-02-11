@@ -11,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
+import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.druger.aboutwork.App
@@ -26,12 +27,13 @@ import kotlinx.android.synthetic.main.content_review.*
 import kotlinx.android.synthetic.main.toolbar_review.*
 
 
-class AddReviewFragment : BaseFragment(), AdapterView.OnItemSelectedListener, AddReviewView {
+class AddReviewFragment : MvpAppCompatFragment(), AdapterView.OnItemSelectedListener, AddReviewView {
 
     @InjectPresenter
     lateinit var presenter: AddReviewPresenter
 
     private lateinit var datePicker: DatePickerFragment
+    private lateinit var rootView: View
 
     @ProvidePresenter
     fun provideAddReviewPresenter(): AddReviewPresenter {
@@ -50,8 +52,8 @@ class AddReviewFragment : BaseFragment(), AdapterView.OnItemSelectedListener, Ad
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        rootView = inflater?.inflate(R.layout.fragment_review, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        rootView = inflater.inflate(R.layout.fragment_review, container, false)
         getBundles()
         setupToolbar()
         datePicker = DatePickerFragment()
@@ -168,7 +170,7 @@ class AddReviewFragment : BaseFragment(), AdapterView.OnItemSelectedListener, Ad
     }
 
     private fun closeClick() {
-        fragmentManager.popBackStackImmediate()
+        fragmentManager?.popBackStackImmediate()
     }
 
     private fun doneClick() {
@@ -221,13 +223,13 @@ class AddReviewFragment : BaseFragment(), AdapterView.OnItemSelectedListener, Ad
     }
 
     override fun successfulAddition() {
-        Toast.makeText(activity.applicationContext, R.string.review_added,
+        Toast.makeText(activity?.applicationContext, R.string.review_added,
                 Toast.LENGTH_SHORT).show()
-        fragmentManager.popBackStackImmediate()
+        fragmentManager?.popBackStackImmediate()
     }
 
     override fun showErrorAdding() {
-        Toast.makeText(activity.applicationContext, R.string.error_review_add,
+        Toast.makeText(activity?.applicationContext, R.string.error_review_add,
                 Toast.LENGTH_SHORT).show()
     }
 

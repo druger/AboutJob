@@ -52,8 +52,7 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
             EMPLOYMENT_DATE -> review!!.employmentDate = date
             DISMISSAL_DATE -> review!!.dismissalDate = date
             INTERVIEW_DATE -> review!!.interviewDate = date
-            else -> {
-            }
+            else -> { }
         }
     }
 }

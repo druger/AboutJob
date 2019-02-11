@@ -8,6 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.Toast
+import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.druger.aboutwork.App
@@ -23,7 +26,7 @@ import com.druger.aboutwork.utils.Utils
 import kotlinx.android.synthetic.main.content_review.*
 import kotlinx.android.synthetic.main.toolbar_review.*
 
-class EditReviewFragment: BaseFragment(), EditReviewView, AdapterView.OnItemSelectedListener {
+class EditReviewFragment: MvpAppCompatFragment(), EditReviewView, AdapterView.OnItemSelectedListener {
 
     @InjectPresenter
     lateinit var presenter: EditReviewPresenter
@@ -35,6 +38,7 @@ class EditReviewFragment: BaseFragment(), EditReviewView, AdapterView.OnItemSele
 
     private lateinit var review: Review
     private lateinit var datePicker: DatePickerFragment
+    private lateinit var rootView: View
 
     companion object{
         fun newInstance(review: Review): EditReviewFragment {
@@ -60,7 +64,7 @@ class EditReviewFragment: BaseFragment(), EditReviewView, AdapterView.OnItemSele
         return rootView
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUI()
         setStatus()
@@ -82,7 +86,7 @@ class EditReviewFragment: BaseFragment(), EditReviewView, AdapterView.OnItemSele
         ratingbar_workplace.setOnRatingBarChangeListener { _, rating, _ -> presenter.setWorkplace(rating) }
         ratingbar_career.setOnRatingBarChangeListener { _, rating, _ -> presenter.setCareer(rating) }
         ratingbar_collective.setOnRatingBarChangeListener { _, rating, _ -> presenter.setCollective(rating) }
-        ratingbar_social_package.setOnRatingBarChangeListener { _, rating, _ -> presenter.setSocialPackage(rating) }setupCompanyRating
+        ratingbar_social_package.setOnRatingBarChangeListener { _, rating, _ -> presenter.setSocialPackage(rating) }
     }
 
     private fun positionChanges() {
@@ -163,7 +167,7 @@ class EditReviewFragment: BaseFragment(), EditReviewView, AdapterView.OnItemSele
         tvTitle.setText(R.string.edit_review)
     }
 
-    private fun closeClick() = fragmentManager.popBackStackImmediate()
+    private fun closeClick() = fragmentManager?.popBackStackImmediate()
 
     private fun doneClick() {
         review.pluses = etPluses.text.toString().trim()
@@ -204,17 +208,79 @@ class EditReviewFragment: BaseFragment(), EditReviewView, AdapterView.OnItemSele
         }
     }
 
+    private fun setIsIndicator(indicator: Boolean) {
+        ratingbar_salary.setIsIndicator(indicator)
+        ratingbar_chief.setIsIndicator(indicator)
+        ratingbar_workplace.setIsIndicator(indicator)
+        ratingbar_career.setIsIndicator(indicator)
+        ratingbar_collective.setIsIndicator(indicator)
+        ratingbar_social_package.setIsIndicator(indicator)
+    }
+
+    private fun showSuggestions(items: List<Any>, view: AutoCompleteTextView) {
+        val arrayAdapter = ArrayAdapter<Any>(
+                activity, android.R.layout.simple_dropdown_item_1line, items)
+        view.setAdapter<ArrayAdapter<*>>(arrayAdapter)
+    }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
+        setIsIndicator(true)
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        when (position) {
+            0 -> presenter.onSelectedWorkingStatus(position)
+            1 -> presenter.onSelectedWorkedStatus(position)
+            2 -> presenter.onSelectedInterviewStatus(position)
+            else -> { }
+        }
     }
 
     override fun showVacancies(vacancies: List<Vacancy>) {
+        showSuggestions(vacancies, etPosition)
     }
 
     override fun showCities(cities: List<City>) {
+        showSuggestions(cities, etCity)
     }
 
+    override fun showWorkingDate() {
+        ltEmploymentDate.visibility = View.VISIBLE
+        ltDismissalDate.visibility = View.GONE
+        ltInterviewDate.visibility = View.GONE
+    }
+
+    override fun setIsIndicatorRatingBar(indicator: Boolean) = setIsIndicator(indicator)
+
+    override fun showWorkedDate() {
+        ltEmploymentDate.visibility = View.VISIBLE
+        ltDismissalDate.visibility = View.VISIBLE
+        ltInterviewDate.visibility = View.GONE
+    }
+
+    override fun showInterviewDate() {
+        ltInterviewDate.visibility = View.VISIBLE
+        ltEmploymentDate.visibility = View.GONE
+        ltDismissalDate.visibility = View.GONE
+    }
+
+    override fun clearRatingBar() {
+        ratingbar_salary.rating = 0f
+        ratingbar_chief.rating = 0f
+        ratingbar_workplace.rating = 0f
+        ratingbar_career.rating = 0f
+        ratingbar_collective.rating = 0f
+        ratingbar_social_package.rating = 0f
+    }
+
+    override fun successfulEditing() {
+        Toast.makeText(activity?.applicationContext, R.string.review_edited,
+                Toast.LENGTH_SHORT).show()
+        fragmentManager?.popBackStackImmediate()
+    }
+
+    override fun showErrorEditing() {
+        Toast.makeText(activity?.applicationContext, R.string.error_review_edit,
+                Toast.LENGTH_SHORT).show()
+    }
 }

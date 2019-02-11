@@ -2,6 +2,7 @@ package com.druger.aboutwork.presenters
 
 import android.text.TextUtils
 import com.arellomobile.mvp.InjectViewState
+import com.druger.aboutwork.Const.ReviewStatus.*
 import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.interfaces.view.AddReviewView
 import com.druger.aboutwork.model.Company
@@ -17,11 +18,6 @@ import javax.inject.Inject
 
 @InjectViewState
 class AddReviewPresenter @Inject constructor(): BasePresenter<AddReviewView>() {
-
-    private val NOT_SELECTED_STATUS = -1
-    private val WORKING_STATUS = 0
-    private val WORKED_STATUS = 1
-    private val INTERVIEW_STATUS = 2
 
     private var status = NOT_SELECTED_STATUS
 

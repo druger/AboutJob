@@ -34,4 +34,11 @@ public final class Const {
         public static final String LIKE = "#3F2B96";
         public static final String DISLIKE = "#EB5757";
     }
+
+    public static final class ReviewStatus {
+        public static final int NOT_SELECTED_STATUS = -1;
+        public static final int WORKING_STATUS = 0;
+        public static final int WORKED_STATUS = 1;
+        public static final int INTERVIEW_STATUS = 2;
+    }
 }

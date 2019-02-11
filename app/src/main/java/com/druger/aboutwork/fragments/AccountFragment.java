@@ -2,11 +2,11 @@ package com.druger.aboutwork.fragments;
 
 
 import android.Manifest;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +33,7 @@ import static com.theartofdev.edmodo.cropper.CropImage.PICK_IMAGE_CHOOSER_REQUES
 import static com.theartofdev.edmodo.cropper.CropImage.getPickImageChooserIntent;
 
 
-public class AccountFragment extends BaseFragment implements View.OnClickListener, AccountView{
+public class AccountFragment extends BaseSupportFragment implements View.OnClickListener, AccountView{
 
     @InjectPresenter
     AccountPresenter accountPresenter;

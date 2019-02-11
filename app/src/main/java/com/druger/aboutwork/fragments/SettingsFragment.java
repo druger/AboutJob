@@ -19,7 +19,7 @@ import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.interfaces.view.SettingsView;
 import com.druger.aboutwork.presenters.SettingPresenter;
 
-public class SettingsFragment extends BaseFragment implements View.OnClickListener, SettingsView {
+public class SettingsFragment extends BaseSupportFragment implements View.OnClickListener, SettingsView {
 
     @InjectPresenter
     SettingPresenter settingPresenter;

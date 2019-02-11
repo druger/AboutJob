@@ -1,13 +1,12 @@
 package com.druger.aboutwork.fragments;
 
 
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,10 +35,7 @@ import java.util.List;
 
 import static com.druger.aboutwork.Const.Bundles.USER_ID;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class MyReviewsFragment extends BaseFragment implements MyReviewsView {
+public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsView {
 
     @InjectPresenter
     MyReviewsPresenter myReviewsPresenter;

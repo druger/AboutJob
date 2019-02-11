@@ -7,4 +7,11 @@ import com.druger.aboutwork.model.Vacancy
 interface EditReviewView: MvpView {
     fun showVacancies(vacancies: List<Vacancy>)
     fun showCities(cities: List<City>)
+    fun showWorkingDate()
+    fun setIsIndicatorRatingBar(indicator: Boolean)
+    fun showWorkedDate()
+    fun showInterviewDate()
+    fun clearRatingBar()
+    fun successfulEditing()
+    fun showErrorEditing()
 }

@@ -1,9 +1,9 @@
 package com.druger.aboutwork.fragments;
 
 
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,7 +34,7 @@ import static com.druger.aboutwork.Const.Bundles.USER_ID;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UserReviewsFragment extends BaseFragment implements UserReviews {
+public class UserReviewsFragment extends BaseSupportFragment implements UserReviews {
 
     @InjectPresenter
     UserReviewsPresenter reviewsPresenter;

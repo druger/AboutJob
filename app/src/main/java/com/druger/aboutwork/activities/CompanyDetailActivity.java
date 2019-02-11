@@ -31,7 +31,7 @@ public class CompanyDetailActivity extends AppCompatActivity{
     private void showCompanyDetailFragment() {
         String companyID = getIntent().getStringExtra(COMPANY_ID);
         CompanyDetailFragment company = CompanyDetailFragment.getInstance(companyID);
-        getFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .add(R.id.company_container, company).commit();
     }
 
