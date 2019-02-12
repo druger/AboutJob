@@ -36,7 +36,7 @@ import io.realm.RealmResults;
 import static com.druger.aboutwork.Const.Bundles.COMPANY_ID;
 import static com.druger.aboutwork.Const.Bundles.DEBOUNCE_SEARCH;
 
-public class CompaniesFragment extends BaseFragment implements CompaniesView {
+public class CompaniesFragment extends BaseSupportFragment implements CompaniesView {
 
     @InjectPresenter
     CompaniesPresenter companiesPresenter;

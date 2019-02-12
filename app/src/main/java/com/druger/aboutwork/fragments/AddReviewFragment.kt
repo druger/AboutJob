@@ -55,13 +55,17 @@ class AddReviewFragment : MvpAppCompatFragment(), AdapterView.OnItemSelectedList
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_review, container, false)
         getBundles()
-        setupToolbar()
         datePicker = DatePickerFragment()
+        return rootView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupToolbar()
         setDateVisibility()
         setupWorkStatus()
         setupListeners()
         setupCompanyRating()
-        return rootView
     }
 
     override fun onDestroy() {

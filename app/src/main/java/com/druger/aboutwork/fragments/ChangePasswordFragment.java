@@ -19,7 +19,7 @@ import com.druger.aboutwork.presenters.ChangePasswordPresenter;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChangePasswordFragment extends BaseFragment implements ChangePasswordView {
+public class ChangePasswordFragment extends BaseSupportFragment implements ChangePasswordView {
 
     @InjectPresenter
     ChangePasswordPresenter passwordPresenter;

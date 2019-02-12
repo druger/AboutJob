@@ -54,12 +54,7 @@ class EditReviewFragment: MvpAppCompatFragment(), EditReviewView, AdapterView.On
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_review, container, false)
         getBundles()
-        setupToolbar()
         datePicker = DatePickerFragment()
-        setDateVisibility()
-        setupWorkStatus()
-        setupListeners()
-        setupCompanyRating()
         (activity as MainActivity).hideBottomNavigation()
         return rootView
     }
@@ -68,6 +63,11 @@ class EditReviewFragment: MvpAppCompatFragment(), EditReviewView, AdapterView.On
         super.onViewCreated(view, savedInstanceState)
         setUI()
         setStatus()
+        setupToolbar()
+        setDateVisibility()
+        setupWorkStatus()
+        setupListeners()
+        setupCompanyRating()
     }
 
     private fun setupListeners() {

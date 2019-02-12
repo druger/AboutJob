@@ -8,13 +8,14 @@ import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.interfaces.view.EditReviewView
 import com.druger.aboutwork.model.MarkCompany
 import com.druger.aboutwork.model.Review
+import com.druger.aboutwork.rest.RestApi
 import com.druger.aboutwork.rest.models.CityResponse
 import com.druger.aboutwork.rest.models.VacancyResponse
 import com.druger.aboutwork.utils.rx.RxUtils
 import javax.inject.Inject
 
 @InjectViewState
-class EditReviewPresenter @Inject constructor(): BasePresenter<EditReviewView>() {
+class EditReviewPresenter @Inject constructor(restApi: RestApi) : BasePresenter<EditReviewView>() {
 
     private var status = NOT_SELECTED_STATUS
 

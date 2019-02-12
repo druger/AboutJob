@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.druger.aboutwork.R;
 
 
-public class RatingsFragment extends BaseFragment {
+public class RatingsFragment extends BaseSupportFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

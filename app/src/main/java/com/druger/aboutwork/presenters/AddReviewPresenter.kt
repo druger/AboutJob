@@ -9,6 +9,7 @@ import com.druger.aboutwork.model.Company
 import com.druger.aboutwork.model.CompanyDetail
 import com.druger.aboutwork.model.MarkCompany
 import com.druger.aboutwork.model.Review
+import com.druger.aboutwork.rest.RestApi
 import com.druger.aboutwork.rest.models.CityResponse
 import com.druger.aboutwork.rest.models.VacancyResponse
 import com.druger.aboutwork.utils.rx.RxUtils
@@ -17,7 +18,7 @@ import java.util.*
 import javax.inject.Inject
 
 @InjectViewState
-class AddReviewPresenter @Inject constructor(): BasePresenter<AddReviewView>() {
+class AddReviewPresenter @Inject constructor(restApi: RestApi): BasePresenter<AddReviewView>() {
 
     private var status = NOT_SELECTED_STATUS
 

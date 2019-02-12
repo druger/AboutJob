@@ -21,7 +21,7 @@ import static com.druger.aboutwork.Const.Bundles.EMAIL;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChangeEmailFragment extends BaseFragment implements ChangeEmailView {
+public class ChangeEmailFragment extends BaseSupportFragment implements ChangeEmailView {
 
     @InjectPresenter
     ChangeEmailPresenter changeEmailPresenter;

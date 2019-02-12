@@ -10,7 +10,7 @@ import com.druger.aboutwork.R
 import com.druger.aboutwork.interfaces.view.ChangeNameView
 import com.druger.aboutwork.presenters.ChangeNamePresenter
 
-class ChangeNameFragment : BaseFragment(), ChangeNameView {
+class ChangeNameFragment : BaseSupportFragment(), ChangeNameView {
 
     @InjectPresenter
     lateinit var changeNamePresenter: ChangeNamePresenter
