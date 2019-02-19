@@ -10,7 +10,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
-import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.druger.aboutwork.App
@@ -26,7 +25,7 @@ import com.druger.aboutwork.utils.Utils
 import kotlinx.android.synthetic.main.content_review.*
 import kotlinx.android.synthetic.main.toolbar_review.*
 
-class EditReviewFragment: MvpAppCompatFragment(), EditReviewView, AdapterView.OnItemSelectedListener {
+class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnItemSelectedListener {
 
     @InjectPresenter
     lateinit var presenter: EditReviewPresenter
@@ -38,7 +37,6 @@ class EditReviewFragment: MvpAppCompatFragment(), EditReviewView, AdapterView.On
 
     private lateinit var review: Review
     private lateinit var datePicker: DatePickerFragment
-    private lateinit var rootView: View
 
     companion object{
         fun newInstance(review: Review): EditReviewFragment {

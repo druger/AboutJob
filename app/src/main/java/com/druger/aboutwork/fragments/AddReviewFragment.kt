@@ -27,13 +27,12 @@ import kotlinx.android.synthetic.main.content_review.*
 import kotlinx.android.synthetic.main.toolbar_review.*
 
 
-class AddReviewFragment : MvpAppCompatFragment(), AdapterView.OnItemSelectedListener, AddReviewView {
+class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListener, AddReviewView {
 
     @InjectPresenter
     lateinit var presenter: AddReviewPresenter
 
     private lateinit var datePicker: DatePickerFragment
-    private lateinit var rootView: View
 
     @ProvidePresenter
     fun provideAddReviewPresenter(): AddReviewPresenter {
