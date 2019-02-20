@@ -903,6 +903,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/layout/toolbar.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/layout/toolbar_add_review.xml">
           <value>
             <set />

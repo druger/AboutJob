@@ -2,7 +2,6 @@ package com.druger.aboutwork.fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -53,7 +52,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
     private ImageView ivLike;
     private ImageView ivDislike;
     private Review review;
-    private FloatingActionButton fabEdit;
+    private ImageView ivEdit;
     private EditText etMessage;
     private ImageView ivSend;
     private TextView tvPluses;
@@ -79,11 +78,11 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
         // Required empty public constructor
     }
 
-    public static SelectedReviewFragment newInstance(Review review, boolean fromAccount) {
+    public static SelectedReviewFragment newInstance(Review review, boolean editMode) {
 
         Bundle args = new Bundle();
         args.putParcelable(REVIEW, review);
-        args.putBoolean(EDIT_MODE, fromAccount);
+        args.putBoolean(EDIT_MODE, editMode);
 
         SelectedReviewFragment fragment = new SelectedReviewFragment();
         fragment.setArguments(args);
@@ -95,6 +94,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
                              Bundle savedInstanceState) {
         getBundles();
         setView(inflater, container);
+        setupToolbar();
         setUI();
         setUX();
         setReview();
@@ -177,11 +177,8 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
     }
 
     private void setView(LayoutInflater inflater, ViewGroup container) {
-        if (!editMode) {
-            rootView = inflater.inflate(R.layout.fragment_selected_review, container, false);
-            setupToolbar();
-        } else {
-            rootView = inflater.inflate(R.layout.selected_review_no_actionbar, container, false);
+        rootView = inflater.inflate(R.layout.fragment_selected_review, container, false);
+        if (editMode) {
             ((MainActivity) getActivity()).hideBottomNavigation();
         }
     }
@@ -190,7 +187,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
         ivLike.setOnClickListener(this);
         ivDislike.setOnClickListener(this);
         if (editMode) {
-            fabEdit.setOnClickListener(this);
+            ivEdit.setOnClickListener(this);
         }
     }
 
@@ -198,7 +195,6 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
         tvDescriptionStatus = bindView(R.id.tvDescriptionStatus);
         ivLike = bindView(R.id.ivLike);
         ivDislike = bindView(R.id.ivDislike);
-        fabEdit = bindView(R.id.fabEdit);
         etMessage = bindView(R.id.etMessage);
         ivSend = bindView(R.id.ivSend);
         rvComments = bindView(R.id.rvComments);
@@ -219,12 +215,15 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
 
     private void setupToolbar() {
         toolbar = bindView(R.id.toolbar);
+        ivEdit = bindView(R.id.ivEdit);
         setActionBar(toolbar);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         String companyName = getActivity().getIntent().getStringExtra(NAME);
         if (companyName != null) {
             getActionBar().setTitle(companyName);
         }
+        if (editMode) ivEdit.setVisibility(View.VISIBLE);
+         else ivEdit.setVisibility(View.GONE);
     }
 
     private void setReview() {
@@ -268,7 +267,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
             case R.id.ivDislike:
                 clickDislike();
                 break;
-            case R.id.fabEdit:
+            case R.id.ivEdit:
                 showEditReview();
                 break;
             default:
