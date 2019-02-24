@@ -7,11 +7,17 @@
 
     <include layout="@layout/toolbar" />
 
-    <TextView
-        android:id="@+id/tvDescription"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:paddingTop="?attr/actionBarSize"/>
+        android:paddingTop="?attr/actionBarSize">
+
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp" />
+    </ScrollView>
+
 
 </FrameLayout>
