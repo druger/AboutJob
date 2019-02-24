@@ -90,8 +90,8 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
     }
 
     private void setupToolbar() {
-        toolbar = bindView(R.id.toolbar);
-        setActionBar(toolbar);
+        mToolbar = bindView(R.id.toolbar);
+        setActionBar(mToolbar);
         getActionBar().setTitle(R.string.my_reviews);
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }

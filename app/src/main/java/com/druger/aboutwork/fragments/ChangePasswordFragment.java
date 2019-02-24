@@ -43,8 +43,8 @@ public class ChangePasswordFragment extends BaseSupportFragment implements Chang
     }
 
     private void setupToolbar() {
-        toolbar = bindView(R.id.toolbar);
-        setActionBar(toolbar);
+        mToolbar = bindView(R.id.toolbar);
+        setActionBar(mToolbar);
         getActionBar().setTitle(R.string.change_password);
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }

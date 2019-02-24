@@ -214,14 +214,11 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
     }
 
     private void setupToolbar() {
-        toolbar = bindView(R.id.toolbar);
+        mToolbar = bindView(R.id.toolbar);
         ivEdit = bindView(R.id.ivEdit);
-        setActionBar(toolbar);
+        setActionBar(mToolbar);
         getActionBar().setDisplayHomeAsUpEnabled(true);
-        String companyName = getActivity().getIntent().getStringExtra(NAME);
-        if (companyName != null) {
-            getActionBar().setTitle(companyName);
-        }
+        getActionBar().setTitle(R.string.review);
         if (editMode) ivEdit.setVisibility(View.VISIBLE);
          else ivEdit.setVisibility(View.GONE);
     }

@@ -78,8 +78,8 @@ public class CompaniesFragment extends BaseSupportFragment implements CompaniesV
     }
 
     private void setupToolbar() {
-        toolbar = bindView(R.id.toolbar);
-        setActionBar(toolbar);
+        mToolbar = bindView(R.id.toolbar);
+        setActionBar(mToolbar);
         getActionBar().setTitle(R.string.search);
     }
 

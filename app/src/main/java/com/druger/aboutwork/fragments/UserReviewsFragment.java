@@ -76,8 +76,8 @@ public class UserReviewsFragment extends BaseSupportFragment implements UserRevi
     }
 
     private void setupToolbar() {
-        toolbar = bindView(R.id.toolbar);
-        setActionBar(toolbar);
+        mToolbar = bindView(R.id.toolbar);
+        setActionBar(mToolbar);
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

@@ -23,7 +23,7 @@ import com.druger.aboutwork.interfaces.view.NetworkView;
 public abstract class BaseSupportFragment extends MvpAppCompatFragment implements NetworkView {
     protected View rootView;
     protected ProgressBar progressBar;
-    protected Toolbar toolbar;
+    protected Toolbar mToolbar;
     protected LinearLayout ltError;
     protected Button btnRetry;
 

@@ -45,7 +45,7 @@
     <string name="new_email">Новый Email</string>
     <string name="new_password">Новый пароль</string>
     <string name="no">Нет</string>
-    <string name="not_description">У компании нет описания</string>
+    <string name="no_description">У компании нет описания</string>
     <string name="pass_error">меньше 6 символов</string>
     <string name="password">Пароль</string>
     <string name="photo_crop_name">Обрезать фото</string>
@@ -93,4 +93,5 @@
     <string name="edit_review">Редактировать отзыв</string>
     <string name="review_edited">Отзыв отредактирован</string>
     <string name="error_review_edit">@string/error_review_add</string>
+    <string name="review">Отзыв</string>
 </resources>

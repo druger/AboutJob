@@ -109,8 +109,8 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     }
 
     private void setupToolbar() {
-        toolbar = bindView(R.id.toolbar);
-        setActionBar(toolbar);
+        mToolbar = bindView(R.id.toolbar);
+        setActionBar(mToolbar);
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -139,7 +139,8 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
             }
         });
 
-        reviewAdapter.setUrlClickListener((String site) -> showWebview(site));
+        reviewAdapter.setUrlClickListener(this::showWebView);
+        reviewAdapter.setInfoClickListener(this::showDescription);
 
         rvReviews.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
@@ -149,7 +150,15 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         });
     }
 
-    private void showWebview(String site) {
+    private void showDescription(String description) {
+        CompanyDescriptionFragment fragment = CompanyDescriptionFragment.Companion.newInstance(description);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.company_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    private void showWebView(String site) {
         new FinestWebView.Builder(getActivity())
                 .setCustomAnimations(R.anim.activity_open_enter,
                         R.anim.activity_open_exit, R.anim.activity_close_enter, R.anim.activity_close_exit)

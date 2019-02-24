@@ -42,6 +42,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
 
     private OnItemClickListener<Review> clickListener;
     private OnUrlClickListener urlClickListener;
+    private OnInfoClickListener infoClickListener;
 
     public ReviewAdapter(List<Review> reviews) {
         this.reviews = reviews;
@@ -113,6 +114,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             headerVH.setSocialPackageRating(5);
             headerVH.setCompanyName(companyDetail.getName());
             headerVH.loadImage(companyDetail);
+            headerVH.ivInfo.setOnClickListener(v -> infoClickListener.infoClick(companyDetail.getDescription()));
         }
     }
 
@@ -308,6 +310,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
         ImageView ivRatingCollective;
         ImageView ivRatingSocialPackage;
         ImageView ivLogo;
+        ImageView ivInfo;
 
         HeaderVH(View itemView) {
             super(itemView);
@@ -324,6 +327,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             ivRatingSocialPackage = bindView(R.id.ivRatingSocialPackage);
             ivLogo = bindView(R.id.ivLogo);
             tvCity = bindView(R.id.tvCity);
+            ivInfo = bindView(R.id.ivInfo);
         }
 
         void showCountReviews(int count) {
@@ -374,7 +378,15 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
         this.urlClickListener = urlClickListener;
     }
 
+    public void setInfoClickListener(OnInfoClickListener infoClickListener) {
+        this.infoClickListener = infoClickListener;
+    }
+
     public interface OnUrlClickListener {
         void urlClick(String site);
+    }
+
+    public interface OnInfoClickListener {
+        void infoClick(String description);
     }
 }

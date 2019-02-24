@@ -53,7 +53,7 @@
     <string name="career">Career</string>
     <string name="collective">Collective</string>
     <string name="social_package">Social package</string>
-    <string name="not_description">Company has not description</string>
+    <string name="no_description">Company has not description</string>
 
     <string name="pluses">Pluses*</string>
     <string name="minuses">Minuses*</string>
@@ -109,6 +109,7 @@
     <string name="edit_review">Edit review</string>
     <string name="review_edited">Review edited</string>
     <string name="error_review_edit">@string/error_review_add</string>
+    <string name="review">Review</string>
 
     <string-array name="work_status">
         <item>@string/working</item>
