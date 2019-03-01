@@ -29,6 +29,10 @@ import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.SelectedReviewPresenter;
 import com.druger.aboutwork.utils.Utils;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.Calendar;
 import java.util.List;
 
 import static com.druger.aboutwork.Const.Bundles.EDIT_MODE;
@@ -49,6 +53,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
     SelectedReviewPresenter presenter;
 
     private TextView tvDescriptionStatus;
+    private TextView tvStatus;
     private ImageView ivLike;
     private ImageView ivDislike;
     private Review review;
@@ -193,6 +198,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
 
     private void setUI() {
         tvDescriptionStatus = bindView(R.id.tvDescriptionStatus);
+        tvStatus = bindView(R.id.tvStatus);
         ivLike = bindView(R.id.ivLike);
         ivDislike = bindView(R.id.ivDislike);
         etMessage = bindView(R.id.etMessage);
@@ -253,6 +259,25 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
         rbWorkplace.setRating(review.getMarkCompany().getWorkplace());
         tvDislike.setText(String.valueOf(review.getDislike()));
         tvLike.setText(String.valueOf(review.getLike()));
+        setExperience(review);
+    }
+
+    private void setExperience(Review review) {
+        switch (review.getStatus()) {
+            case Review.WORKING:
+                tvStatus.setText(R.string.working);
+                break;
+            case Review.WORKED:
+                tvStatus.setText(R.string.worked);
+                int years = Utils.INSTANCE.getDiffYears(review.getEmploymentDate());
+                int months = Utils.INSTANCE.getDiffMonths(review.getEmploymentDate());
+                tvDescriptionStatus.setText(years + " y " + months + " m");
+                break;
+            case Review.INTERVIEW:
+                tvStatus.setText(R.string.interview);
+                tvDescriptionStatus.setText(Utils.getDate(review.getInterviewDate()));
+                break;
+        }
     }
 
     @Override
