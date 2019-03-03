@@ -88,32 +88,4 @@ object Utils {
         }
         return string
     }
-
-    fun getDiffYears(date: Long): Int {
-        val first = Calendar.getInstance()
-        val last = Calendar.getInstance().apply { time = Date(date) }
-
-        var diff = last.get(Calendar.YEAR) - first.get(Calendar.YEAR)
-        if (first.get(Calendar.MONTH) > last.get(Calendar.MONTH) ||
-                (first.get(Calendar.MONTH) == last.get(Calendar.MONTH)) &&
-                first.get(Calendar.DATE) > last.get(Calendar.DATE)) {
-            diff--
-        }
-        return diff
-    }
-
-    fun getDiffMonths(date: Long): Int {
-        val first = Calendar.getInstance()
-        val last = Calendar.getInstance().apply { time = Date(date) }
-
-        return last.get(Calendar.MONTH) - first.get(Calendar.MONTH)
-    }
-
-    fun getDiffDays(date: Long): Int {
-        val diff = Calendar.getInstance().time.time - date
-        val sec = diff / 1000
-        val min = sec / 60
-        val hour = min / 60
-        return (hour / 24).toInt()
-    }
 }

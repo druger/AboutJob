@@ -266,18 +266,27 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
         switch (review.getStatus()) {
             case Review.WORKING:
                 tvStatus.setText(R.string.working);
+                setWorkingDays(review.getEmploymentDate(), Calendar.getInstance().getTimeInMillis());
                 break;
             case Review.WORKED:
                 tvStatus.setText(R.string.worked);
-                int years = Utils.INSTANCE.getDiffYears(review.getEmploymentDate());
-                int months = Utils.INSTANCE.getDiffMonths(review.getEmploymentDate());
-                tvDescriptionStatus.setText(years + " y " + months + " m");
+                setWorkingDays(review.getEmploymentDate(), review.getDismissalDate());
                 break;
             case Review.INTERVIEW:
                 tvStatus.setText(R.string.interview);
                 tvDescriptionStatus.setText(Utils.getDate(review.getInterviewDate()));
                 break;
         }
+    }
+
+    private void setWorkingDays(long first, long last) {
+        int years = 0;
+        int months = 0;
+        if (years == 0 && months == 0) {
+            int days = 0;
+            tvDescriptionStatus.setText(days + " d");
+        }
+        tvDescriptionStatus.setText("");
     }
 
     @Override

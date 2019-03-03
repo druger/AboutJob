@@ -14,6 +14,7 @@ import com.squareup.leakcanary.RefWatcher
 
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import net.danlew.android.joda.JodaTimeAndroid
 
 
 /**
@@ -37,6 +38,7 @@ class App : Application() {
 //        setupLeakCanary()
         setupRealm()
         setupDagger2()
+        JodaTimeAndroid.init(this)
     }
 
     private fun setupDagger2() {
