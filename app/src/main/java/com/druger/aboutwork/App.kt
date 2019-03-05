@@ -9,12 +9,12 @@ import com.druger.aboutwork.di.components.AppComponent
 import com.druger.aboutwork.di.components.DaggerAppComponent
 import com.druger.aboutwork.di.modules.AppModule
 import com.druger.aboutwork.di.modules.NetworkModule
+import com.jakewharton.threetenabp.AndroidThreeTen
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
 
 import io.realm.Realm
 import io.realm.RealmConfiguration
-import net.danlew.android.joda.JodaTimeAndroid
 
 
 /**
@@ -38,7 +38,7 @@ class App : Application() {
 //        setupLeakCanary()
         setupRealm()
         setupDagger2()
-        JodaTimeAndroid.init(this)
+        AndroidThreeTen.init(this)
     }
 
     private fun setupDagger2() {

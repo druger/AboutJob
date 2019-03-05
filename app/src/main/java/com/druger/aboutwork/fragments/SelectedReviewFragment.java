@@ -29,9 +29,11 @@ import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.SelectedReviewPresenter;
 import com.druger.aboutwork.utils.Utils;
 
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.Period;
+import org.threeten.bp.Instant;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.Period;
+import org.threeten.bp.ZoneId;
+
 import java.util.Calendar;
 import java.util.List;
 
@@ -280,13 +282,19 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
     }
 
     private void setWorkingDays(long first, long last) {
-        int years = 0;
-        int months = 0;
+        LocalDate firstDate = Instant.ofEpochMilli(first)
+                .atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate lastDate = Instant.ofEpochMilli(last)
+                .atZone(ZoneId.systemDefault()).toLocalDate();
+
+        Period period = Period.between(lastDate, firstDate);
+        int years = period.getYears();
+        int months = period.getMonths();
         if (years == 0 && months == 0) {
-            int days = 0;
-            tvDescriptionStatus.setText(days + " d");
+            int days = period.getDays();
+            tvDescriptionStatus.setText(days + " days");
         }
-        tvDescriptionStatus.setText("");
+        tvDescriptionStatus.setText(years + " years " + months + " months");
     }
 
     @Override
