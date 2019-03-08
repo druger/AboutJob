@@ -20,13 +20,13 @@
                 android:id="@+id/cvContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                card_view:cardElevation="5dp"
+                card_view:cardUseCompatPadding="true"
                 card_view:contentPaddingBottom="5dp">
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    card_view:cardElevation="5dp"
-                    card_view:cardUseCompatPadding="true">
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/tvName"
@@ -315,6 +315,12 @@
                         app:layout_constraintEnd_toStartOf="@+id/tvLike"
                         app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
                         app:srcCompat="@drawable/thumb_up" />
+
+                    <android.support.constraint.Group
+                        android:id="@+id/group_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:constraint_referenced_ids="line2, ratingbar_collective,ratingbar_social_package,tvWorkplace,tvCollective,tvSalary,tvChief,ratingbar_chief,tvSocialPackage,tvCareer,ratingbar_salary,ratingbar_workplace,ratingbar_career"/>
                 </android.support.constraint.ConstraintLayout>
             </android.support.v7.widget.CardView>
 

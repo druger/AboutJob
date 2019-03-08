@@ -9,6 +9,7 @@ import com.druger.aboutwork.di.components.AppComponent
 import com.druger.aboutwork.di.components.DaggerAppComponent
 import com.druger.aboutwork.di.modules.AppModule
 import com.druger.aboutwork.di.modules.NetworkModule
+import com.google.firebase.FirebaseApp
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
@@ -36,6 +37,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 //        setupLeakCanary()
+        FirebaseApp.initializeApp(this)
         setupRealm()
         setupDagger2()
         AndroidThreeTen.init(this)

@@ -13,5 +13,4 @@ interface AddReviewView: MvpView {
     fun setIsIndicatorRatingBar(indicator: Boolean)
     fun showWorkedDate()
     fun showInterviewDate()
-    fun clearRatingBar()
 }
