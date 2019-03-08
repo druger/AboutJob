@@ -11,7 +11,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
-import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.druger.aboutwork.App
@@ -240,6 +239,7 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         ltEmploymentDate.visibility = View.VISIBLE
         ltDismissalDate.visibility = View.GONE
         ltInterviewDate.visibility = View.GONE
+        group_rating.visibility = View.VISIBLE
     }
 
     override fun setIsIndicatorRatingBar(indicator: Boolean) = setIsIndicator(indicator)
@@ -248,20 +248,13 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         ltEmploymentDate.visibility = View.VISIBLE
         ltDismissalDate.visibility = View.VISIBLE
         ltInterviewDate.visibility = View.GONE
+        group_rating.visibility = View.VISIBLE
     }
 
     override fun showInterviewDate() {
         ltInterviewDate.visibility = View.VISIBLE
         ltEmploymentDate.visibility = View.GONE
         ltDismissalDate.visibility = View.GONE
-    }
-
-    override fun clearRatingBar() {
-        ratingbar_salary.rating = 0f
-        ratingbar_chief.rating = 0f
-        ratingbar_workplace.rating = 0f
-        ratingbar_career.rating = 0f
-        ratingbar_collective.rating = 0f
-        ratingbar_social_package.rating = 0f
+        group_rating.visibility = View.GONE
     }
 }

@@ -3,6 +3,7 @@ package com.druger.aboutwork.fragments;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.constraint.Group;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -40,7 +41,6 @@ import java.util.Date;
 import java.util.List;
 
 import static com.druger.aboutwork.Const.Bundles.EDIT_MODE;
-import static com.druger.aboutwork.Const.Bundles.NAME;
 import static com.druger.aboutwork.Const.Bundles.REVIEW;
 import static com.druger.aboutwork.Const.Colors.DISLIKE;
 import static com.druger.aboutwork.Const.Colors.GRAY_500;
@@ -79,6 +79,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
     private TextView tvLike;
     private RecyclerView rvComments;
     private CommentAdapter commentAdapter;
+    private Group groupRating;
 
     private Bundle bundle;
     private boolean editMode;
@@ -221,6 +222,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
         rbWorkplace = bindView(R.id.ratingbar_workplace);
         tvDislike = bindView(R.id.tvDislike);
         tvLike = bindView(R.id.tvLike);
+        groupRating = bindView(R.id.group_rating);
     }
 
     private void setupToolbar() {
@@ -279,6 +281,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
             case Review.INTERVIEW:
                 tvStatus.setText(R.string.interview);
                 tvDescriptionStatus.setText(Utils.getDate(review.getInterviewDate()));
+                groupRating.setVisibility(View.GONE);
                 break;
         }
     }

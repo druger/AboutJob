@@ -138,7 +138,5 @@ public class AddReviewPresenter extends BasePresenter<AddReviewView> {
         getViewState().showInterviewDate();
 
         status = position;
-        getViewState().setIsIndicatorRatingBar(true);
-        getViewState().clearRatingBar();
     }
 }

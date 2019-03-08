@@ -60,7 +60,6 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUI()
-        setStatus()
         setupToolbar()
         setDateVisibility()
         setupWorkStatus()
@@ -134,6 +133,7 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
                 R.array.work_status, R.layout.simple_spinner_item)
         adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         spinnerStatus.adapter = adapter
+        setStatus()
     }
 
     private fun setDateVisibility() {
@@ -178,9 +178,9 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
 
     private fun setStatus() =
         when (review.status) {
-            0 -> spinnerStatus.setPromptId(R.string.working)
-            1 -> spinnerStatus.setPromptId(R.string.worked)
-            2 -> spinnerStatus.setPromptId(R.string.interview)
+            Review.WORKING -> spinnerStatus.setSelection(0)
+            Review.WORKED -> spinnerStatus.setSelection(1)
+            Review.INTERVIEW -> spinnerStatus.setSelection(2)
             else -> null
         }
 
@@ -246,6 +246,7 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
         ltEmploymentDate.visibility = View.VISIBLE
         ltDismissalDate.visibility = View.GONE
         ltInterviewDate.visibility = View.GONE
+        group_rating.visibility = View.VISIBLE
     }
 
     override fun setIsIndicatorRatingBar(indicator: Boolean) = setIsIndicator(indicator)
@@ -254,12 +255,14 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
         ltEmploymentDate.visibility = View.VISIBLE
         ltDismissalDate.visibility = View.VISIBLE
         ltInterviewDate.visibility = View.GONE
+        group_rating.visibility = View.VISIBLE
     }
 
     override fun showInterviewDate() {
         ltInterviewDate.visibility = View.VISIBLE
         ltEmploymentDate.visibility = View.GONE
         ltDismissalDate.visibility = View.GONE
+        group_rating.visibility = View.GONE
     }
 
     override fun clearRatingBar() {

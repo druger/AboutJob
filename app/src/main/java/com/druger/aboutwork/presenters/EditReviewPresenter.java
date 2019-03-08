@@ -126,7 +126,5 @@ public class EditReviewPresenter extends BasePresenter<EditReviewView> {
         getViewState().showInterviewDate();
 
         status = position;
-        getViewState().setIsIndicatorRatingBar(true);
-        getViewState().clearRatingBar();
     }
 }
