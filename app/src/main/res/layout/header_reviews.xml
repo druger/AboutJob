@@ -12,6 +12,9 @@
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:context=".activities.CompanyDetailActivity">
 
         <android.support.constraint.ConstraintLayout
@@ -55,10 +58,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
+                android:textColor="@android:color/holo_blue_light"
                 app:layout_constraintStart_toStartOf="@+id/tvCity"
                 app:layout_constraintTop_toBottomOf="@+id/tvCity"
-                tools:text="@string/company_site"
-                android:textColor="@android:color/holo_blue_light" />
+                tools:text="@string/company_site" />
 
             <ImageView
                 android:id="@+id/ivInfo"
@@ -73,9 +76,9 @@
                 android:id="@+id/view"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 android:background="@color/grey300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -85,9 +88,9 @@
                 android:id="@+id/view2"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:background="@color/grey300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -99,20 +102,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textSize="30sp"
+                android:text="0"
                 android:textColor="@android:color/black"
+                android:textSize="30sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/ivLogo"
                 app:layout_constraintTop_toBottomOf="@+id/view"
-                android:text="0"
                 tools:text="3.2" />
 
             <TextView
                 android:id="@+id/tvTotalRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
                 android:layout_marginStart="5dp"
+                android:layout_marginBottom="5dp"
                 android:text="/5"
                 app:layout_constraintBottom_toBottomOf="@+id/tvRating"
                 app:layout_constraintStart_toEndOf="@+id/tvRating" />
@@ -133,13 +136,13 @@
                 android:id="@+id/ratingScroll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintStart_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view2"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:scrollbars="none">
+                android:scrollbars="none"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view2">
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="wrap_content"
@@ -158,8 +161,8 @@
                         android:id="@+id/tvSalary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
                         android:layout_marginStart="8dp"
+                        android:layout_marginBottom="8dp"
                         android:text="@string/salary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -214,8 +217,8 @@
                         android:id="@+id/tvChief"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
                         android:layout_marginStart="24dp"
+                        android:layout_marginBottom="8dp"
                         android:text="@string/chief"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/tvSalary"
@@ -252,8 +255,8 @@
                         android:id="@+id/tvSocialPackage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
                         android:layout_marginStart="24dp"
+                        android:layout_marginEnd="8dp"
                         android:text="@string/social_package"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/tvCollective"

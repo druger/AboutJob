@@ -297,37 +297,9 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     }
 
     static class HeaderVH extends BaseViewHolder {
-        TextView tvCompanyName;
-        TextView tvRating;
-        TextView tvCountReviews;
-        TextView tvSite;
-        TextView tvCity;
-        RatingBar ratingCompany;
-        ImageView ivRatingSalary;
-        ImageView ivRatingChief;
-        ImageView ivRatingWorkPlace;
-        ImageView ivRatingCareer;
-        ImageView ivRatingCollective;
-        ImageView ivRatingSocialPackage;
-        ImageView ivLogo;
-        ImageView ivInfo;
 
         HeaderVH(View itemView) {
             super(itemView);
-            tvCompanyName = bindView(R.id.tvCompanyName);
-            tvSite = bindView(R.id.tvSite);
-            tvCountReviews = bindView(R.id.tvCountReviews);
-            tvRating = bindView(R.id.tvRating);
-            ratingCompany = bindView(R.id.ratingBarCompany);
-            ivRatingSalary = bindView(R.id.ivRatingSalary);
-            ivRatingChief = bindView(R.id.ivRatingChief);
-            ivRatingWorkPlace = bindView(R.id.ivRatingWorkPlace);
-            ivRatingCareer = bindView(R.id.ivRatingCareer);
-            ivRatingCollective = bindView(R.id.ivRatingCollective);
-            ivRatingSocialPackage = bindView(R.id.ivRatingSocialPackage);
-            ivLogo = bindView(R.id.ivLogo);
-            tvCity = bindView(R.id.tvCity);
-            ivInfo = bindView(R.id.ivInfo);
         }
 
         void showCountReviews(int count) {

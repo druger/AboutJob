@@ -12,6 +12,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -40,6 +43,20 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
 
     private FloatingActionButton fabAddReview;
     private CoordinatorLayout ltContent;
+    TextView tvCompanyName;
+    TextView tvRating;
+    TextView tvCountReviews;
+    TextView tvSite;
+    TextView tvCity;
+    RatingBar ratingCompany;
+    ImageView ivRatingSalary;
+    ImageView ivRatingChief;
+    ImageView ivRatingWorkPlace;
+    ImageView ivRatingCareer;
+    ImageView ivRatingCollective;
+    ImageView ivRatingSocialPackage;
+    ImageView ivLogo;
+    ImageView ivInfo;
 
     @SuppressWarnings("FieldCanBeLocal")
     private RecyclerView rvReviews;
@@ -106,6 +123,20 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         ltError = bindView(R.id.ltError);
         progressBar = bindView(R.id.progressBar);
         btnRetry = bindView(R.id.btnRetry);
+        tvCompanyName = bindView(R.id.tvCompanyName);
+        tvSite = bindView(R.id.tvSite);
+        tvCountReviews = bindView(R.id.tvCountReviews);
+        tvRating = bindView(R.id.tvRating);
+        ratingCompany = bindView(R.id.ratingBarCompany);
+        ivRatingSalary = bindView(R.id.ivRatingSalary);
+        ivRatingChief = bindView(R.id.ivRatingChief);
+        ivRatingWorkPlace = bindView(R.id.ivRatingWorkPlace);
+        ivRatingCareer = bindView(R.id.ivRatingCareer);
+        ivRatingCollective = bindView(R.id.ivRatingCollective);
+        ivRatingSocialPackage = bindView(R.id.ivRatingSocialPackage);
+        ivLogo = bindView(R.id.ivLogo);
+        tvCity = bindView(R.id.tvCity);
+        ivInfo = bindView(R.id.ivInfo);
     }
 
     private void setupToolbar() {
