@@ -1,5 +1,6 @@
 package com.druger.aboutwork.fragments;
 
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -35,6 +36,7 @@ import org.threeten.bp.Period;
 import org.threeten.bp.ZoneId;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static com.druger.aboutwork.Const.Bundles.EDIT_MODE;
@@ -282,19 +284,30 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
     }
 
     private void setWorkingDays(long first, long last) {
-        LocalDate firstDate = Instant.ofEpochMilli(first)
+        Date f = new Date(first);
+        Date l = new Date(last);
+        LocalDate firstDate = Instant.ofEpochMilli(f.getTime())
                 .atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate lastDate = Instant.ofEpochMilli(last)
+        LocalDate lastDate = Instant.ofEpochMilli(l.getTime())
                 .atZone(ZoneId.systemDefault()).toLocalDate();
 
-        Period period = Period.between(lastDate, firstDate);
+        Period period = Period.between(firstDate, lastDate);
         int years = period.getYears();
         int months = period.getMonths();
-        if (years == 0 && months == 0) {
-            int days = period.getDays();
-            tvDescriptionStatus.setText(days + " days");
+        int days = period.getDays();
+        Resources res = getResources();
+        if (years > 0 && months > 0 && days > 0) {
+            tvDescriptionStatus.setText(res.getQuantityString(R.plurals.year, years, years));
+            tvDescriptionStatus.append(" " + res.getQuantityString(R.plurals.month, months,months));
+            tvDescriptionStatus.append(" " + res.getQuantityString(R.plurals.day, days, days));
+        } else if (years >= 0 && months <= 0 && days <= 0) {
+            tvDescriptionStatus.setText(res.getQuantityString(R.plurals.year, years, years));
+        } else if (years <= 0 && months > 0 && days >= 0) {
+            tvDescriptionStatus.setText(res.getQuantityString(R.plurals.month, months, months));
+            tvDescriptionStatus.append(" " + res.getQuantityString(R.plurals.day, days, days));
+        } else if (years <= 0 && months <= 0) {
+            tvDescriptionStatus.setText(res.getQuantityString(R.plurals.day, days, days));
         }
-        tvDescriptionStatus.setText(years + " years " + months + " months");
     }
 
     @Override
