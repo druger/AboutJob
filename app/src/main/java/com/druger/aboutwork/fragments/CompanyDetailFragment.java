@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.adapters.ReviewAdapter;
@@ -26,6 +28,7 @@ import com.druger.aboutwork.interfaces.view.CompanyDetailView;
 import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.CompanyDetailPresenter;
+import com.druger.aboutwork.utils.Utils;
 import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener;
 import com.thefinestartist.finestwebview.FinestWebView;
 
@@ -170,9 +173,6 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
             }
         });
 
-        reviewAdapter.setUrlClickListener(this::showWebView);
-        reviewAdapter.setInfoClickListener(this::showDescription);
-
         rvReviews.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page) {
@@ -244,14 +244,69 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     public void showReviews(List<Review> reviews) {
         this.reviews.clear();
         this.reviews.addAll(reviews);
+        showCountReviews(reviews.size());
         reviewAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showCompanyDetail(CompanyDetail company) {
         companyDetail = company;
-        reviewAdapter.setCompanyDetail(company);
         companyDetailPresenter.getReviews(company.getId(), 1);
+        tvSite.setOnClickListener(v -> showWebView(companyDetail.getSite()));
+        tvSite.setText(companyDetail.getSite());
+        tvCity.setText(companyDetail.getArea().getName());
+        setSalaryRating(5);
+        setChiefRating(3);
+        setWorkplaceRating(2);
+        setCarrierRating(1);
+        setCollectiveRating(4);
+        setSocialPackageRating(5);
+        setCompanyName(companyDetail.getName());
+        loadImage(companyDetail);
+        ivInfo.setOnClickListener(v -> showDescription(companyDetail.getDescription()));
+    }
+
+    void loadImage(CompanyDetail company) {
+        CompanyDetail.Logo logo = company.getLogo();
+        Glide.with(getContext())
+                .load(logo != null ? logo.getOriginal() : "")
+                .placeholder(R.drawable.ic_default_company)
+                .error(R.drawable.ic_default_company)
+                .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(ivLogo);
+    }
+
+    void setCompanyName(String name) {
+        tvCompanyName.setText(name);
+    }
+
+    void setSalaryRating(int percent) {
+        ivRatingSalary.setImageBitmap(Utils.INSTANCE.crateArcBitmap(getContext(), percent));
+    }
+
+    void setChiefRating(int percent) {
+        ivRatingChief.setImageBitmap(Utils.INSTANCE.crateArcBitmap(getContext(), percent));
+    }
+
+    void setWorkplaceRating(int percent) {
+        ivRatingWorkPlace.setImageBitmap(Utils.INSTANCE.crateArcBitmap(getContext(), percent));
+    }
+
+    void setCarrierRating(int percent) {
+        ivRatingCareer.setImageBitmap(Utils.INSTANCE.crateArcBitmap(getContext(), percent));
+    }
+
+    void setCollectiveRating(int percent) {
+        ivRatingCollective.setImageBitmap(Utils.INSTANCE.crateArcBitmap(getContext(), percent));
+    }
+
+    void setSocialPackageRating(int percent) {
+        ivRatingSocialPackage.setImageBitmap(Utils.INSTANCE.crateArcBitmap(getContext(), percent));
+    }
+
+    void showCountReviews(int count) {
+        tvCountReviews.setText(String.valueOf(count));
     }
 
     @Override
