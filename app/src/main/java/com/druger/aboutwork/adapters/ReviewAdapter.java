@@ -54,29 +54,31 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ReviewVH reviewVH = (ReviewVH) holder;
-        final Review review = reviews.get(position);
-        reviewVH.clReviewCard.setBackgroundColor(isSelected(position)
-                ? ContextCompat.getColor(reviewVH.clReviewCard.getContext(), R.color.red200) : Color.WHITE);
+        if (!reviews.isEmpty()) {
+            final Review review = reviews.get(position);
+            reviewVH.clReviewCard.setBackgroundColor(isSelected(position)
+                    ? ContextCompat.getColor(reviewVH.clReviewCard.getContext(), R.color.red200) : Color.WHITE);
 
-        setColorLikeAndDislike(reviewVH, review);
-        onLikeClick(reviewVH, review);
-        onDislikeClick(reviewVH, review);
-        setStatus(reviewVH, review);
-        reviewVH.tvPluses.setText(Utils.getQuoteSpan(reviewVH.itemView.getContext(),
-                review.getPluses(), R.color.review_positive));
-        reviewVH.tvMinuses.setText(Utils.getQuoteSpan(reviewVH.itemView.getContext(),
-                review.getMinuses(), R.color.review_negative));
-        reviewVH.tvName.setText(review.getName());
-        reviewVH.tvCity.setText(review.getCity());
-        reviewVH.tvDate.setText(Utils.getDate(review.getDate()));
-        reviewVH.tvPosition.setText(review.getPosition());
-        reviewVH.tvRating.setText(String.valueOf(review.getMarkCompany().getAverageMark()));
-        reviewVH.tvDislike.setText(String.valueOf(review.getDislike()));
-        reviewVH.tvLike.setText(String.valueOf(review.getLike()));
+            setColorLikeAndDislike(reviewVH, review);
+            onLikeClick(reviewVH, review);
+            onDislikeClick(reviewVH, review);
+            setStatus(reviewVH, review);
+            reviewVH.tvPluses.setText(Utils.getQuoteSpan(reviewVH.itemView.getContext(),
+                    review.getPluses(), R.color.review_positive));
+            reviewVH.tvMinuses.setText(Utils.getQuoteSpan(reviewVH.itemView.getContext(),
+                    review.getMinuses(), R.color.review_negative));
+            reviewVH.tvName.setText(review.getName());
+            reviewVH.tvCity.setText(review.getCity());
+            reviewVH.tvDate.setText(Utils.getDate(review.getDate()));
+            reviewVH.tvPosition.setText(review.getPosition());
+            reviewVH.tvRating.setText(String.valueOf(review.getMarkCompany().getAverageMark()));
+            reviewVH.tvDislike.setText(String.valueOf(review.getDislike()));
+            reviewVH.tvLike.setText(String.valueOf(review.getLike()));
 
-        holder.itemView.setOnClickListener(v -> itemClick(reviewVH, review));
-        holder.itemView.setOnLongClickListener(v ->
-                clickListener != null && clickListener.onLongClick(reviewVH.getAdapterPosition()));
+            holder.itemView.setOnClickListener(v -> itemClick(reviewVH, review));
+            holder.itemView.setOnLongClickListener(v ->
+                    clickListener != null && clickListener.onLongClick(reviewVH.getAdapterPosition()));
+        }
     }
 
     private void setStatus(ReviewVH reviewVH, Review review) {

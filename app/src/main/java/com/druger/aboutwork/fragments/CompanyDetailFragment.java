@@ -86,13 +86,12 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_company_detail, container, false);
 
+        companyDetailPresenter.getCompanyDetail(getArguments().getString(COMPANY_ID, ""));
         setupToolbar();
         setupUI();
         setupUX();
         setupRecycler(reviews);
         setupFabBehavior();
-
-        companyDetailPresenter.getCompanyDetail(getArguments().getString(COMPANY_ID, ""));
         return rootView;
     }
 
