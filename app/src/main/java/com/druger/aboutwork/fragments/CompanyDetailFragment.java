@@ -6,6 +6,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -60,6 +61,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     ImageView ivRatingSocialPackage;
     ImageView ivLogo;
     ImageView ivInfo;
+    private NestedScrollView scrollView;
 
     @SuppressWarnings("FieldCanBeLocal")
     private RecyclerView rvReviews;
@@ -96,21 +98,11 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     }
 
     private void setupFabBehavior() {
-        rvReviews.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    fabAddReview.show();
-                }
-                super.onScrollStateChanged(recyclerView, newState);
-            }
+        scrollView.setOnScrollChangeListener(
+                (NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY > oldScrollY) fabAddReview.hide();
+            else fabAddReview.show();
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 || dy < 0 && fabAddReview.isShown()) {
-                    fabAddReview.hide();
-                }
-            }
         });
     }
 
@@ -139,6 +131,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         ivLogo = bindView(R.id.ivLogo);
         tvCity = bindView(R.id.tvCity);
         ivInfo = bindView(R.id.ivInfo);
+        scrollView = bindView(R.id.scrollView);
     }
 
     private void setupToolbar() {
