@@ -8,15 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
-import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.utils.Utils;
 
@@ -33,24 +29,15 @@ import static com.druger.aboutwork.Const.Colors.LIKE;
  */
 
 public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
-    private static final int TYPE_HEADER = 0;
-    protected static final int TYPE_ITEM = 1;
 
     private List<Review> reviews;
     private List<Review> deletedReviews;
-    private CompanyDetail companyDetail;
 
     private OnItemClickListener<Review> clickListener;
-    private OnUrlClickListener urlClickListener;
-    private OnInfoClickListener infoClickListener;
 
     public ReviewAdapter(List<Review> reviews) {
         this.reviews = reviews;
         deletedReviews = new ArrayList<>();
-    }
-
-    public void setCompanyDetail(CompanyDetail companyDetail) {
-        this.companyDetail = companyDetail;
     }
 
     public List<Review> getDeletedReviews() {
@@ -59,24 +46,15 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder viewHolder = null;
-        if (viewType == TYPE_ITEM) {
-            View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.review_card, parent, false);
-            viewHolder = new ReviewVH(itemView);
-        } else if (viewType == TYPE_HEADER) {
-            View headerView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.header_reviews, parent, false);
-            viewHolder = new HeaderVH(headerView);
-        }
-        return viewHolder;
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.review_card, parent, false);
+        return new ReviewVH(itemView);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final int itemType = getItemViewType(position);
-        if (itemType == TYPE_ITEM) {
-            ReviewVH reviewVH = (ReviewVH) holder;
+        ReviewVH reviewVH = (ReviewVH) holder;
+        if (!reviews.isEmpty()) {
             final Review review = reviews.get(position);
             reviewVH.clReviewCard.setBackgroundColor(isSelected(position)
                     ? ContextCompat.getColor(reviewVH.clReviewCard.getContext(), R.color.red200) : Color.WHITE);
@@ -100,21 +78,6 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             holder.itemView.setOnClickListener(v -> itemClick(reviewVH, review));
             holder.itemView.setOnLongClickListener(v ->
                     clickListener != null && clickListener.onLongClick(reviewVH.getAdapterPosition()));
-        } else if (itemType == TYPE_HEADER) {
-            HeaderVH headerVH = (HeaderVH) holder;
-            headerVH.showCountReviews(getItemCount() - 1);
-            headerVH.tvSite.setOnClickListener(v -> urlClickListener.urlClick(companyDetail.getSite()));
-            headerVH.tvSite.setText(companyDetail.getSite());
-            headerVH.tvCity.setText(companyDetail.getArea().getName());
-            headerVH.setSalaryRating(5);
-            headerVH.setChiefRating(3);
-            headerVH.setWorkplaceRating(2);
-            headerVH.setCarrierRating(1);
-            headerVH.setCollectiveRating(4);
-            headerVH.setSocialPackageRating(5);
-            headerVH.setCompanyName(companyDetail.getName());
-            headerVH.loadImage(companyDetail);
-            headerVH.ivInfo.setOnClickListener(v -> infoClickListener.infoClick(companyDetail.getDescription()));
         }
     }
 
@@ -209,18 +172,6 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
         return reviews.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (isHeaderPosition(position)) {
-            return TYPE_HEADER;
-        }
-        return TYPE_ITEM;
-    }
-
-    private boolean isHeaderPosition(int position) {
-        return position == 0;
-    }
-
     static class ReviewVH extends BaseViewHolder {
         ConstraintLayout clReviewCard;
         ImageView ivLike;
@@ -294,99 +245,5 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             deletedReviews.add(reviews.remove(positionStart));
         }
         notifyItemRangeRemoved(positionStart, itemCount);
-    }
-
-    static class HeaderVH extends BaseViewHolder {
-        TextView tvCompanyName;
-        TextView tvRating;
-        TextView tvCountReviews;
-        TextView tvSite;
-        TextView tvCity;
-        RatingBar ratingCompany;
-        ImageView ivRatingSalary;
-        ImageView ivRatingChief;
-        ImageView ivRatingWorkPlace;
-        ImageView ivRatingCareer;
-        ImageView ivRatingCollective;
-        ImageView ivRatingSocialPackage;
-        ImageView ivLogo;
-        ImageView ivInfo;
-
-        HeaderVH(View itemView) {
-            super(itemView);
-            tvCompanyName = bindView(R.id.tvCompanyName);
-            tvSite = bindView(R.id.tvSite);
-            tvCountReviews = bindView(R.id.tvCountReviews);
-            tvRating = bindView(R.id.tvRating);
-            ratingCompany = bindView(R.id.ratingBarCompany);
-            ivRatingSalary = bindView(R.id.ivRatingSalary);
-            ivRatingChief = bindView(R.id.ivRatingChief);
-            ivRatingWorkPlace = bindView(R.id.ivRatingWorkPlace);
-            ivRatingCareer = bindView(R.id.ivRatingCareer);
-            ivRatingCollective = bindView(R.id.ivRatingCollective);
-            ivRatingSocialPackage = bindView(R.id.ivRatingSocialPackage);
-            ivLogo = bindView(R.id.ivLogo);
-            tvCity = bindView(R.id.tvCity);
-            ivInfo = bindView(R.id.ivInfo);
-        }
-
-        void showCountReviews(int count) {
-            tvCountReviews.setText(String.valueOf(count));
-        }
-
-        void setSalaryRating(int percent) {
-            ivRatingSalary.setImageBitmap(Utils.INSTANCE.crateArcBitmap(itemView.getContext(), percent));
-        }
-
-        void setChiefRating(int percent) {
-            ivRatingChief.setImageBitmap(Utils.INSTANCE.crateArcBitmap(itemView.getContext(), percent));
-        }
-
-        void setWorkplaceRating(int percent) {
-            ivRatingWorkPlace.setImageBitmap(Utils.INSTANCE.crateArcBitmap(itemView.getContext(), percent));
-        }
-
-        void setCarrierRating(int percent) {
-            ivRatingCareer.setImageBitmap(Utils.INSTANCE.crateArcBitmap(itemView.getContext(), percent));
-        }
-
-        void setCollectiveRating(int percent) {
-            ivRatingCollective.setImageBitmap(Utils.INSTANCE.crateArcBitmap(itemView.getContext(), percent));
-        }
-
-        void setSocialPackageRating(int percent) {
-            ivRatingSocialPackage.setImageBitmap(Utils.INSTANCE.crateArcBitmap(itemView.getContext(), percent));
-        }
-
-        void setCompanyName(String name) {
-            tvCompanyName.setText(name);
-        }
-
-        void loadImage(CompanyDetail company) {
-            CompanyDetail.Logo logo = company.getLogo();
-            Glide.with(itemView.getContext())
-                    .load(logo != null ? logo.getOriginal() : "")
-                    .placeholder(R.drawable.ic_default_company)
-                    .error(R.drawable.ic_default_company)
-                    .crossFade()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(ivLogo);
-        }
-    }
-
-    public void setUrlClickListener(OnUrlClickListener urlClickListener) {
-        this.urlClickListener = urlClickListener;
-    }
-
-    public void setInfoClickListener(OnInfoClickListener infoClickListener) {
-        this.infoClickListener = infoClickListener;
-    }
-
-    public interface OnUrlClickListener {
-        void urlClick(String site);
-    }
-
-    public interface OnInfoClickListener {
-        void infoClick(String description);
     }
 }

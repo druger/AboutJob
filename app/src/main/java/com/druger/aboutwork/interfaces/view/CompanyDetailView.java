@@ -17,4 +17,8 @@ public interface CompanyDetailView extends MvpView, NetworkView {
     void showReviews(List<Review> reviews);
 
     void showCompanyDetail(CompanyDetail company);
+
+    void showProgressReview();
+
+    void hideProgressReview();
 }

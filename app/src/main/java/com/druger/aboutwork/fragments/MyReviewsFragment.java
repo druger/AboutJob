@@ -17,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.R;
@@ -52,7 +51,6 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     private boolean itemSwipe = true;
 
-    private TextView tvCountReviews;
     private BottomNavigationView bottomNavigation;
 
     private String userId;
@@ -142,7 +140,6 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
     }
 
     private void setupUI() {
-        tvCountReviews = bindView(R.id.tvCountReviews);
         bottomNavigation = getActivity().findViewById(R.id.bottom_navigation);
         rvReviews = bindView(R.id.recycler_view);
     }
@@ -207,7 +204,6 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
 
     @Override
     public void showReviews(List<Review> reviews) {
-        tvCountReviews.setText(String.valueOf(reviews.size()));
         this.reviews.clear();
         this.reviews.addAll(reviews);
         reviewAdapter.notifyDataSetChanged();

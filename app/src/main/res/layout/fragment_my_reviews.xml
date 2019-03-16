@@ -11,24 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="?attr/actionBarSize">
 
-        <TextView
-            android:id="@+id/tvCountReviews"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp"
-            android:text="0" />
-
-        <TextView
-            android:id="@+id/tvReviews"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/tvCountReviews"
-            android:layout_toEndOf="@+id/tvCountReviews"
-            android:text="@string/reviews" />
-
         <ImageView
             android:id="@+id/ivFilter"
             android:layout_width="wrap_content"
@@ -42,8 +24,8 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/tvCountReviews"
-            android:layout_marginTop="5dp" />
+            android:layout_below="@+id/ivFilter"
+            android:layout_marginTop="8dp" />
     </RelativeLayout>
 </FrameLayout>
 

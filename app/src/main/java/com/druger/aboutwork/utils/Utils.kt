@@ -79,12 +79,12 @@ object Utils {
 
     // TODO добавить реализацию для api<28
     @JvmStatic
-    fun getQuoteSpan(context: Context, text: String, color: Int): SpannableString {
+    fun getQuoteSpan(context: Context, text: String?, color: Int): SpannableString {
         val string = SpannableString(text)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             string.setSpan(QuoteSpan(ContextCompat.getColor(context, color),
                     15, 30),
-                    0, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    0, text?.length ?: 0, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
         return string
     }

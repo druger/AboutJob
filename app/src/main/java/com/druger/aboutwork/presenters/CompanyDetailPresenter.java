@@ -46,6 +46,7 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
     private List<Review> reviews = new ArrayList<>();
 
     public void getReviews(String companyID, int currentPage) {
+        getViewState().showProgressReview();
         dbReference = FirebaseDatabase.getInstance().getReference();
         Query reviewsQuery = getReviewsForCompany(dbReference, companyID, currentPage);
         reviewsQuery.addValueEventListener(this);
@@ -59,7 +60,6 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
     private void fetchReviews(DataSnapshot dataSnapshot) {
         reviews.clear();
 
-        int index = 0;
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
             final Review review = snapshot.getValue(Review.class);
             Query queryUser = getUser(dbReference, review.getUserId());
@@ -82,14 +82,9 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
             };
             queryUser.addValueEventListener(valueEventListener);
             review.setFirebaseKey(snapshot.getKey());
-            if (index == 0) {
-                reviews.add(new Review());
-                reviews.add(1, review);
-            } else {
-                reviews.add(review);
-            }
-            index++;
+            reviews.add(review);
         }
+        getViewState().hideProgressReview();
         getViewState().showReviews(reviews);
     }
 

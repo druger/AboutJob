@@ -6,15 +6,23 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.adapters.ReviewAdapter;
@@ -23,6 +31,7 @@ import com.druger.aboutwork.interfaces.view.CompanyDetailView;
 import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.CompanyDetailPresenter;
+import com.druger.aboutwork.utils.Utils;
 import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener;
 import com.thefinestartist.finestwebview.FinestWebView;
 
@@ -40,6 +49,22 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
 
     private FloatingActionButton fabAddReview;
     private CoordinatorLayout ltContent;
+    TextView tvCompanyName;
+    TextView tvRating;
+    TextView tvSite;
+    TextView tvCity;
+    RatingBar ratingCompany;
+    ImageView ivRatingSalary;
+    ImageView ivRatingChief;
+    ImageView ivRatingWorkPlace;
+    ImageView ivRatingCareer;
+    ImageView ivRatingCollective;
+    ImageView ivRatingSocialPackage;
+    ImageView ivLogo;
+    ImageView ivInfo;
+    private NestedScrollView scrollView;
+    private LinearLayout ltNoReviews;
+    private ProgressBar progressReview;
 
     @SuppressWarnings("FieldCanBeLocal")
     private RecyclerView rvReviews;
@@ -66,32 +91,21 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_company_detail, container, false);
 
+        companyDetailPresenter.getCompanyDetail(getArguments().getString(COMPANY_ID, ""));
         setupToolbar();
         setupUI();
         setupUX();
         setupRecycler(reviews);
         setupFabBehavior();
-
-        companyDetailPresenter.getCompanyDetail(getArguments().getString(COMPANY_ID, ""));
         return rootView;
     }
 
     private void setupFabBehavior() {
-        rvReviews.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    fabAddReview.show();
-                }
-                super.onScrollStateChanged(recyclerView, newState);
-            }
+        scrollView.setOnScrollChangeListener(
+                (NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY > oldScrollY) fabAddReview.hide();
+            else fabAddReview.show();
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 || dy < 0 && fabAddReview.isShown()) {
-                    fabAddReview.hide();
-                }
-            }
         });
     }
 
@@ -106,6 +120,22 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         ltError = bindView(R.id.ltError);
         progressBar = bindView(R.id.progressBar);
         btnRetry = bindView(R.id.btnRetry);
+        tvCompanyName = bindView(R.id.tvCompanyName);
+        tvSite = bindView(R.id.tvSite);
+        tvRating = bindView(R.id.tvRating);
+        ratingCompany = bindView(R.id.ratingBarCompany);
+        ivRatingSalary = bindView(R.id.ivRatingSalary);
+        ivRatingChief = bindView(R.id.ivRatingChief);
+        ivRatingWorkPlace = bindView(R.id.ivRatingWorkPlace);
+        ivRatingCareer = bindView(R.id.ivRatingCareer);
+        ivRatingCollective = bindView(R.id.ivRatingCollective);
+        ivRatingSocialPackage = bindView(R.id.ivRatingSocialPackage);
+        ivLogo = bindView(R.id.ivLogo);
+        tvCity = bindView(R.id.tvCity);
+        ivInfo = bindView(R.id.ivInfo);
+        scrollView = bindView(R.id.scrollView);
+        ltNoReviews = bindView(R.id.ltNoReviews);
+        progressReview = bindView(R.id.progressReview);
     }
 
     private void setupToolbar() {
@@ -138,9 +168,6 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
                 return false;
             }
         });
-
-        reviewAdapter.setUrlClickListener(this::showWebView);
-        reviewAdapter.setInfoClickListener(this::showDescription);
 
         rvReviews.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
@@ -213,14 +240,75 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     public void showReviews(List<Review> reviews) {
         this.reviews.clear();
         this.reviews.addAll(reviews);
+        if (reviews.isEmpty()) ltNoReviews.setVisibility(View.VISIBLE);
+        else ltNoReviews.setVisibility(View.GONE);
         reviewAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showCompanyDetail(CompanyDetail company) {
         companyDetail = company;
-        reviewAdapter.setCompanyDetail(company);
         companyDetailPresenter.getReviews(company.getId(), 1);
+        setSite();
+        tvCity.setText(companyDetail.getArea().getName());
+        setSalaryRating(5);
+        setChiefRating(3);
+        setWorkplaceRating(2);
+        setCarrierRating(1);
+        setCollectiveRating(4);
+        setSocialPackageRating(5);
+        setCompanyName(companyDetail.getName());
+        loadImage(companyDetail);
+        ivInfo.setOnClickListener(v -> showDescription(companyDetail.getDescription()));
+    }
+
+    private void setSite() {
+        String site = companyDetail.getSite();
+        if (site.equals("http://") || site.equals("https://")) {
+            tvSite.setVisibility(View.GONE);
+        } else {
+            tvSite.setOnClickListener(v -> showWebView(companyDetail.getSite()));
+            tvSite.setText(companyDetail.getSite());
+        }
+    }
+
+    void loadImage(CompanyDetail company) {
+        CompanyDetail.Logo logo = company.getLogo();
+        Glide.with(getContext())
+                .load(logo != null ? logo.getOriginal() : "")
+                .placeholder(R.drawable.ic_default_company)
+                .error(R.drawable.ic_default_company)
+                .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(ivLogo);
+    }
+
+    void setCompanyName(String name) {
+        tvCompanyName.setText(name);
+    }
+
+    void setSalaryRating(int percent) {
+        ivRatingSalary.setImageBitmap(Utils.INSTANCE.crateArcBitmap(getContext(), percent));
+    }
+
+    void setChiefRating(int percent) {
+        ivRatingChief.setImageBitmap(Utils.INSTANCE.crateArcBitmap(getContext(), percent));
+    }
+
+    void setWorkplaceRating(int percent) {
+        ivRatingWorkPlace.setImageBitmap(Utils.INSTANCE.crateArcBitmap(getContext(), percent));
+    }
+
+    void setCarrierRating(int percent) {
+        ivRatingCareer.setImageBitmap(Utils.INSTANCE.crateArcBitmap(getContext(), percent));
+    }
+
+    void setCollectiveRating(int percent) {
+        ivRatingCollective.setImageBitmap(Utils.INSTANCE.crateArcBitmap(getContext(), percent));
+    }
+
+    void setSocialPackageRating(int percent) {
+        ivRatingSocialPackage.setImageBitmap(Utils.INSTANCE.crateArcBitmap(getContext(), percent));
     }
 
     @Override
@@ -241,5 +329,15 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         } else {
             ltContent.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void showProgressReview() {
+        progressReview.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressReview() {
+        progressReview.setVisibility(View.INVISIBLE);
     }
 }

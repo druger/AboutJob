@@ -26,9 +26,4 @@ public class MyReviewAdapter extends ReviewAdapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
     }
-
-    @Override
-    public int getItemViewType(int position) {
-        return TYPE_ITEM;
-    }
 }

@@ -94,6 +94,7 @@
     <string name="review_edited">Отзыв отредактирован</string>
     <string name="error_review_edit">@string/error_review_add</string>
     <string name="review">Отзыв</string>
+    <string name="no_reviews">Нет отзывов</string>
 
     <plurals name="year">
         <item quantity="one">%d год</item>
