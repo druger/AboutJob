@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -49,7 +50,6 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     private CoordinatorLayout ltContent;
     TextView tvCompanyName;
     TextView tvRating;
-    TextView tvCountReviews;
     TextView tvSite;
     TextView tvCity;
     RatingBar ratingCompany;
@@ -62,6 +62,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     ImageView ivLogo;
     ImageView ivInfo;
     private NestedScrollView scrollView;
+    private LinearLayout ltNoReviews;
 
     @SuppressWarnings("FieldCanBeLocal")
     private RecyclerView rvReviews;
@@ -119,7 +120,6 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         btnRetry = bindView(R.id.btnRetry);
         tvCompanyName = bindView(R.id.tvCompanyName);
         tvSite = bindView(R.id.tvSite);
-        tvCountReviews = bindView(R.id.tvCountReviews);
         tvRating = bindView(R.id.tvRating);
         ratingCompany = bindView(R.id.ratingBarCompany);
         ivRatingSalary = bindView(R.id.ivRatingSalary);
@@ -132,6 +132,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         tvCity = bindView(R.id.tvCity);
         ivInfo = bindView(R.id.ivInfo);
         scrollView = bindView(R.id.scrollView);
+        ltNoReviews = bindView(R.id.ltNoReviews);
     }
 
     private void setupToolbar() {
@@ -236,7 +237,8 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     public void showReviews(List<Review> reviews) {
         this.reviews.clear();
         this.reviews.addAll(reviews);
-        showCountReviews(reviews.size());
+        if (reviews.isEmpty()) ltNoReviews.setVisibility(View.VISIBLE);
+        else ltNoReviews.setVisibility(View.GONE);
         reviewAdapter.notifyDataSetChanged();
     }
 
@@ -244,8 +246,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     public void showCompanyDetail(CompanyDetail company) {
         companyDetail = company;
         companyDetailPresenter.getReviews(company.getId(), 1);
-        tvSite.setOnClickListener(v -> showWebView(companyDetail.getSite()));
-        tvSite.setText(companyDetail.getSite());
+        setSite();
         tvCity.setText(companyDetail.getArea().getName());
         setSalaryRating(5);
         setChiefRating(3);
@@ -256,6 +257,16 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         setCompanyName(companyDetail.getName());
         loadImage(companyDetail);
         ivInfo.setOnClickListener(v -> showDescription(companyDetail.getDescription()));
+    }
+
+    private void setSite() {
+        String site = companyDetail.getSite();
+        if (site.isEmpty()) {
+            tvSite.setVisibility(View.GONE);
+        } else {
+            tvSite.setOnClickListener(v -> showWebView(companyDetail.getSite()));
+            tvSite.setText(companyDetail.getSite());
+        }
     }
 
     void loadImage(CompanyDetail company) {
@@ -295,10 +306,6 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
 
     void setSocialPackageRating(int percent) {
         ivRatingSocialPackage.setImageBitmap(Utils.INSTANCE.crateArcBitmap(getContext(), percent));
-    }
-
-    void showCountReviews(int count) {
-        tvCountReviews.setText(String.valueOf(count));
     }
 
     @Override

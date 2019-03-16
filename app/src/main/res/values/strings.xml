@@ -110,6 +110,7 @@
     <string name="review_edited">Review edited</string>
     <string name="error_review_edit">@string/error_review_add</string>
     <string name="review">Review</string>
+    <string name="no_reviews">No reviews</string>
 
     <string-array name="work_status">
         <item>@string/working</item>
