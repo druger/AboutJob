@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -63,6 +64,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     ImageView ivInfo;
     private NestedScrollView scrollView;
     private LinearLayout ltNoReviews;
+    private ProgressBar progressReview;
 
     @SuppressWarnings("FieldCanBeLocal")
     private RecyclerView rvReviews;
@@ -133,6 +135,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         ivInfo = bindView(R.id.ivInfo);
         scrollView = bindView(R.id.scrollView);
         ltNoReviews = bindView(R.id.ltNoReviews);
+        progressReview = bindView(R.id.progressReview);
     }
 
     private void setupToolbar() {
@@ -261,7 +264,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
 
     private void setSite() {
         String site = companyDetail.getSite();
-        if (site.isEmpty()) {
+        if (site.equals("http://") || site.equals("https://")) {
             tvSite.setVisibility(View.GONE);
         } else {
             tvSite.setOnClickListener(v -> showWebView(companyDetail.getSite()));
@@ -326,5 +329,15 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         } else {
             ltContent.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void showProgressReview() {
+        progressReview.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressReview() {
+        progressReview.setVisibility(View.INVISIBLE);
     }
 }

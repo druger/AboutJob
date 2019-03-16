@@ -46,6 +46,7 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
     private List<Review> reviews = new ArrayList<>();
 
     public void getReviews(String companyID, int currentPage) {
+        getViewState().showProgressReview();
         dbReference = FirebaseDatabase.getInstance().getReference();
         Query reviewsQuery = getReviewsForCompany(dbReference, companyID, currentPage);
         reviewsQuery.addValueEventListener(this);
@@ -83,6 +84,7 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
             review.setFirebaseKey(snapshot.getKey());
             reviews.add(review);
         }
+        getViewState().hideProgressReview();
         getViewState().showReviews(reviews);
     }
 

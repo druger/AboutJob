@@ -41,7 +41,6 @@ public class UserReviewsFragment extends BaseSupportFragment implements UserRevi
 
     private CircleImageView civAvatar;
     private TextView tvName;
-    private TextView tvCountReviews;
 
     private RecyclerView rvReviews;
     private MyReviewAdapter reviewAdapter;
@@ -117,7 +116,6 @@ public class UserReviewsFragment extends BaseSupportFragment implements UserRevi
     private void setupUI() {
         civAvatar = bindView(R.id.civAvatar);
         tvName = bindView(R.id.tvName);
-        tvCountReviews = bindView(R.id.tvCountReviews);
         rvReviews = bindView(R.id.rvReviews);
     }
 
@@ -138,7 +136,6 @@ public class UserReviewsFragment extends BaseSupportFragment implements UserRevi
 
     @Override
     public void showReviews(List<Review> reviews) {
-        tvCountReviews.setText(String.valueOf(reviews.size()));
         this.reviews.clear();
         this.reviews.addAll(reviews);
         reviewAdapter.notifyDataSetChanged();
