@@ -345,17 +345,20 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
         if (!review.isMyDislike()) {
             ivDislike.setColorFilter(Color.parseColor(DISLIKE));
             review.setDislike(++dislike);
+            tvDislike.setText(String.valueOf(dislike));
             review.setMyDislike(true);
 
             if (review.isMyLike()) {
                 ivLike.setColorFilter(Color.parseColor(GRAY_500));
                 review.setLike(--like);
+                tvLike.setText(String.valueOf(like));
                 review.setMyLike(false);
                 FirebaseHelper.likeReview(review);
             }
         } else {
             ivDislike.setColorFilter(Color.parseColor(GRAY_500));
             review.setDislike(--dislike);
+            tvDislike.setText(String.valueOf(dislike));
             review.setMyDislike(false);
         }
         FirebaseHelper.dislikeReview(review);
@@ -367,17 +370,20 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
         if (!review.isMyLike()) {
             ivLike.setColorFilter(Color.parseColor(LIKE));
             review.setLike(++like);
+            tvLike.setText(String.valueOf(like));
             review.setMyLike(true);
 
             if (review.isMyDislike()) {
                 ivDislike.setColorFilter(Color.parseColor(GRAY_500));
                 review.setDislike(--dislike);
+                tvDislike.setText(String.valueOf(dislike));
                 review.setMyDislike(false);
                 FirebaseHelper.dislikeReview(review);
             }
         } else {
             ivLike.setColorFilter(Color.parseColor(GRAY_500));
             review.setLike(--like);
+            tvLike.setText(String.valueOf(like));
             review.setMyLike(false);
         }
         FirebaseHelper.likeReview(review);
