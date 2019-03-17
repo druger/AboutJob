@@ -35,7 +35,8 @@ public class EditReviewPresenter extends BasePresenter<EditReviewView> {
     public void setupRating(Review review) {
          this.review = review;
          mark = review.getMarkCompany();
-         review.setMarkCompany(mark);
+         this.review.setMarkCompany(mark);
+         getViewState().setupCompanyRating(mark);
     }
 
     public void doneClick() {

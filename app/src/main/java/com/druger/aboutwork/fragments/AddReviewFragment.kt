@@ -94,12 +94,12 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     }
 
     private fun setupRatingChanges() {
-        ratingbar_salary.setOnRatingBarChangeListener { _, rating, _ -> presenter.setSalary(rating) }
-        ratingbar_chief.setOnRatingBarChangeListener { _, rating, _ -> presenter.setChief(rating) }
-        ratingbar_workplace.setOnRatingBarChangeListener { _, rating, _ -> presenter.setWorkplace(rating) }
-        ratingbar_career.setOnRatingBarChangeListener { _, rating, _ -> presenter.setCareer(rating) }
-        ratingbar_collective.setOnRatingBarChangeListener { _, rating, _ -> presenter.setCollective(rating) }
-        ratingbar_social_package.setOnRatingBarChangeListener { _, rating, _ -> presenter.setSocialPackage(rating) }
+        rbSalary.setOnRatingBarChangeListener { _, rating, _ -> presenter.setSalary(rating) }
+        rbChief.setOnRatingBarChangeListener { _, rating, _ -> presenter.setChief(rating) }
+        rbWorkplace.setOnRatingBarChangeListener { _, rating, _ -> presenter.setWorkplace(rating) }
+        rbCareer.setOnRatingBarChangeListener { _, rating, _ -> presenter.setCareer(rating) }
+        rbCollective.setOnRatingBarChangeListener { _, rating, _ -> presenter.setCollective(rating) }
+        rbSocialPackage.setOnRatingBarChangeListener { _, rating, _ -> presenter.setSocialPackage(rating) }
     }
 
     private fun positionChanges() {
@@ -198,12 +198,12 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     }
 
     private fun setIsIndicator(indicator: Boolean) {
-        ratingbar_salary.setIsIndicator(indicator)
-        ratingbar_chief.setIsIndicator(indicator)
-        ratingbar_workplace.setIsIndicator(indicator)
-        ratingbar_career.setIsIndicator(indicator)
-        ratingbar_collective.setIsIndicator(indicator)
-        ratingbar_social_package.setIsIndicator(indicator)
+        rbSalary.setIsIndicator(indicator)
+        rbChief.setIsIndicator(indicator)
+        rbWorkplace.setIsIndicator(indicator)
+        rbCareer.setIsIndicator(indicator)
+        rbCollective.setIsIndicator(indicator)
+        rbSocialPackage.setIsIndicator(indicator)
     }
 
     private fun setupCompanyRating() = presenter.setupReview()
