@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/career"
-            app:layout_constraintStart_toStartOf="@+id/ratingbar_career"
+            app:layout_constraintStart_toStartOf="@+id/rbCareer"
             app:layout_constraintTop_toBottomOf="@+id/spinnerStatus" />
 
         <TextView
@@ -35,8 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/collective"
-            app:layout_constraintStart_toStartOf="@+id/ratingbar_collective"
-            app:layout_constraintTop_toBottomOf="@+id/ratingbar_career" />
+            app:layout_constraintStart_toStartOf="@+id/rbCollective"
+            app:layout_constraintTop_toBottomOf="@+id/rbCareer" />
 
         <TextView
             android:id="@+id/tvSocialPackage"
@@ -44,8 +44,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/social_package"
-            app:layout_constraintStart_toStartOf="@+id/ratingbar_social_package"
-            app:layout_constraintTop_toBottomOf="@+id/ratingbar_collective" />
+            app:layout_constraintStart_toStartOf="@+id/rbSocialPackage"
+            app:layout_constraintTop_toBottomOf="@+id/rbCollective" />
 
         <Spinner
             android:id="@+id/spinnerStatus"
@@ -65,7 +65,7 @@
             app:layout_constraintTop_toBottomOf="@+id/spinnerStatus" />
 
         <RatingBar
-            android:id="@+id/ratingbar_salary"
+            android:id="@+id/rbSalary"
             style="@style/reviewRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tvSalary" />
 
         <RatingBar
-            android:id="@+id/ratingbar_career"
+            android:id="@+id/rbCareer"
             style="@style/reviewRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -86,17 +86,18 @@
             app:layout_constraintTop_toBottomOf="@+id/tvCareer" />
 
         <RatingBar
-            android:id="@+id/ratingbar_collective"
+            android:id="@+id/rbCollective"
             style="@style/reviewRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:stepSize="1"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvCollective" />
 
         <RatingBar
-            android:id="@+id/ratingbar_social_package"
+            android:id="@+id/rbSocialPackage"
             style="@style/reviewRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -107,7 +108,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tvSocialPackage" />
 
         <RatingBar
-            android:id="@+id/ratingbar_chief"
+            android:id="@+id/rbChief"
             style="@style/reviewRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -117,7 +118,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tvChief" />
 
         <RatingBar
-            android:id="@+id/ratingbar_workplace"
+            android:id="@+id/rbWorkplace"
             style="@style/reviewRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -133,8 +134,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/chief"
-            app:layout_constraintStart_toStartOf="@+id/ratingbar_salary"
-            app:layout_constraintTop_toBottomOf="@+id/ratingbar_salary" />
+            app:layout_constraintStart_toStartOf="@+id/rbSalary"
+            app:layout_constraintTop_toBottomOf="@+id/rbSalary" />
 
         <TextView
             android:id="@+id/tvWorkplace"
@@ -142,8 +143,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/workplace"
-            app:layout_constraintStart_toStartOf="@+id/ratingbar_chief"
-            app:layout_constraintTop_toBottomOf="@+id/ratingbar_chief" />
+            app:layout_constraintStart_toStartOf="@+id/rbChief"
+            app:layout_constraintTop_toBottomOf="@+id/rbChief" />
 
         <View xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/view"
@@ -153,12 +154,12 @@
             android:background="@color/color_separate_line"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ratingbar_social_package" />
+            app:layout_constraintTop_toBottomOf="@+id/rbSocialPackage" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/position"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
@@ -292,7 +293,7 @@
             android:id="@+id/group_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="ratingbar_collective,ratingbar_social_package,tvWorkplace,tvCollective,tvSalary,tvChief,ratingbar_chief,tvSocialPackage,tvCareer,ratingbar_salary,ratingbar_workplace,ratingbar_career,view" />
+            app:constraint_referenced_ids="rbCollective,rbSocialPackage,tvWorkplace,tvCollective,tvSalary,tvChief,rbChief,tvSocialPackage,tvCareer,rbSalary,rbWorkplace,rbCareer,view" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

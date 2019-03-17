@@ -18,6 +18,7 @@ import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.interfaces.view.EditReviewView
 import com.druger.aboutwork.model.City
+import com.druger.aboutwork.model.MarkCompany
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.model.Vacancy
 import com.druger.aboutwork.presenters.EditReviewPresenter
@@ -64,7 +65,7 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
         setDateVisibility()
         setupWorkStatus()
         setupListeners()
-        setupCompanyRating()
+        presenter.setupRating(review)
     }
 
     private fun setupListeners() {
@@ -78,12 +79,12 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
     }
 
     private fun setupRatingChanges() {
-        ratingbar_salary.setOnRatingBarChangeListener { _, rating, _ -> presenter.setSalary(rating) }
-        ratingbar_chief.setOnRatingBarChangeListener { _, rating, _ -> presenter.setChief(rating) }
-        ratingbar_workplace.setOnRatingBarChangeListener { _, rating, _ -> presenter.setWorkplace(rating) }
-        ratingbar_career.setOnRatingBarChangeListener { _, rating, _ -> presenter.setCareer(rating) }
-        ratingbar_collective.setOnRatingBarChangeListener { _, rating, _ -> presenter.setCollective(rating) }
-        ratingbar_social_package.setOnRatingBarChangeListener { _, rating, _ -> presenter.setSocialPackage(rating) }
+        rbSalary.setOnRatingBarChangeListener { _, rating, _ -> presenter.setSalary(rating) }
+        rbChief.setOnRatingBarChangeListener { _, rating, _ -> presenter.setChief(rating) }
+        rbWorkplace.setOnRatingBarChangeListener { _, rating, _ -> presenter.setWorkplace(rating) }
+        rbCareer.setOnRatingBarChangeListener { _, rating, _ -> presenter.setCareer(rating) }
+        rbCollective.setOnRatingBarChangeListener { _, rating, _ -> presenter.setCollective(rating) }
+        rbSocialPackage.setOnRatingBarChangeListener { _, rating, _ -> presenter.setSocialPackage(rating) }
     }
 
     private fun positionChanges() {
@@ -184,8 +185,13 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
             else -> null
         }
 
-    private fun setupCompanyRating() {
-        presenter.setupRating(review)
+    override fun setupCompanyRating(mark: MarkCompany) {
+        rbSalary.rating = mark.salary
+        rbChief.rating = mark.chief
+        rbWorkplace.rating = mark.workplace
+        rbCareer.rating = mark.career
+        rbCollective.rating = mark.collective
+        rbSocialPackage.rating = mark.socialPackage
     }
 
     override fun onDestroy() {
@@ -207,12 +213,12 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
     }
 
     private fun setIsIndicator(indicator: Boolean) {
-        ratingbar_salary.setIsIndicator(indicator)
-        ratingbar_chief.setIsIndicator(indicator)
-        ratingbar_workplace.setIsIndicator(indicator)
-        ratingbar_career.setIsIndicator(indicator)
-        ratingbar_collective.setIsIndicator(indicator)
-        ratingbar_social_package.setIsIndicator(indicator)
+        rbSalary.setIsIndicator(indicator)
+        rbChief.setIsIndicator(indicator)
+        rbWorkplace.setIsIndicator(indicator)
+        rbCareer.setIsIndicator(indicator)
+        rbCollective.setIsIndicator(indicator)
+        rbSocialPackage.setIsIndicator(indicator)
     }
 
     private fun showSuggestions(items: List<Any>, view: AutoCompleteTextView) {
@@ -266,12 +272,12 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
     }
 
     override fun clearRatingBar() {
-        ratingbar_salary.rating = 0f
-        ratingbar_chief.rating = 0f
-        ratingbar_workplace.rating = 0f
-        ratingbar_career.rating = 0f
-        ratingbar_collective.rating = 0f
-        ratingbar_social_package.rating = 0f
+        rbSalary.rating = 0f
+        rbChief.rating = 0f
+        rbWorkplace.rating = 0f
+        rbCareer.rating = 0f
+        rbCollective.rating = 0f
+        rbSocialPackage.rating = 0f
     }
 
     override fun successfulEditing() {
