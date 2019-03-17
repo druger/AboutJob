@@ -57,7 +57,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
         if (!reviews.isEmpty()) {
             final Review review = reviews.get(position);
             reviewVH.clReviewCard.setBackgroundColor(isSelected(position)
-                    ? ContextCompat.getColor(reviewVH.clReviewCard.getContext(), R.color.red200) : Color.WHITE);
+                    ? ContextCompat.getColor(reviewVH.clReviewCard.getContext(), R.color.selected_review) : Color.WHITE);
 
             setColorLikeAndDislike(reviewVH, review);
             onLikeClick(reviewVH, review);
