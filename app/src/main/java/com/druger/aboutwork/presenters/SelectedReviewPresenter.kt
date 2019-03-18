@@ -5,6 +5,7 @@ import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.db.FirebaseHelper.getComments
 import com.druger.aboutwork.interfaces.view.SelectedReview
 import com.druger.aboutwork.model.Comment
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import java.util.*
@@ -12,18 +13,22 @@ import java.util.*
 @InjectViewState
 class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListener {
 
-    private val user: FirebaseUser? = null
+    private var user: FirebaseUser? = null
     private var dbReference: DatabaseReference? = null
 
     private var comments: List<Comment> = emptyList()
     var comment: Comment? = null
 
+    override fun attachView(view: SelectedReview?) {
+        super.attachView(view)
+        user = FirebaseAuth.getInstance().currentUser
+    }
+
     fun addComment(message: String, reviewId: String) {
         val calendar = Calendar.getInstance()
         val comment = Comment(message, calendar.timeInMillis)
-        if (user != null) {
-            comment.userId = user.uid
-        }
+        comment.userId = user?.uid
+        comment.userName = user?.displayName
         comment.reviewId = reviewId
         FirebaseHelper.addComment(comment)
     }
