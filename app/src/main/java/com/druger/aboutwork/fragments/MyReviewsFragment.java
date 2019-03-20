@@ -17,6 +17,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.R;
@@ -52,6 +54,8 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
     private boolean itemSwipe = true;
 
     private BottomNavigationView bottomNavigation;
+    private LinearLayout ltNoReviews;
+    private RelativeLayout content;
 
     private String userId;
 
@@ -142,6 +146,9 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
     private void setupUI() {
         bottomNavigation = getActivity().findViewById(R.id.bottom_navigation);
         rvReviews = bindView(R.id.recycler_view);
+        progressBar = bindView(R.id.progressBar);
+        ltNoReviews = bindView(R.id.ltNoReviews);
+        content = bindView(R.id.content);
     }
 
     private void initSwipe() {
@@ -204,9 +211,23 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
 
     @Override
     public void showReviews(List<Review> reviews) {
+        if (reviews.isEmpty()) {
+            ltNoReviews.setVisibility(View.VISIBLE);
+            content.setVisibility(View.INVISIBLE);
+        } else {
+            ltNoReviews.setVisibility(View.INVISIBLE);
+            content.setVisibility(View.VISIBLE);
+        }
         this.reviews.clear();
         this.reviews.addAll(reviews);
         reviewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showProgress(boolean show) {
+        super.showProgress(show);
+        if (show) content.setVisibility(View.INVISIBLE);
+        else content.setVisibility(View.VISIBLE);
     }
 
     @Override

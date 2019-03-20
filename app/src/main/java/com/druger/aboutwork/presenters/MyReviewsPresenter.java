@@ -36,6 +36,7 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
     }
 
     public void fetchReviews(String userId, int currentPage) {
+        getViewState().showProgress(true);
         dbReference = FirebaseDatabase.getInstance().getReference();
 
         Query reviewsQuery = getReviews(dbReference, userId, currentPage);
@@ -79,6 +80,7 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
             review.setFirebaseKey(snapshot.getKey());
             reviews.add(review);
         }
+        getViewState().showProgress(false);
         getViewState().showReviews(reviews);
     }
 
