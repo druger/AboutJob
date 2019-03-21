@@ -37,5 +37,6 @@
     <color name="remove">#EB5757</color>
     <color name="ic_reply">#3F2B96</color>
     <color name="selected_review">#B39DDB</color>
+    <color name="bg_deleted_review">#fa315b</color>
 </resources>
 
