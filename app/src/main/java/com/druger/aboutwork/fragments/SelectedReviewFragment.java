@@ -280,36 +280,39 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
                 break;
             case Review.INTERVIEW:
                 tvStatus.setText(R.string.interview);
-                tvDescriptionStatus.setText(Utils.getDate(review.getInterviewDate()));
+                long interviewDate = review.getInterviewDate();
+                if (interviewDate != 0) tvDescriptionStatus.setText(Utils.getDate(interviewDate));
                 groupRating.setVisibility(View.GONE);
                 break;
         }
     }
 
     private void setWorkingDays(long first, long last) {
-        Date f = new Date(first);
-        Date l = new Date(last);
-        LocalDate firstDate = Instant.ofEpochMilli(f.getTime())
-                .atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate lastDate = Instant.ofEpochMilli(l.getTime())
-                .atZone(ZoneId.systemDefault()).toLocalDate();
+        if (first != 0) {
+            Date f = new Date(first);
+            Date l = new Date(last);
+            LocalDate firstDate = Instant.ofEpochMilli(f.getTime())
+                    .atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate lastDate = Instant.ofEpochMilli(l.getTime())
+                    .atZone(ZoneId.systemDefault()).toLocalDate();
 
-        Period period = Period.between(firstDate, lastDate);
-        int years = period.getYears();
-        int months = period.getMonths();
-        int days = period.getDays();
-        Resources res = getResources();
-        if (years > 0 && months > 0 && days > 0) {
-            tvDescriptionStatus.setText(res.getQuantityString(R.plurals.year, years, years));
-            tvDescriptionStatus.append(" " + res.getQuantityString(R.plurals.month, months,months));
-            tvDescriptionStatus.append(" " + res.getQuantityString(R.plurals.day, days, days));
-        } else if (years >= 0 && months <= 0 && days <= 0) {
-            tvDescriptionStatus.setText(res.getQuantityString(R.plurals.year, years, years));
-        } else if (years <= 0 && months > 0 && days >= 0) {
-            tvDescriptionStatus.setText(res.getQuantityString(R.plurals.month, months, months));
-            tvDescriptionStatus.append(" " + res.getQuantityString(R.plurals.day, days, days));
-        } else if (years <= 0 && months <= 0) {
-            tvDescriptionStatus.setText(res.getQuantityString(R.plurals.day, days, days));
+            Period period = Period.between(firstDate, lastDate);
+            int years = period.getYears();
+            int months = period.getMonths();
+            int days = period.getDays();
+            Resources res = getResources();
+            if (years > 0 && months > 0 && days > 0) {
+                tvDescriptionStatus.setText(res.getQuantityString(R.plurals.year, years, years));
+                tvDescriptionStatus.append(" " + res.getQuantityString(R.plurals.month, months,months));
+                tvDescriptionStatus.append(" " + res.getQuantityString(R.plurals.day, days, days));
+            } else if (years >= 0 && months <= 0 && days <= 0) {
+                tvDescriptionStatus.setText(res.getQuantityString(R.plurals.year, years, years));
+            } else if (years <= 0 && months > 0 && days >= 0) {
+                tvDescriptionStatus.setText(res.getQuantityString(R.plurals.month, months, months));
+                tvDescriptionStatus.append(" " + res.getQuantityString(R.plurals.day, days, days));
+            } else if (years <= 0 && months <= 0) {
+                tvDescriptionStatus.setText(res.getQuantityString(R.plurals.day, days, days));
+            }
         }
     }
 
