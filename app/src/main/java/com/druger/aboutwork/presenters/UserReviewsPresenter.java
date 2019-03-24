@@ -46,10 +46,10 @@ public class UserReviewsPresenter extends BasePresenter<UserReviews> implements 
         getViewState().showPhoto(storageRef);
     }
 
-    public void fetchReviews(String userId, int currentPage) {
+    public void fetchReviews(String userId) {
         dbReference = FirebaseDatabase.getInstance().getReference();
 
-        Query reviewsQuery = getReviews(dbReference, userId, currentPage);
+        Query reviewsQuery = getReviews(dbReference, userId);
         reviewsQuery.addValueEventListener(this);
     }
 

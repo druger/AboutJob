@@ -3,6 +3,7 @@ package com.druger.aboutwork.adapters;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +31,7 @@ import static com.druger.aboutwork.Const.Colors.LIKE;
 
 public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
 
-    private List<Review> reviews;
+    protected List<Review> reviews;
     private List<Review> deletedReviews;
 
     private OnItemClickListener<Review> clickListener;
@@ -172,7 +173,8 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
         return reviews.size();
     }
 
-    static class ReviewVH extends BaseViewHolder {
+    public static class ReviewVH extends BaseViewHolder {
+        public CardView cvContent;
         ConstraintLayout clReviewCard;
         ImageView ivLike;
         ImageView ivDislike;
@@ -190,6 +192,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
         ReviewVH(View itemView) {
             super(itemView);
 
+            cvContent = bindView(R.id.cvContent);
             clReviewCard = bindView(R.id.clReviewCard);
             ivLike = bindView(R.id.ivLike);
             ivDislike = bindView(R.id.ivDislike);

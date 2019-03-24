@@ -20,7 +20,6 @@ import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.UserReviews;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.UserReviewsPresenter;
-import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.StorageReference;
 
@@ -68,7 +67,7 @@ public class UserReviewsFragment extends BaseSupportFragment implements UserRevi
         setupUI();
         setupRecycler(reviews);
         reviewsPresenter.downloadPhoto(getArguments().getString(USER_ID));
-        reviewsPresenter.fetchReviews(getArguments().getString(USER_ID), 1);
+        reviewsPresenter.fetchReviews(getArguments().getString(USER_ID));
         reviewsPresenter.getUserName(getArguments().getString(USER_ID));
         setupToolbar();
         return rootView;
@@ -101,14 +100,6 @@ public class UserReviewsFragment extends BaseSupportFragment implements UserRevi
             @Override
             public boolean onLongClick(int position) {
                 return false;
-            }
-        });
-
-
-        rvReviews.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
-            @Override
-            public void onLoadMore(int page) {
-                reviewsPresenter.fetchReviews(getArguments().getString(USER_ID), ++page);
             }
         });
     }
