@@ -24,19 +24,23 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.adapters.MyReviewAdapter;
+import com.druger.aboutwork.adapters.ReviewAdapter;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.MyReviewsView;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.MyReviewsPresenter;
-import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener;
+import com.druger.aboutwork.utils.recycler.RecyclerItemTouchHelper;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.druger.aboutwork.Const.Bundles.USER_ID;
 
-public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsView {
+public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsView,
+        RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
     @InjectPresenter
     MyReviewsPresenter myReviewsPresenter;
@@ -47,11 +51,10 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
     @SuppressWarnings("FieldCanBeLocal")
     private ItemTouchHelper touchHelper;
     @SuppressWarnings("FieldCanBeLocal")
-    private ItemTouchHelper.SimpleCallback simpleCallback;
+    private RecyclerItemTouchHelper simpleCallback;
 
     private ActionMode actionMode;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
-    private boolean itemSwipe = true;
 
     private BottomNavigationView bottomNavigation;
     private LinearLayout ltNoReviews;
@@ -87,7 +90,7 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
             userId = bundle.getString(USER_ID, userId);
         }
 
-        myReviewsPresenter.fetchReviews(userId, 1);
+        myReviewsPresenter.fetchReviews(userId);
         return rootView;
     }
 
@@ -119,17 +122,10 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
             public boolean onLongClick(int position) {
                 if (actionMode == null) {
                     actionMode = ((MainActivity) getActivity()).startSupportActionMode(actionModeCallback);
-                    itemSwipe = false;
+                    simpleCallback.setItemSwipe(false);
                 }
                 toggleSelection(position);
                 return true;
-            }
-        });
-
-        rvReviews.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
-            @Override
-            public void onLoadMore(int page) {
-                myReviewsPresenter.fetchReviews(userId, ++page);
             }
         });
     }
@@ -152,33 +148,7 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
     }
 
     private void initSwipe() {
-        simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
-                final int position = viewHolder.getAdapterPosition();
-                final Review review = myReviewsPresenter.getReview(position);
-                Snackbar snackbar = Snackbar
-                        .make(getActivity().findViewById(R.id.coordinator), R.string.review_deleted, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.undo, v -> {
-                            myReviewsPresenter.addReview(position, review);
-                            reviewAdapter.notifyItemInserted(position);
-                            rvReviews.scrollToPosition(position);
-                        });
-                showSnackbar(snackbar);
-                myReviewsPresenter.removeReview(position);
-                reviewAdapter.notifyItemRemoved(position);
-            }
-
-            @Override
-            public boolean isItemViewSwipeEnabled() {
-                return itemSwipe && super.isItemViewSwipeEnabled();
-            }
-        };
+        simpleCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         touchHelper = new ItemTouchHelper(simpleCallback);
         touchHelper.attachToRecyclerView(rvReviews);
     }
@@ -231,8 +201,29 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
     }
 
     @Override
-    public void notifyDataSetChanged() {
-        reviewAdapter.notifyDataSetChanged();
+    public void notifyItemInserted(int position) {
+        reviewAdapter.notifyItemInserted(position);
+    }
+
+    @Override
+    public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int direction) {
+        if (viewHolder instanceof ReviewAdapter.ReviewVH) {
+            final int position = viewHolder.getAdapterPosition();
+            final Review review = myReviewsPresenter.getReview(position);
+
+            Snackbar snackbar = Snackbar
+                    .make(getActivity().findViewById(R.id.coordinator), R.string.review_deleted, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.undo, v -> {
+                        reviews.add(position, review);
+                        reviewAdapter.notifyItemInserted(position);
+                        myReviewsPresenter.addReview(position, review);
+                        rvReviews.scrollToPosition(position);
+                    });
+            showSnackbar(snackbar);
+            reviews.remove(position);
+            reviewAdapter.notifyItemRemoved(position);
+            myReviewsPresenter.removeReview(position);
+        }
     }
 
     // TODO сделать класс статическим
@@ -290,7 +281,7 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
         public void onDestroyActionMode(ActionMode mode) {
             reviewAdapter.clearSelection();
             actionMode = null;
-            itemSwipe = true;
+            simpleCallback.setItemSwipe(true);
         }
     }
 

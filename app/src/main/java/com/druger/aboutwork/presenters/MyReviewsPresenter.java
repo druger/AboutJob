@@ -31,15 +31,17 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
 
     private List<Review> reviews;
 
-    public MyReviewsPresenter() {
+    @Override
+    public void attachView(MyReviewsView view) {
+        super.attachView(view);
         reviews = new ArrayList<>();
     }
 
-    public void fetchReviews(String userId, int currentPage) {
+    public void fetchReviews(String userId) {
         getViewState().showProgress(true);
         dbReference = FirebaseDatabase.getInstance().getReference();
 
-        Query reviewsQuery = getReviews(dbReference, userId, currentPage);
+        Query reviewsQuery = getReviews(dbReference, userId);
         reviewsQuery.addValueEventListener(this);
     }
 
@@ -58,27 +60,29 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
 
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
             final Review review = snapshot.getValue(Review.class);
-            Query queryCompanies = getCompanies(dbReference, review.getCompanyId());
-            valueEventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        for (DataSnapshot data : dataSnapshot.getChildren()) {
-                            Company company = data.getValue(Company.class);
-                            review.setName(company.getName());
-                            getViewState().notifyDataSetChanged();
+            if (!reviews.contains(review)) {
+                Query queryCompanies = getCompanies(dbReference, review.getCompanyId());
+                valueEventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                Company company = data.getValue(Company.class);
+                                review.setName(company.getName());
+                            }
                         }
                     }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                }
-            };
-            queryCompanies.addValueEventListener(valueEventListener);
-            review.setFirebaseKey(snapshot.getKey());
-            reviews.add(review);
+                    }
+                };
+                queryCompanies.addValueEventListener(valueEventListener);
+                review.setFirebaseKey(snapshot.getKey());
+                reviews.add(review);
+                getViewState().notifyItemInserted(reviews.size() - 1);
+            }
         }
         getViewState().showProgress(false);
         getViewState().showReviews(reviews);
@@ -96,7 +100,6 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
     }
 
     public void addReview(int position, Review review) {
-        reviews.add(position, review);
         addToFirebase(review);
     }
 

@@ -13,5 +13,5 @@ public interface MyReviewsView extends MvpView, NetworkView {
 
     void showReviews(List<Review> reviews);
 
-    void notifyDataSetChanged();
+    void notifyItemInserted(int position);
 }
