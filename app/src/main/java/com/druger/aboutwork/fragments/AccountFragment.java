@@ -10,24 +10,23 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.interfaces.view.AccountView;
 import com.druger.aboutwork.presenters.AccountPresenter;
 import com.druger.aboutwork.utils.PreferencesHelper;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.StorageReference;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import javax.inject.Inject;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.theartofdev.edmodo.cropper.CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE;
 import static com.theartofdev.edmodo.cropper.CropImage.getPickImageChooserIntent;
@@ -44,7 +43,7 @@ public class AccountFragment extends BaseSupportFragment implements View.OnClick
     private TextView tvMyReviews;
     private TextView tvSettings;
     private TextView tvLogout;
-    private CircleImageView civAvatar;
+    private ImageView civAvatar;
 
     @ProvidePresenter
     AccountPresenter getAccountPresenter() {
@@ -81,7 +80,7 @@ public class AccountFragment extends BaseSupportFragment implements View.OnClick
         tvMyReviews = bindView(R.id.tvMyReviews);
         tvSettings =  bindView(R.id.tvSettings);
         tvLogout = bindView(R.id.tvLogout);
-        civAvatar = bindView(R.id.civAvatar);
+        civAvatar = bindView(R.id.ivAvatar);
     }
 
     @Override
@@ -102,7 +101,7 @@ public class AccountFragment extends BaseSupportFragment implements View.OnClick
             case R.id.tvMyReviews:
                 accountPresenter.clickOpenMyReviews();
                 break;
-            case R.id.civAvatar:
+            case R.id.ivAvatar:
                 showPhotoPicker();
                 break;
             default:
@@ -133,7 +132,8 @@ public class AccountFragment extends BaseSupportFragment implements View.OnClick
     public void startCropImageActivity(Uri imgUri) {
         CropImage.activity(imgUri)
                 .setGuidelines(CropImageView.Guidelines.ON)
-                .setCropShape(CropImageView.CropShape.OVAL)
+                .setCropShape(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ?
+                        CropImageView.CropShape.RECTANGLE : CropImageView.CropShape.OVAL)
                 .setActivityTitle(getString(R.string.photo_crop_name))
                 .setScaleType(CropImageView.ScaleType.CENTER)
                 .setAspectRatio(1, 1)
@@ -148,9 +148,8 @@ public class AccountFragment extends BaseSupportFragment implements View.OnClick
     @Override
     public void showPhoto(StorageReference storageRef) {
         Glide.with(getActivity())
-                .using(new FirebaseImageLoader())
                 .load(storageRef)
-                .crossFade()
+                .apply(RequestOptions.circleCropTransform())
                 .error(R.drawable.ic_account_circle_black)
                 .into(civAvatar);
     }

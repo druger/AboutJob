@@ -8,8 +8,8 @@
 
     <include layout="@layout/toolbar" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/civAvatar"
+    <ImageView
+        android:id="@+id/ivAvatar"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_gravity="center"

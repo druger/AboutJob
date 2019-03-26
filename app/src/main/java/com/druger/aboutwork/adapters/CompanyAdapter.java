@@ -47,7 +47,6 @@ public class CompanyAdapter extends BaseRecyclerViewAdapter<Company, RecyclerVie
                     .placeholder(R.drawable.ic_default_company)
                     .error(R.drawable.ic_default_company)
                     .fitCenter()
-                    .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(companyVH.ivLogo);
 
