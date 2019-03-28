@@ -19,8 +19,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/civAvatar"
+    <ImageView
+        android:id="@+id/ivAvatar"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_marginTop="16dp"
@@ -37,9 +37,9 @@
         android:layout_width="wrap_content"
         android:textColor="@android:color/white"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        app:layout_constraintBottom_toBottomOf="@+id/civAvatar"
-        app:layout_constraintStart_toEndOf="@+id/civAvatar"
-        app:layout_constraintTop_toTopOf="@+id/civAvatar"
+        app:layout_constraintBottom_toBottomOf="@+id/ivAvatar"
+        app:layout_constraintStart_toEndOf="@+id/ivAvatar"
+        app:layout_constraintTop_toTopOf="@+id/ivAvatar"
         app:layout_constraintVertical_bias="0.521"
         tools:text="Name" />
 

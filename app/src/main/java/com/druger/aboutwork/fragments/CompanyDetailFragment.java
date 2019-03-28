@@ -278,7 +278,6 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
                 .load(logo != null ? logo.getOriginal() : "")
                 .placeholder(R.drawable.ic_default_company)
                 .error(R.drawable.ic_default_company)
-                .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(ivLogo);
     }

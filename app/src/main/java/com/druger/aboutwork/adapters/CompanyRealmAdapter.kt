@@ -33,7 +33,6 @@ class CompanyRealmAdapter(data: OrderedRealmCollection<CompanyRealm>, var clickL
                 .placeholder(R.drawable.ic_default_company)
                 .error(R.drawable.ic_default_company)
                 .fitCenter()
-                .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.ivLogo)
 
