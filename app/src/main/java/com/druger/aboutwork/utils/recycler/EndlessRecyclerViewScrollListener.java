@@ -14,6 +14,7 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
     private int previousTotalItemCount = 0;
     private boolean loading = true;
     private int startingPageIndex = 0;
+    private int pages = 0;
 
     private RecyclerView.LayoutManager layoutManager;
 
@@ -47,8 +48,10 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
                 && (lastVisibleItemPosition + visibleThreshold) >= totalItemCount
                 && dy > 0) {
             currentPage++;
-            onLoadMore(currentPage);
-            loading = true;
+            if (currentPage < pages) {
+                onLoadMore(currentPage);
+                loading = true;
+            } else loading = false;
         }
     }
 
@@ -67,5 +70,9 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
 
     public void setLoaded() {
         loading = false;
+    }
+
+    public void setPages(int pages) {
+        this.pages = pages;
     }
 }

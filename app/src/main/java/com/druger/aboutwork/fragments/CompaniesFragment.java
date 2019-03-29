@@ -85,7 +85,6 @@ public class CompaniesFragment extends BaseSupportFragment implements CompaniesV
 
     private void setupRecycler() {
         adapter = new CompanyAdapter();
-        rvCompanies.setHasFixedSize(true);
         rvCompanies.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvCompanies.setAdapter(adapter);
     }
@@ -167,10 +166,10 @@ public class CompaniesFragment extends BaseSupportFragment implements CompaniesV
     }
 
     @Override
-    public void showCompanies(List<Company> companies) {
-        adapter.clear();
+    public void showCompanies(List<Company> companies, int pages) {
         adapter.addItems(companies);
         scrollListener.setLoaded();
+        scrollListener.setPages(pages);
         rvCompanies.setVisibility(View.VISIBLE);
         rvCompaniesRealm.setVisibility(View.INVISIBLE);
         tvWatched.setVisibility(View.GONE);
