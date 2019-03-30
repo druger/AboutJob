@@ -88,7 +88,6 @@ public class AccountPresenter extends BasePresenter<AccountView> {
     }
 
     public void logout() {
-        FirebaseAuth.getInstance().signOut();
         realmHelper.deleteAllData();
     }
 
@@ -100,17 +99,7 @@ public class AccountPresenter extends BasePresenter<AccountView> {
         getViewState().openMyReviews(user.getUid());
     }
 
-    public void checkActivityResult(Context context, int requestCode, int resultCode, Intent data) {
-        this.context = context;
-        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == RESULT_OK) {
-            pickImage(data);
-        }
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            cropImage(resultCode, data);
-        }
-    }
-
-    private void cropImage(int resultCode, Intent data) {
+    public void cropImage(int resultCode, Intent data) {
         CropImage.ActivityResult result = CropImage.getActivityResult(data);
         if (resultCode == RESULT_OK) {
             selectedImgUri = result.getUri();
@@ -131,7 +120,7 @@ public class AccountPresenter extends BasePresenter<AccountView> {
         });
     }
 
-    private void pickImage(Intent data) {
+    public void pickImage(Intent data) {
         Uri imgUri = CropImage.getPickImageResultUri(context, data);
         if (CropImage.isReadExternalStoragePermissionsRequired(context, imgUri)) {
             selectedImgUri = imgUri;
