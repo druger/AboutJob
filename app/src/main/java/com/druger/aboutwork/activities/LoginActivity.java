@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.druger.aboutwork.App;
 import com.druger.aboutwork.BuildConfig;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.db.FirebaseHelper;
@@ -17,7 +16,6 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.FirebaseUserMetadata;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.Arrays;
 
@@ -53,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (isNewUser()) {
                     saveNewUser();
                 }
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             } else {
                 if (idpResponse == null) {

@@ -100,6 +100,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @Override
     public void showLoginActivity() {
         startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        finish();
     }
 
     private void replaceFragment(Fragment fragment) {

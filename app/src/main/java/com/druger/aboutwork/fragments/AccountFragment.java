@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +24,14 @@ import com.druger.aboutwork.R;
 import com.druger.aboutwork.interfaces.view.AccountView;
 import com.druger.aboutwork.presenters.AccountPresenter;
 import com.druger.aboutwork.utils.PreferencesHelper;
+import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.storage.StorageReference;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import javax.inject.Inject;
 
+import static android.app.Activity.RESULT_OK;
 import static com.theartofdev.edmodo.cropper.CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE;
 import static com.theartofdev.edmodo.cropper.CropImage.getPickImageChooserIntent;
 
@@ -44,6 +48,7 @@ public class AccountFragment extends BaseSupportFragment implements View.OnClick
     private TextView tvSettings;
     private TextView tvLogout;
     private ImageView civAvatar;
+    private CardView cvLogout;
 
     @ProvidePresenter
     AccountPresenter getAccountPresenter() {
@@ -70,7 +75,7 @@ public class AccountFragment extends BaseSupportFragment implements View.OnClick
 
     private void setupListeners() {
         tvSettings.setOnClickListener(this);
-        tvLogout.setOnClickListener(this);
+        cvLogout.setOnClickListener(this);
         tvMyReviews.setOnClickListener(this);
         civAvatar.setOnClickListener(this);
     }
@@ -81,6 +86,7 @@ public class AccountFragment extends BaseSupportFragment implements View.OnClick
         tvSettings =  bindView(R.id.tvSettings);
         tvLogout = bindView(R.id.tvLogout);
         civAvatar = bindView(R.id.ivAvatar);
+        cvLogout = bindView(R.id.cvLogout);
     }
 
     @Override
@@ -95,7 +101,11 @@ public class AccountFragment extends BaseSupportFragment implements View.OnClick
             case R.id.tvSettings:
                 accountPresenter.clickOpenSettings();
                 break;
-            case R.id.tvLogout:
+            case R.id.cvLogout:
+                AuthUI.getInstance()
+                        .signOut(getActivity())
+                        .addOnCompleteListener(task ->
+                                Log.d("Log out", "result: " + task.isSuccessful()));
                 accountPresenter.logout();
                 break;
             case R.id.tvMyReviews:
@@ -171,6 +181,11 @@ public class AccountFragment extends BaseSupportFragment implements View.OnClick
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        accountPresenter.checkActivityResult(getActivity(), requestCode, resultCode, data);
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == RESULT_OK) {
+            accountPresenter.pickImage(data);
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            accountPresenter.cropImage(resultCode, data);
+        }
     }
 }
