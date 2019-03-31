@@ -2,6 +2,7 @@ package com.druger.aboutwork.fragments;
 
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -46,7 +47,6 @@ public class AccountFragment extends BaseSupportFragment implements View.OnClick
     private TextView tvName;
     private TextView tvMyReviews;
     private TextView tvSettings;
-    private TextView tvLogout;
     private ImageView civAvatar;
     private CardView cvLogout;
 
@@ -84,7 +84,6 @@ public class AccountFragment extends BaseSupportFragment implements View.OnClick
         tvName = bindView(R.id.tvName);
         tvMyReviews = bindView(R.id.tvMyReviews);
         tvSettings =  bindView(R.id.tvSettings);
-        tvLogout = bindView(R.id.tvLogout);
         civAvatar = bindView(R.id.ivAvatar);
         cvLogout = bindView(R.id.cvLogout);
     }
@@ -102,11 +101,7 @@ public class AccountFragment extends BaseSupportFragment implements View.OnClick
                 accountPresenter.clickOpenSettings();
                 break;
             case R.id.cvLogout:
-                AuthUI.getInstance()
-                        .signOut(getActivity())
-                        .addOnCompleteListener(task ->
-                                Log.d("Log out", "result: " + task.isSuccessful()));
-                accountPresenter.logout();
+                showLogoutDialog();
                 break;
             case R.id.tvMyReviews:
                 accountPresenter.clickOpenMyReviews();
@@ -117,6 +112,23 @@ public class AccountFragment extends BaseSupportFragment implements View.OnClick
             default:
                 break;
         }
+    }
+
+    private void showLogoutDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AppTheme_Dialog);
+        builder.setTitle(R.string.log_out);
+        builder.setMessage(R.string.message_log_out);
+        builder.setPositiveButton(R.string.yes, (dialog, which) -> {
+            AuthUI.getInstance()
+                    .signOut(getActivity())
+                    .addOnCompleteListener(task ->
+                            Log.d("Log out", "result: " + task.isSuccessful()));
+            accountPresenter.logout();
+            dialog.dismiss();
+        });
+        builder.setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss());
+
+        builder.create().show();
     }
 
     private void showPhotoPicker() {

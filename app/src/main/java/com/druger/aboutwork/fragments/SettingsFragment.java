@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,7 +91,7 @@ public class SettingsFragment extends BaseSupportFragment implements View.OnClic
     }
 
     private void showRemoveDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AppTheme_Dialog);
         builder.setTitle(R.string.remove_account_ask);
         builder.setPositiveButton(R.string.yes, (dialog, which) -> {
             settingPresenter.deleteAccount();
@@ -102,12 +101,6 @@ public class SettingsFragment extends BaseSupportFragment implements View.OnClic
 
         AlertDialog dialog = builder.create();
         dialog.show();
-
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                .setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
-        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-                .setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
-
     }
 
     private void showChangePassword() {

@@ -112,6 +112,8 @@
     <string name="review">Review</string>
     <string name="no_reviews">No reviews</string>
 
+    <string name="message_log_out">Are you sure you want to log out?</string>
+
     <string-array name="work_status">
         <item>@string/working</item>
         <item>@string/worked</item>

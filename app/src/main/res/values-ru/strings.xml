@@ -116,4 +116,5 @@
         <item quantity="many">%d дней</item>
         <item quantity="other">%d дней</item>
     </plurals>
+    <string name="message_log_out">Вы действительно хотите выйти?</string>
 </resources>
