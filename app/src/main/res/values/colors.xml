@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#47379F</color>
     <color name="colorPrimaryDark">#402C97</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#7C4DFF</color>
 
     <color name="endAuthBg">#3F2B96</color>
     <color name="startAuthBg">#A8C0FF</color>
