@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -103,9 +102,6 @@ public class AccountFragment extends BaseSupportFragment implements View.OnClick
             case R.id.cvLogout:
                 showLogoutDialog();
                 break;
-            case R.id.tvMyReviews:
-                accountPresenter.clickOpenMyReviews();
-                break;
             case R.id.ivAvatar:
                 showPhotoPicker();
                 break;
@@ -133,14 +129,6 @@ public class AccountFragment extends BaseSupportFragment implements View.OnClick
 
     private void showPhotoPicker() {
         startActivityForResult(getPickImageChooserIntent(getActivity()), PICK_IMAGE_CHOOSER_REQUEST_CODE);
-    }
-
-    @Override
-    public void openMyReviews(String userId) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_container, MyReviewsFragment.newInstance(userId));
-        transaction.addToBackStack(null);
-        transaction.commit();
     }
 
     @Override

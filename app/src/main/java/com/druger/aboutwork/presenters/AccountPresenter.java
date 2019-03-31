@@ -95,10 +95,6 @@ public class AccountPresenter extends BasePresenter<AccountView> {
         getViewState().openSettings();
     }
 
-    public void clickOpenMyReviews() {
-        getViewState().openMyReviews(user.getUid());
-    }
-
     public void cropImage(int resultCode, Intent data) {
         CropImage.ActivityResult result = CropImage.getActivityResult(data);
         if (resultCode == RESULT_OK) {

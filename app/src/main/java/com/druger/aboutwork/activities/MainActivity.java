@@ -2,6 +2,7 @@ package com.druger.aboutwork.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -15,12 +16,13 @@ import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.fragments.AccountFragment;
 import com.druger.aboutwork.fragments.CompaniesFragment;
-import com.druger.aboutwork.fragments.RatingsFragment;
+import com.druger.aboutwork.fragments.MyReviewsFragment;
 import com.druger.aboutwork.interfaces.view.MainView;
 import com.druger.aboutwork.presenters.MainPresenter;
 import com.squareup.leakcanary.RefWatcher;
 
-public class MainActivity extends MvpAppCompatActivity implements MainView {
+public class MainActivity extends MvpAppCompatActivity implements MainView,
+        BottomNavigationView.OnNavigationItemSelectedListener {
 
     @InjectPresenter
     MainPresenter mainPresenter;
@@ -36,7 +38,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
         checkAuthUser();
         setupUI();
-        setupUX();
+        bottomNavigation.setOnNavigationItemSelectedListener(this);
     }
 
     private void checkAuthUser() {
@@ -46,10 +48,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-    }
-
-    private void setupUX() {
-        bottomNavigation.setOnNavigationItemSelectedListener(mainPresenter);
     }
 
     @Override
@@ -79,20 +77,18 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         }
     }
 
-    @Override
-    public void showCompanies() {
+    private void showCompanies() {
         fragment = new CompaniesFragment();
         replaceFragment(fragment);
     }
 
     @Override
-    public void showRatings() {
-        fragment = new RatingsFragment();
+    public void showMyReviews(@NonNull String userId) {
+        fragment = MyReviewsFragment.newInstance(userId);
         replaceFragment(fragment);
     }
 
-    @Override
-    public void showAccount() {
+    private void showAccount() {
         fragment = new AccountFragment();
         replaceFragment(fragment);
     }
@@ -127,5 +123,23 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_companies:
+                showCompanies();
+                break;
+            case R.id.action_ratings:
+                mainPresenter.onClickMyReviews();
+                break;
+            case R.id.action_account:
+                showAccount();
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 }
