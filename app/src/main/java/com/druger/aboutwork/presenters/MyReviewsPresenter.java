@@ -29,16 +29,11 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
     private DatabaseReference dbReference;
     private ValueEventListener valueEventListener;
 
-    private List<Review> reviews;
-
-    @Override
-    public void attachView(MyReviewsView view) {
-        super.attachView(view);
-        reviews = new ArrayList<>();
-    }
+    private List<Review> reviews = new ArrayList<>();
 
     public void fetchReviews(String userId) {
         getViewState().showProgress(true);
+        reviews.clear();
         dbReference = FirebaseDatabase.getInstance().getReference();
 
         Query reviewsQuery = getReviews(dbReference, userId);
@@ -56,7 +51,6 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
     }
 
     private void fetchReviews(DataSnapshot dataSnapshot) {
-        reviews.clear();
 
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
             final Review review = snapshot.getValue(Review.class);
@@ -71,21 +65,20 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
                                 review.setName(company.getName());
                             }
                         }
+                        getViewState().showProgress(false);
+                        getViewState().showReviews(reviews);
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        
                     }
                 };
                 queryCompanies.addValueEventListener(valueEventListener);
                 review.setFirebaseKey(snapshot.getKey());
                 reviews.add(review);
-                getViewState().notifyItemInserted(reviews.size() - 1);
             }
         }
-        getViewState().showProgress(false);
-        getViewState().showReviews(reviews);
     }
 
     public void removeListeners() {

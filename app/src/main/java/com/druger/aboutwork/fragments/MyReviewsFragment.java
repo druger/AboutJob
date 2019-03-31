@@ -201,11 +201,6 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
     }
 
     @Override
-    public void notifyItemInserted(int position) {
-        reviewAdapter.notifyItemInserted(position);
-    }
-
-    @Override
     public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int direction) {
         if (viewHolder instanceof ReviewAdapter.ReviewVH) {
             final int position = viewHolder.getAdapterPosition();
