@@ -91,10 +91,6 @@ public class AccountPresenter extends BasePresenter<AccountView> {
         realmHelper.deleteAllData();
     }
 
-    public void clickOpenSettings() {
-        getViewState().openSettings();
-    }
-
     public void cropImage(int resultCode, Intent data) {
         CropImage.ActivityResult result = CropImage.getActivityResult(data);
         if (resultCode == RESULT_OK) {

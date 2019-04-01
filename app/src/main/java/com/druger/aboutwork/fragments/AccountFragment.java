@@ -44,8 +44,6 @@ public class AccountFragment extends BaseSupportFragment implements View.OnClick
     PreferencesHelper preferencesHelper;
 
     private TextView tvName;
-    private TextView tvMyReviews;
-    private TextView tvSettings;
     private ImageView civAvatar;
     private CardView cvLogout;
 
@@ -73,16 +71,12 @@ public class AccountFragment extends BaseSupportFragment implements View.OnClick
     }
 
     private void setupListeners() {
-        tvSettings.setOnClickListener(this);
         cvLogout.setOnClickListener(this);
-        tvMyReviews.setOnClickListener(this);
         civAvatar.setOnClickListener(this);
     }
 
     private void setupUI() {
         tvName = bindView(R.id.tvName);
-        tvMyReviews = bindView(R.id.tvMyReviews);
-        tvSettings =  bindView(R.id.tvSettings);
         civAvatar = bindView(R.id.ivAvatar);
         cvLogout = bindView(R.id.cvLogout);
     }
@@ -96,9 +90,6 @@ public class AccountFragment extends BaseSupportFragment implements View.OnClick
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tvSettings:
-                accountPresenter.clickOpenSettings();
-                break;
             case R.id.cvLogout:
                 showLogoutDialog();
                 break;
@@ -167,15 +158,6 @@ public class AccountFragment extends BaseSupportFragment implements View.OnClick
     @Override
     public void showName(String name) {
         tvName.setText(name);
-    }
-
-    @Override
-    public void openSettings() {
-        SettingsFragment settings = new SettingsFragment();
-        getFragmentManager().beginTransaction().replace(R.id.main_container, settings)
-                .addToBackStack(null)
-                .commit();
-
     }
 
     @Override

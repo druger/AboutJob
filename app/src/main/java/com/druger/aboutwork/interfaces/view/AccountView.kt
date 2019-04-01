@@ -1,10 +1,7 @@
 package com.druger.aboutwork.interfaces.view
 
 import android.net.Uri
-
 import com.arellomobile.mvp.MvpView
-import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy
-import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 import com.google.firebase.storage.StorageReference
 
 /**
@@ -12,9 +9,6 @@ import com.google.firebase.storage.StorageReference
  */
 
 interface AccountView : MvpView {
-
-    @StateStrategyType(OneExecutionStateStrategy::class)
-    fun openSettings()
 
     fun checkPermissionReadExternal()
 
