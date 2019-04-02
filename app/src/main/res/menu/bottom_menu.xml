@@ -7,8 +7,8 @@
 
     <item
         android:id="@+id/action_ratings"
-        android:title="@string/ratings"
-        android:icon="@drawable/ic_star"/>
+        android:title="@string/my_reviews"
+        android:icon="@drawable/ic_my_reviews"/>
 
     <item
         android:id="@+id/action_account"

@@ -1,10 +1,7 @@
 package com.druger.aboutwork.presenters;
 
-import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.druger.aboutwork.R;
@@ -23,13 +20,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.File;
 
 import javax.inject.Inject;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by druger on 09.05.2017.
@@ -46,9 +40,6 @@ public class AccountPresenter extends BasePresenter<AccountView> {
     private DatabaseReference dbReference;
     private ValueEventListener valueEventListener;
 
-    private Context context;
-    private Uri selectedImgUri;
-
     @Inject
     public AccountPresenter(RealmHelper realmHelper) {
         storage = FirebaseStorage.getInstance();
@@ -62,11 +53,13 @@ public class AccountPresenter extends BasePresenter<AccountView> {
         if (user != null) {
             Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
             downloadPhoto();
-            getName();
+            getHeaderName();
+            getViewState().showEmail(user.getEmail());
+            getViewState().showName(user.getDisplayName());
         }
     }
 
-    private void getName() {
+    private void getHeaderName() {
         Query queryUser = FirebaseHelper.getUser(dbReference, user.getUid());
         valueEventListener = new ValueEventListener() {
             @Override
@@ -74,7 +67,7 @@ public class AccountPresenter extends BasePresenter<AccountView> {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         User user = snapshot.getValue(User.class);
-                        getViewState().showName(user.getName());
+                        getViewState().showHeaderName(user.getName());
                     }
                 }
             }
@@ -91,44 +84,15 @@ public class AccountPresenter extends BasePresenter<AccountView> {
         realmHelper.deleteAllData();
     }
 
-    public void clickOpenSettings() {
-        getViewState().openSettings();
-    }
-
-    public void clickOpenMyReviews() {
-        getViewState().openMyReviews(user.getUid());
-    }
-
-    public void cropImage(int resultCode, Intent data) {
-        CropImage.ActivityResult result = CropImage.getActivityResult(data);
-        if (resultCode == RESULT_OK) {
-            selectedImgUri = result.getUri();
-            savePhoto();
-        } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-            Log.e(TAG, "Cropping failed: " + result.getError().getMessage());
-        }
-    }
-
-    private void savePhoto() {
-        Uri file = Uri.fromFile(new File(selectedImgUri.getPath()));
+    public void savePhoto(Uri imgUri) {
+        Uri file = Uri.fromFile(new File(imgUri.getPath()));
         storageRef = FirebaseHelper.savePhoto(storage, user.getUid());
         uploadTask = storageRef.putFile(file);
         uploadTask.addOnSuccessListener(taskSnapshot ->
-                getViewState().setupPhoto(selectedImgUri)).addOnFailureListener(e -> {
+                getViewState().setupPhoto(imgUri)).addOnFailureListener(e -> {
             Log.d(TAG, e.getMessage());
-            Toast.makeText(context, R.string.upload_error, Toast.LENGTH_SHORT).show();
+            getViewState().showToast(R.string.upload_error);
         });
-    }
-
-    public void pickImage(Intent data) {
-        Uri imgUri = CropImage.getPickImageResultUri(context, data);
-        if (CropImage.isReadExternalStoragePermissionsRequired(context, imgUri)) {
-            selectedImgUri = imgUri;
-            getViewState().checkPermissionReadExternal();
-        } else {
-            Log.d(TAG, "pickImage: startCropImageActivity");
-            getViewState().startCropImageActivity(imgUri);
-        }
     }
 
     private void downloadPhoto() {
@@ -139,6 +103,21 @@ public class AccountPresenter extends BasePresenter<AccountView> {
     public void removeListeners() {
         if (valueEventListener != null) {
             dbReference.removeEventListener(valueEventListener);
+        }
+    }
+
+    public void removeAccount() {
+        if (user != null) {
+            user.delete()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User account deleted.");
+                            getViewState().showToast(R.string.profile_deleted);
+                            getViewState().showMainActivity();
+                        } else {
+                            getViewState().showToast(R.string.failed_delete_user);
+                        }
+                    });
         }
     }
 }
