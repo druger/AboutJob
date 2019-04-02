@@ -11,7 +11,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
-import com.arellomobile.mvp.MvpFragment;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.enums.TypeMessage;
 import com.druger.aboutwork.interfaces.view.NetworkView;
@@ -21,6 +20,7 @@ import com.druger.aboutwork.interfaces.view.NetworkView;
  */
 
 public abstract class BaseSupportFragment extends MvpAppCompatFragment implements NetworkView {
+    protected String TAG = getClass().getSimpleName();
     protected View rootView;
     protected ProgressBar progressBar;
     protected Toolbar mToolbar;
