@@ -3,7 +3,6 @@ package com.druger.aboutwork.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +17,6 @@ import com.druger.aboutwork.presenters.ChangeEmailPresenter;
 
 import static com.druger.aboutwork.Const.Bundles.EMAIL;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ChangeEmailFragment extends BaseSupportFragment implements ChangeEmailView {
 
     @InjectPresenter
@@ -58,7 +54,7 @@ public class ChangeEmailFragment extends BaseSupportFragment implements ChangeEm
     private void setupToolbar() {
         mToolbar = bindView(R.id.toolbar);
         setActionBar(mToolbar);
-        getActionBar().setTitle(R.string.change_email);
+        getActionBar().setTitle(R.string.change_name);
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
