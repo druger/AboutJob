@@ -25,6 +25,7 @@
     <string name="new_password">New Password</string>
     <string name="change">Change</string>
     <string name="change_email">Change Email</string>
+    <string name="change_name">Change Name</string>
     <string name="change_password">Change Password</string>
     <string name="remove_account">Remove Account</string>
     <string name="updated_email">Email address is updated. Please sign in with new email!</string>
@@ -111,6 +112,8 @@
     <string name="error_review_edit">@string/error_review_add</string>
     <string name="review">Review</string>
     <string name="no_reviews">No reviews</string>
+    <string name="profile_updated">"Profile updated</string>
+    <string name="updating_error">"Updating failed"</string>
 
     <string name="message_log_out">Are you sure you want to log out?</string>
 

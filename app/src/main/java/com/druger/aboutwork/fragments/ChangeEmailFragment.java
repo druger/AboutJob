@@ -3,7 +3,6 @@ package com.druger.aboutwork.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +17,6 @@ import com.druger.aboutwork.presenters.ChangeEmailPresenter;
 
 import static com.druger.aboutwork.Const.Bundles.EMAIL;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ChangeEmailFragment extends BaseSupportFragment implements ChangeEmailView {
 
     @InjectPresenter
@@ -74,7 +70,7 @@ public class ChangeEmailFragment extends BaseSupportFragment implements ChangeEm
     private void setupUI() {
         etEmail = bindView(R.id.etEmail);
         btnChangeEmail = bindView(R.id.btnChangeEmail);
-        progressBar = bindView(R.id.progressBar);
+        mProgressBar = bindView(R.id.progressBar);
     }
 
     @Override

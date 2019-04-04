@@ -150,7 +150,7 @@ public class CompaniesFragment extends BaseSupportFragment implements CompaniesV
         rvCompanies = bindView(R.id.rvCompanies);
         rvCompaniesRealm = bindView(R.id.rvCompaniesRealm);
         searchView = bindView(R.id.search_view);
-        progressBar = bindView(R.id.progressBar);
+        mProgressBar = bindView(R.id.progressBar);
         ivEmptySearch = bindView(R.id.ivEmptySearch);
         tvEmptySearch = bindView(R.id.tvEmptySearch);
         tvWatched = bindView(R.id.tvWatched);

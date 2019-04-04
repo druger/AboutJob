@@ -22,7 +22,7 @@ import com.druger.aboutwork.interfaces.view.NetworkView;
 public abstract class BaseSupportFragment extends MvpAppCompatFragment implements NetworkView {
     protected String TAG = getClass().getSimpleName();
     protected View rootView;
-    protected ProgressBar progressBar;
+    protected ProgressBar mProgressBar;
     protected Toolbar mToolbar;
     protected LinearLayout ltError;
     protected Button btnRetry;
@@ -35,9 +35,9 @@ public abstract class BaseSupportFragment extends MvpAppCompatFragment implement
     @Override
     public void showProgress(boolean show) {
         if (show) {
-            progressBar.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.VISIBLE);
         } else {
-            progressBar.setVisibility(View.INVISIBLE);
+            mProgressBar.setVisibility(View.INVISIBLE);
         }
     }
 

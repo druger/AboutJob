@@ -142,7 +142,7 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
     private void setupUI() {
         bottomNavigation = getActivity().findViewById(R.id.bottom_navigation);
         rvReviews = bindView(R.id.recycler_view);
-        progressBar = bindView(R.id.progressBar);
+        mProgressBar = bindView(R.id.progressBar);
         ltNoReviews = bindView(R.id.ltNoReviews);
         content = bindView(R.id.content);
     }

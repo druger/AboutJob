@@ -118,7 +118,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         fabAddReview = bindView(R.id.fabAddReview);
         ltContent = bindView(R.id.ltContent);
         ltError = bindView(R.id.ltError);
-        progressBar = bindView(R.id.progressBar);
+        mProgressBar = bindView(R.id.progressBar);
         btnRetry = bindView(R.id.btnRetry);
         tvCompanyName = bindView(R.id.tvCompanyName);
         tvSite = bindView(R.id.tvSite);
