@@ -118,4 +118,6 @@
     </plurals>
     <string name="message_log_out">Вы действительно хотите выйти?</string>
     <string name="change_name">Изменить имя</string>
+    <string name="profile_updated">Профиль обновлен</string>
+    <string name="updating_error">Ошибка обновления</string>
 </resources>

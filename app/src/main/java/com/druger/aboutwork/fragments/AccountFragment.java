@@ -131,7 +131,6 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
                 .replace(R.id.main_container, nameFragment)
                 .addToBackStack(null)
                 .commit();
-
     }
 
     private void showChangeEmail() {

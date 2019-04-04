@@ -57,7 +57,7 @@ public class ChangePasswordFragment extends BaseSupportFragment implements Chang
     private void setupUI() {
         etPassword = bindView(R.id.etPassword);
         btnChangePass = bindView(R.id.btnChangePass);
-        progressBar = bindView(R.id.progressBar);
+        mProgressBar = bindView(R.id.progressBar);
     }
 
     @Override

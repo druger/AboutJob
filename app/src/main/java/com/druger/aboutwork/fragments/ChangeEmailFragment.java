@@ -54,7 +54,7 @@ public class ChangeEmailFragment extends BaseSupportFragment implements ChangeEm
     private void setupToolbar() {
         mToolbar = bindView(R.id.toolbar);
         setActionBar(mToolbar);
-        getActionBar().setTitle(R.string.change_name);
+        getActionBar().setTitle(R.string.change_email);
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -70,7 +70,7 @@ public class ChangeEmailFragment extends BaseSupportFragment implements ChangeEm
     private void setupUI() {
         etEmail = bindView(R.id.etEmail);
         btnChangeEmail = bindView(R.id.btnChangeEmail);
-        progressBar = bindView(R.id.progressBar);
+        mProgressBar = bindView(R.id.progressBar);
     }
 
     @Override
