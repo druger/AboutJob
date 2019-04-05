@@ -240,8 +240,13 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     public void showReviews(List<Review> reviews) {
         this.reviews.clear();
         this.reviews.addAll(reviews);
-        if (reviews.isEmpty()) ltNoReviews.setVisibility(View.VISIBLE);
-        else ltNoReviews.setVisibility(View.GONE);
+        if (reviews.isEmpty()) {
+            rvReviews.setVisibility(View.GONE);
+            ltNoReviews.setVisibility(View.VISIBLE);
+        }  else {
+            rvReviews.setVisibility(View.VISIBLE);
+            ltNoReviews.setVisibility(View.GONE);
+        }
         reviewAdapter.notifyDataSetChanged();
     }
 

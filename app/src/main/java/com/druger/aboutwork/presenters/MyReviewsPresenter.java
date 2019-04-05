@@ -65,8 +65,6 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
                                 review.setName(company.getName());
                             }
                         }
-                        getViewState().showProgress(false);
-                        getViewState().showReviews(reviews);
                     }
 
                     @Override
@@ -79,6 +77,8 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
                 reviews.add(review);
             }
         }
+        getViewState().showProgress(false);
+        getViewState().showReviews(reviews);
     }
 
     public void removeListeners() {
