@@ -22,6 +22,7 @@ import com.druger.aboutwork.adapters.CompanyRealmAdapter;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.CompaniesView;
 import com.druger.aboutwork.model.Company;
+import com.druger.aboutwork.model.Logo;
 import com.druger.aboutwork.model.realm.CompanyRealm;
 import com.druger.aboutwork.presenters.CompaniesPresenter;
 import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener;
@@ -196,7 +197,7 @@ public class CompaniesFragment extends BaseSupportFragment implements CompaniesV
     private CompanyRealm setupCompanyRealm(Company company) {
         String id = company.getId();
         String name = company.getName();
-        Company.Logo logo = company.getLogo();
+        Logo logo = company.getLogo();
         String sLogo = logo != null ? logo.getLogo90() : "";
 
         CompanyRealm companyRealm = new CompanyRealm(id, name, sLogo);
