@@ -48,7 +48,7 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
     public void getReviews(String companyID, int currentPage) {
         getViewState().showProgressReview();
         dbReference = FirebaseDatabase.getInstance().getReference();
-        Query reviewsQuery = getReviewsForCompany(dbReference, companyID, currentPage);
+        Query reviewsQuery = INSTANCE.getReviewsForCompany(dbReference, companyID, currentPage);
         reviewsQuery.addValueEventListener(this);
     }
 
@@ -62,7 +62,7 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
 
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
             final Review review = snapshot.getValue(Review.class);
-            Query queryUser = getUser(dbReference, review.getUserId());
+            Query queryUser = INSTANCE.getUser(dbReference, review.getUserId());
             valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -109,7 +109,7 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
     }
 
     private void requestCompanyDetail(String companyID) {
-        Disposable request = restApi.company.getCompanyDetail(companyID)
+        Disposable request = restApi.getCompany().getCompanyDetail(companyID)
                 .compose(RxUtils.httpSchedulers())
                 .subscribe(this::successGetCompanyDetails, this::handleError);
 

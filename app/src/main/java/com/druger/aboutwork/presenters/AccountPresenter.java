@@ -60,7 +60,7 @@ public class AccountPresenter extends BasePresenter<AccountView> {
     }
 
     private void getHeaderName() {
-        Query queryUser = FirebaseHelper.getUser(dbReference, user.getUid());
+        Query queryUser = FirebaseHelper.INSTANCE.getUser(dbReference, user.getUid());
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -86,7 +86,7 @@ public class AccountPresenter extends BasePresenter<AccountView> {
 
     public void savePhoto(Uri imgUri) {
         Uri file = Uri.fromFile(new File(imgUri.getPath()));
-        storageRef = FirebaseHelper.savePhoto(storage, user.getUid());
+        storageRef = FirebaseHelper.INSTANCE.savePhoto(storage, user.getUid());
         uploadTask = storageRef.putFile(file);
         uploadTask.addOnSuccessListener(taskSnapshot ->
                 getViewState().setupPhoto(imgUri)).addOnFailureListener(e -> {
@@ -96,7 +96,7 @@ public class AccountPresenter extends BasePresenter<AccountView> {
     }
 
     private void downloadPhoto() {
-        storageRef = FirebaseHelper.downloadPhoto(storage, user.getUid());
+        storageRef = FirebaseHelper.INSTANCE.downloadPhoto(storage, user.getUid());
         getViewState().showPhoto(storageRef);
     }
 

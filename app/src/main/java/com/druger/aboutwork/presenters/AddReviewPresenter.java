@@ -56,8 +56,8 @@ public class AddReviewPresenter extends BasePresenter<AddReviewView> {
     private void addReview(Company company) {
         if (isCorrectStatus() && isCorrectReview(review)) {
             review.setStatus(status);
-            FirebaseHelper.addReview(review);
-            FirebaseHelper.addCompany(company);
+            FirebaseHelper.INSTANCE.addReview(review);
+            FirebaseHelper.INSTANCE.addCompany(company);
             getViewState().successfulAddition();
         } else {
             getViewState().showErrorAdding();
@@ -99,7 +99,7 @@ public class AddReviewPresenter extends BasePresenter<AddReviewView> {
     }
 
     public void getVacancies(String vacancy) {
-        Disposable request = restApi.vacancies.getVacancies(vacancy)
+        Disposable request = restApi.getVacancies().getVacancies(vacancy)
                 .compose(RxUtils.httpSchedulers())
                 .subscribe(this:: successGetVacancies, this::handleError);
         unSubscribeOnDestroy(request);
@@ -110,7 +110,7 @@ public class AddReviewPresenter extends BasePresenter<AddReviewView> {
     }
 
     public void getCities(String city) {
-        Disposable request = restApi.cities.getCities(city)
+        Disposable request = restApi.getCities().getCities(city)
                 .compose(RxUtils.httpSchedulers())
                 .subscribe(this::successGetCities, this::handleError);
         unSubscribeOnDestroy(request);

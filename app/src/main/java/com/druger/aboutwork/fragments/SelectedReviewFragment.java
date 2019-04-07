@@ -356,7 +356,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
                 review.setLike(--like);
                 tvLike.setText(String.valueOf(like));
                 review.setMyLike(false);
-                FirebaseHelper.likeReview(review);
+                FirebaseHelper.INSTANCE.likeReview(review);
             }
         } else {
             ivDislike.setColorFilter(Color.parseColor(GRAY_500));
@@ -364,7 +364,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
             tvDislike.setText(String.valueOf(dislike));
             review.setMyDislike(false);
         }
-        FirebaseHelper.dislikeReview(review);
+        FirebaseHelper.INSTANCE.dislikeReview(review);
     }
 
     private void clickLike() {
@@ -381,7 +381,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
                 review.setDislike(--dislike);
                 tvDislike.setText(String.valueOf(dislike));
                 review.setMyDislike(false);
-                FirebaseHelper.dislikeReview(review);
+                FirebaseHelper.INSTANCE.dislikeReview(review);
             }
         } else {
             ivLike.setColorFilter(Color.parseColor(GRAY_500));
@@ -389,7 +389,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
             tvLike.setText(String.valueOf(like));
             review.setMyLike(false);
         }
-        FirebaseHelper.likeReview(review);
+        FirebaseHelper.INSTANCE.likeReview(review);
     }
 
     private void setupComments() {

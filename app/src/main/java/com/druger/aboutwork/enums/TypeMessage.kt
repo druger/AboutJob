@@ -1,10 +1,10 @@
-package com.druger.aboutwork.enums;
+package com.druger.aboutwork.enums
 
 /**
  * Created by druger on 06.08.2017.
  */
 
-public enum TypeMessage {
+enum class TypeMessage {
     SUCCESS,
     UNKNOW,
     ERROR

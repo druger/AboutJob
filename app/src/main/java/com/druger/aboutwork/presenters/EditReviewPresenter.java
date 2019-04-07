@@ -46,7 +46,7 @@ public class EditReviewPresenter extends BasePresenter<EditReviewView> {
     private void updateReview() {
         if (isCorrectStatus() && isCorrectReview(review)) {
             review.setStatus(status);
-            FirebaseHelper.updateReview(review);
+            FirebaseHelper.INSTANCE.updateReview(review);
             getViewState().successfulEditing();
         } else {
             getViewState().showErrorEditing();
@@ -88,14 +88,14 @@ public class EditReviewPresenter extends BasePresenter<EditReviewView> {
     }
 
     public void getCities(String city) {
-        Disposable request = restApi.cities.getCities(city)
+        Disposable request = restApi.getCities().getCities(city)
                 .compose(RxUtils.httpSchedulers())
                 .subscribe(this::successGetCities, this::handleError);
         unSubscribeOnDestroy(request);
     }
 
     public void getVacancies(String vacancy) {
-        Disposable request = restApi.vacancies.getVacancies(vacancy)
+        Disposable request = restApi.getVacancies().getVacancies(vacancy)
                 .compose(RxUtils.httpSchedulers())
                 .subscribe(this:: successGetVacancies, this::handleError);
         unSubscribeOnDestroy(request);
