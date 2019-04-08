@@ -208,7 +208,7 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
 
     private fun setupCompanyRating() = presenter.setupReview()
 
-    fun getReview(): Review  = presenter.review
+    fun getReview(): Review = presenter.review
 
     override fun showVacancies(vacancies: List<Vacancy>) {
         showSuggestions(vacancies, etPosition)

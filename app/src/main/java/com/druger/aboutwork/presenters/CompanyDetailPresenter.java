@@ -3,6 +3,7 @@ package com.druger.aboutwork.presenters;
 import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.view.CompanyDetailView;
 import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.Review;
@@ -22,9 +23,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
-
-import static com.druger.aboutwork.db.FirebaseHelper.getReviewsForCompany;
-import static com.druger.aboutwork.db.FirebaseHelper.getUser;
 
 /**
  * Created by druger on 01.05.2017.
@@ -48,7 +46,7 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
     public void getReviews(String companyID, int currentPage) {
         getViewState().showProgressReview();
         dbReference = FirebaseDatabase.getInstance().getReference();
-        Query reviewsQuery = INSTANCE.getReviewsForCompany(dbReference, companyID, currentPage);
+        Query reviewsQuery = FirebaseHelper.INSTANCE.getReviewsForCompany(dbReference, companyID, currentPage);
         reviewsQuery.addValueEventListener(this);
     }
 
@@ -62,7 +60,7 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
 
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
             final Review review = snapshot.getValue(Review.class);
-            Query queryUser = INSTANCE.getUser(dbReference, review.getUserId());
+            Query queryUser = FirebaseHelper.INSTANCE.getUser(dbReference, review.getUserId());
             valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {

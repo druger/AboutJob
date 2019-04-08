@@ -16,9 +16,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.druger.aboutwork.db.FirebaseHelper.getCompanies;
-import static com.druger.aboutwork.db.FirebaseHelper.getReviews;
-
 /**
  * Created by druger on 09.05.2017.
  */
@@ -36,7 +33,7 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
         reviews.clear();
         dbReference = FirebaseDatabase.getInstance().getReference();
 
-        Query reviewsQuery = INSTANCE.getReviews(dbReference, userId);
+        Query reviewsQuery = FirebaseHelper.INSTANCE.getReviews(dbReference, userId);
         reviewsQuery.addValueEventListener(this);
     }
 
@@ -55,7 +52,7 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
             final Review review = snapshot.getValue(Review.class);
             if (!reviews.contains(review)) {
-                Query queryCompanies = INSTANCE.getCompanies(dbReference, review.getCompanyId());
+                Query queryCompanies = FirebaseHelper.INSTANCE.getCompanies(dbReference, review.getCompanyId());
                 valueEventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
