@@ -7,14 +7,17 @@ import com.druger.aboutwork.interfaces.view.SelectedReview
 import com.druger.aboutwork.model.Comment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.util.*
 
 @InjectViewState
 class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListener {
 
     private var user: FirebaseUser? = null
-    private lateinit var dbReference: DatabaseReference
+    private var dbReference = FirebaseDatabase.getInstance().reference
 
     private var comments: List<Comment> = emptyList()
     lateinit var comment: Comment
@@ -22,7 +25,6 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
     override fun attachView(view: SelectedReview?) {
         super.attachView(view)
         user = FirebaseAuth.getInstance().currentUser
-        dbReference = FirebaseDatabase.getInstance().reference
     }
 
     fun addComment(message: String, reviewId: String) {

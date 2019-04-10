@@ -84,9 +84,9 @@ class Review : Parcelable {
         /**
          * Статусы работника
          */
-        val WORKING = 0
-        val WORKED = 1
-        val INTERVIEW = 2
+        const val WORKING = 0
+        const val WORKED = 1
+        const val INTERVIEW = 2
 
         @JvmField
         val CREATOR: Parcelable.Creator<Review> = object : Parcelable.Creator<Review> {

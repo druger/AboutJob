@@ -270,15 +270,15 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
 
     private void setExperience(Review review) {
         switch (review.getStatus()) {
-            case Review.Companion.getWORKING():
+            case Review.WORKING:
                 tvStatus.setText(R.string.working);
                 setWorkingDays(review.getEmploymentDate(), Calendar.getInstance().getTimeInMillis());
                 break;
-            case Review.Companion.getWORKED():
+            case Review.WORKED:
                 tvStatus.setText(R.string.worked);
                 setWorkingDays(review.getEmploymentDate(), review.getDismissalDate());
                 break;
-            case Review.Companion.getINTERVIEW():
+            case Review.INTERVIEW:
                 tvStatus.setText(R.string.interview);
                 long interviewDate = review.getInterviewDate();
                 if (interviewDate != 0) tvDescriptionStatus.setText(Utils.getDate(interviewDate));
