@@ -14,12 +14,4 @@ class Company(var id: String = "", var name: String = "") {
     var logo: Logo? = null
     @JsonIgnore
     var city = ""
-
-    inner class Logo {
-        @SerializedName("90")
-        var logo90: String = ""
-        @SerializedName("240")
-        var logo240: String = ""
-        var original: String = ""
-    }
 }

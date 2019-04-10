@@ -29,6 +29,7 @@ import com.druger.aboutwork.adapters.ReviewAdapter;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.CompanyDetailView;
 import com.druger.aboutwork.model.CompanyDetail;
+import com.druger.aboutwork.model.Logo;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.CompanyDetailPresenter;
 import com.druger.aboutwork.utils.Utils;
@@ -278,7 +279,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     }
 
     void loadImage(CompanyDetail company) {
-        CompanyDetail.Logo logo = company.getLogo();
+        Logo logo = company.getLogo();
         Glide.with(getContext())
                 .load(logo != null ? logo.getOriginal() : "")
                 .placeholder(R.drawable.ic_default_company)

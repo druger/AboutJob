@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.model.Company;
+import com.druger.aboutwork.model.Logo;
 
 /**
  * Created by druger on 28.01.2017.
@@ -38,7 +39,7 @@ public class CompanyAdapter extends BaseRecyclerViewAdapter<Company, RecyclerVie
         if (holder instanceof CompanyVH) {
             CompanyVH companyVH = (CompanyVH) holder;
             Company company = getItem(position);
-            Company.Logo logo = company.getLogo();
+            Logo logo = company.getLogo();
             companyVH.tvName.setText(company.getName());
             companyVH.tvCity.setText(company.getCity());
 

@@ -78,10 +78,10 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
                 holder.ivLike.setColorFilter(Color.parseColor(GRAY_500));
                 comment.setLike(--like);
                 comment.setMyLike(false);
-                FirebaseHelper.likeComment(comment);
+                FirebaseHelper.INSTANCE.likeComment(comment);
             }
         }
-        FirebaseHelper.dislikeComment(comment);
+        FirebaseHelper.INSTANCE.dislikeComment(comment);
     }
 
     private void setColorLike(Comment comment, CommentVH holder) {
@@ -108,10 +108,10 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
                 holder.ivDislike.setColorFilter(Color.parseColor(GRAY_500));
                 comment.setDislike(--dislike);
                 comment.setMyDislike(false);
-                FirebaseHelper.dislikeComment(comment);
+                FirebaseHelper.INSTANCE.dislikeComment(comment);
             }
         }
-        FirebaseHelper.likeComment(comment);
+        FirebaseHelper.INSTANCE.likeComment(comment);
     }
 
     private boolean longItemClick(CommentVH holder) {

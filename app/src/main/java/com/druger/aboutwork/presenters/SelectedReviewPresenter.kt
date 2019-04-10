@@ -7,17 +7,20 @@ import com.druger.aboutwork.interfaces.view.SelectedReview
 import com.druger.aboutwork.model.Comment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.util.*
 
 @InjectViewState
 class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListener {
 
     private var user: FirebaseUser? = null
-    private var dbReference: DatabaseReference? = null
+    private var dbReference = FirebaseDatabase.getInstance().reference
 
     private var comments: List<Comment> = emptyList()
-    var comment: Comment? = null
+    lateinit var comment: Comment
 
     override fun attachView(view: SelectedReview?) {
         super.attachView(view)
@@ -34,12 +37,12 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
     }
 
     fun updateComment(message: String) {
-        FirebaseHelper.updateComment(comment?.id, message)
+        FirebaseHelper.updateComment(comment.id, message)
     }
 
     fun onLongClick(position: Int): Boolean {
         comment = comments[position]
-        if (comment?.userId == user?.uid) {
+        if (comment.userId == user?.uid) {
             viewState.showChangeDialog(position)
             return true
         }
@@ -47,13 +50,12 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
     }
 
     fun deleteComment(position: Int) {
-        FirebaseHelper.deleteComment(comment?.id)
+        FirebaseHelper.deleteComment(comment.id)
         comments = comments.toMutableList().apply { removeAt(position) }
         viewState.notifyItemRemoved(position, comments.size)
     }
 
     fun retrieveComments(reviewId: String) {
-        dbReference = FirebaseDatabase.getInstance().reference
         val commentsQuery = getComments(dbReference, reviewId)
         commentsQuery.addValueEventListener(this)
     }
@@ -62,8 +64,8 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
         comments = comments.toMutableList().apply { clear() }
         for (snapshot in dataSnapshot.children) {
             val comment = snapshot.getValue(Comment::class.java)
-            comment!!.id = snapshot.key
-            comments = comments.toMutableList().apply { add(comment) }
+            comment?.id = snapshot.key.toString()
+            comments = comments.toMutableList().apply { comment?.let { add(it) } }
         }
         viewState.showComments(comments)
     }
@@ -71,6 +73,6 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
     override fun onCancelled(p0: DatabaseError) {}
 
     fun removeListeners() {
-        dbReference?.removeEventListener(this)
+        dbReference.removeEventListener(this)
     }
 }

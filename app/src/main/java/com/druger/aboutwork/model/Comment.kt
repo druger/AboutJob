@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 
 class Comment {
     @JsonIgnore
-    var id: String? = null
+    var id: String = ""
     var userId: String? = null
     var userName: String? = null
     var reviewId: String? = null

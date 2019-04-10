@@ -254,7 +254,7 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
         private List<Review> getDeletedReviews() {
             final List<Review> deletedReviews = reviewAdapter.getDeletedReviews();
             for (Review review : deletedReviews) {
-                FirebaseHelper.removeReview(review.getFirebaseKey());
+                FirebaseHelper.INSTANCE.removeReview(review.getFirebaseKey());
             }
             return deletedReviews;
         }

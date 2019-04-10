@@ -18,9 +18,6 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.druger.aboutwork.db.FirebaseHelper.getCompanies;
-import static com.druger.aboutwork.db.FirebaseHelper.getReviews;
-
 /**
  * Created by druger on 31.01.2018.
  */
@@ -42,14 +39,14 @@ public class UserReviewsPresenter extends BasePresenter<UserReviews> implements 
     }
 
     public void downloadPhoto(String userId) {
-        storageRef = FirebaseHelper.downloadPhoto(storage, userId);
+        storageRef = FirebaseHelper.INSTANCE.downloadPhoto(storage, userId);
         getViewState().showPhoto(storageRef);
     }
 
     public void fetchReviews(String userId) {
         dbReference = FirebaseDatabase.getInstance().getReference();
 
-        Query reviewsQuery = getReviews(dbReference, userId);
+        Query reviewsQuery = FirebaseHelper.INSTANCE.getReviews(dbReference, userId);
         reviewsQuery.addValueEventListener(this);
     }
 
@@ -68,7 +65,7 @@ public class UserReviewsPresenter extends BasePresenter<UserReviews> implements 
 
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
             final Review review = snapshot.getValue(Review.class);
-            Query queryCompanies = getCompanies(dbReference, review.getCompanyId());
+            Query queryCompanies = FirebaseHelper.INSTANCE.getCompanies(dbReference, review.getCompanyId());
             valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -108,7 +105,7 @@ public class UserReviewsPresenter extends BasePresenter<UserReviews> implements 
     }
 
     private void getName(String id) {
-        Query queryUser = FirebaseHelper.getUser(dbReference, id);
+        Query queryUser = FirebaseHelper.INSTANCE.getUser(dbReference, id);
         nameEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

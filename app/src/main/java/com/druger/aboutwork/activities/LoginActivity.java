@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
         String id = firebaseUser.getUid();
         String name = firebaseUser.getDisplayName();
         User user = new User(id, name);
-        FirebaseHelper.addUser(user, id);
+        FirebaseHelper.INSTANCE.addUser(user, id);
     }
 
     @Override

@@ -124,14 +124,14 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
                     holder.ivLike.setColorFilter(Color.parseColor(GRAY_500));
                     review.setLike(--like);
                     review.setMyLike(false);
-                    FirebaseHelper.likeReview(review);
+                    FirebaseHelper.INSTANCE.likeReview(review);
                 }
             } else {
                 holder.ivDislike.setColorFilter(Color.parseColor(GRAY_500));
                 review.setDislike(--dislike);
                 review.setMyDislike(false);
             }
-            FirebaseHelper.dislikeReview(review);
+            FirebaseHelper.INSTANCE.dislikeReview(review);
         });
     }
 
@@ -148,14 +148,14 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
                     holder.ivDislike.setColorFilter(Color.parseColor(GRAY_500));
                     review.setDislike(--dislike);
                     review.setMyDislike(false);
-                    FirebaseHelper.dislikeReview(review);
+                    FirebaseHelper.INSTANCE.dislikeReview(review);
                 }
             } else {
                 holder.ivLike.setColorFilter(Color.parseColor(GRAY_500));
                 review.setLike(--like);
                 review.setMyLike(false);
             }
-            FirebaseHelper.likeReview(review);
+            FirebaseHelper.INSTANCE.likeReview(review);
         });
     }
 
