@@ -1,6 +1,5 @@
 package com.druger.aboutwork.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -54,11 +53,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView,
     protected void onDestroy() {
         super.onDestroy();
 //        initRefWatcher();
-        removeAuthListener();
-    }
-
-    private void removeAuthListener() {
-        mainPresenter.removeAuthListener();
     }
 
     private void initRefWatcher() {
@@ -91,12 +85,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView,
     private void showAccount() {
         fragment = new AccountFragment();
         replaceFragment(fragment);
-    }
-
-    @Override
-    public void showLoginActivity() {
-        startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        finish();
     }
 
     private void replaceFragment(Fragment fragment) {

@@ -19,4 +19,6 @@ interface CompanyDetailView : MvpView, NetworkView {
     fun showProgressReview()
 
     fun hideProgressReview()
+    fun showLoginActivity()
+    fun addReview()
 }
