@@ -122,4 +122,5 @@
     <string name="updating_error">Ошибка обновления</string>
     <string name="reviews_login">Чтобы посмотреть свои отзывы авторизуйтесь пожалуйста</string>
     <string name="account_login">Авторизуйтесь чтобы получить доступ к вашему аккаунту</string>
+    <string name="company_login">Авторизуйтесь пожалуйста чтобы добавить отзыв</string>
 </resources>

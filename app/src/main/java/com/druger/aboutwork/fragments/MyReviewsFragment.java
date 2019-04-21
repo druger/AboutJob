@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.R;
@@ -64,6 +65,7 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
     private FrameLayout content;
     private FrameLayout ltAuthReviews;
     private Button btnLogin;
+    private TextView tvAuth;
 
     private String userId;
 
@@ -103,6 +105,7 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
     private void showAuthAccess() {
         content.setVisibility(View.INVISIBLE);
         ltAuthReviews.setVisibility(View.VISIBLE);
+        tvAuth.setText(R.string.reviews_login);
         btnLogin.setOnClickListener(v-> showLoginActivity());
     }
 
@@ -164,6 +167,7 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
         content = bindView(R.id.content);
         ltAuthReviews = bindView(R.id.ltAuthReviews);
         btnLogin = bindView(R.id.btnLogin);
+        tvAuth = bindView(R.id.tvAuth);
     }
 
     private void initSwipe() {

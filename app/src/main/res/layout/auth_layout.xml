@@ -2,13 +2,15 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_marginBottom="?attr/actionBarSize">
 
     <TextView
+        android:id="@+id/tvAuth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/reviews_login"
+        tools:text="Login, please"
         android:layout_gravity="center"
         android:gravity="center"/>
 

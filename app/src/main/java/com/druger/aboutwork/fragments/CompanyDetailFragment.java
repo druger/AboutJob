@@ -14,6 +14,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -68,6 +70,9 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     private NestedScrollView scrollView;
     private LinearLayout ltNoReviews;
     private ProgressBar progressReview;
+    private FrameLayout ltAuthCompany;
+    private Button btnLogin;
+    private TextView tvAuth;
 
     @SuppressWarnings("FieldCanBeLocal")
     private RecyclerView rvReviews;
@@ -115,6 +120,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     private void setupUX() {
         fabAddReview.setOnClickListener(this);
         btnRetry.setOnClickListener(this);
+        btnLogin.setOnClickListener(v -> startActivity(new Intent(getContext(), LoginActivity.class)));
     }
 
     private void setupUI() {
@@ -139,6 +145,9 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         scrollView = bindView(R.id.scrollView);
         ltNoReviews = bindView(R.id.ltNoReviews);
         progressReview = bindView(R.id.progressReview);
+        ltAuthCompany = bindView(R.id.ltAuthCompany);
+        btnLogin = bindView(R.id.btnLogin);
+        tvAuth = bindView(R.id.tvAuth);
     }
 
     private void setupToolbar() {
@@ -351,8 +360,10 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     }
 
     @Override
-    public void showLoginActivity() {
-        startActivity(new Intent(getContext(), LoginActivity.class));
-        getActivity().finish();
+    public void showAuth() {
+        scrollView.setVisibility(View.GONE);
+        fabAddReview.hide();
+        ltAuthCompany.setVisibility(View.VISIBLE);
+        tvAuth.setText(R.string.company_login);
     }
 }

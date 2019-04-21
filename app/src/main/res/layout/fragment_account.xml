@@ -193,6 +193,6 @@
 
     <include
         android:id="@+id/ltAuthAccount"
-        layout="@layout/auth_account_layout"
+        layout="@layout/auth_layout"
         android:visibility="gone" />
 </FrameLayout>

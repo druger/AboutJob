@@ -64,6 +64,7 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
     private FrameLayout ltAuthAccount;
     private ConstraintLayout content;
     private Button btnLogin;
+    private TextView tvAuth;
 
     private Uri selectedImgUri;
 
@@ -118,6 +119,7 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
         ltAuthAccount = bindView(R.id.ltAuthAccount);
         content = bindView(R.id.content);
         btnLogin = bindView(R.id.btnLogin);
+        tvAuth = bindView(R.id.tvAuth);
     }
 
     private void showRemoveDialog() {
@@ -278,5 +280,6 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
     public void showAuthAccess() {
         content.setVisibility(View.INVISIBLE);
         ltAuthAccount.setVisibility(View.VISIBLE);
+        tvAuth.setText(R.string.account_login);
     }
 }

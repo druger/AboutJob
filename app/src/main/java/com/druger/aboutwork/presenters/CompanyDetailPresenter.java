@@ -140,7 +140,7 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
         authListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user == null)
-                getViewState().showLoginActivity();
+                getViewState().showAuth();
             else getViewState().addReview();
         };
     }
