@@ -116,6 +116,7 @@
     <string name="updating_error">"Updating failed"</string>
 
     <string name="message_log_out">Are you sure you want to log out?</string>
+    <string name="reviews_login">Login please to see your reviews</string>
 
     <string-array name="work_status">
         <item>@string/working</item>

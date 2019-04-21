@@ -1,6 +1,7 @@
 package com.druger.aboutwork.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -17,11 +18,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.activities.LoginActivity;
 import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.adapters.MyReviewAdapter;
 import com.druger.aboutwork.adapters.ReviewAdapter;
@@ -58,7 +61,9 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
 
     private BottomNavigationView bottomNavigation;
     private LinearLayout ltNoReviews;
-    private RelativeLayout content;
+    private FrameLayout content;
+    private FrameLayout ltAuthReviews;
+    private Button btnLogin;
 
     private String userId;
 
@@ -90,8 +95,20 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
             userId = bundle.getString(USER_ID, userId);
         }
 
-        myReviewsPresenter.fetchReviews(userId);
+        if (userId != null) myReviewsPresenter.fetchReviews(userId);
+        else showAuthAccess();
         return rootView;
+    }
+
+    private void showAuthAccess() {
+        content.setVisibility(View.INVISIBLE);
+        ltAuthReviews.setVisibility(View.VISIBLE);
+        btnLogin.setOnClickListener(v-> showLoginActivity());
+    }
+
+    private void showLoginActivity() {
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        startActivity(intent);
     }
 
     private void setupToolbar() {
@@ -145,6 +162,8 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
         mProgressBar = bindView(R.id.progressBar);
         ltNoReviews = bindView(R.id.ltNoReviews);
         content = bindView(R.id.content);
+        ltAuthReviews = bindView(R.id.ltAuthReviews);
+        btnLogin = bindView(R.id.btnLogin);
     }
 
     private void initSwipe() {

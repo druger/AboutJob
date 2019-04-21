@@ -53,6 +53,11 @@ public class MainActivity extends MvpAppCompatActivity implements MainView,
     protected void onDestroy() {
         super.onDestroy();
 //        initRefWatcher();
+        removeAuthListener();
+    }
+
+    private void removeAuthListener() {
+        mainPresenter.removeAuthListener();
     }
 
     private void initRefWatcher() {
@@ -77,7 +82,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView,
     }
 
     @Override
-    public void showMyReviews(@NonNull String userId) {
+    public void showMyReviews(String userId) {
         fragment = MyReviewsFragment.newInstance(userId);
         replaceFragment(fragment);
     }
