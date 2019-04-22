@@ -1,5 +1,6 @@
 package com.druger.aboutwork.fragments;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.activities.LoginActivity;
 import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.adapters.CommentAdapter;
 import com.druger.aboutwork.db.FirebaseHelper;
@@ -453,5 +456,22 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
     public void showComments(List<Comment> comments) {
         commentAdapter.clear();
         commentAdapter.addItems(comments);
+    }
+
+    @Override
+    public void showAuthDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.auth_layout, null);
+        builder.setView(dialogView)
+                .setNegativeButton(R.string.cancel, (dialog, which)
+                        -> dialog.dismiss());
+        builder.show();
+
+        TextView tvAuthTitle = dialogView.findViewById(R.id.tvAuth);
+        Button btnLogin = dialogView.findViewById(R.id.btnLogin);
+
+        tvAuthTitle.setText(R.string.company_login);
+        btnLogin.setOnClickListener(v -> startActivity(new Intent(getContext(), LoginActivity.class)));
     }
 }

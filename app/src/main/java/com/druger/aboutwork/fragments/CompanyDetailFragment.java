@@ -15,11 +15,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -70,7 +70,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     private NestedScrollView scrollView;
     private LinearLayout ltNoReviews;
     private ProgressBar progressReview;
-    private FrameLayout ltAuthCompany;
+    private RelativeLayout ltAuthCompany;
     private Button btnLogin;
     private TextView tvAuth;
 

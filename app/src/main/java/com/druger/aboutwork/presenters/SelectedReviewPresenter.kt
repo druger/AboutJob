@@ -28,12 +28,16 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
     }
 
     fun addComment(message: String, reviewId: String) {
-        val calendar = Calendar.getInstance()
-        val comment = Comment(message, calendar.timeInMillis)
-        comment.userId = user?.uid
-        comment.userName = user?.displayName
-        comment.reviewId = reviewId
-        FirebaseHelper.addComment(comment)
+        if (user != null) {
+            val calendar = Calendar.getInstance()
+            val comment = Comment(message, calendar.timeInMillis)
+            comment.userId = user?.uid
+            comment.userName = user?.displayName
+            comment.reviewId = reviewId
+            FirebaseHelper.addComment(comment)
+        } else {
+            viewState.showAuthDialog()
+        }
     }
 
     fun updateComment(message: String) {

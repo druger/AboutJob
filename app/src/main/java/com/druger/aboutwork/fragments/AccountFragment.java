@@ -15,8 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,7 +61,7 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
     private CardView cvPassword;
     private CardView cvRemoveAccount;
     private TextView tvEmail;
-    private FrameLayout ltAuthAccount;
+    private RelativeLayout ltAuthAccount;
     private ConstraintLayout content;
     private Button btnLogin;
     private TextView tvAuth;

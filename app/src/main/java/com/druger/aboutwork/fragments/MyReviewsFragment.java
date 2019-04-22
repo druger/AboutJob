@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -63,7 +64,7 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
     private BottomNavigationView bottomNavigation;
     private LinearLayout ltNoReviews;
     private FrameLayout content;
-    private FrameLayout ltAuthReviews;
+    private RelativeLayout ltAuthReviews;
     private Button btnLogin;
     private TextView tvAuth;
 
