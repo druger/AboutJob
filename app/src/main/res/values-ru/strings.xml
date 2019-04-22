@@ -120,4 +120,8 @@
     <string name="change_name">Изменить имя</string>
     <string name="profile_updated">Профиль обновлен</string>
     <string name="updating_error">Ошибка обновления</string>
+    <string name="reviews_login">Чтобы посмотреть свои отзывы авторизуйтесь пожалуйста</string>
+    <string name="account_login">Авторизуйтесь чтобы получить доступ к вашему аккаунту</string>
+    <string name="company_login">Авторизуйтесь пожалуйста чтобы добавить отзыв</string>
+    <string name="review_login">Авторизуйтесь пожалуйста чтобы добавить комментарий</string>
 </resources>

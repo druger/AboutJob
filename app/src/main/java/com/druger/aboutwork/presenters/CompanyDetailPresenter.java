@@ -10,6 +10,8 @@ import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.model.User;
 import com.druger.aboutwork.rest.RestApi;
 import com.druger.aboutwork.utils.rx.RxUtils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,6 +39,8 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
         this.restApi = restApi;
     }
 
+    private FirebaseAuth auth;
+    private FirebaseAuth.AuthStateListener authListener;
 
     private DatabaseReference dbReference;
     private ValueEventListener valueEventListener;
@@ -124,5 +128,26 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
         super.handleError(throwable);
         getViewState().showProgress(false);
         getViewState().showErrorScreen(true);
+    }
+
+    public void checkAuthUser() {
+        auth = FirebaseAuth.getInstance();
+        initAuthListener();
+        auth.addAuthStateListener(authListener);
+    }
+
+    private void initAuthListener() {
+        authListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user == null)
+                getViewState().showAuth();
+            else getViewState().addReview();
+        };
+    }
+
+    public void removeAuthListener() {
+        if (auth != null) {
+            auth.removeAuthStateListener(authListener);
+        }
     }
 }

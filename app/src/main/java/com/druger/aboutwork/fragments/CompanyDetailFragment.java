@@ -1,6 +1,7 @@
 package com.druger.aboutwork.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -13,10 +14,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -25,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.activities.LoginActivity;
 import com.druger.aboutwork.adapters.ReviewAdapter;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.CompanyDetailView;
@@ -46,7 +50,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     public static final int REVIEW_REQUEST = 0;
 
     @InjectPresenter
-    CompanyDetailPresenter companyDetailPresenter;
+    CompanyDetailPresenter presenter;
 
     private FloatingActionButton fabAddReview;
     private CoordinatorLayout ltContent;
@@ -66,6 +70,9 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     private NestedScrollView scrollView;
     private LinearLayout ltNoReviews;
     private ProgressBar progressReview;
+    private RelativeLayout ltAuthCompany;
+    private Button btnLogin;
+    private TextView tvAuth;
 
     @SuppressWarnings("FieldCanBeLocal")
     private RecyclerView rvReviews;
@@ -92,7 +99,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_company_detail, container, false);
 
-        companyDetailPresenter.getCompanyDetail(getArguments().getString(COMPANY_ID, ""));
+        presenter.getCompanyDetail(getArguments().getString(COMPANY_ID, ""));
         setupToolbar();
         setupUI();
         setupUX();
@@ -113,6 +120,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     private void setupUX() {
         fabAddReview.setOnClickListener(this);
         btnRetry.setOnClickListener(this);
+        btnLogin.setOnClickListener(v -> startActivity(new Intent(getContext(), LoginActivity.class)));
     }
 
     private void setupUI() {
@@ -137,6 +145,9 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         scrollView = bindView(R.id.scrollView);
         ltNoReviews = bindView(R.id.ltNoReviews);
         progressReview = bindView(R.id.progressReview);
+        ltAuthCompany = bindView(R.id.ltAuthCompany);
+        btnLogin = bindView(R.id.btnLogin);
+        tvAuth = bindView(R.id.tvAuth);
     }
 
     private void setupToolbar() {
@@ -173,7 +184,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         rvReviews.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page) {
-                companyDetailPresenter.getReviews(companyDetail.getId(), ++page);
+                presenter.getReviews(companyDetail.getId(), ++page);
             }
         });
     }
@@ -197,7 +208,8 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
                 .show(site);
     }
 
-    private void addReview() {
+    @Override
+    public void addReview() {
         AddReviewFragment review = AddReviewFragment.Companion.newInstance(companyDetail);
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -210,10 +222,10 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fabAddReview:
-                addReview();
+                presenter.checkAuthUser();
                 break;
             case R.id.btnRetry:
-                companyDetailPresenter.getCompanyDetail(getArguments().getString(COMPANY_ID, ""));
+                presenter.getCompanyDetail(getArguments().getString(COMPANY_ID, ""));
                 break;
             default:
                 break;
@@ -223,13 +235,14 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     @Override
     public void onStop() {
         super.onStop();
-        companyDetailPresenter.removeListeners();
+        presenter.removeListeners();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         reviewAdapter.setOnClickListener(null);
+        presenter.removeAuthListener();
     }
 
     @Override
@@ -254,7 +267,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     @Override
     public void showCompanyDetail(CompanyDetail company) {
         companyDetail = company;
-        companyDetailPresenter.getReviews(company.getId(), 1);
+        presenter.getReviews(company.getId(), 1);
         setSite();
         tvCity.setText(companyDetail.getArea().getName());
         setSalaryRating(5);
@@ -344,5 +357,13 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     @Override
     public void hideProgressReview() {
         progressReview.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showAuth() {
+        scrollView.setVisibility(View.GONE);
+        fabAddReview.hide();
+        ltAuthCompany.setVisibility(View.VISIBLE);
+        tvAuth.setText(R.string.company_login);
     }
 }

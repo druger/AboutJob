@@ -8,7 +8,5 @@ import com.arellomobile.mvp.MvpView
 
 interface MainView : MvpView {
 
-    fun showMyReviews(userId: String)
-
-    fun showLoginActivity()
+    fun showMyReviews(userId: String?)
 }

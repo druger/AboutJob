@@ -1,6 +1,5 @@
 package com.druger.aboutwork.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -83,7 +82,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView,
     }
 
     @Override
-    public void showMyReviews(@NonNull String userId) {
+    public void showMyReviews(String userId) {
         fragment = MyReviewsFragment.newInstance(userId);
         replaceFragment(fragment);
     }
@@ -91,12 +90,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView,
     private void showAccount() {
         fragment = new AccountFragment();
         replaceFragment(fragment);
-    }
-
-    @Override
-    public void showLoginActivity() {
-        startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        finish();
     }
 
     private void replaceFragment(Fragment fragment) {

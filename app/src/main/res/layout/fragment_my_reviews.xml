@@ -5,7 +5,7 @@
 
     <include layout="@layout/toolbar" />
 
-    <RelativeLayout
+    <FrameLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="8dp" />
-    </RelativeLayout>
+    </FrameLayout>
 
     <include
         android:id="@+id/ltNoReviews"
@@ -32,6 +32,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="invisible"/>
+
+    <include
+        android:id="@+id/ltAuthReviews"
+        layout="@layout/auth_layout"
+        android:visibility="gone" />
 </FrameLayout>
 
 

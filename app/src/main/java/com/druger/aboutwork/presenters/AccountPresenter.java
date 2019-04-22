@@ -47,16 +47,16 @@ public class AccountPresenter extends BasePresenter<AccountView> {
     }
 
     public void getUserInfo() {
-        dbReference = FirebaseDatabase.getInstance().getReference();
-
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+
+            dbReference = FirebaseDatabase.getInstance().getReference();
             downloadPhoto();
             getHeaderName();
             getViewState().showEmail(user.getEmail());
             getViewState().showName(user.getDisplayName());
-        }
+        } else getViewState().showAuthAccess();
     }
 
     private void getHeaderName() {
@@ -82,6 +82,7 @@ public class AccountPresenter extends BasePresenter<AccountView> {
 
     public void logout() {
         realmHelper.deleteAllData();
+        getUserInfo();
     }
 
     public void savePhoto(Uri imgUri) {
@@ -101,7 +102,7 @@ public class AccountPresenter extends BasePresenter<AccountView> {
     }
 
     public void removeListeners() {
-        if (valueEventListener != null) {
+        if (dbReference != null && valueEventListener != null) {
             dbReference.removeEventListener(valueEventListener);
         }
     }

@@ -26,15 +26,18 @@ class MainPresenter : MvpPresenter<MainView>() {
 
     private fun initAuthListener() {
         authListener = FirebaseAuth.AuthStateListener {
-            val user = it.currentUser
-            if (user == null) {
-                viewState.showLoginActivity()
-            }
+            user = it.currentUser
         }
     }
 
     fun removeAuthListener() = auth.removeAuthStateListener(authListener)
 
+    fun isUserLoggedIn(): Boolean {
+        return user != null
+    }
 
-    fun onClickMyReviews() = viewState.showMyReviews(user!!.uid)
+    fun onClickMyReviews() {
+        val userId = user?.uid
+        viewState.showMyReviews(userId)
+    }
 }

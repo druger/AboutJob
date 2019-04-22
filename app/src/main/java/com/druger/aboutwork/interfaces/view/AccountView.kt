@@ -24,4 +24,5 @@ interface AccountView : MvpView {
     fun showToast(@StringRes resId: Int)
 
     fun showEmail(email: String)
+    fun showAuthAccess()
 }

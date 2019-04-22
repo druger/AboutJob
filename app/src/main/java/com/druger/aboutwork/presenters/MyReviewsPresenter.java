@@ -79,8 +79,8 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
     }
 
     public void removeListeners() {
-        dbReference.removeEventListener(this);
-        if (valueEventListener != null) {
+        if (dbReference != null && valueEventListener != null) {
+            dbReference.removeEventListener(this);
             dbReference.removeEventListener(valueEventListener);
         }
     }

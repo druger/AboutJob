@@ -8,12 +8,15 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +26,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.activities.LoginActivity;
 import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.interfaces.view.AccountView;
 import com.druger.aboutwork.presenters.AccountPresenter;
@@ -57,6 +61,10 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
     private CardView cvPassword;
     private CardView cvRemoveAccount;
     private TextView tvEmail;
+    private RelativeLayout ltAuthAccount;
+    private ConstraintLayout content;
+    private Button btnLogin;
+    private TextView tvAuth;
 
     private Uri selectedImgUri;
 
@@ -90,6 +98,12 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
         cvName.setOnClickListener(v -> showChangeName());
         cvPassword.setOnClickListener(v -> showChangePassword());
         cvRemoveAccount.setOnClickListener(v -> showRemoveDialog());
+        btnLogin.setOnClickListener(v -> showLogin());
+    }
+
+    private void showLogin() {
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        startActivity(intent);
     }
 
     private void setupUI() {
@@ -102,6 +116,10 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
         cvName = bindView(R.id.cvName);
         cvRemoveAccount = bindView(R.id.cvRemoveAcc);
         cvPassword = bindView(R.id.cvPassword);
+        ltAuthAccount = bindView(R.id.ltAuthAccount);
+        content = bindView(R.id.content);
+        btnLogin = bindView(R.id.btnLogin);
+        tvAuth = bindView(R.id.tvAuth);
     }
 
     private void showRemoveDialog() {
@@ -149,9 +167,10 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
         builder.setPositiveButton(R.string.yes, (dialog, which) -> {
             AuthUI.getInstance()
                     .signOut(getActivity())
-                    .addOnCompleteListener(task ->
-                            Log.d("Log out", "result: " + task.isSuccessful()));
-            accountPresenter.logout();
+                    .addOnCompleteListener(task -> {
+                        Log.d("Log out", "result: " + task.isSuccessful());
+                        accountPresenter.logout();
+                    });
             dialog.dismiss();
         });
         builder.setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss());
@@ -255,5 +274,12 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
     @Override
     public void showEmail(@NotNull String email) {
         tvEmail.setText(email);
+    }
+
+    @Override
+    public void showAuthAccess() {
+        content.setVisibility(View.INVISIBLE);
+        ltAuthAccount.setVisibility(View.VISIBLE);
+        tvAuth.setText(R.string.account_login);
     }
 }
