@@ -1,6 +1,8 @@
 package com.druger.aboutwork.interfaces.view
 
 import com.arellomobile.mvp.MvpView
+import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy
+import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 import com.druger.aboutwork.model.CompanyDetail
 import com.druger.aboutwork.model.Review
 
@@ -20,5 +22,7 @@ interface CompanyDetailView : MvpView, NetworkView {
 
     fun hideProgressReview()
     fun showAuth()
+
+    @StateStrategyType(OneExecutionStateStrategy::class)
     fun addReview()
 }
