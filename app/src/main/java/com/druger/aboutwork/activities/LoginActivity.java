@@ -54,19 +54,14 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             } else {
-                if (idpResponse == null) {
-                    Toast.makeText(this,R.string.sign_in_cancelled, Toast.LENGTH_SHORT).show();
-                    finish();
-                }
 
                 if (idpResponse.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
                     Toast.makeText(this, R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
-                    finish();
+                    return;
                 }
 
                 Toast.makeText(this, R.string.unknown_error, Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "Sign-in error: ", idpResponse.getError());
-                finish();
             }
         }
     }
@@ -87,13 +82,8 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseHelper.INSTANCE.addUser(user, id);
     }
 
-    @Override
-    public void onBackPressed() {
-        // Disable going back to the MainActivity
-        moveTaskToBack(true);
-    }
 
-//    @Override
+    //    @Override
 //    protected void onDestroy() {
 //        super.onDestroy();
 //        RefWatcher refWatcher = App.Companion.getRefWatcher(this);
