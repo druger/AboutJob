@@ -127,7 +127,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView,
             case R.id.action_ratings:
                 mainPresenter.onClickMyReviews();
                 break;
-            case R.id.action_account:
+            case R.id.action_setting:
                 showAccount();
                 break;
             default:
