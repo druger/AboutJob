@@ -17,4 +17,5 @@ interface AccountView : MvpView {
 
     fun showEmail(email: String)
     fun showAuthAccess()
+    fun showPhone(phone: String)
 }

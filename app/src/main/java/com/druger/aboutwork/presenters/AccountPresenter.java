@@ -8,8 +8,6 @@ import com.druger.aboutwork.db.RealmHelper;
 import com.druger.aboutwork.interfaces.view.AccountView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import javax.inject.Inject;
 
@@ -21,7 +19,6 @@ import javax.inject.Inject;
 public class AccountPresenter extends BasePresenter<AccountView> {
 
     private FirebaseUser user;
-    private DatabaseReference dbReference;
 
     @Inject
     public AccountPresenter(RealmHelper realmHelper) {
@@ -33,9 +30,9 @@ public class AccountPresenter extends BasePresenter<AccountView> {
         if (user != null) {
             Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
 
-            dbReference = FirebaseDatabase.getInstance().getReference();
             getViewState().showEmail(user.getEmail());
             getViewState().showName(user.getDisplayName());
+            getViewState().showPhone(user.getPhoneNumber());
         } else getViewState().showAuthAccess();
     }
 

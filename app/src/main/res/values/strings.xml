@@ -120,6 +120,8 @@
     <string name="company_login">Login please to add review</string>
     <string name="review_login">Login please to add comment</string>
     <string name="phone">Phone</string>
+    <string name="add_phone_number">Add phone number</string>
+    <string name="add_email">Add email</string>
 
     <string-array name="work_status">
         <item>@string/working</item>

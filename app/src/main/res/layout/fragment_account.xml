@@ -54,7 +54,7 @@
             android:layout_height="60dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="1dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="16dp"
             android:background="?android:attr/selectableItemBackground"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
@@ -83,7 +83,7 @@
             android:layout_height="60dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="1dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="16dp"
             android:background="?android:attr/selectableItemBackground"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
@@ -112,7 +112,7 @@
             android:layout_height="60dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="1dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="16dp"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
@@ -130,46 +130,17 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/cvLogout"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="8dp"
-            android:background="?android:attr/selectableItemBackground"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cvPassword">
-
-            <ImageView
-                android:id="@+id/ivLogout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:srcCompat="@drawable/ic_logout" />
-
-            <TextView
-                android:id="@+id/tvLogout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="8dp"
-                android:text="@string/log_out"
-                android:textColor="@android:color/black" />
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/cvRemoveAcc"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="64dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center|start"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cvLogout">
+            app:layout_constraintTop_toBottomOf="@+id/cvPassword">
 
             <ImageView
                 android:id="@+id/ivDelete"
@@ -188,6 +159,36 @@
                 android:text="@string/remove_account"
                 android:textColor="@color/remove" />
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/cvLogout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="?android:attr/selectableItemBackground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/ivLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_logout" />
+
+            <TextView
+                android:id="@+id/tvLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:text="@string/log_out"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+
     </android.support.constraint.ConstraintLayout>
 
     <include

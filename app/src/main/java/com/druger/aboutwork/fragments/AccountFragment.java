@@ -50,6 +50,7 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
     private ConstraintLayout content;
     private Button btnLogin;
     private TextView tvAuth;
+    private TextView tvPhone;
 
     @ProvidePresenter
     AccountPresenter getAccountPresenter() {
@@ -81,6 +82,11 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
         cvPassword.setOnClickListener(v -> showChangePassword());
         cvRemoveAccount.setOnClickListener(v -> showRemoveDialog());
         btnLogin.setOnClickListener(v -> showLogin());
+        tvPhone.setOnClickListener(v -> showChangePhone());
+    }
+
+    private void showChangePhone() {
+
     }
 
     private void showLogin() {
@@ -100,6 +106,7 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
         content = bindView(R.id.content);
         btnLogin = bindView(R.id.btnLogin);
         tvAuth = bindView(R.id.tvAuth);
+        tvPhone = bindView(R.id.tvPhone);
     }
 
     private void showRemoveDialog() {
@@ -175,7 +182,10 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
 
     @Override
     public void showEmail(@NotNull String email) {
-        tvEmail.setText(email);
+        if (email.isEmpty()) {
+            tvEmail.setText(R.string.add_email);
+        } else tvEmail.setText(email);
+
     }
 
     @Override
@@ -183,5 +193,12 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
         content.setVisibility(View.INVISIBLE);
         ltAuthAccount.setVisibility(View.VISIBLE);
         tvAuth.setText(R.string.account_login);
+    }
+
+    @Override
+    public void showPhone(@NotNull String phone) {
+        if (phone.isEmpty()) {
+            tvPhone.setText(R.string.add_phone_number);
+        } else tvPhone.setText(phone);
     }
 }
