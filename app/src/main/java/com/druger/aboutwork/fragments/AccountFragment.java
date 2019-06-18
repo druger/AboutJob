@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,11 +40,11 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
     PreferencesHelper preferencesHelper;
 
     private TextView tvName;
-    private CardView cvLogout;
-    private CardView cvEmail;
-    private CardView cvName;
-    private CardView cvPassword;
-    private CardView cvRemoveAccount;
+    private LinearLayout cvLogout;
+    private LinearLayout cvEmail;
+    private LinearLayout cvName;
+    private LinearLayout cvPassword;
+    private LinearLayout cvRemoveAccount;
     private TextView tvEmail;
     private RelativeLayout ltAuthAccount;
     private ConstraintLayout content;
@@ -177,7 +177,9 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
 
     @Override
     public void showName(@NotNull String name) {
-        tvName.setText(name);
+        if (name.isEmpty()) {
+            tvName.setText(R.string.add_name);
+        } else tvName.setText(name);
     }
 
     @Override

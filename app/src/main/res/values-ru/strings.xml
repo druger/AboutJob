@@ -126,4 +126,5 @@
     <string name="phone">Телефон</string>
     <string name="add_phone_number">Добавить номер телефона</string>
     <string name="add_email">Добавить email</string>
+    <string name="add_name">Добавить имя</string>
 </resources>

@@ -122,6 +122,7 @@
     <string name="phone">Phone</string>
     <string name="add_phone_number">Add phone number</string>
     <string name="add_email">Add email</string>
+    <string name="add_name">Add name</string>
 
     <string-array name="work_status">
         <item>@string/working</item>
