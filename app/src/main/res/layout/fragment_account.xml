@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginTop="?attr/actionBarSize">
+
+    <include layout="@layout/toolbar" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/content"
@@ -198,7 +201,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginStart="16dp"
-            android:layout_marginBottom="1dp"
+            android:layout_marginBottom="2dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/cvLogout"
             app:layout_constraintEnd_toEndOf="parent"/>

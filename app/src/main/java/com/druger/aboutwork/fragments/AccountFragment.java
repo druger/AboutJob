@@ -69,10 +69,17 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
         rootView = inflater.inflate(R.layout.fragment_account, container, false);
 
         setupUI();
+        setupToolbar();
         accountPresenter.getUserInfo();
         setupListeners();
 
         return rootView;
+    }
+
+    private void setupToolbar() {
+        mToolbar = bindView(R.id.toolbar);
+        setActionBar(mToolbar);
+        getActionBar().setTitle(R.string.settings);
     }
 
     private void setupListeners() {
@@ -82,11 +89,6 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
         cvPassword.setOnClickListener(v -> showChangePassword());
         cvRemoveAccount.setOnClickListener(v -> showRemoveDialog());
         btnLogin.setOnClickListener(v -> showLogin());
-        tvPhone.setOnClickListener(v -> showChangePhone());
-    }
-
-    private void showChangePhone() {
-
     }
 
     private void showLogin() {
@@ -200,7 +202,7 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
     @Override
     public void showPhone(@NotNull String phone) {
         if (phone.isEmpty()) {
-            tvPhone.setText(R.string.add_phone_number);
+            tvPhone.setVisibility(View.INVISIBLE);
         } else tvPhone.setText(phone);
     }
 }
