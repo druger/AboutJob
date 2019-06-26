@@ -2,15 +2,14 @@ package com.druger.aboutwork.fragments
 
 
 import android.os.Bundle
+import android.support.constraint.Group
+import android.support.design.widget.TextInputLayout
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.Toast
+import android.widget.*
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.druger.aboutwork.App
@@ -22,8 +21,6 @@ import com.druger.aboutwork.model.CompanyDetail
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.model.Vacancy
 import com.druger.aboutwork.presenters.AddReviewPresenter
-import kotlinx.android.synthetic.main.content_review.*
-import kotlinx.android.synthetic.main.toolbar_review.*
 
 
 class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListener, AddReviewView {
@@ -32,6 +29,28 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     lateinit var presenter: AddReviewPresenter
 
     private lateinit var datePicker: DatePickerFragment
+
+    private lateinit var groupRating: Group
+    private lateinit var etPluses: EditText
+    private lateinit var etMinuses: EditText
+    private lateinit var ivClose: ImageView
+    private lateinit var ivDone: ImageView
+    private lateinit var tvTitle: TextView
+    private lateinit var ltEmploymentDate: TextInputLayout
+    private lateinit var ltDismissalDate: TextInputLayout
+    private lateinit var ltInterviewDate: TextInputLayout
+    private lateinit var rbSalary: RatingBar
+    private lateinit var rbChief: RatingBar
+    private lateinit var rbCareer: RatingBar
+    private lateinit var rbCollective: RatingBar
+    private lateinit var rbSocialPackage: RatingBar
+    private lateinit var rbWorkplace: RatingBar
+    private lateinit var etCity: AutoCompleteTextView
+    private lateinit var etPosition: AutoCompleteTextView
+    private lateinit var spinnerStatus: Spinner
+    private lateinit var etInterviewDate: EditText
+    private lateinit var etDismissalDate: EditText
+    private lateinit var etEmploymentDate: EditText
 
     @ProvidePresenter
     fun provideAddReviewPresenter(): AddReviewPresenter {
@@ -53,8 +72,33 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_review, container, false)
         getBundles()
+        bindViews()
         datePicker = DatePickerFragment()
         return rootView
+    }
+
+    private fun bindViews() {
+        groupRating = bindView(R.id.group_rating)
+        etPluses = bindView(R.id.etPluses)
+        etMinuses = bindView(R.id.etMinuses)
+        ivClose = bindView(R.id.ivClose)
+        ivDone = bindView(R.id.ivDone)
+        tvTitle = bindView(R.id.tvTitle)
+        ltEmploymentDate = bindView(R.id.ltEmploymentDate)
+        ltDismissalDate = bindView(R.id.ltDismissalDate)
+        ltInterviewDate = bindView(R.id.ltInterviewDate)
+        rbSalary = bindView(R.id.rbSalary)
+        rbChief = bindView(R.id.rbChief)
+        rbCareer = bindView(R.id.rbCareer)
+        rbCollective = bindView(R.id.rbCollective)
+        rbSocialPackage = bindView(R.id.rbSocialPackage)
+        rbWorkplace = bindView(R.id.rbWorkplace)
+        etCity = bindView(R.id.etCity)
+        etPosition = bindView(R.id.etPosition)
+        spinnerStatus = bindView(R.id.spinnerStatus)
+        etInterviewDate = bindView(R.id.etInterviewDate)
+        etDismissalDate = bindView(R.id.etDismissalDate)
+        etEmploymentDate = bindView(R.id.etEmploymentDate)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -215,8 +259,7 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     }
 
     private fun showSuggestions(items: List<Any>, view: AutoCompleteTextView) {
-        val arrayAdapter = ArrayAdapter<Any>(
-                activity, android.R.layout.simple_dropdown_item_1line, items)
+        val arrayAdapter = ArrayAdapter(activity, android.R.layout.simple_dropdown_item_1line, items)
         view.setAdapter<ArrayAdapter<*>>(arrayAdapter)
     }
 
@@ -225,8 +268,7 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     }
 
     override fun successfulAddition() {
-        Toast.makeText(activity?.applicationContext, R.string.review_added,
-                Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, R.string.review_added, Toast.LENGTH_SHORT).show()
         fragmentManager?.popBackStackImmediate()
     }
 
@@ -239,7 +281,7 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         ltEmploymentDate.visibility = View.VISIBLE
         ltDismissalDate.visibility = View.GONE
         ltInterviewDate.visibility = View.GONE
-        group_rating.visibility = View.VISIBLE
+        groupRating.visibility = View.VISIBLE
     }
 
     override fun setIsIndicatorRatingBar(indicator: Boolean) = setIsIndicator(indicator)
@@ -248,13 +290,13 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         ltEmploymentDate.visibility = View.VISIBLE
         ltDismissalDate.visibility = View.VISIBLE
         ltInterviewDate.visibility = View.GONE
-        group_rating.visibility = View.VISIBLE
+        groupRating.visibility = View.VISIBLE
     }
 
     override fun showInterviewDate() {
         ltInterviewDate.visibility = View.VISIBLE
         ltEmploymentDate.visibility = View.GONE
         ltDismissalDate.visibility = View.GONE
-        group_rating.visibility = View.GONE
+        groupRating.visibility = View.GONE
     }
 }

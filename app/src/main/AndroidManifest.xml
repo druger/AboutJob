@@ -6,8 +6,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".App"
@@ -16,7 +14,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:node="replace">
+
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
@@ -33,9 +33,7 @@
         <activity
             android:name=".activities.CompanyDetailActivity"
             android:label="@string/title_activity_company_detail"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
             android:name="com.thefinestartist.finestwebview.FinestWebViewActivity"

@@ -3,20 +3,23 @@ package com.druger.aboutwork.fragments
 
 import android.os.Build
 import android.os.Bundle
+import android.support.v7.widget.Toolbar
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 
 import com.druger.aboutwork.R
-import kotlinx.android.synthetic.main.fragment_company_description.*
-import kotlinx.android.synthetic.main.toolbar.*
 
 private const val DESCRIPTION = "description"
 
 class CompanyDescriptionFragment : BaseSupportFragment() {
 
-companion object {
+    private lateinit var tvDescription: TextView
+    private lateinit var toolbar: Toolbar
+
+    companion object {
     fun newInstance(description: String): CompanyDescriptionFragment {
         val bundle = Bundle()
         bundle.putString(DESCRIPTION, description)
@@ -28,7 +31,10 @@ companion object {
 }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_company_description, container, false)
+        rootView = inflater.inflate(R.layout.fragment_company_description, container, false)
+        toolbar = bindView(R.id.toolbar)
+        tvDescription = bindView(R.id.tvDescription)
+        return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

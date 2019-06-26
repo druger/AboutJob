@@ -2,20 +2,26 @@ package com.druger.aboutwork.fragments
 
 
 import android.os.Bundle
+import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.druger.aboutwork.Const.Bundles.NAME
 import com.druger.aboutwork.R
 import com.druger.aboutwork.interfaces.view.ChangeNameView
 import com.druger.aboutwork.presenters.ChangeNamePresenter
-import kotlinx.android.synthetic.main.fragment_change_name.*
-import kotlinx.android.synthetic.main.toolbar.*
 
 class ChangeNameFragment : BaseSupportFragment(), ChangeNameView {
 
+    private lateinit var etName: EditText
+    private lateinit var toolbar: Toolbar
+    private lateinit var btnChangeName: Button
+    private lateinit var progressBar: ProgressBar
     @InjectPresenter
     lateinit var presenter: ChangeNamePresenter
 
@@ -34,6 +40,10 @@ class ChangeNameFragment : BaseSupportFragment(), ChangeNameView {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_change_name, container, false)
+        toolbar = bindView(R.id.toolbar)
+        progressBar = bindView(R.id.progressBar)
+        etName = bindView(R.id.etName)
+        btnChangeName = bindView(R.id.btnChangeName)
         return rootView
     }
 
