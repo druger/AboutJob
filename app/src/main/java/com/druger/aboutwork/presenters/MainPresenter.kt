@@ -13,15 +13,15 @@ import com.google.firebase.auth.FirebaseUser
 @InjectViewState
 class MainPresenter : MvpPresenter<MainView>() {
 
-    private lateinit var auth: FirebaseAuth
+    private var auth: FirebaseAuth? = null
     private lateinit var authListener: FirebaseAuth.AuthStateListener
     private var user: FirebaseUser? = null
 
     fun checkAuthUser() {
         auth = FirebaseAuth.getInstance()
         initAuthListener()
-        auth.addAuthStateListener(authListener)
-        user = auth.currentUser
+        auth?.addAuthStateListener(authListener)
+        user = auth?.currentUser
     }
 
     private fun initAuthListener() {
@@ -30,7 +30,7 @@ class MainPresenter : MvpPresenter<MainView>() {
         }
     }
 
-    fun removeAuthListener() = auth.removeAuthStateListener(authListener)
+    fun removeAuthListener() = auth?.removeAuthStateListener(authListener)
 
     fun isUserLoggedIn(): Boolean {
         return user != null
