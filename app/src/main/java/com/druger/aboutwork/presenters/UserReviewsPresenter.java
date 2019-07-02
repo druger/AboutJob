@@ -12,8 +12,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +23,6 @@ import java.util.List;
 @InjectViewState
 public class UserReviewsPresenter extends BasePresenter<UserReviews> implements ValueEventListener {
 
-    private FirebaseStorage storage;
-    private StorageReference storageRef;
     private DatabaseReference dbReference;
     private ValueEventListener valueEventListener;
     private ValueEventListener nameEventListener;
@@ -34,13 +30,7 @@ public class UserReviewsPresenter extends BasePresenter<UserReviews> implements 
     private List<Review> reviews;
 
     public UserReviewsPresenter() {
-        storage = FirebaseStorage.getInstance();
         reviews = new ArrayList<>();
-    }
-
-    public void downloadPhoto(String userId) {
-        storageRef = FirebaseHelper.INSTANCE.downloadPhoto(storage, userId);
-        getViewState().showPhoto(storageRef);
     }
 
     public void fetchReviews(String userId) {
