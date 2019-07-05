@@ -1,14 +1,15 @@
 package com.druger.aboutwork.fragments
 
 import android.os.Bundle
-import android.support.constraint.Group
-import android.support.design.widget.TextInputLayout
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.druger.aboutwork.App
@@ -22,33 +23,13 @@ import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.model.Vacancy
 import com.druger.aboutwork.presenters.EditReviewPresenter
 import com.druger.aboutwork.utils.Utils
+import kotlinx.android.synthetic.main.content_review.*
+import kotlinx.android.synthetic.main.toolbar_review.*
 
 class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnItemSelectedListener {
 
     @InjectPresenter
     lateinit var presenter: EditReviewPresenter
-
-    private lateinit var groupRating: Group
-    private lateinit var etPluses: EditText
-    private lateinit var etMinuses: EditText
-    private lateinit var ivClose: ImageView
-    private lateinit var ivDone: ImageView
-    private lateinit var tvTitle: TextView
-    private lateinit var ltEmploymentDate: TextInputLayout
-    private lateinit var ltDismissalDate: TextInputLayout
-    private lateinit var ltInterviewDate: TextInputLayout
-    private lateinit var rbSalary: RatingBar
-    private lateinit var rbChief: RatingBar
-    private lateinit var rbCareer: RatingBar
-    private lateinit var rbCollective: RatingBar
-    private lateinit var rbSocialPackage: RatingBar
-    private lateinit var rbWorkplace: RatingBar
-    private lateinit var etCity: AutoCompleteTextView
-    private lateinit var etPosition: AutoCompleteTextView
-    private lateinit var spinnerStatus: Spinner
-    private lateinit var etInterviewDate: EditText
-    private lateinit var etDismissalDate: EditText
-    private lateinit var etEmploymentDate: EditText
 
     @ProvidePresenter
     fun provideEditReviewPresenter(): EditReviewPresenter {
@@ -72,34 +53,9 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_review, container, false)
         getBundles()
-        binfViews()
         datePicker = DatePickerFragment()
         (activity as MainActivity).hideBottomNavigation()
         return rootView
-    }
-
-    private fun binfViews() {
-        groupRating = bindView(R.id.group_rating)
-        etPluses = bindView(R.id.etPluses)
-        etMinuses = bindView(R.id.etMinuses)
-        ivClose = bindView(R.id.ivClose)
-        ivDone = bindView(R.id.ivDone)
-        tvTitle = bindView(R.id.tvTitle)
-        ltEmploymentDate = bindView(R.id.ltEmploymentDate)
-        ltDismissalDate = bindView(R.id.ltDismissalDate)
-        ltInterviewDate = bindView(R.id.ltInterviewDate)
-        rbSalary = bindView(R.id.rbSalary)
-        rbChief = bindView(R.id.rbChief)
-        rbCareer = bindView(R.id.rbCareer)
-        rbCollective = bindView(R.id.rbCollective)
-        rbSocialPackage = bindView(R.id.rbSocialPackage)
-        rbWorkplace = bindView(R.id.rbWorkplace)
-        etCity = bindView(R.id.etCity)
-        etPosition = bindView(R.id.etPosition)
-        spinnerStatus = bindView(R.id.spinnerStatus)
-        etInterviewDate = bindView(R.id.etInterviewDate)
-        etDismissalDate = bindView(R.id.etDismissalDate)
-        etEmploymentDate = bindView(R.id.etEmploymentDate)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -296,7 +252,7 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
         ltEmploymentDate.visibility = View.VISIBLE
         ltDismissalDate.visibility = View.GONE
         ltInterviewDate.visibility = View.GONE
-        groupRating.visibility = View.VISIBLE
+        group_rating.visibility = View.VISIBLE
     }
 
     override fun setIsIndicatorRatingBar(indicator: Boolean) = setIsIndicator(indicator)
@@ -305,14 +261,14 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
         ltEmploymentDate.visibility = View.VISIBLE
         ltDismissalDate.visibility = View.VISIBLE
         ltInterviewDate.visibility = View.GONE
-        groupRating.visibility = View.VISIBLE
+        group_rating.visibility = View.VISIBLE
     }
 
     override fun showInterviewDate() {
         ltInterviewDate.visibility = View.VISIBLE
         ltEmploymentDate.visibility = View.GONE
         ltDismissalDate.visibility = View.GONE
-        groupRating.visibility = View.GONE
+        group_rating.visibility = View.GONE
     }
 
     override fun clearRatingBar() {
