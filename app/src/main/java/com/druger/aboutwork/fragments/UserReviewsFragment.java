@@ -9,15 +9,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.adapters.MyReviewAdapter;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.UserReviews;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.UserReviewsPresenter;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +33,7 @@ public class UserReviewsFragment extends BaseSupportFragment implements UserRevi
     @InjectPresenter
     UserReviewsPresenter reviewsPresenter;
 
+    private ImageView civAvatar;
     private TextView tvName;
 
     private RecyclerView rvReviews;
@@ -56,6 +61,7 @@ public class UserReviewsFragment extends BaseSupportFragment implements UserRevi
         rootView = inflater.inflate(R.layout.fragment_user_reviews, container, false);
         setupUI();
         setupRecycler(reviews);
+        reviewsPresenter.downloadPhoto(getArguments().getString(USER_ID));
         reviewsPresenter.fetchReviews(getArguments().getString(USER_ID));
         reviewsPresenter.getUserName(getArguments().getString(USER_ID));
         setupToolbar();
@@ -94,8 +100,18 @@ public class UserReviewsFragment extends BaseSupportFragment implements UserRevi
     }
 
     private void setupUI() {
+        civAvatar = bindView(R.id.ivAvatar);
         tvName = bindView(R.id.tvName);
         rvReviews = bindView(R.id.rvReviews);
+    }
+
+    @Override
+    public void showPhoto(StorageReference storageRef) {
+        Glide.with(getActivity())
+                .load(storageRef)
+                .apply(RequestOptions.circleCropTransform())
+                .error(R.drawable.ic_account_circle_black)
+                .into(civAvatar);
     }
 
     @Override
