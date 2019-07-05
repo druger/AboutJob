@@ -26,15 +26,13 @@ public class AccountPresenter extends BasePresenter<AccountView> {
     }
 
     public void getUserInfo() {
-        if (FirebaseAuth.getInstance() != null) {
-            user = FirebaseAuth.getInstance().getCurrentUser();
-            if (user != null) {
-                Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
 
-                getViewState().showEmail(user.getEmail());
-                getViewState().showName(user.getDisplayName());
-                getViewState().showPhone(user.getPhoneNumber());
-            }
+            getViewState().showEmail(user.getEmail());
+            getViewState().showName(user.getDisplayName());
+            getViewState().showPhone(user.getPhoneNumber());
         } else getViewState().showAuthAccess();
     }
 
