@@ -51,6 +51,8 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
     private Button btnLogin;
     private TextView tvAuth;
     private TextView tvPhone;
+    private LinearLayout ltPhone;
+    private View line3;
 
     @ProvidePresenter
     AccountPresenter getAccountPresenter() {
@@ -109,6 +111,8 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
         btnLogin = bindView(R.id.btnLogin);
         tvAuth = bindView(R.id.tvAuth);
         tvPhone = bindView(R.id.tvPhone);
+        ltPhone = bindView(R.id.ltPhone);
+        line3 = bindView(R.id.line3);
     }
 
     private void showRemoveDialog() {
@@ -202,7 +206,8 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
     @Override
     public void showPhone(@NotNull String phone) {
         if (phone.isEmpty()) {
-            tvPhone.setVisibility(View.INVISIBLE);
+            ltPhone.setVisibility(View.GONE);
+            line3.setVisibility(View.GONE);
         } else tvPhone.setText(phone);
     }
 }

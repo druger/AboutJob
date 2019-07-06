@@ -119,7 +119,6 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
         mToolbar = bindView(R.id.toolbar);
         setActionBar(mToolbar);
         getActionBar().setTitle(R.string.my_reviews);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void setupRecycler(final List<Review> reviews) {

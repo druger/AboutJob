@@ -3,22 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="?attr/actionBarSize">
+    android:layout_height="match_parent">
 
     <include layout="@layout/toolbar" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
 
         <LinearLayout
             android:id="@+id/cvEmail"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:paddingStart="16dp"
-            android:layout_marginTop="8dp"
+
             android:paddingEnd="8dp"
             android:background="?android:attr/selectableItemBackground"
             android:orientation="vertical"
@@ -194,6 +194,16 @@
                 android:text="@string/remove_account"
                 android:textColor="@color/remove" />
         </LinearLayout>
+
+        <include
+            android:id="@+id/line6"
+            layout="@layout/separate_line"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cvRemoveAcc"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <include
             android:id="@+id/line5"
