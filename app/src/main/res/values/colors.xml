@@ -15,7 +15,7 @@
     <color name="bottom_navigation">#7953D2</color>
 
     <color name="grey500">#9E9E9E</color>
-    <color name="color_separate_line">@color/grey500</color>
+    <color name="color_separate_line">#EEEEEE</color>
     <color name="hint_auth">#61FFFFFF</color>
     <color name="hint_forgot">#8FFFFFFF</color>
     <color name="text_edittext">#DEFFFFFF</color>
