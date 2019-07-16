@@ -48,6 +48,7 @@ import static com.druger.aboutwork.Const.Bundles.COMPANY_ID;
 public class CompanyDetailFragment extends BaseSupportFragment implements View.OnClickListener,
         CompanyDetailView {
     public static final int REVIEW_REQUEST = 0;
+    public static final String FRAGMENT_TAG = "companyDetail";
 
     @InjectPresenter
     CompanyDetailPresenter presenter;
@@ -108,6 +109,12 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         return rootView;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
     private void setupFabBehavior() {
         scrollView.setOnScrollChangeListener(
                 (NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
@@ -117,11 +124,11 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         });
     }
 
-    private void setupUX() {
-        fabAddReview.setOnClickListener(this);
-        btnRetry.setOnClickListener(this);
-        btnLogin.setOnClickListener(v -> startActivity(new Intent(getContext(), LoginActivity.class)));
-    }
+        private void setupUX() {
+            fabAddReview.setOnClickListener(this);
+            btnRetry.setOnClickListener(this);
+            btnLogin.setOnClickListener(v -> startActivity(new Intent(getContext(), LoginActivity.class)));
+        }
 
     private void setupUI() {
         fabAddReview = bindView(R.id.fabAddReview);

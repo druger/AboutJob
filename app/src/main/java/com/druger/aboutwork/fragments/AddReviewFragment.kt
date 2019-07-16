@@ -50,6 +50,11 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        retainInstance = true
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_review, container, false)
         getBundles()

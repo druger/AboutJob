@@ -74,6 +74,12 @@ public class CompaniesFragment extends BaseSupportFragment implements CompaniesV
         return rootView;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
     private RealmResults<CompanyRealm> getCompaniesFromDb() {
         return companiesPresenter.getCompaniesFromDb();
     }
