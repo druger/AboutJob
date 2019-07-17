@@ -5,11 +5,10 @@
     tools:ignore="ContentDescription">
 
     <android.support.design.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/ltContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activities.CompanyDetailActivity">
+        android:layout_marginTop="25dp">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appBarLayout"

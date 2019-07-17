@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -82,7 +81,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
 
     private CompanyDetail companyDetail;
 
-    public static CompanyDetailFragment getInstance(String companyID) {
+    public static CompanyDetailFragment newInstance(String companyID) {
         CompanyDetailFragment companyDetail = new CompanyDetailFragment();
         Bundle bundle = new Bundle();
         bundle.putString(COMPANY_ID, companyID);
@@ -107,12 +106,6 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         setupRecycler(reviews);
         setupFabBehavior();
         return rootView;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
     }
 
     private void setupFabBehavior() {
@@ -175,11 +168,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
             @Override
             public void onClick(Review review, int position) {
                 SelectedReviewFragment reviewFragment = SelectedReviewFragment.newInstance(review, false);
-
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.company_container, reviewFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                replaceFragment(reviewFragment, R.id.company_container, true);
             }
 
             @Override
@@ -198,10 +187,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
 
     private void showDescription(String description) {
         CompanyDescriptionFragment fragment = CompanyDescriptionFragment.Companion.newInstance(description);
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.company_container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        replaceFragment(fragment, R.id.company_container, true);
     }
 
     private void showWebView(String site) {
@@ -218,11 +204,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     @Override
     public void addReview() {
         AddReviewFragment review = AddReviewFragment.Companion.newInstance(companyDetail);
-
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.company_container, review);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        replaceFragment(review, R.id.company_container, true);
     }
 
     @Override
