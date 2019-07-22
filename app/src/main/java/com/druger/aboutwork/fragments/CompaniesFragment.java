@@ -16,6 +16,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.adapters.CompanyAdapter;
 import com.druger.aboutwork.adapters.CompanyRealmAdapter;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
@@ -71,6 +72,7 @@ public class CompaniesFragment extends BaseSupportFragment implements CompaniesV
         setupListeners();
         setupRecyclerRealm();
         setupSearch();
+        ((MainActivity) getActivity()).showBottomNavigation();
         return rootView;
     }
 
@@ -206,11 +208,8 @@ public class CompaniesFragment extends BaseSupportFragment implements CompaniesV
     }
 
     private void showCompanyDetail(String id) {
-        fragment = getFragmentManager().findFragmentById(R.id.company_container);
-        if (fragment == null) {
-            fragment = CompanyDetailFragment.newInstance(id);
-            addFragment(fragment, R.id.company_container, true);
-        }
+        fragment = CompanyDetailFragment.newInstance(id);
+        replaceFragment(fragment, R.id.main_container, true);
     }
 
     @Override

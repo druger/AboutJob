@@ -28,6 +28,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.LoginActivity;
+import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.adapters.ReviewAdapter;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.CompanyDetailView;
@@ -105,6 +106,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         setupUX();
         setupRecycler(reviews);
         setupFabBehavior();
+        ((MainActivity) getActivity()).hideBottomNavigation();
         return rootView;
     }
 
@@ -168,7 +170,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
             @Override
             public void onClick(Review review, int position) {
                 SelectedReviewFragment reviewFragment = SelectedReviewFragment.newInstance(review, false);
-                replaceFragment(reviewFragment, R.id.company_container, true);
+                replaceFragment(reviewFragment, R.id.main_container, true);
             }
 
             @Override
@@ -187,7 +189,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
 
     private void showDescription(String description) {
         CompanyDescriptionFragment fragment = CompanyDescriptionFragment.Companion.newInstance(description);
-        replaceFragment(fragment, R.id.company_container, true);
+        replaceFragment(fragment, R.id.main_container, true);
     }
 
     private void showWebView(String site) {
@@ -203,8 +205,9 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
 
     @Override
     public void addReview() {
-        AddReviewFragment review = AddReviewFragment.Companion.newInstance(companyDetail);
-        replaceFragment(review, R.id.company_container, true);
+        AddReviewFragment review =
+                AddReviewFragment.Companion.newInstance(companyDetail.getId(), companyDetail.getName());
+        replaceFragment(review, R.id.main_container, true);
     }
 
     @Override

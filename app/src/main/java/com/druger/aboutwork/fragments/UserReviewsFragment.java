@@ -87,7 +87,7 @@ public class UserReviewsFragment extends BaseSupportFragment implements UserRevi
                 SelectedReviewFragment reviewFragment = SelectedReviewFragment.newInstance(review, false);
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.company_container, reviewFragment);
+                transaction.replace(R.id.main_container, reviewFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
             }

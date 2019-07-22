@@ -1,11 +1,11 @@
 package com.druger.aboutwork.presenters;
 
 import android.text.TextUtils;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.view.AddReviewView;
 import com.druger.aboutwork.model.Company;
-import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.MarkCompany;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.rest.RestApi;
@@ -15,7 +15,8 @@ import com.druger.aboutwork.utils.rx.RxUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.*;
+import java.util.Calendar;
+
 import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
@@ -35,21 +36,22 @@ public class AddReviewPresenter extends BasePresenter<AddReviewView> {
 
     private int status = NOT_SELECTED_STATUS;
 
-    public CompanyDetail companyDetail;
+    public String companyId;
+    public String companyName;
 
     public Review review;
     private MarkCompany mark;
 
     public void setupReview() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String companyId = companyDetail.getId();
+
         review = new Review(companyId, user.getUid(), Calendar.getInstance().getTimeInMillis());
         mark = new MarkCompany(user.getUid(), companyId);
         review.setMarkCompany(mark);
     }
 
     public void doneClick() {
-        Company company = new Company(companyDetail.getId(), companyDetail.getName());
+        Company company = new Company(companyId, companyName);
         addReview(company);
     }
 

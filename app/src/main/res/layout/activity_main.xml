@@ -5,24 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/company_container"
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinator"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context=".activities.MainActivity">
 
-        <android.support.design.widget.CoordinatorLayout
-            android:id="@+id/coordinator"
+        <FrameLayout
+            android:id="@+id/main_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            tools:context=".activities.MainActivity">
-
-            <FrameLayout
-                android:id="@+id/main_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/bottom_navigation"
-                android:layout_alignParentTop="true" />
+            android:layout_above="@+id/bottom_navigation"
+            android:layout_alignParentTop="true" />
 
             <android.support.design.widget.BottomNavigationView
                 android:id="@+id/bottom_navigation"
@@ -35,6 +30,5 @@
                 app:menu="@menu/bottom_menu" />
 
         </android.support.design.widget.CoordinatorLayout>
-    </FrameLayout>
 </RelativeLayout>
 
