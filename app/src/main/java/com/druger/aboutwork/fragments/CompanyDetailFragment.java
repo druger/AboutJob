@@ -43,12 +43,11 @@ import com.thefinestartist.finestwebview.FinestWebView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.druger.aboutwork.Const.Bundles.COMPANY_ID;
-
 public class CompanyDetailFragment extends BaseSupportFragment implements View.OnClickListener,
         CompanyDetailView {
     public static final int REVIEW_REQUEST = 0;
     public static final String FRAGMENT_TAG = "companyDetail";
+    private static final String COMPANY_ID = "companyID";
 
     @InjectPresenter
     CompanyDetailPresenter presenter;
@@ -81,6 +80,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     private ReviewAdapter reviewAdapter;
 
     private CompanyDetail companyDetail;
+    private String companyId;
 
     public static CompanyDetailFragment newInstance(String companyID) {
         CompanyDetailFragment companyDetail = new CompanyDetailFragment();
@@ -100,7 +100,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_company_detail, container, false);
 
-        presenter.getCompanyDetail(getArguments().getString(COMPANY_ID, ""));
+        detData(savedInstanceState);
         setupToolbar();
         setupUI();
         setupUX();
@@ -108,6 +108,18 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         setupFabBehavior();
         ((MainActivity) getActivity()).hideBottomNavigation();
         return rootView;
+    }
+
+    private void detData(Bundle savedInstanceState) {
+        Bundle bundle = savedInstanceState != null ? savedInstanceState : getArguments();
+        companyId = bundle.getString(COMPANY_ID);
+        presenter.getCompanyDetail(companyId);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(COMPANY_ID, companyId);
     }
 
     private void setupFabBehavior() {
@@ -217,7 +229,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
                 presenter.checkAuthUser();
                 break;
             case R.id.btnRetry:
-                presenter.getCompanyDetail(getArguments().getString(COMPANY_ID, ""));
+                presenter.getCompanyDetail(companyId);
                 break;
             default:
                 break;

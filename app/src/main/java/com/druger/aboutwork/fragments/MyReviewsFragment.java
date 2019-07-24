@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -69,10 +68,6 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
     private TextView tvAuth;
 
     private String userId;
-
-    public MyReviewsFragment() {
-        // Required empty public constructor
-    }
 
     public static MyReviewsFragment newInstance(String userId) {
         MyReviewsFragment myReviews = new MyReviewsFragment();
@@ -152,11 +147,7 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
 
     private void showSelectedReview(Review review) {
         SelectedReviewFragment reviewFragment = SelectedReviewFragment.newInstance(review, true);
-
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_container, reviewFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        replaceFragment(reviewFragment, R.id.main_container, true);
     }
 
     private void setupUI() {

@@ -26,10 +26,6 @@ public class ChangeEmailFragment extends BaseSupportFragment implements ChangeEm
     private Button btnChangeEmail;
     private String email;
 
-    public ChangeEmailFragment() {
-        // Required empty public constructor
-    }
-
     public static ChangeEmailFragment newInstance(String email) {
 
         Bundle args = new Bundle();

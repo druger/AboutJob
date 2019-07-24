@@ -27,11 +27,6 @@ public class ChangePasswordFragment extends BaseSupportFragment implements Chang
     private EditText etPassword;
     private Button btnChangePass;
 
-    public ChangePasswordFragment() {
-        // Required empty public constructor
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

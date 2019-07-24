@@ -191,12 +191,12 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         presenter.doneClick()
     }
 
-    override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+    override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
         when (position) {
             0 -> presenter.onSelectedWorkingStatus(position)
             1 -> presenter.onSelectedWorkedStatus(position)
             2 -> presenter.onSelectedInterviewStatus(position)
-            else -> { }
+            else -> { presenter.onSelectedWorkingStatus(position) }
         }
     }
 
