@@ -41,10 +41,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.druger.aboutwork.Const.Bundles.USER_ID;
-
 public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsView,
         RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
+
+    public static final String USER_ID = "userId";
 
     @InjectPresenter
     MyReviewsPresenter myReviewsPresenter;
@@ -88,14 +88,18 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
         setupRecycler(reviews);
         initSwipe();
 
-        Bundle bundle = this.getArguments();
+        getData(savedInstanceState);
+        return rootView;
+    }
+
+    private void getData(Bundle savedInstanceState) {
+        Bundle bundle = savedInstanceState != null ? savedInstanceState : getArguments();
         if (bundle != null) {
             userId = bundle.getString(USER_ID, userId);
         }
 
         if (userId != null) myReviewsPresenter.fetchReviews(userId);
         else showAuthAccess();
-        return rootView;
     }
 
     private void showAuthAccess() {
@@ -233,6 +237,12 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
             reviewAdapter.notifyItemRemoved(position);
             myReviewsPresenter.removeReview(position);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(USER_ID, userId);
     }
 
     // TODO сделать класс статическим
