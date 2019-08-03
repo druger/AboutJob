@@ -130,27 +130,18 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
 
     private void showChangePassword() {
         ChangePasswordFragment passwordFragment = new ChangePasswordFragment();
-        getFragmentManager().beginTransaction()
-                .replace(R.id.main_container, passwordFragment)
-                .addToBackStack(null)
-                .commit();
+        replaceFragment(passwordFragment, R.id.main_container, true);
     }
 
     private void showChangeName() {
         ChangeNameFragment nameFragment = new ChangeNameFragment();
-        getFragmentManager().beginTransaction()
-                .replace(R.id.main_container, nameFragment)
-                .addToBackStack(null)
-                .commit();
+        replaceFragment(nameFragment, R.id.main_container, true);
     }
 
     private void showChangeEmail() {
         String email = tvEmail.getText().toString().trim();
         ChangeEmailFragment changeEmail = ChangeEmailFragment.newInstance(email);
-        getFragmentManager().beginTransaction()
-                .replace(R.id.main_container, changeEmail)
-                .addToBackStack(null)
-                .commit();
+        replaceFragment(changeEmail, R.id.main_container, true);
     }
 
     private void showLogoutDialog() {

@@ -87,10 +87,6 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
     private Bundle bundle;
     private boolean editMode;
 
-    public SelectedReviewFragment() {
-        // Required empty public constructor
-    }
-
     public static SelectedReviewFragment newInstance(Review review, boolean editMode) {
 
         Bundle args = new Bundle();
@@ -338,11 +334,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
 
     private void showEditReview() {
         EditReviewFragment reviewFragment = EditReviewFragment.Companion.newInstance(review);
-
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_container, reviewFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        replaceFragment(reviewFragment, R.id.main_container, true);
     }
 
     private void clickDislike() {
@@ -407,7 +399,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
         UserReviewsFragment reviews = UserReviewsFragment.newInstance(userId);
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.company_container, reviews);
+        transaction.replace(R.id.main_container, reviews);
         transaction.addToBackStack(null);
         transaction.commit();
     }

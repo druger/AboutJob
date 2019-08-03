@@ -14,11 +14,9 @@ import android.widget.Toast
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.druger.aboutwork.App
-import com.druger.aboutwork.Const.Bundles.COMPANY_DETAIL
 import com.druger.aboutwork.R
 import com.druger.aboutwork.interfaces.view.AddReviewView
 import com.druger.aboutwork.model.City
-import com.druger.aboutwork.model.CompanyDetail
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.model.Vacancy
 import com.druger.aboutwork.presenters.AddReviewPresenter
@@ -39,20 +37,24 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     }
 
     companion object{
-        fun newInstance(companyDetail: CompanyDetail): AddReviewFragment {
+        fun newInstance(companyId: String, companyName: String): AddReviewFragment {
 
             val args = Bundle()
-            args.putParcelable(COMPANY_DETAIL, companyDetail)
+            args.putString(COMPANY_ID, companyId)
+            args.putString(COMPANY_NAME, companyName)
 
             val fragment = AddReviewFragment()
             fragment.arguments = args
             return fragment
         }
+
+        private const val COMPANY_ID = "companyId"
+        private const val COMPANY_NAME = "companyName"
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_review, container, false)
-        getBundles()
+        getData(savedInstanceState)
         datePicker = DatePickerFragment()
         return rootView
     }
@@ -69,6 +71,12 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     override fun onDestroy() {
         super.onDestroy()
         unbindDrawables(rootView)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(COMPANY_ID, presenter.companyId)
+        outState.putString(COMPANY_NAME, presenter.companyName)
     }
 
     private fun unbindDrawables(view: View) {
@@ -157,11 +165,10 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         ltInterviewDate.visibility = View.GONE
     }
 
-    private fun getBundles() {
-        val bundle = arguments
-        if (bundle != null) {
-            presenter.companyDetail = bundle.get(COMPANY_DETAIL) as CompanyDetail
-        }
+    private fun getData(savedInstanceState: Bundle?) {
+        val bundle = savedInstanceState ?: arguments
+        presenter.companyId = bundle?.getString(COMPANY_ID)
+        presenter.companyName = bundle?.getString(COMPANY_NAME)
     }
 
     private fun setupToolbar() {
@@ -184,12 +191,12 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         presenter.doneClick()
     }
 
-    override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+    override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
         when (position) {
             0 -> presenter.onSelectedWorkingStatus(position)
             1 -> presenter.onSelectedWorkedStatus(position)
             2 -> presenter.onSelectedInterviewStatus(position)
-            else -> { }
+            else -> { presenter.onSelectedWorkingStatus(position) }
         }
     }
 

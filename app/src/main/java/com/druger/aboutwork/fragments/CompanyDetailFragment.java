@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -29,6 +28,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.LoginActivity;
+import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.adapters.ReviewAdapter;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.CompanyDetailView;
@@ -43,11 +43,11 @@ import com.thefinestartist.finestwebview.FinestWebView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.druger.aboutwork.Const.Bundles.COMPANY_ID;
-
 public class CompanyDetailFragment extends BaseSupportFragment implements View.OnClickListener,
         CompanyDetailView {
     public static final int REVIEW_REQUEST = 0;
+    public static final String FRAGMENT_TAG = "companyDetail";
+    private static final String COMPANY_ID = "companyID";
 
     @InjectPresenter
     CompanyDetailPresenter presenter;
@@ -80,8 +80,9 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     private ReviewAdapter reviewAdapter;
 
     private CompanyDetail companyDetail;
+    private String companyId;
 
-    public static CompanyDetailFragment getInstance(String companyID) {
+    public static CompanyDetailFragment newInstance(String companyID) {
         CompanyDetailFragment companyDetail = new CompanyDetailFragment();
         Bundle bundle = new Bundle();
         bundle.putString(COMPANY_ID, companyID);
@@ -99,13 +100,26 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_company_detail, container, false);
 
-        presenter.getCompanyDetail(getArguments().getString(COMPANY_ID, ""));
+        detData(savedInstanceState);
         setupToolbar();
         setupUI();
         setupUX();
         setupRecycler(reviews);
         setupFabBehavior();
+        ((MainActivity) getActivity()).hideBottomNavigation();
         return rootView;
+    }
+
+    private void detData(Bundle savedInstanceState) {
+        Bundle bundle = savedInstanceState != null ? savedInstanceState : getArguments();
+        companyId = bundle.getString(COMPANY_ID);
+        presenter.getCompanyDetail(companyId);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(COMPANY_ID, companyId);
     }
 
     private void setupFabBehavior() {
@@ -117,11 +131,11 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         });
     }
 
-    private void setupUX() {
-        fabAddReview.setOnClickListener(this);
-        btnRetry.setOnClickListener(this);
-        btnLogin.setOnClickListener(v -> startActivity(new Intent(getContext(), LoginActivity.class)));
-    }
+        private void setupUX() {
+            fabAddReview.setOnClickListener(this);
+            btnRetry.setOnClickListener(this);
+            btnLogin.setOnClickListener(v -> startActivity(new Intent(getContext(), LoginActivity.class)));
+        }
 
     private void setupUI() {
         fabAddReview = bindView(R.id.fabAddReview);
@@ -168,11 +182,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
             @Override
             public void onClick(Review review, int position) {
                 SelectedReviewFragment reviewFragment = SelectedReviewFragment.newInstance(review, false);
-
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.company_container, reviewFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                replaceFragment(reviewFragment, R.id.main_container, true);
             }
 
             @Override
@@ -191,10 +201,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
 
     private void showDescription(String description) {
         CompanyDescriptionFragment fragment = CompanyDescriptionFragment.Companion.newInstance(description);
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.company_container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        replaceFragment(fragment, R.id.main_container, true);
     }
 
     private void showWebView(String site) {
@@ -210,12 +217,9 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
 
     @Override
     public void addReview() {
-        AddReviewFragment review = AddReviewFragment.Companion.newInstance(companyDetail);
-
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.company_container, review);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        AddReviewFragment review =
+                AddReviewFragment.Companion.newInstance(companyDetail.getId(), companyDetail.getName());
+        replaceFragment(review, R.id.main_container, true);
     }
 
     @Override
@@ -225,7 +229,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
                 presenter.checkAuthUser();
                 break;
             case R.id.btnRetry:
-                presenter.getCompanyDetail(getArguments().getString(COMPANY_ID, ""));
+                presenter.getCompanyDetail(companyId);
                 break;
             default:
                 break;

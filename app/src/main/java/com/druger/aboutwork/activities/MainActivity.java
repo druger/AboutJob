@@ -66,14 +66,13 @@ public class MainActivity extends MvpAppCompatActivity implements MainView,
     }
 
     private void setupUI() {
-        bottomNavigation = findViewById(R.id.bottom_navigation);
-
         fragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
         if (fragment == null) {
             fragment = new CompaniesFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.main_container, fragment).commit();
         }
+        bottomNavigation = findViewById(R.id.bottom_navigation);
     }
 
     private void showCompanies() {
@@ -100,7 +99,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView,
 
     public void hideBottomNavigation() {
         bottomNavigation.setVisibility(View.GONE);
-
     }
 
     public void showBottomNavigation() {

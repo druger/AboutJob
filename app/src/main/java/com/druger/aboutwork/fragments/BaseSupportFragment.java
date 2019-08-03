@@ -1,6 +1,9 @@
 package com.druger.aboutwork.fragments;
 
+import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -30,6 +33,12 @@ public abstract class BaseSupportFragment extends MvpAppCompatFragment implement
     @SuppressWarnings("unchecked")
     protected <T extends View> T bindView(@IdRes int id) {
         return (T) rootView.findViewById(id);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
@@ -75,6 +84,20 @@ public abstract class BaseSupportFragment extends MvpAppCompatFragment implement
 
     protected void setActionBar(Toolbar toolbar) {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+    }
+
+    protected void replaceFragment(Fragment fragment, @IdRes int container, boolean addToBackStack) {
+        final FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(container, fragment);
+        if (addToBackStack) transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    protected void addFragment(Fragment fragment, @IdRes int container, boolean addToBackStack) {
+        final FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.add(container, fragment);
+        if (addToBackStack) transaction.addToBackStack(null);
+        transaction.commit();
     }
 
 //    @Override

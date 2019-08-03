@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,10 +41,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.druger.aboutwork.Const.Bundles.USER_ID;
-
 public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsView,
         RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
+
+    public static final String USER_ID = "userId";
 
     @InjectPresenter
     MyReviewsPresenter myReviewsPresenter;
@@ -70,10 +69,6 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
 
     private String userId;
 
-    public MyReviewsFragment() {
-        // Required empty public constructor
-    }
-
     public static MyReviewsFragment newInstance(String userId) {
         MyReviewsFragment myReviews = new MyReviewsFragment();
         Bundle bundle = new Bundle();
@@ -93,14 +88,18 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
         setupRecycler(reviews);
         initSwipe();
 
-        Bundle bundle = this.getArguments();
+        getData(savedInstanceState);
+        return rootView;
+    }
+
+    private void getData(Bundle savedInstanceState) {
+        Bundle bundle = savedInstanceState != null ? savedInstanceState : getArguments();
         if (bundle != null) {
             userId = bundle.getString(USER_ID, userId);
         }
 
         if (userId != null) myReviewsPresenter.fetchReviews(userId);
         else showAuthAccess();
-        return rootView;
     }
 
     private void showAuthAccess() {
@@ -152,11 +151,7 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
 
     private void showSelectedReview(Review review) {
         SelectedReviewFragment reviewFragment = SelectedReviewFragment.newInstance(review, true);
-
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_container, reviewFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        replaceFragment(reviewFragment, R.id.main_container, true);
     }
 
     private void setupUI() {
@@ -242,6 +237,12 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
             reviewAdapter.notifyItemRemoved(position);
             myReviewsPresenter.removeReview(position);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(USER_ID, userId);
     }
 
     // TODO сделать класс статическим

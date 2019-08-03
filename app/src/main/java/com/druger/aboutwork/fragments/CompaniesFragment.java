@@ -1,8 +1,8 @@
 package com.druger.aboutwork.fragments;
 
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -16,7 +16,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
-import com.druger.aboutwork.activities.CompanyDetailActivity;
+import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.adapters.CompanyAdapter;
 import com.druger.aboutwork.adapters.CompanyRealmAdapter;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
@@ -34,7 +34,6 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.RealmResults;
 
-import static com.druger.aboutwork.Const.Bundles.COMPANY_ID;
 import static com.druger.aboutwork.Const.Bundles.DEBOUNCE_SEARCH;
 
 public class CompaniesFragment extends BaseSupportFragment implements CompaniesView {
@@ -55,6 +54,8 @@ public class CompaniesFragment extends BaseSupportFragment implements CompaniesV
     private SearchView searchView;
     private String query;
 
+    private Fragment fragment;
+
     @ProvidePresenter
     CompaniesPresenter provideCompaniesPresenter() {
         return App.Companion.getAppComponent().getCompaniesPresenter();
@@ -71,6 +72,7 @@ public class CompaniesFragment extends BaseSupportFragment implements CompaniesV
         setupListeners();
         setupRecyclerRealm();
         setupSearch();
+        ((MainActivity) getActivity()).showBottomNavigation();
         return rootView;
     }
 
@@ -206,11 +208,8 @@ public class CompaniesFragment extends BaseSupportFragment implements CompaniesV
     }
 
     private void showCompanyDetail(String id) {
-        Intent intent = new Intent(getActivity(), CompanyDetailActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString(COMPANY_ID, id);
-        intent.putExtras(bundle);
-        startActivity(intent);
+        fragment = CompanyDetailFragment.newInstance(id);
+        replaceFragment(fragment, R.id.main_container, true);
     }
 
     @Override
