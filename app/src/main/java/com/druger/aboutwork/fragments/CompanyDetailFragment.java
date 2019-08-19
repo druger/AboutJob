@@ -2,6 +2,7 @@ package com.druger.aboutwork.fragments;
 
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +11,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +19,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -36,7 +37,6 @@ import com.druger.aboutwork.model.CompanyDetail;
 import com.druger.aboutwork.model.Logo;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.CompanyDetailPresenter;
-import com.druger.aboutwork.utils.Utils;
 import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener;
 import com.thefinestartist.finestwebview.FinestWebView;
 
@@ -55,24 +55,18 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
     private FloatingActionButton fabAddReview;
     private CoordinatorLayout ltContent;
     TextView tvCompanyName;
-    TextView tvRating;
     TextView tvSite;
     TextView tvCity;
-    RatingBar ratingCompany;
-    ImageView ivRatingSalary;
-    ImageView ivRatingChief;
-    ImageView ivRatingWorkPlace;
-    ImageView ivRatingCareer;
-    ImageView ivRatingCollective;
-    ImageView ivRatingSocialPackage;
     ImageView ivLogo;
-    ImageView ivInfo;
     private NestedScrollView scrollView;
     private LinearLayout ltNoReviews;
     private ProgressBar progressReview;
     private RelativeLayout ltAuthCompany;
     private Button btnLogin;
     private TextView tvAuth;
+    private TextView tvShowDescription;
+    private TextView tvDescription;
+    private boolean descriptionShow;
 
     @SuppressWarnings("FieldCanBeLocal")
     private RecyclerView rvReviews;
@@ -135,6 +129,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
             fabAddReview.setOnClickListener(this);
             btnRetry.setOnClickListener(this);
             btnLogin.setOnClickListener(v -> startActivity(new Intent(getContext(), LoginActivity.class)));
+            tvShowDescription.setOnClickListener(v -> showDescription());
         }
 
     private void setupUI() {
@@ -145,23 +140,16 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         btnRetry = bindView(R.id.btnRetry);
         tvCompanyName = bindView(R.id.tvCompanyName);
         tvSite = bindView(R.id.tvSite);
-        tvRating = bindView(R.id.tvRating);
-        ratingCompany = bindView(R.id.ratingBarCompany);
-        ivRatingSalary = bindView(R.id.ivRatingSalary);
-        ivRatingChief = bindView(R.id.ivRatingChief);
-        ivRatingWorkPlace = bindView(R.id.ivRatingWorkPlace);
-        ivRatingCareer = bindView(R.id.ivRatingCareer);
-        ivRatingCollective = bindView(R.id.ivRatingCollective);
-        ivRatingSocialPackage = bindView(R.id.ivRatingSocialPackage);
         ivLogo = bindView(R.id.ivLogo);
         tvCity = bindView(R.id.tvCity);
-        ivInfo = bindView(R.id.ivInfo);
         scrollView = bindView(R.id.scrollView);
         ltNoReviews = bindView(R.id.ltNoReviews);
         progressReview = bindView(R.id.progressReview);
         ltAuthCompany = bindView(R.id.ltAuthCompany);
         btnLogin = bindView(R.id.btnLogin);
         tvAuth = bindView(R.id.tvAuth);
+        tvShowDescription = bindView(R.id.tvShowDescription);
+        tvDescription = bindView(R.id.tvDescription);
     }
 
     private void setupToolbar() {
@@ -199,9 +187,16 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         });
     }
 
-    private void showDescription(String description) {
-        CompanyDescriptionFragment fragment = CompanyDescriptionFragment.Companion.newInstance(description);
-        replaceFragment(fragment, R.id.main_container, true);
+    private void showDescription() {
+        if (descriptionShow) {
+            descriptionShow = false;
+            tvShowDescription.setText(R.string.show_all);
+            tvDescription.setMaxLines(4);
+        } else {
+            descriptionShow = true;
+            tvShowDescription.setText(R.string.hide);
+            tvDescription.setMaxLines(Integer.MAX_VALUE);
+        }
     }
 
     private void showWebView(String site) {
@@ -274,15 +269,18 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         presenter.getReviews(company.getId(), 1);
         setSite();
         tvCity.setText(companyDetail.getArea().getName());
-        setSalaryRating(5);
-        setChiefRating(3);
-        setWorkplaceRating(2);
-        setCarrierRating(1);
-        setCollectiveRating(4);
-        setSocialPackageRating(5);
         setCompanyName(companyDetail.getName());
         loadImage(companyDetail);
-        ivInfo.setOnClickListener(v -> showDescription(companyDetail.getDescription()));
+        setDescription();
+    }
+
+    private void setDescription() {
+        String description = companyDetail.getDescription();
+        tvDescription.setText(description);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            tvDescription.setText(Html.fromHtml(description, Html.FROM_HTML_MODE_LEGACY));
+        else tvDescription.setText(Html.fromHtml(description));
     }
 
     private void setSite() {
@@ -307,30 +305,6 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
 
     void setCompanyName(String name) {
         tvCompanyName.setText(name);
-    }
-
-    void setSalaryRating(int percent) {
-        ivRatingSalary.setImageBitmap(Utils.INSTANCE.crateArcBitmap(getContext(), percent));
-    }
-
-    void setChiefRating(int percent) {
-        ivRatingChief.setImageBitmap(Utils.INSTANCE.crateArcBitmap(getContext(), percent));
-    }
-
-    void setWorkplaceRating(int percent) {
-        ivRatingWorkPlace.setImageBitmap(Utils.INSTANCE.crateArcBitmap(getContext(), percent));
-    }
-
-    void setCarrierRating(int percent) {
-        ivRatingCareer.setImageBitmap(Utils.INSTANCE.crateArcBitmap(getContext(), percent));
-    }
-
-    void setCollectiveRating(int percent) {
-        ivRatingCollective.setImageBitmap(Utils.INSTANCE.crateArcBitmap(getContext(), percent));
-    }
-
-    void setSocialPackageRating(int percent) {
-        ivRatingSocialPackage.setImageBitmap(Utils.INSTANCE.crateArcBitmap(getContext(), percent));
     }
 
     @Override

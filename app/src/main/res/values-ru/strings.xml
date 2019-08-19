@@ -127,4 +127,6 @@
     <string name="add_phone_number">Добавить номер телефона</string>
     <string name="add_email">Добавить email</string>
     <string name="add_name">Добавить имя</string>
+    <string name="show_all">Показать полностью</string>
+    <string name="hide">Скрыть</string>
 </resources>
