@@ -26,7 +26,7 @@ class CompanyRealmAdapter(data: OrderedRealmCollection<CompanyRealm>, var clickL
     override fun onBindViewHolder(holder: CompanyVH, position: Int) {
         val company = data?.get(position)
         holder.tvName.text = company!!.name
-        holder.tvCity.text = company.city
+//        holder.tvCity.text = company.city
 
         Glide.with(holder.itemView.context)
                 .load(company.logo)
@@ -47,6 +47,6 @@ class CompanyRealmAdapter(data: OrderedRealmCollection<CompanyRealm>, var clickL
     inner class CompanyVH (itemView: View) : RecyclerView.ViewHolder(itemView){
         val ivLogo = itemView.ivLogoCompany
         val tvName = itemView.tvNameCompany
-        val tvCity = itemView.tvCity
+//        val tvCity = itemView.tvCity
     }
 }

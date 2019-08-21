@@ -128,7 +128,6 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
         TextView tvCountDislikes;
         ImageView ivLike;
         ImageView ivDislike;
-        ImageView ivReply;
 
         CommentVH(View itemView) {
             super(itemView);
@@ -139,7 +138,6 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
             tvCountDislikes = bindView(R.id.tvCountDislike);
             ivLike = bindView(R.id.ivLike);
             ivDislike = bindView(R.id.ivDislike);
-            ivReply = bindView(R.id.ivReply);
         }
     }
 

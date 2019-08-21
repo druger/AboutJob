@@ -56,8 +56,8 @@
     <string name="social_package">Social package</string>
     <string name="no_description">Company has not description</string>
 
-    <string name="pluses">Pluses*</string>
-    <string name="minuses">Minuses*</string>
+    <string name="pluses">Pluses</string>
+    <string name="minuses">Minuses</string>
     <string name="company_rating">Company rating*</string>
     <string name="status">Status*</string>
     <string name="working">Working</string>
