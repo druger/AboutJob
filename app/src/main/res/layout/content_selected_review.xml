@@ -16,13 +16,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            <android.support.v7.widget.CardView
                 android:id="@+id/cvContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                card_view:cardElevation="5dp"
-                card_view:cardUseCompatPadding="true"
-                card_view:contentPaddingBottom="5dp">
+                app:cardElevation="5dp"
+                app:cardUseCompatPadding="true"
+                app:contentPaddingBottom="5dp">
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
@@ -70,32 +70,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/tvPosition"
                         tools:text="@string/working" />
 
-                    <View
-                        android:id="@+id/line"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:background="@color/grey500"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvStatus" />
-
-                    <View
-                        android:id="@+id/line2"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@color/grey500"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/ratingbar_workplace" />
-
                     <TextView
                         android:id="@+id/tvDescriptionStatus"
                         android:layout_width="wrap_content"
@@ -111,10 +85,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="16dp"
                         android:text="@string/salary"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/line" />
+                        app:layout_constraintTop_toBottomOf="@+id/tvStatus" />
 
                     <TextView
                         android:id="@+id/tvCareer"
@@ -237,8 +211,8 @@
                         android:layout_marginTop="8dp"
                         android:maxLines="3"
                         android:textColor="@android:color/black"
-                        card_view:layout_constraintStart_toStartOf="@+id/tvPlusesDesc"
-                        card_view:layout_constraintTop_toBottomOf="@+id/tvPlusesDesc"
+                        app:layout_constraintStart_toStartOf="@+id/tvPlusesDesc"
+                        app:layout_constraintTop_toBottomOf="@+id/tvPlusesDesc"
                         tools:text="какие-то плюсы" />
 
                     <TextView
@@ -246,10 +220,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="16dp"
                         android:text="@string/pluses"
-                        card_view:layout_constraintStart_toStartOf="parent"
-                        card_view:layout_constraintTop_toBottomOf="@+id/line2" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ratingbar_workplace" />
 
                     <TextView
                         android:id="@+id/tvMinuses"
@@ -258,8 +232,8 @@
                         android:layout_marginTop="8dp"
                         android:maxLines="3"
                         android:textColor="@android:color/black"
-                        card_view:layout_constraintStart_toStartOf="@+id/tvMinusesDescp"
-                        card_view:layout_constraintTop_toBottomOf="@+id/tvMinusesDescp"
+                        app:layout_constraintStart_toStartOf="@+id/tvMinusesDescp"
+                        app:layout_constraintTop_toBottomOf="@+id/tvMinusesDescp"
                         tools:text="какие-то минусы" />
 
                     <TextView
@@ -280,8 +254,8 @@
                         android:gravity="center"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
-                        card_view:layout_constraintBottom_toBottomOf="@+id/ivDislike"
-                        card_view:layout_constraintTop_toTopOf="@+id/ivDislike"
+                        app:layout_constraintBottom_toBottomOf="@+id/ivDislike"
+                        app:layout_constraintTop_toTopOf="@+id/ivDislike"
                         tools:text="1" />
 
                     <TextView
@@ -292,8 +266,8 @@
                         android:gravity="center"
                         app:layout_constraintEnd_toStartOf="@+id/ivDislike"
                         app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
-                        card_view:layout_constraintBottom_toBottomOf="@+id/ivLike"
-                        card_view:layout_constraintTop_toTopOf="@+id/ivLike"
+                        app:layout_constraintBottom_toBottomOf="@+id/ivLike"
+                        app:layout_constraintTop_toTopOf="@+id/ivLike"
                         tools:text="2" />
 
                     <ImageView
