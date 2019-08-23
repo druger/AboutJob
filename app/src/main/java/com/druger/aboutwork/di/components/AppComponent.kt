@@ -1,8 +1,10 @@
 package com.druger.aboutwork.di.components
 
+import com.druger.aboutwork.activities.LoginActivity
 import com.druger.aboutwork.di.modules.AppModule
 import com.druger.aboutwork.di.modules.NetworkModule
 import com.druger.aboutwork.fragments.AccountFragment
+import com.druger.aboutwork.fragments.MyReviewsFragment
 import com.druger.aboutwork.presenters.*
 import dagger.Component
 import javax.inject.Singleton
@@ -26,4 +28,12 @@ interface AppComponent {
     val accountPresenter: AccountPresenter
 
     fun inject(fragment: AccountFragment)
+
+    fun inject(activity: LoginActivity)
+
+    fun inject(presenter: AddReviewPresenter)
+
+    fun inject(fragment: MyReviewsFragment)
+
+    fun inject(presenter: SelectedReviewPresenter)
 }

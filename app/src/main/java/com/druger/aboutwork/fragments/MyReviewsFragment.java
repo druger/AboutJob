@@ -34,12 +34,15 @@ import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.MyReviewsView;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.MyReviewsPresenter;
+import com.druger.aboutwork.utils.Analytics;
 import com.druger.aboutwork.utils.recycler.RecyclerItemTouchHelper;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsView,
         RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
@@ -48,6 +51,9 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
 
     @InjectPresenter
     MyReviewsPresenter myReviewsPresenter;
+
+    @Inject
+    Analytics analytics;
 
     private RecyclerView rvReviews;
     private MyReviewAdapter reviewAdapter;
@@ -144,6 +150,7 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
                     simpleCallback.setItemSwipe(false);
                 }
                 toggleSelection(position);
+                analytics.logEvent(Analytics.LONG_CLICK_MY_REVIEW);
                 return true;
             }
         });
@@ -236,6 +243,7 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
             reviews.remove(position);
             reviewAdapter.notifyItemRemoved(position);
             myReviewsPresenter.removeReview(position);
+            analytics.logEvent(Analytics.SWIPE_MY_REVIEW);
         }
     }
 
