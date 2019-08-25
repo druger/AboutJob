@@ -3,9 +3,11 @@ package com.druger.aboutwork.presenters;
 import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.db.RealmHelper;
 import com.druger.aboutwork.interfaces.view.AccountView;
+import com.druger.aboutwork.utils.Analytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -18,11 +20,20 @@ import javax.inject.Inject;
 @InjectViewState
 public class AccountPresenter extends BasePresenter<AccountView> {
 
+    @Inject
+    Analytics analytics;
+
     private FirebaseUser user;
 
     @Inject
     public AccountPresenter(RealmHelper realmHelper) {
         this.realmHelper = realmHelper;
+    }
+
+    @Override
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
+        App.Companion.getAppComponent().inject(this);
     }
 
     public void getUserInfo() {
@@ -49,6 +60,7 @@ public class AccountPresenter extends BasePresenter<AccountView> {
                             Log.d(TAG, "User account deleted.");
                             getViewState().showToast(R.string.profile_deleted);
                             getViewState().showMainActivity();
+                            analytics.logEvent(Analytics.REMOVE_ACCOUNT);
                         } else {
                             getViewState().showToast(R.string.failed_delete_user);
                         }

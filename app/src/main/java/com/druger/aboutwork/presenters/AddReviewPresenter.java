@@ -3,6 +3,7 @@ package com.druger.aboutwork.presenters;
 import android.text.TextUtils;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.druger.aboutwork.App;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.view.AddReviewView;
 import com.druger.aboutwork.model.Company;
@@ -11,6 +12,7 @@ import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.rest.RestApi;
 import com.druger.aboutwork.rest.models.CityResponse;
 import com.druger.aboutwork.rest.models.VacancyResponse;
+import com.druger.aboutwork.utils.Analytics;
 import com.druger.aboutwork.utils.rx.RxUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,6 +36,9 @@ public class AddReviewPresenter extends BasePresenter<AddReviewView> {
         this.restApi = restApi;
     }
 
+    @Inject
+    Analytics analytics;
+
     private int status = NOT_SELECTED_STATUS;
 
     public String companyId;
@@ -41,6 +46,12 @@ public class AddReviewPresenter extends BasePresenter<AddReviewView> {
 
     public Review review;
     private MarkCompany mark;
+
+    @Override
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
+        App.Companion.getAppComponent().inject(this);
+    }
 
     public void setupReview() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -51,6 +62,7 @@ public class AddReviewPresenter extends BasePresenter<AddReviewView> {
     }
 
     public void doneClick() {
+        analytics.logEvent(Analytics.ADD_REVIEW_CLICK);
         Company company = new Company(companyId, companyName);
         addReview(company);
     }
@@ -123,6 +135,7 @@ public class AddReviewPresenter extends BasePresenter<AddReviewView> {
     }
 
     public void onSelectedWorkingStatus(int position) {
+        analytics.logEvent(Analytics.WORKING_STATUS_CLICK);
         getViewState().showWorkingDate();
 
         status = position;
@@ -130,6 +143,7 @@ public class AddReviewPresenter extends BasePresenter<AddReviewView> {
     }
 
     public void onSelectedWorkedStatus(int position) {
+        analytics.logEvent(Analytics.WORKED_STATUS_CLICK);
         getViewState().showWorkedDate();
 
         status = position;
@@ -137,8 +151,25 @@ public class AddReviewPresenter extends BasePresenter<AddReviewView> {
     }
 
     public void onSelectedInterviewStatus(int position) {
+        analytics.logEvent(Analytics.INTERVIEW_STATUS_CLICK);
         getViewState().showInterviewDate();
 
         status = position;
+    }
+
+    public void closeClick() {
+        analytics.logEvent(Analytics.CLOSE_ADD_REVIEW_CLICK);
+    }
+
+    public void employmentDateClick() {
+        analytics.logEvent(Analytics.EMPLOYMENT_DATE_CLICK);
+    }
+
+    public void dismissalDateClick() {
+        analytics.logEvent(Analytics.DISMISSAL_DATE_CLICK);
+    }
+
+    public void interviewDateClick() {
+        analytics.logEvent(Analytics.INTERVIEW_DATE_CLICK);
     }
 }

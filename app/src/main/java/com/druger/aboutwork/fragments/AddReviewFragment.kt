@@ -135,18 +135,21 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     }
 
     private fun interviewDateClick() {
+        presenter.interviewDateClick()
         datePicker.flag = DatePickerFragment.INTERVIEW_DATE
         datePicker.show(fragmentManager, DatePickerFragment.TAG)
         datePicker.setData(etInterviewDate, getReview())
     }
 
     private fun dismissalDateClick() {
+        presenter.dismissalDateClick()
         datePicker.flag = DatePickerFragment.DISMISSAL_DATE
         datePicker.show(fragmentManager, DatePickerFragment.TAG)
         datePicker.setData(etDismissalDate, getReview())
     }
 
     private fun employmentDateClick() {
+        presenter.employmentDateClick()
         datePicker.flag = DatePickerFragment.EMPLOYMENT_DATE
         datePicker.show(fragmentManager, DatePickerFragment.TAG)
         datePicker.setData(etEmploymentDate, getReview())
@@ -179,6 +182,7 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     }
 
     private fun closeClick() {
+        presenter.closeClick()
         fragmentManager?.popBackStackImmediate()
     }
 

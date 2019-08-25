@@ -4,7 +4,9 @@ import android.content.Context
 import android.preference.PreferenceManager
 import com.druger.aboutwork.App
 import com.druger.aboutwork.db.RealmHelper
+import com.druger.aboutwork.utils.Analytics
 import com.druger.aboutwork.utils.PreferencesHelper
+import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -17,6 +19,7 @@ import javax.inject.Singleton
 class AppModule(private val app: App) {
     private val preferencesHelper: PreferencesHelper = PreferencesHelper(PreferenceManager.getDefaultSharedPreferences(app))
     private val realmHelper: RealmHelper = RealmHelper()
+    private val analytics: Analytics = Analytics(FirebaseAnalytics.getInstance(app))
 
     @Singleton
     @Provides
@@ -35,4 +38,8 @@ class AppModule(private val app: App) {
     internal fun provideRealmHelper(): RealmHelper {
         return realmHelper
     }
+
+    @Singleton
+    @Provides
+    internal fun provideAnalytics(): Analytics = analytics
 }
