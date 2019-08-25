@@ -29,5 +29,8 @@ class Analytics(val firebase: FirebaseAnalytics) {
         const val LONG_CLICK_MY_COMMENT = "long_click_my_comment"
         const val ADD_COMMENT = "add_comment"
         const val UPDATE_COMMENT = "update_comment"
+        const val DELETE_COMMENT = "delete_comment"
+
+        const val REMOVE_ACCOUNT = "remove_account"
     }
 }

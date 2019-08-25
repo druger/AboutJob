@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.LoginActivity;
 import com.druger.aboutwork.activities.MainActivity;
@@ -81,6 +82,12 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
         bundle.putString(USER_ID, userId);
         myReviews.setArguments(bundle);
         return myReviews;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        App.Companion.getAppComponent().inject(this);
     }
 
     @Override

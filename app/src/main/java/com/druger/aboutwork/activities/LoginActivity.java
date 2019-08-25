@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.druger.aboutwork.App;
 import com.druger.aboutwork.BuildConfig;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.db.FirebaseHelper;
@@ -33,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        App.Companion.getAppComponent().inject(this);
         showAuthUI();
     }
 

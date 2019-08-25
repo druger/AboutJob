@@ -1,6 +1,7 @@
 package com.druger.aboutwork.presenters
 
 import com.arellomobile.mvp.InjectViewState
+import com.druger.aboutwork.App
 import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.db.FirebaseHelper.getComments
 import com.druger.aboutwork.interfaces.view.SelectedReview
@@ -26,6 +27,11 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
 
     private var comments: List<Comment> = emptyList()
     lateinit var comment: Comment
+
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        App.appComponent.inject(this)
+    }
 
     override fun attachView(view: SelectedReview?) {
         super.attachView(view)
@@ -65,6 +71,7 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
         FirebaseHelper.deleteComment(comment.id)
         comments = comments.toMutableList().apply { removeAt(position) }
         viewState.notifyItemRemoved(position, comments.size)
+        analytics.logEvent(Analytics.DELETE_COMMENT)
     }
 
     fun retrieveComments(reviewId: String) {

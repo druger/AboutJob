@@ -36,4 +36,6 @@ interface AppComponent {
     fun inject(fragment: MyReviewsFragment)
 
     fun inject(presenter: SelectedReviewPresenter)
+
+    fun inject(presenter: AccountPresenter)
 }

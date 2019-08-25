@@ -3,6 +3,7 @@ package com.druger.aboutwork.presenters;
 import android.text.TextUtils;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.druger.aboutwork.App;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.view.AddReviewView;
 import com.druger.aboutwork.model.Company;
@@ -45,6 +46,12 @@ public class AddReviewPresenter extends BasePresenter<AddReviewView> {
 
     public Review review;
     private MarkCompany mark;
+
+    @Override
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
+        App.Companion.getAppComponent().inject(this);
+    }
 
     public void setupReview() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
