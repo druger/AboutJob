@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RatingBar
+            android:id="@+id/rbSalary"
+            style="@style/reviewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:stepSize="1"
+            app:layout_constraintEnd_toEndOf="@+id/tvSalary"
+            app:layout_constraintStart_toStartOf="@+id/tvSalary"
+            app:layout_constraintTop_toBottomOf="@+id/tvSalary" />
+
+        <RatingBar
+            android:id="@+id/rbCareer"
+            style="@style/reviewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:stepSize="1"
+            app:layout_constraintEnd_toEndOf="@+id/tvCareer"
+            app:layout_constraintStart_toStartOf="@+id/tvCareer"
+            app:layout_constraintTop_toBottomOf="@+id/tvCareer" />
+
+        <RatingBar
+            android:id="@+id/rbCollective"
+            style="@style/reviewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:stepSize="1"
+            app:layout_constraintEnd_toEndOf="@+id/tvCollective"
+            app:layout_constraintStart_toStartOf="@+id/tvCollective"
+            app:layout_constraintTop_toBottomOf="@+id/tvCollective" />
+
+        <RatingBar
+            android:id="@+id/rbSocialPackage"
+            style="@style/reviewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:stepSize="1"
+            app:layout_constraintEnd_toEndOf="@+id/tvSocialPackage"
+            app:layout_constraintStart_toStartOf="@+id/tvSocialPackage"
+            app:layout_constraintTop_toBottomOf="@+id/tvSocialPackage" />
+
+        <RatingBar
+            android:id="@+id/rbChief"
+            style="@style/reviewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:stepSize="1"
+            app:layout_constraintEnd_toEndOf="@+id/tvChief"
+            app:layout_constraintStart_toStartOf="@+id/tvChief"
+            app:layout_constraintTop_toBottomOf="@+id/tvChief" />
+
+        <RatingBar
+            android:id="@+id/rbWorkplace"
+            style="@style/reviewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:stepSize="1"
+            app:layout_constraintEnd_toEndOf="@+id/tvWorkplace"
+            app:layout_constraintStart_toStartOf="@+id/tvWorkplace"
+            app:layout_constraintTop_toBottomOf="@+id/tvWorkplace" />
+
+        <Spinner
+            android:id="@+id/spinnerStatus"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvSalary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/salary"
+            app:layout_constraintEnd_toStartOf="@+id/tvCareer"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerStatus" />
+
+        <TextView
+            android:id="@+id/tvCareer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/career"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvSalary"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerStatus" />
+
+        <TextView
+            android:id="@+id/tvCollective"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/collective"
+            app:layout_constraintEnd_toEndOf="@+id/rbCareer"
+            app:layout_constraintStart_toStartOf="@+id/rbCareer"
+            app:layout_constraintTop_toBottomOf="@+id/rbCareer" />
+
+        <TextView
+            android:id="@+id/tvSocialPackage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/social_package"
+            app:layout_constraintEnd_toEndOf="@+id/rbCollective"
+            app:layout_constraintStart_toStartOf="@+id/rbCollective"
+            app:layout_constraintTop_toBottomOf="@+id/rbCollective" />
+
+        <TextView
+            android:id="@+id/tvChief"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/chief"
+            app:layout_constraintEnd_toEndOf="@+id/rbSalary"
+            app:layout_constraintStart_toStartOf="@+id/rbSalary"
+            app:layout_constraintTop_toBottomOf="@+id/rbSalary" />
+
+        <TextView
+            android:id="@+id/tvWorkplace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/workplace"
+            app:layout_constraintEnd_toEndOf="@+id/rbChief"
+            app:layout_constraintStart_toStartOf="@+id/rbChief"
+            app:layout_constraintTop_toBottomOf="@+id/rbChief" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/color_separate_line"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rbSocialPackage" />
+
+        <android.support.constraint.Group
+            android:id="@+id/group_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="rbCollective,rbSocialPackage,tvWorkplace,tvCollective,tvSalary,tvChief,rbChief,tvSocialPackage,tvCareer,rbSalary,rbWorkplace,rbCareer,view" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/position"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view">
+
+            <AutoCompleteTextView
+                android:id="@+id/etPosition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/position_" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/ltPluses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/position">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/etPluses"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/pluses" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/ltMinuses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ltPluses">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/etMinuses"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/minuses" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ltMinuses">
+
+            <AutoCompleteTextView
+                android:id="@+id/etCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/city" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/ltEmploymentDate"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/etEmploymentDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:focusableInTouchMode="false"
+                android:hint="@string/empoyment_date"
+                android:inputType="none" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/ltDismissalDate"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/etDismissalDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:focusableInTouchMode="false"
+                android:hint="@string/dismissal_date"
+                android:inputType="none" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/ltInterviewDate"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/etInterviewDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:focusableInTouchMode="false"
+                android:hint="@string/interview_date"
+                android:inputType="none" />
+        </android.support.design.widget.TextInputLayout>
+
+        <include
+            android:id="@+id/include2"
+            layout="@layout/separate_line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerStatus" />
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
+
