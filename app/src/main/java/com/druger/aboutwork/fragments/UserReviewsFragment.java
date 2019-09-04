@@ -84,7 +84,7 @@ public class UserReviewsFragment extends BaseSupportFragment implements UserRevi
         reviewAdapter.setOnClickListener(new OnItemClickListener<Review>() {
             @Override
             public void onClick(Review review, int position) {
-                SelectedReviewFragment reviewFragment = SelectedReviewFragment.newInstance(review, false);
+                SelectedReviewFragment reviewFragment = SelectedReviewFragment.newInstance(review.getFirebaseKey(), false);
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.main_container, reviewFragment);

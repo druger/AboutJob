@@ -44,7 +44,6 @@ import java.util.Date;
 import java.util.List;
 
 import static com.druger.aboutwork.Const.Bundles.EDIT_MODE;
-import static com.druger.aboutwork.Const.Bundles.REVIEW;
 import static com.druger.aboutwork.Const.Colors.DISLIKE;
 import static com.druger.aboutwork.Const.Colors.GRAY_500;
 import static com.druger.aboutwork.Const.Colors.LIKE;
@@ -54,6 +53,8 @@ import static com.druger.aboutwork.Const.Colors.RED_500;
 public class SelectedReviewFragment extends BaseSupportFragment implements View.OnClickListener, SelectedReview {
     private static final int NEW = 0;
     private static final int UPDATE = 1;
+    private static final String REVIEW_KEY = "review_key";
+
     private int type = NEW;
 
     @InjectPresenter
@@ -64,6 +65,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
     private ImageView ivLike;
     private ImageView ivDislike;
     private Review review;
+    private String reviewKey;
     private ImageView ivEdit;
     private EditText etMessage;
     private ImageView ivSend;
@@ -87,10 +89,10 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
     private Bundle bundle;
     private boolean editMode;
 
-    public static SelectedReviewFragment newInstance(Review review, boolean editMode) {
+    public static SelectedReviewFragment newInstance(String reviewKey, boolean editMode) {
 
         Bundle args = new Bundle();
-        args.putParcelable(REVIEW, review);
+        args.putString(REVIEW_KEY, reviewKey);
         args.putBoolean(EDIT_MODE, editMode);
 
         SelectedReviewFragment fragment = new SelectedReviewFragment();
@@ -115,12 +117,12 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
 
     private void getBundles() {
         bundle = getArguments();
-        review = bundle.getParcelable(REVIEW);
+        reviewKey = bundle.getString(REVIEW_KEY);
         editMode = getArguments().getBoolean(EDIT_MODE);
     }
 
     private void retrieveComments() {
-        presenter.retrieveComments(review.getFirebaseKey());
+        presenter.retrieveComments(reviewKey);
     }
 
     private void setupListeners() {
@@ -235,6 +237,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
     }
 
     private void setReview() {
+        review = presenter.getReview(reviewKey);
         if (review != null) {
             boolean myLike = review.isMyLike();
             boolean myDislike = review.isMyDislike();
@@ -250,21 +253,21 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
                 ivDislike.setTag(getActivity().getString(R.string.dislike_active));
                 ivDislike.setColorFilter(Color.parseColor(DISLIKE));
             }
+            tvPluses.setText(Utils.getQuoteSpan(getActivity(), review.getPluses(), R.color.review_positive));
+            tvMinuses.setText(Utils.getQuoteSpan(getActivity(), review.getMinuses(), R.color.review_negative));
+            tvName.setText(review.getName());
+            tvDate.setText(Utils.getDate(review.getDate()));
+            tvPosition.setText(review.getPosition());
+            rbSalary.setRating(review.getMarkCompany().getSalary());
+            rbCareer.setRating(review.getMarkCompany().getCareer());
+            rbCollective.setRating(review.getMarkCompany().getCollective());
+            rbSocialPackage.setRating(review.getMarkCompany().getSocialPackage());
+            rbChief.setRating(review.getMarkCompany().getChief());
+            rbWorkplace.setRating(review.getMarkCompany().getWorkplace());
+            tvDislike.setText(String.valueOf(review.getDislike()));
+            tvLike.setText(String.valueOf(review.getLike()));
+            setExperience(review);
         }
-        tvPluses.setText(Utils.getQuoteSpan(getActivity(), review.getPluses(), R.color.review_positive));
-        tvMinuses.setText(Utils.getQuoteSpan(getActivity(), review.getMinuses(), R.color.review_negative));
-        tvName.setText(review.getName());
-        tvDate.setText(Utils.getDate(review.getDate()));
-        tvPosition.setText(review.getPosition());
-        rbSalary.setRating(review.getMarkCompany().getSalary());
-        rbCareer.setRating(review.getMarkCompany().getCareer());
-        rbCollective.setRating(review.getMarkCompany().getCollective());
-        rbSocialPackage.setRating(review.getMarkCompany().getSocialPackage());
-        rbChief.setRating(review.getMarkCompany().getChief());
-        rbWorkplace.setRating(review.getMarkCompany().getWorkplace());
-        tvDislike.setText(String.valueOf(review.getDislike()));
-        tvLike.setText(String.valueOf(review.getLike()));
-        setExperience(review);
     }
 
     private void setExperience(Review review) {

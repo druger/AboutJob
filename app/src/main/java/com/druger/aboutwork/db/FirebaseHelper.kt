@@ -104,10 +104,6 @@ object FirebaseHelper {
         return storage.reference.child(AVATARS + userId + AVATAR_NANE)
     }
 
-    fun savePhoto(storage: FirebaseStorage, userId: String): StorageReference {
-        return storage.reference.child(AVATARS + userId + AVATAR_NANE)
-    }
-
     fun getComments(reference: DatabaseReference, reviewId: String): Query {
         return reference.child(COMMENTS).orderByChild(REVIEW_ID).equalTo(reviewId)
     }
@@ -124,6 +120,9 @@ object FirebaseHelper {
     fun getReviews(dbReference: DatabaseReference, userId: String): Query {
         return dbReference.child(REVIEWS).orderByChild(USER_ID).equalTo(userId)
     }
+
+    fun getReview(dbReference: DatabaseReference, reviewKey: String): Query =
+        dbReference.child(REVIEWS).child(reviewKey)
 
     fun getCompanies(dbReference: DatabaseReference, companyId: String): Query {
         return dbReference.child(COMPANIES).orderByChild(ID).equalTo(companyId)
