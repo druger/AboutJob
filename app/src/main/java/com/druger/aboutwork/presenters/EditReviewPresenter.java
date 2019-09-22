@@ -1,6 +1,8 @@
 package com.druger.aboutwork.presenters;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.view.EditReviewView;
@@ -10,6 +12,13 @@ import com.druger.aboutwork.rest.RestApi;
 import com.druger.aboutwork.rest.models.CityResponse;
 import com.druger.aboutwork.rest.models.VacancyResponse;
 import com.druger.aboutwork.utils.rx.RxUtils;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
@@ -31,6 +40,9 @@ public class EditReviewPresenter extends BasePresenter<EditReviewView> {
 
     private Review review;
     private MarkCompany mark;
+
+    private DatabaseReference dbReference = FirebaseDatabase.getInstance().getReference();
+    private ValueEventListener reviewListener;
 
     public void setupRating(Review review) {
          this.review = review;
@@ -125,7 +137,23 @@ public class EditReviewPresenter extends BasePresenter<EditReviewView> {
 
     public void onSelectedInterviewStatus(int position) {
         getViewState().showInterviewDate();
-
         status = position;
+    }
+
+    public void getReview(String reviewKey) {
+        Query queryReview = FirebaseHelper.INSTANCE.getReview(dbReference, reviewKey);
+        reviewListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                review = dataSnapshot.getValue(Review.class);
+                getViewState().setReview(review);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        queryReview.addValueEventListener(reviewListener);
     }
 }

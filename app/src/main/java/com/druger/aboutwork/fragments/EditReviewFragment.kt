@@ -13,7 +13,6 @@ import android.widget.Toast
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.druger.aboutwork.App
-import com.druger.aboutwork.Const.Bundles.REVIEW
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.interfaces.view.EditReviewView
@@ -37,14 +36,17 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
     }
 
     private lateinit var review: Review
+    private lateinit var reviewKey: String
     private lateinit var datePicker: DatePickerFragment
 
     companion object{
-        fun newInstance(review: Review): EditReviewFragment {
+        private const val REVIEW_KEY = "review_key"
+
+        fun newInstance(reviewKey: String): EditReviewFragment {
             val args = Bundle()
 
             val fragment = EditReviewFragment()
-            args.putParcelable(REVIEW, review)
+            args.putString(REVIEW_KEY, reviewKey)
             fragment.arguments = args
             return fragment
         }
@@ -53,6 +55,7 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_review, container, false)
         getBundles()
+        getReview()
         datePicker = DatePickerFragment()
         (activity as MainActivity).hideBottomNavigation()
         return rootView
@@ -154,10 +157,15 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
     }
 
     private fun getBundles() {
-        val bundle = arguments
-        if (bundle != null) {
-            review = bundle.get(REVIEW) as Review
-        }
+        arguments?.let { reviewKey = it.getString(REVIEW_KEY) }
+    }
+
+    private fun getReview() {
+        presenter.getReview(reviewKey)
+    }
+
+    override fun setReview(review: Review) {
+        this.review = review
     }
 
     private fun setupToolbar() {

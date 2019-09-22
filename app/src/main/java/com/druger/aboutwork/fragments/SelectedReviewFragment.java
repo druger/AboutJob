@@ -108,7 +108,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
         setupToolbar();
         setUI();
         setUX();
-        setReview();
+        getReview();
         setupComments();
         retrieveComments();
         setupListeners();
@@ -236,9 +236,14 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
          else ivEdit.setVisibility(View.GONE);
     }
 
-    private void setReview() {
-        review = presenter.getReview(reviewKey);
+    private void getReview() {
+        presenter.getReview(reviewKey);
+    }
+
+    @Override
+    public void setReview(Review review) {
         if (review != null) {
+            this.review = review;
             boolean myLike = review.isMyLike();
             boolean myDislike = review.isMyDislike();
             if (!myLike) {
@@ -336,7 +341,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
     }
 
     private void showEditReview() {
-        EditReviewFragment reviewFragment = EditReviewFragment.Companion.newInstance(review);
+        EditReviewFragment reviewFragment = EditReviewFragment.Companion.newInstance(review.getFirebaseKey());
         replaceFragment(reviewFragment, R.id.main_container, true);
     }
 

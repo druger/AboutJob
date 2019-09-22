@@ -99,16 +99,16 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
         reviewListener.let { dbReference.removeEventListener(reviewListener) }
     }
 
-    fun getReview(reviewKey: String): Review? {
+    fun getReview(reviewKey: String) {
         val queryReview = FirebaseHelper.getReview(dbReference, reviewKey)
         reviewListener = object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 review = snapshot.getValue(Review::class.java)
+                viewState.setReview(review)
             }
         }
         queryReview.addValueEventListener(reviewListener)
-        return review
     }
 }

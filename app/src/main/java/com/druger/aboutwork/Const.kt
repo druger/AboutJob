@@ -10,9 +10,7 @@ object Const {
 
         const val DEBOUNCE_SEARCH = 300
 
-        const val REVIEW_ID = "reviewId"
         const val EDIT_MODE = "editMode"
-        const val REVIEW = "review"
         const val NAME = "name"
         const val USER_ID = "userId"
         const val EMAIL = "email"
