@@ -164,7 +164,7 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
     }
 
     private void showSelectedReview(Review review) {
-        SelectedReviewFragment reviewFragment = SelectedReviewFragment.newInstance(review, true);
+        SelectedReviewFragment reviewFragment = SelectedReviewFragment.newInstance(review.getFirebaseKey(), true);
         replaceFragment(reviewFragment, R.id.main_container, true);
     }
 

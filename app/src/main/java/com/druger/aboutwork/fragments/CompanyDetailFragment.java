@@ -169,7 +169,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         reviewAdapter.setOnClickListener(new OnItemClickListener<Review>() {
             @Override
             public void onClick(Review review, int position) {
-                SelectedReviewFragment reviewFragment = SelectedReviewFragment.newInstance(review, false);
+                SelectedReviewFragment reviewFragment = SelectedReviewFragment.newInstance(review.getFirebaseKey(), false);
                 replaceFragment(reviewFragment, R.id.main_container, true);
             }
 

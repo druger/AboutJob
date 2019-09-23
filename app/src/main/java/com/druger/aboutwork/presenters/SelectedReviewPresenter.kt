@@ -6,6 +6,7 @@ import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.db.FirebaseHelper.getComments
 import com.druger.aboutwork.interfaces.view.SelectedReview
 import com.druger.aboutwork.model.Comment
+import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.utils.Analytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -24,9 +25,11 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
 
     private var user: FirebaseUser? = null
     private var dbReference = FirebaseDatabase.getInstance().reference
+    private lateinit var reviewListener: ValueEventListener
 
     private var comments: List<Comment> = emptyList()
     lateinit var comment: Comment
+    private var review: Review? = null
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -93,5 +96,20 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
 
     fun removeListeners() {
         dbReference.removeEventListener(this)
+        reviewListener.let { dbReference.removeEventListener(reviewListener) }
+    }
+
+    fun getReview(reviewKey: String) {
+        val queryReview = FirebaseHelper.getReview(dbReference, reviewKey)
+        reviewListener = object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {}
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                review = snapshot.getValue(Review::class.java)
+                review?.firebaseKey = snapshot.key
+                viewState.setReview(review)
+            }
+        }
+        queryReview.addValueEventListener(reviewListener)
     }
 }
