@@ -146,7 +146,10 @@ public class EditReviewPresenter extends BasePresenter<EditReviewView> {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 review = dataSnapshot.getValue(Review.class);
-                getViewState().setReview(review);
+                if (review != null) {
+                    review.setFirebaseKey(dataSnapshot.getKey());
+                    getViewState().setReview(review);
+                }
             }
 
             @Override

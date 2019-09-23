@@ -341,7 +341,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
     }
 
     private void showEditReview() {
-        EditReviewFragment reviewFragment = EditReviewFragment.Companion.newInstance(review.getFirebaseKey());
+        EditReviewFragment reviewFragment = EditReviewFragment.Companion.newInstance(reviewKey);
         replaceFragment(reviewFragment, R.id.main_container, true);
     }
 

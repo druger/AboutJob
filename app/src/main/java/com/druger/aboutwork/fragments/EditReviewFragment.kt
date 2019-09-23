@@ -54,8 +54,6 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_review, container, false)
-        getBundles()
-        getReview()
         datePicker = DatePickerFragment()
         (activity as MainActivity).hideBottomNavigation()
         return rootView
@@ -63,12 +61,11 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUI()
+        getBundles()
+        getReview()
         setupToolbar()
         setDateVisibility()
-        setupWorkStatus()
         setupListeners()
-        presenter.setupRating(review)
     }
 
     private fun setupListeners() {
@@ -166,6 +163,9 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
 
     override fun setReview(review: Review) {
         this.review = review
+        setUI()
+        setupWorkStatus()
+        presenter.setupRating(review)
     }
 
     private fun setupToolbar() {

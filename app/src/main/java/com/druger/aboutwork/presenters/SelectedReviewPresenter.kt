@@ -106,6 +106,7 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 review = snapshot.getValue(Review::class.java)
+                review?.firebaseKey = snapshot.key
                 viewState.setReview(review)
             }
         }
