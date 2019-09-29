@@ -166,49 +166,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
                     tools:text="3.0" />
 
-                <TextView
-                    android:id="@+id/tvDislike"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/ivDislike"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
-                    app:layout_constraintTop_toTopOf="@+id/ivDislike"
-                    tools:text="1" />
-
-                <TextView
-                    android:id="@+id/tvLike"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintEnd_toStartOf="@+id/ivDislike"
-                    app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
-                    card_view:layout_constraintBottom_toBottomOf="@+id/ivLike"
-                    card_view:layout_constraintTop_toTopOf="@+id/ivLike"
-                    tools:text="2" />
-
-                <ImageView
-                    android:id="@+id/ivDislike"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/ultra_small_margin"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvRating"
-                    app:layout_constraintEnd_toStartOf="@+id/tvDislike"
-                    app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
-                    app:layout_constraintTop_toTopOf="@+id/tvRating"
-                    app:srcCompat="@drawable/thumb_down" />
-
-                <ImageView
-                    android:id="@+id/ivLike"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/ultra_small_margin"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvRating"
-                    app:layout_constraintEnd_toStartOf="@+id/tvLike"
-                    app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
-                    app:layout_constraintTop_toTopOf="@+id/tvRating"
-                    app:srcCompat="@drawable/thumb_up" />
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.CardView>
     </RelativeLayout>

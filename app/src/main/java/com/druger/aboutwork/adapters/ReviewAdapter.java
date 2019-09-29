@@ -8,11 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.druger.aboutwork.R;
-import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.utils.Utils;
@@ -20,10 +18,6 @@ import com.druger.aboutwork.utils.Utils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static com.druger.aboutwork.Const.Colors.DISLIKE;
-import static com.druger.aboutwork.Const.Colors.GRAY_500;
-import static com.druger.aboutwork.Const.Colors.LIKE;
 
 /**
  * Created by druger on 29.01.2017.
@@ -60,9 +54,6 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             reviewVH.clReviewCard.setBackgroundColor(isSelected(position)
                     ? ContextCompat.getColor(reviewVH.clReviewCard.getContext(), R.color.selected_review) : Color.WHITE);
 
-            setColorLikeAndDislike(reviewVH, review);
-            onLikeClick(reviewVH, review);
-            onDislikeClick(reviewVH, review);
             setStatus(reviewVH, review);
             reviewVH.tvPluses.setText(Utils.getQuoteSpan(reviewVH.itemView.getContext(),
                     review.getPluses(), R.color.review_positive));
@@ -73,8 +64,6 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             reviewVH.tvDate.setText(Utils.getDate(review.getDate()));
             reviewVH.tvPosition.setText(review.getPosition());
             reviewVH.tvRating.setText(String.valueOf(review.getMarkCompany().getAverageMark()));
-            reviewVH.tvDislike.setText(String.valueOf(review.getDislike()));
-            reviewVH.tvLike.setText(String.valueOf(review.getLike()));
 
             holder.itemView.setOnClickListener(v -> itemClick(reviewVH, review));
             holder.itemView.setOnLongClickListener(v ->
@@ -96,69 +85,6 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
         }
     }
 
-    private void setColorLikeAndDislike(ReviewVH reviewVH, Review review) {
-        boolean myLike = review.isMyLike();
-        boolean myDislike = review.isMyDislike();
-        if (!myLike) {
-            reviewVH.ivLike.setColorFilter(Color.parseColor(GRAY_500));
-        } else {
-            reviewVH.ivLike.setColorFilter(Color.parseColor(LIKE));
-        }
-        if (!myDislike) {
-            reviewVH.ivDislike.setColorFilter(Color.parseColor(GRAY_500));
-        } else {
-            reviewVH.ivDislike.setColorFilter(Color.parseColor(DISLIKE));
-        }
-    }
-
-    private void onDislikeClick(ReviewVH holder, Review review) {
-        holder.ivDislike.setOnClickListener(v -> {
-            int like = review.getLike();
-            int dislike = review.getDislike();
-            if (!review.isMyDislike()) {
-                holder.ivDislike.setColorFilter(Color.parseColor(DISLIKE));
-                review.setDislike(++dislike);
-                review.setMyDislike(true);
-
-                if (review.isMyLike()) {
-                    holder.ivLike.setColorFilter(Color.parseColor(GRAY_500));
-                    review.setLike(--like);
-                    review.setMyLike(false);
-                    FirebaseHelper.INSTANCE.likeReview(review);
-                }
-            } else {
-                holder.ivDislike.setColorFilter(Color.parseColor(GRAY_500));
-                review.setDislike(--dislike);
-                review.setMyDislike(false);
-            }
-            FirebaseHelper.INSTANCE.dislikeReview(review);
-        });
-    }
-
-    private void onLikeClick(ReviewVH holder, Review review) {
-        holder.ivLike.setOnClickListener(v -> {
-            int like = review.getLike();
-            int dislike = review.getDislike();
-            if (!review.isMyLike()) {
-                holder.ivLike.setColorFilter(Color.parseColor(LIKE));
-                review.setLike(++like);
-                review.setMyLike(true);
-
-                if (review.isMyDislike()) {
-                    holder.ivDislike.setColorFilter(Color.parseColor(GRAY_500));
-                    review.setDislike(--dislike);
-                    review.setMyDislike(false);
-                    FirebaseHelper.INSTANCE.dislikeReview(review);
-                }
-            } else {
-                holder.ivLike.setColorFilter(Color.parseColor(GRAY_500));
-                review.setLike(--like);
-                review.setMyLike(false);
-            }
-            FirebaseHelper.INSTANCE.likeReview(review);
-        });
-    }
-
     private void itemClick(ReviewVH holder, Review review) {
         if (clickListener != null) {
             int pos = holder.getAdapterPosition();
@@ -176,8 +102,6 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     public static class ReviewVH extends BaseViewHolder {
         public CardView cvContent;
         ConstraintLayout clReviewCard;
-        ImageView ivLike;
-        ImageView ivDislike;
         TextView tvStatus;
         TextView tvPluses;
         TextView tvMinuses;
@@ -186,16 +110,12 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
         TextView tvDate;
         TextView tvPosition;
         TextView tvRating;
-        TextView tvDislike;
-        TextView tvLike;
 
         ReviewVH(View itemView) {
             super(itemView);
 
             cvContent = bindView(R.id.cvContent);
             clReviewCard = bindView(R.id.clReviewCard);
-            ivLike = bindView(R.id.ivLike);
-            ivDislike = bindView(R.id.ivDislike);
             tvStatus = bindView(R.id.tvStatus);
             tvPluses = bindView(R.id.tvPluses);
             tvMinuses = bindView(R.id.tvMinuses);
@@ -204,8 +124,6 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             tvDate = bindView(R.id.tvDate);
             tvPosition = bindView(R.id.tvPosition);
             tvRating = bindView(R.id.tvRating);
-            tvDislike = bindView(R.id.tvDislike);
-            tvLike = bindView(R.id.tvLike);
         }
     }
 
@@ -236,9 +154,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
                 } else {
                     removeRange(positions.get(count - 1), count);
                 }
-                for (int i = 0; i < count; ++i) {
-                    positions.remove(0);
-                }
+                positions.subList(0, count).clear();
             }
         }
     }
