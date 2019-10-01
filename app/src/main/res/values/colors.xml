@@ -4,36 +4,15 @@
     <color name="colorPrimaryDark">#402C97</color>
     <color name="colorAccent">#7C4DFF</color>
 
-    <color name="endAuthBg">#3F2B96</color>
-    <color name="startAuthBg">#A8C0FF</color>
-    <color name="btnDisabled">#CCFFFFFF</color>
-
-    <color name="red900">#B71C1C</color>
-    <color name="red200">#EF9A9A</color>
-    <color name="grey300">#E0E0E0</color>
-
     <color name="bottom_navigation">#7953D2</color>
 
-    <color name="grey500">#9E9E9E</color>
     <color name="color_separate_line">#EEEEEE</color>
-    <color name="hint_auth">#61FFFFFF</color>
-    <color name="hint_forgot">#8FFFFFFF</color>
-    <color name="text_edittext">#DEFFFFFF</color>
-    <color name="text_btn_auth">@color/endAuthBg</color>
-    <color name="text_btn_auth_disabled">#803F2B96</color>
-    <color name="control_normal_auth">#1FFFFFFF</color>
 
     <color name="review_positive">#64C934</color>
     <color name="review_negative">#FF4747</color>
     <color name="star">#F2C94C</color>
 
     <color name="bg_general">#F7F6FB</color>
-    <color name="icFilter">#3F2B96</color>
-    <color name="fab_add">#7C4DFF</color>
-    <color name="bg_line_profile">#CC969AA2</color>
-    <color name="bg_line_settings">#1F000000</color>
-    <color name="startAccountToolbar">#563BCB</color>
-    <color name="endAccountToolbar">#9873FF</color>
     <color name="remove">#EB5757</color>
     <color name="ic_reply">#3F2B96</color>
     <color name="selected_review">#B39DDB</color>

@@ -32,7 +32,6 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/tvEmailLbl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -71,7 +70,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/line">
 
                 <TextView
-                    android:id="@+id/tvNameLbl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -110,7 +108,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/line2">
 
                 <TextView
-                    android:id="@+id/tvPhoneLbl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -151,7 +148,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/line3">
 
                 <TextView
-                    android:id="@+id/tvChangePass"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|start"
@@ -160,7 +156,6 @@
             </LinearLayout>
 
             <include
-                android:id="@+id/line4"
                 layout="@layout/separate_line"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
@@ -183,7 +178,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/cvPassword">
 
                 <ImageView
-                    android:id="@+id/ivDelete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -192,7 +186,6 @@
                     app:srcCompat="@drawable/ic_delete_red" />
 
                 <TextView
-                    android:id="@+id/tvRemoveAccount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -224,14 +217,12 @@
                 app:layout_constraintVertical_bias="1.0">
 
                 <ImageView
-                    android:id="@+id/ivLogout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/ic_logout" />
 
                 <TextView
-                    android:id="@+id/tvLogout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

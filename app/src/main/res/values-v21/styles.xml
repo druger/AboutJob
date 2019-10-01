@@ -7,28 +7,4 @@
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
-
-        <item name="android:windowContentTransitions">true</item>
-        <item name="android:windowAllowEnterTransitionOverlap">true</item>
-        <item name="android:windowAllowReturnTransitionOverlap">true</item>
-        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
-        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
-
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@android:color/white</item>
-
-        <item name="android:windowBackground">@color/colorPrimary</item>
-
-        <item name="android:colorControlNormal">@color/control_normal_auth</item>
-        <item name="android:colorControlActivated">@color/startAuthBg</item>
-        <item name="android:colorControlHighlight">@color/startAuthBg</item>
-        <item name="android:textColorHint">@color/hint_auth</item>
-
-        <item name="colorButtonNormal">@drawable/auth_btn_state</item>
-        <item name="android:textColor">@color/text_edittext</item>
-    </style>
 </resources>
