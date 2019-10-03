@@ -1,15 +1,23 @@
 package com.druger.aboutwork.utils
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.*
 import android.os.Build
+import android.support.annotation.StringRes
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.QuoteSpan
 import android.util.Patterns
+import android.view.LayoutInflater
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
+import com.druger.aboutwork.R
+import com.druger.aboutwork.activities.LoginActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -87,5 +95,20 @@ object Utils {
                     0, text?.length ?: 0, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
         return string
+    }
+
+    fun showAuthDialog(context: Context, @StringRes title: Int) {
+        val builder = AlertDialog.Builder(context)
+        val inflater = LayoutInflater.from(context)
+        val dialogView = inflater.inflate(R.layout.auth_layout, null)
+        builder.setView(dialogView)
+            .setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
+        builder.show()
+
+        val tvAuthTitle: TextView = dialogView.findViewById(R.id.tvAuth)
+        val btnLogin: Button = dialogView.findViewById(R.id.btnLogin)
+
+        tvAuthTitle.setText(title)
+        btnLogin.setOnClickListener { context.startActivity(Intent(context, LoginActivity::class.java)) }
     }
 }

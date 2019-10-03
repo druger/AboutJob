@@ -1,6 +1,5 @@
 package com.druger.aboutwork.fragments;
 
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -23,7 +21,6 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.R;
-import com.druger.aboutwork.activities.LoginActivity;
 import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.adapters.CommentAdapter;
 import com.druger.aboutwork.db.FirebaseHelper;
@@ -327,10 +324,10 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ivLike:
-                clickLike();
+                presenter.clickLike();
                 break;
             case R.id.ivDislike:
-                clickDislike();
+                presenter.clickDislike();
                 break;
             case R.id.ivEdit:
                 showEditReview();
@@ -345,32 +342,8 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
         replaceFragment(reviewFragment, R.id.main_container, true);
     }
 
-    private void clickDislike() {
-        int like = review.getLike();
-        int dislike = review.getDislike();
-        if (!review.isMyDislike()) {
-            ivDislike.setColorFilter(Color.parseColor(DISLIKE));
-            review.setDislike(++dislike);
-            tvDislike.setText(String.valueOf(dislike));
-            review.setMyDislike(true);
-
-            if (review.isMyLike()) {
-                ivLike.setColorFilter(Color.parseColor(GRAY_500));
-                review.setLike(--like);
-                tvLike.setText(String.valueOf(like));
-                review.setMyLike(false);
-                FirebaseHelper.INSTANCE.likeReview(review);
-            }
-        } else {
-            ivDislike.setColorFilter(Color.parseColor(GRAY_500));
-            review.setDislike(--dislike);
-            tvDislike.setText(String.valueOf(dislike));
-            review.setMyDislike(false);
-        }
-        FirebaseHelper.INSTANCE.dislikeReview(review);
-    }
-
-    private void clickLike() {
+    @Override
+    public void onLikeClicked() {
         int like = review.getLike();
         int dislike = review.getDislike();
         if (!review.isMyLike()) {
@@ -395,8 +368,34 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
         FirebaseHelper.INSTANCE.likeReview(review);
     }
 
+    @Override
+    public void onDislikeClicked() {
+        int like = review.getLike();
+        int dislike = review.getDislike();
+        if (!review.isMyDislike()) {
+            ivDislike.setColorFilter(Color.parseColor(DISLIKE));
+            review.setDislike(++dislike);
+            tvDislike.setText(String.valueOf(dislike));
+            review.setMyDislike(true);
+
+            if (review.isMyLike()) {
+                ivLike.setColorFilter(Color.parseColor(GRAY_500));
+                review.setLike(--like);
+                tvLike.setText(String.valueOf(like));
+                review.setMyLike(false);
+                FirebaseHelper.INSTANCE.likeReview(review);
+            }
+        } else {
+            ivDislike.setColorFilter(Color.parseColor(GRAY_500));
+            review.setDislike(--dislike);
+            tvDislike.setText(String.valueOf(dislike));
+            review.setMyDislike(false);
+        }
+        FirebaseHelper.INSTANCE.dislikeReview(review);
+    }
+
     private void setupComments() {
-        commentAdapter = new CommentAdapter();
+        commentAdapter = new CommentAdapter(presenter.getUser());
         rvComments.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvComments.setItemAnimator(new DefaultItemAnimator());
         rvComments.setAdapter(commentAdapter);
@@ -459,19 +458,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
     }
 
     @Override
-    public void showAuthDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.auth_layout, null);
-        builder.setView(dialogView)
-                .setNegativeButton(R.string.cancel, (dialog, which)
-                        -> dialog.dismiss());
-        builder.show();
-
-        TextView tvAuthTitle = dialogView.findViewById(R.id.tvAuth);
-        Button btnLogin = dialogView.findViewById(R.id.btnLogin);
-
-        tvAuthTitle.setText(R.string.company_login);
-        btnLogin.setOnClickListener(v -> startActivity(new Intent(getContext(), LoginActivity.class)));
+    public void showAuthDialog(int title) {
+        Utils.INSTANCE.showAuthDialog(getActivity(), title);
     }
 }

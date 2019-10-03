@@ -12,6 +12,7 @@ import com.druger.aboutwork.R;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.model.Comment;
 import com.druger.aboutwork.utils.Utils;
+import com.google.firebase.auth.FirebaseUser;
 
 import static com.druger.aboutwork.Const.Colors.DISLIKE;
 import static com.druger.aboutwork.Const.Colors.GRAY_500;
@@ -24,6 +25,11 @@ import static com.druger.aboutwork.Const.Colors.LIKE;
 public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdapter.CommentVH> {
 
     private OnNameClickListener nameClickListener;
+    private FirebaseUser user;
+
+    public CommentAdapter(FirebaseUser user) {
+        this.user = user;
+    }
 
     @Override
     public CommentVH onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -58,25 +64,29 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
     }
 
     private void dislikeClick(CommentVH holder, Comment comment) {
-        int dislike = comment.getDislike();
-        int like = comment.getLike();
-        if (comment.isMyDislike()) {
-            comment.setDislike(--dislike);
-            comment.setMyDislike(false);
-            holder.ivDislike.setColorFilter(Color.parseColor(GRAY_500));
-        } else {
-            comment.setDislike(++dislike);
-            comment.setMyDislike(true);
-            holder.ivDislike.setColorFilter(Color.parseColor(DISLIKE));
+        if (user != null) {
+            int dislike = comment.getDislike();
+            int like = comment.getLike();
+            if (comment.isMyDislike()) {
+                comment.setDislike(--dislike);
+                comment.setMyDislike(false);
+                holder.ivDislike.setColorFilter(Color.parseColor(GRAY_500));
+            } else {
+                comment.setDislike(++dislike);
+                comment.setMyDislike(true);
+                holder.ivDislike.setColorFilter(Color.parseColor(DISLIKE));
 
-            if (comment.isMyLike()) {
-                holder.ivLike.setColorFilter(Color.parseColor(GRAY_500));
-                comment.setLike(--like);
-                comment.setMyLike(false);
-                FirebaseHelper.INSTANCE.likeComment(comment);
+                if (comment.isMyLike()) {
+                    holder.ivLike.setColorFilter(Color.parseColor(GRAY_500));
+                    comment.setLike(--like);
+                    comment.setMyLike(false);
+                    FirebaseHelper.INSTANCE.likeComment(comment);
+                }
             }
+            FirebaseHelper.INSTANCE.dislikeComment(comment);
+        } else {
+            Utils.INSTANCE.showAuthDialog(holder.ivDislike.getContext(), R.string.dislike_login);
         }
-        FirebaseHelper.INSTANCE.dislikeComment(comment);
     }
 
     private void setColorLike(Comment comment, CommentVH holder) {
@@ -88,25 +98,29 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
     }
 
     private void likeClick(CommentVH holder, Comment comment) {
-        int like = comment.getLike();
-        int dislike = comment.getDislike();
-        if (comment.isMyLike()) {
-            comment.setLike(--like);
-            comment.setMyLike(false);
-            holder.ivLike.setColorFilter(Color.parseColor(GRAY_500));
-        } else {
-            comment.setLike(++like);
-            comment.setMyLike(true);
-            holder.ivLike.setColorFilter(Color.parseColor(LIKE));
+        if (user != null) {
+            int like = comment.getLike();
+            int dislike = comment.getDislike();
+            if (comment.isMyLike()) {
+                comment.setLike(--like);
+                comment.setMyLike(false);
+                holder.ivLike.setColorFilter(Color.parseColor(GRAY_500));
+            } else {
+                comment.setLike(++like);
+                comment.setMyLike(true);
+                holder.ivLike.setColorFilter(Color.parseColor(LIKE));
 
-            if (comment.isMyDislike()) {
-                holder.ivDislike.setColorFilter(Color.parseColor(GRAY_500));
-                comment.setDislike(--dislike);
-                comment.setMyDislike(false);
-                FirebaseHelper.INSTANCE.dislikeComment(comment);
+                if (comment.isMyDislike()) {
+                    holder.ivDislike.setColorFilter(Color.parseColor(GRAY_500));
+                    comment.setDislike(--dislike);
+                    comment.setMyDislike(false);
+                    FirebaseHelper.INSTANCE.dislikeComment(comment);
+                }
             }
+            FirebaseHelper.INSTANCE.likeComment(comment);
+        } else {
+            Utils.INSTANCE.showAuthDialog(holder.ivLike.getContext(), R.string.like_login);
         }
-        FirebaseHelper.INSTANCE.likeComment(comment);
     }
 
     private boolean longItemClick(CommentVH holder) {
