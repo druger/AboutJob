@@ -2,6 +2,7 @@ package com.druger.aboutwork.presenters
 
 import com.arellomobile.mvp.InjectViewState
 import com.druger.aboutwork.App
+import com.druger.aboutwork.R
 import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.db.FirebaseHelper.getComments
 import com.druger.aboutwork.interfaces.view.SelectedReview
@@ -23,7 +24,7 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
     @Inject
     lateinit var analytics: Analytics
 
-    private var user: FirebaseUser? = null
+    var user: FirebaseUser? = null
     private var dbReference = FirebaseDatabase.getInstance().reference
     private lateinit var reviewListener: ValueEventListener
 
@@ -51,7 +52,7 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
             FirebaseHelper.addComment(comment)
             analytics.logEvent(Analytics.ADD_COMMENT)
         } else {
-            viewState.showAuthDialog()
+            viewState.showAuthDialog(R.string.comment_login)
         }
     }
 
@@ -111,5 +112,15 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
             }
         }
         queryReview.addValueEventListener(reviewListener)
+    }
+
+    fun clickLike() {
+        if (user == null) viewState.showAuthDialog(R.string.like_login)
+        else viewState.onLikeClicked()
+    }
+
+    fun clickDislike() {
+        if (user == null) viewState.showAuthDialog(R.string.dislike_login)
+        else viewState.onDislikeClicked()
     }
 }
