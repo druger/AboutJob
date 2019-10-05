@@ -219,10 +219,8 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
         } else {
             ltNoReviews.setVisibility(View.INVISIBLE);
             content.setVisibility(View.VISIBLE);
+            reviewAdapter.addReviews(reviews);
         }
-        this.reviews.clear();
-        this.reviews.addAll(reviews);
-        reviewAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -241,14 +239,12 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
             Snackbar snackbar = Snackbar
                     .make(getActivity().findViewById(R.id.coordinator), R.string.review_deleted, Snackbar.LENGTH_LONG)
                     .setAction(R.string.undo, v -> {
-                        reviews.add(position, review);
-                        reviewAdapter.notifyItemInserted(position);
+                        reviewAdapter.addReview(review, position);
                         myReviewsPresenter.addReview(position, review);
                         rvReviews.scrollToPosition(position);
                     });
             showSnackbar(snackbar);
-            reviews.remove(position);
-            reviewAdapter.notifyItemRemoved(position);
+            reviewAdapter.removeReview(position);
             myReviewsPresenter.removeReview(position);
             analytics.logEvent(Analytics.SWIPE_MY_REVIEW);
         }
