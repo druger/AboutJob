@@ -61,6 +61,9 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
                                 Company company = data.getValue(Company.class);
                                 review.setName(company.getName());
                             }
+                            getViewState().showProgress(false);
+                            // TODO сделать вставку по одному элементу
+                            getViewState().showReviews(reviews);
                         }
                     }
 
@@ -74,8 +77,6 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
                 reviews.add(review);
             }
         }
-        getViewState().showProgress(false);
-        getViewState().showReviews(reviews);
     }
 
     public void removeListeners() {

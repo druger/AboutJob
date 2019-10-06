@@ -165,4 +165,20 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
         }
         notifyItemRangeRemoved(positionStart, itemCount);
     }
+
+    public void addReviews(List<Review> reviews) {
+        this.reviews.clear();
+        this.reviews.addAll(reviews);
+        notifyDataSetChanged();
+    }
+
+    public void addReview(Review review, int position) {
+        reviews.add(position, review);
+        notifyItemInserted(position);
+    }
+
+    public void removeReview(int position) {
+        reviews.remove(position);
+        notifyItemRemoved(position);
+    }
 }
