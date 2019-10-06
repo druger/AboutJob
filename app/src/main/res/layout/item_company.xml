@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/small_margin"
-    tools:ignore="ContentDescription">
+    tools:ignore="ContentDescription"
+    android:background="?android:attr/selectableItemBackground">
 
     <ImageView
         android:id="@+id/ivLogoCompany"
