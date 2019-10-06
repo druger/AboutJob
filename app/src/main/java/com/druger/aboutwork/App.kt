@@ -16,6 +16,7 @@ import com.squareup.leakcanary.RefWatcher
 
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import timber.log.Timber
 
 
 /**
@@ -41,6 +42,13 @@ class App : Application() {
         setupRealm()
         setupDagger2()
         AndroidThreeTen.init(this)
+        setupTimber()
+    }
+
+    private fun setupTimber() {
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 
     private fun setupDagger2() {

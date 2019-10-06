@@ -1,7 +1,6 @@
 package com.druger.aboutwork.presenters;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
@@ -10,6 +9,8 @@ import com.druger.aboutwork.enums.TypeMessage;
 import com.druger.aboutwork.interfaces.view.ChangePasswordView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import timber.log.Timber;
 
 /**
  * Created by druger on 22.10.2017.
@@ -41,7 +42,7 @@ public class ChangePasswordPresenter extends MvpPresenter<ChangePasswordView> {
         user.updatePassword(password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Log.d(TAG, "User password updated.");
+                        Timber.d("User password updated.");
                         getViewState().showMessage(
                                 context.getString(R.string.success_update_pass),
                                 TypeMessage.SUCCESS);
