@@ -1,7 +1,6 @@
 package com.druger.aboutwork.presenters;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.arellomobile.mvp.MvpPresenter;
 import com.arellomobile.mvp.MvpView;
@@ -10,6 +9,7 @@ import com.druger.aboutwork.rest.RestApi;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import timber.log.Timber;
 
 /**
  * Created by druger on 20.07.2017.
@@ -29,7 +29,7 @@ public class BasePresenter<View extends MvpView> extends MvpPresenter<View> {
     }
 
     protected void handleError(Throwable throwable) {
-        Log.e(TAG, throwable.getMessage());
+        Timber.e(throwable);
     }
 
     @Override

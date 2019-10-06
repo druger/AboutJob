@@ -1,7 +1,5 @@
 package com.druger.aboutwork.presenters;
 
-import android.util.Log;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.view.CompanyDetailView;
@@ -25,6 +23,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
+import timber.log.Timber;
 
 /**
  * Created by druger on 01.05.2017.
@@ -92,7 +91,7 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
 
     @Override
     public void onCancelled(DatabaseError databaseError) {
-        Log.e(TAG, databaseError.getMessage());
+        Timber.e(databaseError.getMessage());
     }
 
     public void removeListeners() {

@@ -1,7 +1,6 @@
 package com.druger.aboutwork.presenters;
 
 import android.content.Context;
-import android.util.Log;
 import android.util.Patterns;
 
 import com.arellomobile.mvp.InjectViewState;
@@ -11,6 +10,8 @@ import com.druger.aboutwork.enums.TypeMessage;
 import com.druger.aboutwork.interfaces.view.ChangeEmailView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import timber.log.Timber;
 
 /**
  * Created by druger on 16.10.2017.
@@ -40,7 +41,7 @@ public class ChangeEmailPresenter extends MvpPresenter<ChangeEmailView> {
         user.updateEmail(email)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Log.d(TAG, "User email address updated.");
+                        Timber.d("User email address updated.");
                         getViewState().showMessage(
                                 context.getString(R.string.updated_email),
                                 TypeMessage.SUCCESS);

@@ -1,10 +1,10 @@
 package com.druger.aboutwork.db
 
-import android.util.Log
 import com.druger.aboutwork.model.realm.CompanyRealm
 import io.realm.Realm
 import io.realm.RealmResults
 import io.realm.Sort
+import timber.log.Timber
 
 class RealmHelper {
 
@@ -23,7 +23,7 @@ class RealmHelper {
                     company.date = System.currentTimeMillis()
                     realm.insertOrUpdate(company)
                 },
-                { error -> Log.e("Realm: save company", error.message) }
+                { error -> Timber.tag("Realm: save company").e(error) }
         )
     }
 

@@ -1,11 +1,11 @@
 package com.druger.aboutwork.presenters
 
-import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.druger.aboutwork.interfaces.view.ChangeNameView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
+import timber.log.Timber
 
 @InjectViewState
 class ChangeNamePresenter : BasePresenter<ChangeNameView>() {
@@ -19,10 +19,10 @@ class ChangeNamePresenter : BasePresenter<ChangeNameView>() {
         user?.updateProfile(profileUpdates)
                 ?.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Log.d(TAG, "Profile updated")
+                        Timber.d("Profile updated")
                         viewState.showSuccessMessage()
                     } else {
-                        Log.d(TAG, "Updating failed")
+                        Timber.d("Updating failed")
                         viewState.showSuccessMessage()
                     }
                     viewState.showProgress(false)

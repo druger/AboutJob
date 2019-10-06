@@ -3,7 +3,6 @@ package com.druger.aboutwork.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.druger.aboutwork.App;
@@ -23,6 +22,8 @@ import com.google.firebase.auth.FirebaseUserMetadata;
 import java.util.Arrays;
 
 import javax.inject.Inject;
+
+import timber.log.Timber;
 
 public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 1;
@@ -71,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 Toast.makeText(this, R.string.unknown_error, Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "Sign-in error: ", idpResponse.getError());
+                Timber.e(idpResponse.getError(), "Sign-in error: ");
             }
         }
     }

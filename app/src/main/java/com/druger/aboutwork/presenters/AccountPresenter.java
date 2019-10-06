@@ -1,7 +1,5 @@
 package com.druger.aboutwork.presenters;
 
-import android.util.Log;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
@@ -12,6 +10,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import javax.inject.Inject;
+
+import timber.log.Timber;
 
 /**
  * Created by druger on 09.05.2017.
@@ -39,7 +39,7 @@ public class AccountPresenter extends BasePresenter<AccountView> {
     public void getUserInfo() {
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+            Timber.d("onAuthStateChanged:signed_in:%s", user.getUid());
 
             getViewState().showEmail(user.getEmail());
             getViewState().showName(user.getDisplayName());
@@ -57,7 +57,7 @@ public class AccountPresenter extends BasePresenter<AccountView> {
             user.delete()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Log.d(TAG, "User account deleted.");
+                            Timber.d("User account deleted.");
                             getViewState().showToast(R.string.profile_deleted);
                             getViewState().showMainActivity();
                             analytics.logEvent(Analytics.REMOVE_ACCOUNT);
