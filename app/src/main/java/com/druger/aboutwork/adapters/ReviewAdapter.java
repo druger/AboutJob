@@ -63,7 +63,12 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             reviewVH.tvCity.setText(review.getCity());
             reviewVH.tvDate.setText(Utils.getDate(review.getDate()));
             reviewVH.tvPosition.setText(review.getPosition());
-            reviewVH.tvRating.setText(String.valueOf(review.getMarkCompany().getAverageMark()));
+
+            if (review.getStatus() == Review.INTERVIEW) {
+               reviewVH.tvRating.setVisibility(View.GONE);
+            } else {
+                reviewVH.tvRating.setText(String.valueOf(review.getMarkCompany().getAverageMark()));
+            }
 
             holder.itemView.setOnClickListener(v -> itemClick(reviewVH, review));
             holder.itemView.setOnLongClickListener(v ->
