@@ -7,6 +7,7 @@ import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.db.FirebaseHelper.getComments
 import com.druger.aboutwork.interfaces.view.SelectedReview
 import com.druger.aboutwork.model.Comment
+import com.druger.aboutwork.model.Company
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.utils.Analytics
 import com.google.firebase.auth.FirebaseAuth
@@ -27,6 +28,7 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
     var user: FirebaseUser? = null
     private var dbReference = FirebaseDatabase.getInstance().reference
     private lateinit var reviewListener: ValueEventListener
+    private lateinit var companyListener: ValueEventListener
 
     private var comments: List<Comment> = emptyList()
     lateinit var comment: Comment
@@ -108,10 +110,27 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
             override fun onDataChange(snapshot: DataSnapshot) {
                 review = snapshot.getValue(Review::class.java)
                 review?.firebaseKey = snapshot.key
-                viewState.setReview(review)
+                getCompany()
             }
         }
         queryReview.addValueEventListener(reviewListener)
+    }
+
+    private fun getCompany() {
+        val queryCompany = review?.let { review ->
+            review.companyId?.let { id ->
+            FirebaseHelper.getCompany(dbReference, id)
+        } }
+        companyListener = object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {}
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val company = snapshot.getValue(Company::class.java)
+                review?.name = company?.name
+                viewState.setReview(review)
+            }
+        }
+        queryCompany?.addValueEventListener(companyListener)
     }
 
     fun clickLike() {

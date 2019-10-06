@@ -128,6 +128,9 @@ object FirebaseHelper {
         return dbReference.child(COMPANIES).orderByChild(ID).equalTo(companyId)
     }
 
+    fun getCompany(dbReference: DatabaseReference, companyId: String) : Query =
+        dbReference.child(COMPANIES).child(companyId)
+
     fun likeComment(comment: Comment) {
         val updateLike = HashMap<String, Any>()
         updateLike[COMMENTS + SLASH + comment.id + LIKE] = comment.like
