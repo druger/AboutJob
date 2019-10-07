@@ -41,9 +41,14 @@ public class AccountPresenter extends BasePresenter<AccountView> {
         if (user != null) {
             Timber.d("onAuthStateChanged:signed_in:%s", user.getUid());
 
-            getViewState().showEmail(user.getEmail());
-            getViewState().showName(user.getDisplayName());
-            getViewState().showPhone(user.getPhoneNumber());
+            String email = user.getEmail();
+            String name = user.getDisplayName();
+            String phone = user.getPhoneNumber();
+
+            if (email != null) getViewState().showEmail(email);
+            if (name != null) getViewState().showName(name);
+            if (phone != null) getViewState().showPhone(phone);
+
         } else getViewState().showAuthAccess();
     }
 

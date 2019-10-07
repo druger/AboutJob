@@ -1,6 +1,7 @@
 package com.druger.aboutwork.presenters
 
 import com.arellomobile.mvp.InjectViewState
+import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.interfaces.view.ChangeNameView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -13,19 +14,22 @@ class ChangeNamePresenter : BasePresenter<ChangeNameView>() {
     private val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
 
     fun changeName(name: String?) {
-        viewState.showProgress(true)
-        val profileUpdates = UserProfileChangeRequest.Builder()
-                .setDisplayName(name).build()
-        user?.updateProfile(profileUpdates)
-                ?.addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Timber.d("Profile updated")
-                        viewState.showSuccessMessage()
-                    } else {
-                        Timber.d("Updating failed")
-                        viewState.showSuccessMessage()
+        name?.let {
+            viewState.showProgress(true)
+            val profileUpdates = UserProfileChangeRequest.Builder()
+                    .setDisplayName(name).build()
+            user?.updateProfile(profileUpdates)
+                    ?.addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            FirebaseHelper.changeUserName(name, user.uid)
+                            Timber.d("Profile updated")
+                            viewState.showSuccessMessage()
+                        } else {
+                            Timber.d("Updating failed")
+                            viewState.showSuccessMessage()
+                        }
+                        viewState.showProgress(false)
                     }
-                    viewState.showProgress(false)
-                }
+        }
     }
 }
