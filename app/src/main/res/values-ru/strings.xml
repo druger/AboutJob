@@ -96,4 +96,7 @@
     <string name="comment_login">Авторизуйтесь чтобы комментарий</string>
     <string name="dislike_login">Авторизуйтесб чтобы поставить дизлайк</string>
     <string name="like_login">Авторизуйтесь чтобы лайкнуть</string>
+    <string name="write_to_developers">Написать разработчикам</string>
+    <string name="send_email">Отправить email</string>
+    <string name="no_email_apps">Почтовые приложения не установленны</string>
 </resources>
