@@ -2,6 +2,7 @@ package com.druger.aboutwork.fragments;
 
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
@@ -54,6 +55,7 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
     private TextView tvPhone;
     private LinearLayout ltPhone;
     private View line3;
+    private TextView tvWriteToDev;
 
     @ProvidePresenter
     AccountPresenter getAccountPresenter() {
@@ -92,6 +94,8 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
         cvPassword.setOnClickListener(v -> showChangePassword());
         cvRemoveAccount.setOnClickListener(v -> showRemoveDialog());
         btnLogin.setOnClickListener(v -> showLogin());
+        tvWriteToDev.setOnClickListener(v ->
+                accountPresenter.writeToDevelopers(getString(R.string.email_support)));
     }
 
     private void showLogin() {
@@ -114,6 +118,7 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
         tvPhone = bindView(R.id.tvPhone);
         ltPhone = bindView(R.id.ltPhone);
         line3 = bindView(R.id.line3);
+        tvWriteToDev = bindView(R.id.tvWriteToDev);
     }
 
     private void showRemoveDialog() {
@@ -201,5 +206,15 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
             ltPhone.setVisibility(View.GONE);
             line3.setVisibility(View.GONE);
         } else tvPhone.setText(phone);
+    }
+
+    @Override
+    public void sendEmail(@NotNull Intent emailIntent) {
+        try {
+            startActivity(Intent.createChooser(emailIntent, getString(R.string.send_email)));
+        } catch (ActivityNotFoundException e) {
+            Timber.e(e);
+            showToast(R.string.no_email_apps);
+        }
     }
 }

@@ -91,6 +91,11 @@
     <string name="add_name">Add name</string>
     <string name="show_all">Show all</string>
     <string name="hide">Hide</string>
+    <string name="write_to_developers">Write to developers</string>
+
+    <string name="email_support" translatable="false">support@aboutjob.ru</string>
+    <string name="send_email">Send email</string>
+    <string name="no_email_apps">There are no email clients installed</string>
 
     <string-array name="work_status">
         <item>@string/working</item>
