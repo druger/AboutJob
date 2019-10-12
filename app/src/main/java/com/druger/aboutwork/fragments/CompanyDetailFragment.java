@@ -94,8 +94,8 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_company_detail, container, false);
 
-        detData(savedInstanceState);
         setupToolbar();
+        detData(savedInstanceState);
         setupUI();
         setupUX();
         setupRecycler(reviews);
@@ -303,8 +303,9 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
                 .into(ivLogo);
     }
 
-    void setCompanyName(String name) {
+    private void setCompanyName(String name) {
         tvCompanyName.setText(name);
+        getActionBar().setTitle(name);
     }
 
     @Override
