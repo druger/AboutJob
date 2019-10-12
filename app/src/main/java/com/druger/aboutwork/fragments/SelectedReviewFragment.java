@@ -3,6 +3,7 @@ package com.druger.aboutwork.fragments;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.constraint.Group;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -30,6 +31,7 @@ import com.druger.aboutwork.model.Comment;
 import com.druger.aboutwork.model.Review;
 import com.druger.aboutwork.presenters.SelectedReviewPresenter;
 import com.druger.aboutwork.utils.Utils;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.threeten.bp.Instant;
 import org.threeten.bp.LocalDate;
@@ -106,9 +108,6 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
         setUI();
         setUX();
         getReview();
-        setupComments();
-        retrieveComments();
-        setupListeners();
         return rootView;
     }
 
@@ -116,6 +115,18 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
         bundle = getArguments();
         reviewKey = bundle.getString(REVIEW_KEY);
         editMode = getArguments().getBoolean(EDIT_MODE);
+    }
+
+    @Override
+    public void setupComments(@Nullable FirebaseUser user) {
+        commentAdapter = new CommentAdapter(presenter.getUser());
+        rvComments.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvComments.setItemAnimator(new DefaultItemAnimator());
+        rvComments.setAdapter(commentAdapter);
+        commentAdapter.setOnNameClickListener(comment -> showReviews(comment.getUserId()));
+
+        retrieveComments();
+        setupListeners();
     }
 
     private void retrieveComments() {
@@ -392,14 +403,6 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
             review.setMyDislike(false);
         }
         FirebaseHelper.INSTANCE.dislikeReview(review);
-    }
-
-    private void setupComments() {
-        commentAdapter = new CommentAdapter(presenter.getUser());
-        rvComments.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvComments.setItemAnimator(new DefaultItemAnimator());
-        rvComments.setAdapter(commentAdapter);
-        commentAdapter.setOnNameClickListener(comment -> showReviews(comment.getUserId()));
     }
 
     private void showReviews(String userId) {
