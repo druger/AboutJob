@@ -4,6 +4,7 @@ import android.support.annotation.StringRes
 import com.arellomobile.mvp.MvpView
 import com.druger.aboutwork.model.Comment
 import com.druger.aboutwork.model.Review
+import com.google.firebase.auth.FirebaseUser
 
 interface SelectedReview: MvpView {
     fun showChangeDialog(position: Int)
@@ -13,4 +14,5 @@ interface SelectedReview: MvpView {
     fun setReview(review: Review?)
     fun onLikeClicked()
     fun onDislikeClicked()
+    fun setupComments(user: FirebaseUser?)
 }

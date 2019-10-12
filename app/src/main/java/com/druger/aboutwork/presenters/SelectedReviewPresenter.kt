@@ -37,11 +37,12 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         App.appComponent.inject(this)
+        user = FirebaseAuth.getInstance().currentUser
     }
 
     override fun attachView(view: SelectedReview?) {
         super.attachView(view)
-        user = FirebaseAuth.getInstance().currentUser
+        viewState.setupComments(user)
     }
 
     fun addComment(message: String, reviewId: String) {
