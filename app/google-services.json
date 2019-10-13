@@ -15,19 +15,19 @@
       },
       "oauth_client": [
         {
+          "client_id": "603766486213-7jhndchnofplp0r9eu50etl0orpqqpjg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.druger.aboutwork",
+            "certificate_hash": "d9389d6cd04ddc87cb87a7eb20bb1134f5729396"
+          }
+        },
+        {
           "client_id": "603766486213-bhmkbem07acaq0em8m9bbe958mdbot8c.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.druger.aboutwork",
             "certificate_hash": "d5d257cedd455e7a387ba293b8fa87e23eb606e6"
-          }
-        },
-        {
-          "client_id": "603766486213-cbhh1a2b2oes1je77gnd1suqedf30a5m.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.druger.aboutwork",
-            "certificate_hash": "d9389d6cd04ddc87cb87a7eb20bb1134f5729396"
           }
         },
         {
@@ -41,15 +41,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "603766486213-80lsitn6sq3hghu1fknibiq9nc7kvddd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
