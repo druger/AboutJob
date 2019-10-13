@@ -16,6 +16,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.druger.aboutwork.R;
+import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.adapters.MyReviewAdapter;
 import com.druger.aboutwork.interfaces.OnItemClickListener;
 import com.druger.aboutwork.interfaces.view.UserReviews;
@@ -65,6 +66,7 @@ public class UserReviewsFragment extends BaseSupportFragment implements UserRevi
         reviewsPresenter.fetchReviews(getArguments().getString(USER_ID));
         reviewsPresenter.getUserName(getArguments().getString(USER_ID));
         setupToolbar();
+        ((MainActivity) getActivity()).hideBottomNavigation();
         return rootView;
     }
 
