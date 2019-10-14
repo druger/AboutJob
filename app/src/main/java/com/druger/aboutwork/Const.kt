@@ -17,8 +17,8 @@ object Const {
     }
 
     object Colors {
-        const val RED_500 = "#F44336"
-        const val RED_200 = "#EF9A9A"
+        const val PURPLE_500 = "#47379F"
+        const val PURPLE_100 = "#D1C4E9"
         const val GRAY_500 = "#9E9E9E"
         const val LIKE = "#3F2B96"
         const val DISLIKE = "#EB5757"

@@ -46,8 +46,8 @@ import static com.druger.aboutwork.Const.Bundles.EDIT_MODE;
 import static com.druger.aboutwork.Const.Colors.DISLIKE;
 import static com.druger.aboutwork.Const.Colors.GRAY_500;
 import static com.druger.aboutwork.Const.Colors.LIKE;
-import static com.druger.aboutwork.Const.Colors.RED_200;
-import static com.druger.aboutwork.Const.Colors.RED_500;
+import static com.druger.aboutwork.Const.Colors.PURPLE_100;
+import static com.druger.aboutwork.Const.Colors.PURPLE_500;
 
 public class SelectedReviewFragment extends BaseSupportFragment implements View.OnClickListener, SelectedReview {
     private static final int NEW = 0;
@@ -144,10 +144,10 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0) {
                     ivSend.setClickable(true);
-                    ivSend.setColorFilter(Color.parseColor(RED_500));
+                    ivSend.setColorFilter(Color.parseColor(PURPLE_500));
                 } else {
                     ivSend.setClickable(false);
-                    ivSend.setColorFilter(Color.parseColor(RED_200));
+                    ivSend.setColorFilter(Color.parseColor(PURPLE_100));
                 }
             }
 
