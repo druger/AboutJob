@@ -215,7 +215,7 @@ public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsV
     public void showReviews(List<Review> reviews) {
         if (reviews.isEmpty()) {
             ltNoReviews.setVisibility(View.VISIBLE);
-            content.setVisibility(View.INVISIBLE);
+            content.setVisibility(View.GONE);
         } else {
             ltNoReviews.setVisibility(View.INVISIBLE);
             content.setVisibility(View.VISIBLE);
