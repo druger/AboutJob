@@ -44,38 +44,44 @@ public class MyReviewsPresenter extends MvpPresenter<MyReviewsView> implements V
 
     @Override
     public void onCancelled(DatabaseError databaseError) {
-
+        getViewState().showProgress(false);
+        getViewState().showReviews(reviews);
     }
 
     private void fetchReviews(DataSnapshot dataSnapshot) {
 
-        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-            final Review review = snapshot.getValue(Review.class);
-            if (!reviews.contains(review)) {
-                Query queryCompanies = FirebaseHelper.INSTANCE.getCompanies(dbReference, review.getCompanyId());
-                valueEventListener = new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            for (DataSnapshot data : dataSnapshot.getChildren()) {
-                                Company company = data.getValue(Company.class);
-                                review.setName(company.getName());
+        if (dataSnapshot.exists()) {
+            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                final Review review = snapshot.getValue(Review.class);
+                if (!reviews.contains(review)) {
+                    Query queryCompanies = FirebaseHelper.INSTANCE.getCompanies(dbReference, review.getCompanyId());
+                    valueEventListener = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                    Company company = data.getValue(Company.class);
+                                    review.setName(company.getName());
+                                }
+                                getViewState().showProgress(false);
+                                // TODO сделать вставку по одному элементу
+                                getViewState().showReviews(reviews);
                             }
-                            getViewState().showProgress(false);
-                            // TODO сделать вставку по одному элементу
-                            getViewState().showReviews(reviews);
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        
-                    }
-                };
-                queryCompanies.addValueEventListener(valueEventListener);
-                review.setFirebaseKey(snapshot.getKey());
-                reviews.add(review);
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            getViewState().showProgress(false);
+                        }
+                    };
+                    queryCompanies.addValueEventListener(valueEventListener);
+                    review.setFirebaseKey(snapshot.getKey());
+                    reviews.add(review);
+                }
             }
+        } else {
+            getViewState().showProgress(false);
+            getViewState().showReviews(reviews);
         }
     }
 
