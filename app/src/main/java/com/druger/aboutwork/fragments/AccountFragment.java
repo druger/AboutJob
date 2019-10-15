@@ -179,15 +179,15 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
     }
 
     @Override
-    public void showName(@NotNull String name) {
-        if (name.isEmpty()) {
+    public void showName(String name) {
+        if (name == null || name.isEmpty()) {
             tvName.setText(R.string.add_name);
         } else tvName.setText(name);
     }
 
     @Override
-    public void showEmail(@NotNull String email) {
-        if (email.isEmpty()) {
+    public void showEmail(String email) {
+        if (email== null || email.isEmpty()) {
             tvEmail.setText(R.string.add_email);
         } else tvEmail.setText(email);
 
@@ -201,8 +201,8 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
     }
 
     @Override
-    public void showPhone(@NotNull String phone) {
-        if (phone.isEmpty()) {
+    public void showPhone(String phone) {
+        if (phone == null || phone.isEmpty()) {
             ltPhone.setVisibility(View.GONE);
             line3.setVisibility(View.GONE);
         } else tvPhone.setText(phone);

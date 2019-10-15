@@ -56,9 +56,9 @@ public class AccountPresenter extends BasePresenter<AccountView> {
             String name = user.getDisplayName();
             String phone = user.getPhoneNumber();
 
-            if (email != null) getViewState().showEmail(email);
-            if (name != null) getViewState().showName(name);
-            if (phone != null) getViewState().showPhone(phone);
+            getViewState().showEmail(email);
+            getViewState().showName(name);
+            getViewState().showPhone(phone);
 
         } else getViewState().showAuthAccess();
     }
