@@ -18,6 +18,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.FirebaseUserMetadata;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.Arrays;
 
@@ -79,18 +80,27 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isNewUser() {
         FirebaseUserMetadata metadata = FirebaseAuth.getInstance().getCurrentUser().getMetadata();
-        if (metadata.getCreationTimestamp() == metadata.getLastSignInTimestamp()) {
-            return true;
-        }
-        return false;
+        return metadata.getCreationTimestamp() == metadata.getLastSignInTimestamp();
     }
 
     private void saveNewUser() {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         String id = firebaseUser.getUid();
-        String name = firebaseUser.getDisplayName();
+        String nameEmail = firebaseUser.getDisplayName();
+        String namePhone = "";
+        if (nameEmail == null) {
+            namePhone = "User_" + id.substring(0, 4);
+            setDisplayName(firebaseUser, namePhone);
+        }
+        String name = nameEmail != null ? nameEmail : namePhone;
         User user = new User(id, name);
         FirebaseHelper.INSTANCE.addUser(user, id);
+    }
+
+    private void setDisplayName(FirebaseUser firebaseUser, String namePhone) {
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(namePhone).build();
+        firebaseUser.updateProfile(profileUpdates);
     }
 
 
