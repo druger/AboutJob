@@ -33,11 +33,13 @@
     <string name="social_package">Social package</string>
 
     <string name="pluses">Pluses</string>
+    <string name="pluses_">Pluses (required)</string>
     <string name="minuses">Minuses</string>
+    <string name="minuses_">Minuses (required)</string>
     <string name="working">Working</string>
     <string name="worked">Worked</string>
     <string name="interview">Interview</string>
-    <string name="position_">Position*</string>
+    <string name="position_">Position (required)</string>
     <string name="empoyment_date">Employment date</string>
     <string name="dismissal_date">Dismissal date</string>
     <string name="interview_date">Interview date</string>
@@ -65,7 +67,8 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="retry">Try again</string>
     <string name="company_site">Company\'s site</string>
-    <string name="city">City*</string>
+    <string name="city">City</string>
+    <string name="city_">City (required)</string>
     <string name="tvEmptySearch">You haven\'t seen any companies yet</string>
     <string name="watched_recently">You\'ve watched recently</string>
     <string name="no_internet_connection">No internet connection</string>
