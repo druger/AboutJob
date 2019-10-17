@@ -9,6 +9,7 @@ import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -55,6 +56,7 @@ public class CompaniesFragment extends BaseSupportFragment implements CompaniesV
     private String query;
 
     private Fragment fragment;
+    private int inputMode;
 
     @ProvidePresenter
     CompaniesPresenter provideCompaniesPresenter() {
@@ -65,7 +67,7 @@ public class CompaniesFragment extends BaseSupportFragment implements CompaniesV
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_companies, container, false);
-
+        setInputMode();
         setupToolbar();
         setupUI();
         setupRecycler();
@@ -74,6 +76,11 @@ public class CompaniesFragment extends BaseSupportFragment implements CompaniesV
         setupSearch();
         ((MainActivity) getActivity()).showBottomNavigation();
         return rootView;
+    }
+
+    private void setInputMode() {
+        inputMode = getActivity().getWindow().getAttributes().softInputMode;
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     private RealmResults<CompanyRealm> getCompaniesFromDb() {
@@ -162,6 +169,7 @@ public class CompaniesFragment extends BaseSupportFragment implements CompaniesV
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        getActivity().getWindow().setSoftInputMode(inputMode);
         searchView.setOnQueryTextListener(null);
         rvCompanies.removeOnScrollListener(scrollListener);
         adapter.setOnItemClickListener(null);

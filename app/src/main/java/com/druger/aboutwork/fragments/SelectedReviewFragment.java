@@ -15,7 +15,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -88,7 +87,6 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
 
     private Bundle bundle;
     private boolean editMode;
-    private int inputMode;
 
     public static SelectedReviewFragment newInstance(String reviewKey, boolean editMode) {
 
@@ -99,13 +97,6 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
         SelectedReviewFragment fragment = new SelectedReviewFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        inputMode = getActivity().getWindow().getAttributes().softInputMode;
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
     @Override
@@ -435,7 +426,6 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
     public void onDestroy() {
         super.onDestroy();
         presenter.removeListeners();
-        getActivity().getWindow().setSoftInputMode(inputMode);
     }
 
     @Override
