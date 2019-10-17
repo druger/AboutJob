@@ -91,7 +91,7 @@ object Utils {
         val string = SpannableString(text)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             string.setSpan(QuoteSpan(ContextCompat.getColor(context, color),
-                    15, 30),
+                    5, 20),
                     0, text?.length ?: 0, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
         return string
