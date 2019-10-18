@@ -47,6 +47,7 @@ public class ChangeEmailPresenter extends MvpPresenter<ChangeEmailView> {
                                 TypeMessage.SUCCESS);
                         logout();
                     } else {
+                        Timber.e(task.getException().getMessage());
                         getViewState().showMessage(
                                 context.getString(R.string.failed_update_email),
                                 TypeMessage.ERROR);

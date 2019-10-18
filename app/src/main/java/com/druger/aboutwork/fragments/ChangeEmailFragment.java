@@ -3,6 +3,8 @@ package com.druger.aboutwork.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,11 +58,29 @@ public class ChangeEmailFragment extends BaseSupportFragment implements ChangeEm
 
     private void showEmail() {
         email = getArguments().getString(EMAIL);
-        etEmail.setText(email);
+        if (email != null && email.equals(getString(R.string.add_email))) {
+           email = "";
+        } else etEmail.setText(email);
     }
 
     private void setupUX() {
         btnChangeEmail.setOnClickListener(v -> changeEmailPresenter.changeEmail(email, getActivity()));
+        etEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                email = s.toString();
+            }
+        });
     }
 
     private void setupUI() {
