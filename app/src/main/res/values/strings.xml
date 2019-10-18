@@ -99,6 +99,7 @@
     <string name="email_support" translatable="false">support@aboutjob.ru</string>
     <string name="send_email">Send email</string>
     <string name="no_email_apps">There are no email clients installed</string>
+    <string name="version">Version: %s</string>
 
     <string-array name="work_status">
         <item>@string/working</item>

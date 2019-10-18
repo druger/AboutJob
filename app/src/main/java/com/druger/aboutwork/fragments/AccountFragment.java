@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.druger.aboutwork.App;
+import com.druger.aboutwork.BuildConfig;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.LoginActivity;
 import com.druger.aboutwork.activities.MainActivity;
@@ -56,6 +57,7 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
     private LinearLayout ltPhone;
     private View line3;
     private TextView tvWriteToDev;
+    private TextView tvVersion;
 
     @ProvidePresenter
     AccountPresenter getAccountPresenter() {
@@ -77,8 +79,13 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
         setupToolbar();
         accountPresenter.getUserInfo();
         setupListeners();
+        showVersion();
 
         return rootView;
+    }
+
+    private void showVersion() {
+        tvVersion.setText(getString(R.string.version, BuildConfig.VERSION_NAME));
     }
 
     private void setupToolbar() {
@@ -119,6 +126,7 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
         ltPhone = bindView(R.id.ltPhone);
         line3 = bindView(R.id.line3);
         tvWriteToDev = bindView(R.id.tvWriteToDev);
+        tvVersion = bindView(R.id.tvVersion);
     }
 
     private void showRemoveDialog() {
