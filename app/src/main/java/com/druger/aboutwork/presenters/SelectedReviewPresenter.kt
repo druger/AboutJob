@@ -93,7 +93,7 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
             comment?.id = snapshot.key.toString()
             comments = comments.toMutableList().apply { comment?.let { add(it) } }
         }
-        viewState.showComments(comments)
+        viewState.showComments(comments.reversed())
     }
 
     override fun onCancelled(p0: DatabaseError) {}
