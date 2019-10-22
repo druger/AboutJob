@@ -1,7 +1,7 @@
 package com.druger.aboutwork.interfaces.view
 
 import android.content.Intent
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import com.arellomobile.mvp.MvpView
 
 /**

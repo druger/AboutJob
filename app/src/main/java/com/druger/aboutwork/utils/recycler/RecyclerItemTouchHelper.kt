@@ -1,8 +1,8 @@
 package com.druger.aboutwork.utils.recycler
 
 import android.graphics.Canvas
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.druger.aboutwork.adapters.ReviewAdapter
 
 

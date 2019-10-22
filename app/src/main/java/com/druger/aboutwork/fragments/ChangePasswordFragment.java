@@ -3,7 +3,6 @@ package com.druger.aboutwork.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +15,6 @@ import com.druger.aboutwork.activities.LoginActivity;
 import com.druger.aboutwork.interfaces.view.ChangePasswordView;
 import com.druger.aboutwork.presenters.ChangePasswordPresenter;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ChangePasswordFragment extends BaseSupportFragment implements ChangePasswordView {
 
     @InjectPresenter

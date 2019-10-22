@@ -3,11 +3,12 @@ package com.druger.aboutwork.fragments
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
 import android.widget.DatePicker
 import android.widget.EditText
+import androidx.fragment.app.DialogFragment
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.utils.Utils
+import com.google.android.material.textfield.TextInputEditText
 import java.util.*
 
 class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
@@ -26,7 +27,7 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
 
     internal var c = Calendar.getInstance()
 
-    fun setData(date: EditText, review: Review) {
+    fun setData(date: TextInputEditText, review: Review) {
         this.etDate = date
         this.review = review
     }
@@ -36,7 +37,9 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
-        return DatePickerDialog(activity, this, year, month, day)
+        return context?.let {
+            DatePickerDialog(it, this, year, month, day)
+        } ?: super.onCreateDialog(savedInstanceState)
     }
 
     override fun onDateSet(view: DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int) {

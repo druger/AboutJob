@@ -137,29 +137,32 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     private fun interviewDateClick() {
         presenter.interviewDateClick()
         datePicker.flag = DatePickerFragment.INTERVIEW_DATE
-        datePicker.show(fragmentManager, DatePickerFragment.TAG)
+        fragmentManager?.let { datePicker.show(it, DatePickerFragment.TAG)
+        }
         datePicker.setData(etInterviewDate, getReview())
     }
 
     private fun dismissalDateClick() {
         presenter.dismissalDateClick()
         datePicker.flag = DatePickerFragment.DISMISSAL_DATE
-        datePicker.show(fragmentManager, DatePickerFragment.TAG)
+        fragmentManager?.let { datePicker.show(it, DatePickerFragment.TAG) }
         datePicker.setData(etDismissalDate, getReview())
     }
 
     private fun employmentDateClick() {
         presenter.employmentDateClick()
         datePicker.flag = DatePickerFragment.EMPLOYMENT_DATE
-        datePicker.show(fragmentManager, DatePickerFragment.TAG)
+        fragmentManager?.let { datePicker.show(it, DatePickerFragment.TAG) }
         datePicker.setData(etEmploymentDate, getReview())
     }
 
     private fun setupWorkStatus() {
-        val adapter = ArrayAdapter.createFromResource(activity,
-                R.array.work_status, R.layout.simple_spinner_item)
-        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-        spinnerStatus.adapter = adapter
+        context?.let {
+            val adapter = ArrayAdapter.createFromResource(it,
+                    R.array.work_status, R.layout.simple_spinner_item)
+            adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+            spinnerStatus.adapter = adapter
+        }
     }
 
     private fun setDateVisibility() {
@@ -226,9 +229,11 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     }
 
     private fun showSuggestions(items: List<Any>, view: AutoCompleteTextView) {
-        val arrayAdapter = ArrayAdapter<Any>(
-                activity, android.R.layout.simple_dropdown_item_1line, items)
-        view.setAdapter<ArrayAdapter<*>>(arrayAdapter)
+        context?.let {
+            val arrayAdapter = ArrayAdapter<Any>(
+                it, android.R.layout.simple_dropdown_item_1line, items)
+            view.setAdapter<ArrayAdapter<*>>(arrayAdapter)
+        }
     }
 
     override fun showCities(cities: List<City>) {

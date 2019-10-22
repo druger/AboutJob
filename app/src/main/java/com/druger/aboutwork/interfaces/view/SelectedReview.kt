@@ -1,6 +1,6 @@
 package com.druger.aboutwork.interfaces.view
 
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import com.arellomobile.mvp.MvpView
 import com.druger.aboutwork.model.Comment
 import com.druger.aboutwork.model.Review

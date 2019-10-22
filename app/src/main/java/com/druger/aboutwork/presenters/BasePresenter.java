@@ -1,6 +1,6 @@
 package com.druger.aboutwork.presenters;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.arellomobile.mvp.MvpPresenter;
 import com.arellomobile.mvp.MvpView;

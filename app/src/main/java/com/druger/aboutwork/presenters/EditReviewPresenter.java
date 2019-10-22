@@ -1,7 +1,8 @@
 package com.druger.aboutwork.presenters;
 
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.druger.aboutwork.db.FirebaseHelper;

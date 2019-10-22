@@ -113,27 +113,29 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
 
     private fun interviewDateClick() {
         datePicker.flag = DatePickerFragment.INTERVIEW_DATE
-        datePicker.show(fragmentManager, DatePickerFragment.TAG)
+        fragmentManager?.let { datePicker.show(it, DatePickerFragment.TAG) }
         datePicker.setData(etInterviewDate, review)
     }
 
     private fun dismissalDateClick() {
         datePicker.flag = DatePickerFragment.DISMISSAL_DATE
-        datePicker.show(fragmentManager, DatePickerFragment.TAG)
+        fragmentManager?.let { datePicker.show(it, DatePickerFragment.TAG) }
         datePicker.setData(etDismissalDate, review)
     }
 
     private fun employmentDateClick() {
         datePicker.flag = DatePickerFragment.EMPLOYMENT_DATE
-        datePicker.show(fragmentManager, DatePickerFragment.TAG)
+        fragmentManager?.let { datePicker.show(it, DatePickerFragment.TAG) }
         datePicker.setData(etEmploymentDate, review)
     }
 
     private fun setupWorkStatus() {
-        val adapter = ArrayAdapter.createFromResource(activity,
-                R.array.work_status, R.layout.simple_spinner_item)
-        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-        spinnerStatus.adapter = adapter
+        context?.let {
+            val adapter = ArrayAdapter.createFromResource(it,
+                    R.array.work_status, R.layout.simple_spinner_item)
+            adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+            spinnerStatus.adapter = adapter
+        }
         setStatus()
     }
 
@@ -154,7 +156,7 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
     }
 
     private fun getBundles() {
-        arguments?.let { reviewKey = it.getString(REVIEW_KEY) }
+        arguments?.let { reviewKey = it.getString(REVIEW_KEY, "") }
     }
 
     private fun getReview() {
@@ -230,9 +232,11 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
     }
 
     private fun showSuggestions(items: List<Any>, view: AutoCompleteTextView) {
-        val arrayAdapter = ArrayAdapter<Any>(
-                activity, android.R.layout.simple_dropdown_item_1line, items)
-        view.setAdapter<ArrayAdapter<*>>(arrayAdapter)
+        context?.let {
+            val arrayAdapter = ArrayAdapter<Any>(
+                    it, android.R.layout.simple_dropdown_item_1line, items)
+            view.setAdapter<ArrayAdapter<*>>(arrayAdapter)
+        }
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
