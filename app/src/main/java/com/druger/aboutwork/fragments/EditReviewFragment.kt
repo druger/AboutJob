@@ -10,8 +10,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
@@ -24,6 +22,8 @@ import com.druger.aboutwork.presenters.EditReviewPresenter
 import com.druger.aboutwork.utils.Utils
 import kotlinx.android.synthetic.main.content_review.*
 import kotlinx.android.synthetic.main.toolbar_review.*
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 
 class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnItemSelectedListener {
 
@@ -113,27 +113,29 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
 
     private fun interviewDateClick() {
         datePicker.flag = DatePickerFragment.INTERVIEW_DATE
-        datePicker.show(fragmentManager, DatePickerFragment.TAG)
+        fragmentManager?.let { datePicker.show(it, DatePickerFragment.TAG) }
         datePicker.setData(etInterviewDate, review)
     }
 
     private fun dismissalDateClick() {
         datePicker.flag = DatePickerFragment.DISMISSAL_DATE
-        datePicker.show(fragmentManager, DatePickerFragment.TAG)
+        fragmentManager?.let { datePicker.show(it, DatePickerFragment.TAG) }
         datePicker.setData(etDismissalDate, review)
     }
 
     private fun employmentDateClick() {
         datePicker.flag = DatePickerFragment.EMPLOYMENT_DATE
-        datePicker.show(fragmentManager, DatePickerFragment.TAG)
+        fragmentManager?.let { datePicker.show(it, DatePickerFragment.TAG) }
         datePicker.setData(etEmploymentDate, review)
     }
 
     private fun setupWorkStatus() {
-        val adapter = ArrayAdapter.createFromResource(activity,
-                R.array.work_status, R.layout.simple_spinner_item)
-        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-        spinnerStatus.adapter = adapter
+        context?.let {
+            val adapter = ArrayAdapter.createFromResource(it,
+                    R.array.work_status, R.layout.simple_spinner_item)
+            adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+            spinnerStatus.adapter = adapter
+        }
         setStatus()
     }
 
@@ -154,7 +156,7 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
     }
 
     private fun getBundles() {
-        arguments?.let { reviewKey = it.getString(REVIEW_KEY) }
+        arguments?.let { reviewKey = it.getString(REVIEW_KEY, "") }
     }
 
     private fun getReview() {
@@ -230,9 +232,11 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
     }
 
     private fun showSuggestions(items: List<Any>, view: AutoCompleteTextView) {
-        val arrayAdapter = ArrayAdapter<Any>(
-                activity, android.R.layout.simple_dropdown_item_1line, items)
-        view.setAdapter<ArrayAdapter<*>>(arrayAdapter)
+        context?.let {
+            val arrayAdapter = ArrayAdapter<Any>(
+                    it, android.R.layout.simple_dropdown_item_1line, items)
+            view.setAdapter<ArrayAdapter<*>>(arrayAdapter)
+        }
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {

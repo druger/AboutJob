@@ -1,6 +1,5 @@
 package com.druger.aboutwork.presenters;
 
-import com.arellomobile.mvp.InjectViewState;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.view.CompanyDetailView;
 import com.druger.aboutwork.model.CompanyDetail;
@@ -24,6 +23,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
+import moxy.InjectViewState;
 import timber.log.Timber;
 
 /**

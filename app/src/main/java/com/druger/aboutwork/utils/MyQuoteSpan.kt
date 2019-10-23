@@ -3,12 +3,12 @@ package com.druger.aboutwork.utils
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.Parcel
-import android.support.annotation.ColorInt
-import android.support.annotation.NonNull
-import android.support.annotation.Px
 import android.text.Layout
 import android.text.ParcelableSpan
 import android.text.style.LeadingMarginSpan
+import androidx.annotation.ColorInt
+import androidx.annotation.NonNull
+import androidx.annotation.Px
 
 class MyQuoteSpan(@ColorInt private var mColor: Int,
                   @Px private var mStripeWidth: Int,

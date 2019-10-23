@@ -1,6 +1,6 @@
 package com.druger.aboutwork.interfaces.view
 
-import com.arellomobile.mvp.MvpView
+import moxy.MvpView
 
 interface ChangeNameView : MvpView, NetworkView {
     fun showSuccessMessage()

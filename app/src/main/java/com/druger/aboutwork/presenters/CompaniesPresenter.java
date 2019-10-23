@@ -1,6 +1,5 @@
 package com.druger.aboutwork.presenters;
 
-import com.arellomobile.mvp.InjectViewState;
 import com.druger.aboutwork.db.RealmHelper;
 import com.druger.aboutwork.interfaces.view.CompaniesView;
 import com.druger.aboutwork.model.realm.CompanyRealm;
@@ -13,6 +12,7 @@ import javax.inject.Inject;
 import io.reactivex.disposables.Disposable;
 import io.realm.OrderedRealmCollectionChangeListener;
 import io.realm.RealmResults;
+import moxy.InjectViewState;
 
 import static io.realm.OrderedCollectionChangeSet.State.INITIAL;
 

@@ -3,9 +3,6 @@ package com.druger.aboutwork.utils
 import android.content.Context
 import android.content.Intent
 import android.graphics.*
-import android.support.annotation.StringRes
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AlertDialog
 import android.text.SpannableString
 import android.text.Spanned
 import android.util.Patterns
@@ -14,6 +11,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.LoginActivity
 import java.text.SimpleDateFormat

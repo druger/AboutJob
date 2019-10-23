@@ -5,8 +5,6 @@ import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.StringRes;
-import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +14,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
+import androidx.annotation.StringRes;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.BuildConfig;
 import com.druger.aboutwork.R;
@@ -32,6 +31,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
+import moxy.presenter.InjectPresenter;
+import moxy.presenter.ProvidePresenter;
 import timber.log.Timber;
 
 

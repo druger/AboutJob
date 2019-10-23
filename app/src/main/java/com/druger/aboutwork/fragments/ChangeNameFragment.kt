@@ -6,13 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.arellomobile.mvp.presenter.InjectPresenter
 import com.druger.aboutwork.Const.Bundles.NAME
 import com.druger.aboutwork.R
 import com.druger.aboutwork.interfaces.view.ChangeNameView
 import com.druger.aboutwork.presenters.ChangeNamePresenter
 import kotlinx.android.synthetic.main.fragment_change_name.*
 import kotlinx.android.synthetic.main.toolbar.*
+import moxy.presenter.InjectPresenter
 
 class ChangeNameFragment : BaseSupportFragment(), ChangeNameView {
 

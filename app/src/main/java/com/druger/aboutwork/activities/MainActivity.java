@@ -1,16 +1,14 @@
 package com.druger.aboutwork.activities;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
-import com.arellomobile.mvp.presenter.InjectPresenter;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.fragments.AccountFragment;
@@ -18,7 +16,11 @@ import com.druger.aboutwork.fragments.CompaniesFragment;
 import com.druger.aboutwork.fragments.MyReviewsFragment;
 import com.druger.aboutwork.interfaces.view.MainView;
 import com.druger.aboutwork.presenters.MainPresenter;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.leakcanary.RefWatcher;
+
+import moxy.MvpAppCompatActivity;
+import moxy.presenter.InjectPresenter;
 
 public class MainActivity extends MvpAppCompatActivity implements MainView,
         BottomNavigationView.OnNavigationItemSelectedListener {

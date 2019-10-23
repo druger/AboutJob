@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 
-import com.arellomobile.mvp.InjectViewState;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.BuildConfig;
 import com.druger.aboutwork.R;
@@ -16,6 +15,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import javax.inject.Inject;
 
+import moxy.InjectViewState;
 import timber.log.Timber;
 
 /**

@@ -1,10 +1,10 @@
 package com.druger.aboutwork.presenters
 
-import com.arellomobile.mvp.InjectViewState
-import com.arellomobile.mvp.MvpPresenter
 import com.druger.aboutwork.interfaces.view.MainView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import moxy.InjectViewState
+import moxy.MvpPresenter
 
 /**
  * Created by druger on 30.04.2017.

@@ -1,7 +1,5 @@
 package com.druger.aboutwork.presenters;
 
-import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.view.MyReviewsView;
 import com.druger.aboutwork.model.Company;
@@ -15,6 +13,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import moxy.InjectViewState;
+import moxy.MvpPresenter;
 
 /**
  * Created by druger on 09.05.2017.

@@ -1,9 +1,9 @@
 package com.druger.aboutwork.presenters;
 
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.arellomobile.mvp.InjectViewState;
+import androidx.annotation.NonNull;
+
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.view.EditReviewView;
 import com.druger.aboutwork.model.MarkCompany;
@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
+import moxy.InjectViewState;
 
 import static com.druger.aboutwork.Const.ReviewStatus.INTERVIEW_STATUS;
 import static com.druger.aboutwork.Const.ReviewStatus.NOT_SELECTED_STATUS;

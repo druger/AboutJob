@@ -1,7 +1,7 @@
 package com.druger.aboutwork.utils.rx;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.SearchView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;

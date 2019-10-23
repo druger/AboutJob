@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="?android:attr/actionBarSize">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -146,7 +146,7 @@
             app:layout_constraintStart_toStartOf="@+id/rbChief"
             app:layout_constraintTop_toBottomOf="@+id/rbChief" />
 
-        <View xmlns:android="http://schemas.android.com/apk/res/android"
+        <View
             android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -156,7 +156,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rbSocialPackage" />
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/position"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -172,9 +172,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/position_" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ltPluses"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -185,14 +185,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/position">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPluses"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/pluses_" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ltMinuses"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -202,14 +202,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ltPluses">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etMinuses"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/minuses_" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -224,9 +224,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/city_" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ltEmploymentDate"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
@@ -236,7 +236,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etEmploymentDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -244,9 +244,9 @@
                 android:focusableInTouchMode="false"
                 android:hint="@string/empoyment_date"
                 android:inputType="none" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ltDismissalDate"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
@@ -258,7 +258,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etDismissalDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -266,9 +266,9 @@
                 android:focusableInTouchMode="false"
                 android:hint="@string/dismissal_date"
                 android:inputType="none" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ltInterviewDate"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
@@ -279,7 +279,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etInterviewDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -287,14 +287,14 @@
                 android:focusableInTouchMode="false"
                 android:hint="@string/interview_date"
                 android:inputType="none" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.constraint.Group
+        <androidx.constraintlayout.widget.Group
             android:id="@+id/group_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:constraint_referenced_ids="rbCollective,rbSocialPackage,tvWorkplace,tvCollective,tvSalary,tvChief,rbChief,tvSocialPackage,tvCareer,rbSalary,rbWorkplace,rbCareer,view" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
 

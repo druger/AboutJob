@@ -3,22 +3,19 @@ package com.druger.aboutwork.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.LoginActivity;
 import com.druger.aboutwork.interfaces.view.ChangePasswordView;
 import com.druger.aboutwork.presenters.ChangePasswordPresenter;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+import moxy.presenter.InjectPresenter;
+
 public class ChangePasswordFragment extends BaseSupportFragment implements ChangePasswordView {
 
     @InjectPresenter

@@ -1,14 +1,14 @@
 package com.druger.aboutwork.presenters;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
-import com.arellomobile.mvp.MvpPresenter;
-import com.arellomobile.mvp.MvpView;
 import com.druger.aboutwork.db.RealmHelper;
 import com.druger.aboutwork.rest.RestApi;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import moxy.MvpPresenter;
+import moxy.MvpView;
 import timber.log.Timber;
 
 /**

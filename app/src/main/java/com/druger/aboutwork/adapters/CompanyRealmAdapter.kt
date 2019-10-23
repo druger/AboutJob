@@ -1,9 +1,9 @@
 package com.druger.aboutwork.adapters
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.druger.aboutwork.R
@@ -26,7 +26,6 @@ class CompanyRealmAdapter(data: OrderedRealmCollection<CompanyRealm>, var clickL
     override fun onBindViewHolder(holder: CompanyVH, position: Int) {
         val company = data?.get(position)
         holder.tvName.text = company!!.name
-//        holder.tvCity.text = company.city
 
         Glide.with(holder.itemView.context)
                 .load(company.logo)
@@ -47,6 +46,5 @@ class CompanyRealmAdapter(data: OrderedRealmCollection<CompanyRealm>, var clickL
     inner class CompanyVH (itemView: View) : RecyclerView.ViewHolder(itemView){
         val ivLogo = itemView.ivLogoCompany
         val tvName = itemView.tvNameCompany
-//        val tvCity = itemView.tvCity
     }
 }

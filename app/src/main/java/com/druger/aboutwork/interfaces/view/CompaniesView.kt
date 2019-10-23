@@ -1,7 +1,7 @@
 package com.druger.aboutwork.interfaces.view
 
-import com.arellomobile.mvp.MvpView
 import com.druger.aboutwork.model.Company
+import moxy.MvpView
 
 /**
  * Created by druger on 01.05.2017.
