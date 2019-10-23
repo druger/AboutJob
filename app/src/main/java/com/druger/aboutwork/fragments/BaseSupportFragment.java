@@ -14,10 +14,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.enums.TypeMessage;
 import com.druger.aboutwork.interfaces.view.NetworkView;
+
+import moxy.MvpAppCompatFragment;
 
 /**
  * Created by druger on 06.08.2017.

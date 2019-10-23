@@ -3,14 +3,14 @@ package com.druger.aboutwork.presenters;
 import android.content.Context;
 import android.util.Patterns;
 
-import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.enums.TypeMessage;
 import com.druger.aboutwork.interfaces.view.ChangeEmailView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import moxy.InjectViewState;
+import moxy.MvpPresenter;
 import timber.log.Timber;
 
 /**

@@ -22,8 +22,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.druger.aboutwork.App;
@@ -43,6 +41,9 @@ import com.thefinestartist.finestwebview.FinestWebView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import moxy.presenter.InjectPresenter;
+import moxy.presenter.ProvidePresenter;
 
 public class CompanyDetailFragment extends BaseSupportFragment implements View.OnClickListener,
         CompanyDetailView {

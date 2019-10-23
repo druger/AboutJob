@@ -1,8 +1,8 @@
 package com.druger.aboutwork.interfaces.view
 
-import com.arellomobile.mvp.MvpView
 import com.druger.aboutwork.model.City
 import com.druger.aboutwork.model.Vacancy
+import moxy.MvpView
 
 interface AddReviewView: MvpView {
     fun showVacancies(vacancies: List<Vacancy>)

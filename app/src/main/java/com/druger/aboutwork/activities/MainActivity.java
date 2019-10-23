@@ -9,8 +9,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
-import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.fragments.AccountFragment;
@@ -20,6 +18,9 @@ import com.druger.aboutwork.interfaces.view.MainView;
 import com.druger.aboutwork.presenters.MainPresenter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.leakcanary.RefWatcher;
+
+import moxy.MvpAppCompatActivity;
+import moxy.presenter.InjectPresenter;
 
 public class MainActivity extends MvpAppCompatActivity implements MainView,
         BottomNavigationView.OnNavigationItemSelectedListener {

@@ -1,6 +1,5 @@
 package com.druger.aboutwork.presenters
 
-import com.arellomobile.mvp.InjectViewState
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.db.FirebaseHelper
@@ -16,6 +15,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import moxy.InjectViewState
 import java.util.*
 import javax.inject.Inject
 

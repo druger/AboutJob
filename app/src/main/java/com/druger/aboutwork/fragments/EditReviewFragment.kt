@@ -10,8 +10,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
@@ -24,6 +22,8 @@ import com.druger.aboutwork.presenters.EditReviewPresenter
 import com.druger.aboutwork.utils.Utils
 import kotlinx.android.synthetic.main.content_review.*
 import kotlinx.android.synthetic.main.toolbar_review.*
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 
 class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnItemSelectedListener {
 

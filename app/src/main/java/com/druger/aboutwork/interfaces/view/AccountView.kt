@@ -2,7 +2,7 @@ package com.druger.aboutwork.interfaces.view
 
 import android.content.Intent
 import androidx.annotation.StringRes
-import com.arellomobile.mvp.MvpView
+import moxy.MvpView
 
 /**
  * Created by druger on 09.05.2017.

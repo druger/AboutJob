@@ -1,8 +1,8 @@
 package com.druger.aboutwork.interfaces.view
 
-import com.arellomobile.mvp.MvpView
 import com.druger.aboutwork.model.Review
 import com.google.firebase.storage.StorageReference
+import moxy.MvpView
 
 /**
  * Created by druger on 31.01.2018.

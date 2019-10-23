@@ -2,7 +2,6 @@ package com.druger.aboutwork.presenters;
 
 import android.text.TextUtils;
 
-import com.arellomobile.mvp.InjectViewState;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.view.AddReviewView;
@@ -22,6 +21,7 @@ import java.util.Calendar;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
+import moxy.InjectViewState;
 
 import static com.druger.aboutwork.Const.ReviewStatus.INTERVIEW_STATUS;
 import static com.druger.aboutwork.Const.ReviewStatus.NOT_SELECTED_STATUS;

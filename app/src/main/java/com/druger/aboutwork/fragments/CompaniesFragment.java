@@ -14,8 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.MainActivity;
@@ -35,6 +33,8 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.RealmResults;
+import moxy.presenter.InjectPresenter;
+import moxy.presenter.ProvidePresenter;
 
 import static com.druger.aboutwork.Const.Bundles.DEBOUNCE_SEARCH;
 

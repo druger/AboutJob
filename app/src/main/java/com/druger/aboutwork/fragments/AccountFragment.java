@@ -17,8 +17,6 @@ import android.widget.Toast;
 import androidx.annotation.StringRes;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.BuildConfig;
 import com.druger.aboutwork.R;
@@ -33,6 +31,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
+import moxy.presenter.InjectPresenter;
+import moxy.presenter.ProvidePresenter;
 import timber.log.Timber;
 
 

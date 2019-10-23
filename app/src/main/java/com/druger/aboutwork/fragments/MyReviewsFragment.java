@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.App;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.LoginActivity;
@@ -45,6 +44,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import moxy.presenter.InjectPresenter;
 
 public class MyReviewsFragment extends BaseSupportFragment implements MyReviewsView,
         RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {

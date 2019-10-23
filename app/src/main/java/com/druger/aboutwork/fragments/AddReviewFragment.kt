@@ -11,8 +11,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.interfaces.view.AddReviewView
@@ -22,6 +20,8 @@ import com.druger.aboutwork.model.Vacancy
 import com.druger.aboutwork.presenters.AddReviewPresenter
 import kotlinx.android.synthetic.main.content_review.*
 import kotlinx.android.synthetic.main.toolbar_review.*
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 
 
 class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListener, AddReviewView {

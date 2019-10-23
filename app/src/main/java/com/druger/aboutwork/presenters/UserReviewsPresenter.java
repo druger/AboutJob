@@ -1,6 +1,5 @@
 package com.druger.aboutwork.presenters;
 
-import com.arellomobile.mvp.InjectViewState;
 import com.druger.aboutwork.db.FirebaseHelper;
 import com.druger.aboutwork.interfaces.view.UserReviews;
 import com.druger.aboutwork.model.Company;
@@ -17,6 +16,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import moxy.InjectViewState;
 
 /**
  * Created by druger on 31.01.2018.

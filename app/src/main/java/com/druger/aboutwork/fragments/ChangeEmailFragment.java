@@ -11,11 +11,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.LoginActivity;
 import com.druger.aboutwork.interfaces.view.ChangeEmailView;
 import com.druger.aboutwork.presenters.ChangeEmailPresenter;
+
+import moxy.presenter.InjectPresenter;
 
 import static com.druger.aboutwork.Const.Bundles.EMAIL;
 

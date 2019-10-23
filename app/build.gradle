@@ -17,6 +17,15 @@ android {
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        disableEmptyStrategyCheck: 'true',
+                        defaultMoxyStrategy: 'moxy.viewstate.strategy.AddToEndSingleStrategy'
+                ]
+            }
+        }
     }
     buildTypes {
         release {
@@ -68,14 +77,14 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.8.1'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.8.1'
-    implementation 'tech.schoolhelper:moxy-x-androidx:1.7.0'
-    implementation 'tech.schoolhelper:moxy-x:1.7.0'
+    implementation "com.github.moxy-community:moxy:2.0.2"
+    implementation "com.github.moxy-community:moxy-androidx:2.0.2"
+    kapt "com.github.moxy-community:moxy-compiler:2.0.2"
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'com.google.dagger:dagger:2.11'
     testImplementation 'junit:junit:4.12'
     kapt 'com.google.dagger:dagger-compiler:2.11'
-    kapt 'tech.schoolhelper:moxy-x-compiler:1.7.0'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.2'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.2'
     implementation 'com.thefinestartist:finestwebview:1.2.7'

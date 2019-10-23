@@ -9,11 +9,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.LoginActivity;
 import com.druger.aboutwork.interfaces.view.ChangePasswordView;
 import com.druger.aboutwork.presenters.ChangePasswordPresenter;
+
+import moxy.presenter.InjectPresenter;
 
 public class ChangePasswordFragment extends BaseSupportFragment implements ChangePasswordView {
 

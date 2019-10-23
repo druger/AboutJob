@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.activities.MainActivity;
 import com.druger.aboutwork.adapters.CommentAdapter;
@@ -42,6 +41,8 @@ import org.threeten.bp.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import moxy.presenter.InjectPresenter;
 
 import static com.druger.aboutwork.Const.Bundles.EDIT_MODE;
 import static com.druger.aboutwork.Const.Colors.DISLIKE;
