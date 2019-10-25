@@ -54,3 +54,5 @@
 
 -keep class com.crashlytics.** { *; }
 -dontwarn com.crashlytics.**
+
+ -keepclassmembers class com.druger.aboutwork.model.** { *; }
