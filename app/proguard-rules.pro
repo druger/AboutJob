@@ -56,3 +56,4 @@
 -dontwarn com.crashlytics.**
 
  -keepclassmembers class com.druger.aboutwork.model.** { *; }
+ -keepclassmembers class com.druger.aboutwork.rest.models.** { *; }
