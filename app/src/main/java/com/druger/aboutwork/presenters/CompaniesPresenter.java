@@ -52,7 +52,9 @@ public class CompaniesPresenter extends BasePresenter<CompaniesView> {
 
     private void successGetCompanies(CompanyResponse response) {
         getViewState().showProgress(false);
-        getViewState().showCompanies(response.getItems(), response.getPages());
+        if (response.getItems() != null) {
+            getViewState().showCompanies(response.getItems(), response.getPages());
+        }
     }
 
     @Override
