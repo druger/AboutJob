@@ -254,8 +254,8 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
     public void setReview(Review review) {
         if (review != null) {
             this.review = review;
-            boolean myLike = review.isMyLike();
-            boolean myDislike = review.isMyDislike();
+            boolean myLike = review.getMyLike();
+            boolean myDislike = review.getMyDislike();
             if (!myLike) {
                 ivLike.setTag(getActivity().getString(R.string.like_inactive));
             } else {
@@ -359,13 +359,13 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
     public void onLikeClicked() {
         int like = review.getLike();
         int dislike = review.getDislike();
-        if (!review.isMyLike()) {
+        if (!review.getMyLike()) {
             ivLike.setColorFilter(Color.parseColor(LIKE));
             review.setLike(++like);
             tvLike.setText(String.valueOf(like));
             review.setMyLike(true);
 
-            if (review.isMyDislike()) {
+            if (review.getMyDislike()) {
                 ivDislike.setColorFilter(Color.parseColor(GRAY_500));
                 review.setDislike(--dislike);
                 tvDislike.setText(String.valueOf(dislike));
@@ -385,13 +385,13 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
     public void onDislikeClicked() {
         int like = review.getLike();
         int dislike = review.getDislike();
-        if (!review.isMyDislike()) {
+        if (!review.getMyDislike()) {
             ivDislike.setColorFilter(Color.parseColor(DISLIKE));
             review.setDislike(++dislike);
             tvDislike.setText(String.valueOf(dislike));
             review.setMyDislike(true);
 
-            if (review.isMyLike()) {
+            if (review.getMyLike()) {
                 ivLike.setColorFilter(Color.parseColor(GRAY_500));
                 review.setLike(--like);
                 tvLike.setText(String.valueOf(like));

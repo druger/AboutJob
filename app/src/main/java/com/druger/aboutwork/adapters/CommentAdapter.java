@@ -57,7 +57,7 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
     }
 
     private void setColorDislike(Comment comment, CommentVH holder) {
-        if (comment.isMyDislike()) {
+        if (comment.getMyDislike()) {
             holder.ivDislike.setColorFilter(Color.parseColor(Const.Colors.DISLIKE));
         } else {
             holder.ivDislike.setImageResource(R.drawable.thumb_down);
@@ -68,7 +68,7 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
         if (user != null) {
             int dislike = comment.getDislike();
             int like = comment.getLike();
-            if (comment.isMyDislike()) {
+            if (comment.getMyDislike()) {
                 comment.setDislike(--dislike);
                 comment.setMyDislike(false);
                 holder.ivDislike.setColorFilter(Color.parseColor(GRAY_500));
@@ -77,7 +77,7 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
                 comment.setMyDislike(true);
                 holder.ivDislike.setColorFilter(Color.parseColor(DISLIKE));
 
-                if (comment.isMyLike()) {
+                if (comment.getMyLike()) {
                     holder.ivLike.setColorFilter(Color.parseColor(GRAY_500));
                     comment.setLike(--like);
                     comment.setMyLike(false);
@@ -91,7 +91,7 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
     }
 
     private void setColorLike(Comment comment, CommentVH holder) {
-        if (comment.isMyLike()) {
+        if (comment.getMyLike()) {
             holder.ivLike.setColorFilter(Color.parseColor(Const.Colors.LIKE));
         } else {
             holder.ivLike.setImageResource(R.drawable.thumb_up);
@@ -102,7 +102,7 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
         if (user != null) {
             int like = comment.getLike();
             int dislike = comment.getDislike();
-            if (comment.isMyLike()) {
+            if (comment.getMyLike()) {
                 comment.setLike(--like);
                 comment.setMyLike(false);
                 holder.ivLike.setColorFilter(Color.parseColor(GRAY_500));
@@ -111,7 +111,7 @@ public class CommentAdapter extends BaseRecyclerViewAdapter<Comment, CommentAdap
                 comment.setMyLike(true);
                 holder.ivLike.setColorFilter(Color.parseColor(LIKE));
 
-                if (comment.isMyDislike()) {
+                if (comment.getMyDislike()) {
                     holder.ivDislike.setColorFilter(Color.parseColor(GRAY_500));
                     comment.setDislike(--dislike);
                     comment.setMyDislike(false);
