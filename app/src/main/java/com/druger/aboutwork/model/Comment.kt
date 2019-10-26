@@ -16,8 +16,8 @@ class Comment {
     var message: String? = null
     var like: Int = 0
     var dislike: Int = 0
-    var isMyLike: Boolean = false
-    var isMyDislike: Boolean = false
+    var myLike: Boolean = false
+    var myDislike: Boolean = false
     var replyId: String? = null
 
     constructor() {}

@@ -24,8 +24,8 @@ data class Review(var companyId: String? = null,
     var interviewDate: Long = 0
     var like: Int = 0
     var dislike: Int = 0
-    var isMyLike: Boolean = false
-    var isMyDislike: Boolean = false
+    var myLike: Boolean = false
+    var myDislike: Boolean = false
     @JsonIgnore
     var firebaseKey: String? = null
 
