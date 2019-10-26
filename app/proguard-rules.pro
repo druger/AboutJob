@@ -57,3 +57,8 @@
 
  -keepclassmembers class com.druger.aboutwork.model.** { *; }
  -keepclassmembers class com.druger.aboutwork.rest.models.** { *; }
+
+ -keepclassmembers class * implements android.text.ParcelableSpan {
+   public int getSpanTypeIdInternal();
+   public void writeToParcelInternal(android.os.Parcel, int);
+ }
