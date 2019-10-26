@@ -326,7 +326,8 @@
             android:hint="@string/your_message"
             android:inputType="textMultiLine"
             android:maxHeight="80dp"
-            android:paddingStart="15dp" />
+            android:paddingStart="15dp"
+            android:paddingEnd="0dp"/>
 
         <ImageView
             android:id="@+id/ivSend"
