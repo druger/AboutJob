@@ -46,7 +46,7 @@ object FirebaseHelper {
     fun likeReview(review: Review) {
         val updateLike = HashMap<String, Any>()
         updateLike[REVIEWS + SLASH + review.firebaseKey + LIKE] = review.like
-        updateLike[REVIEWS + SLASH + review.firebaseKey + MY_LIKE] = review.isMyLike
+        updateLike[REVIEWS + SLASH + review.firebaseKey + MY_LIKE] = review.myLike
 
         FirebaseDatabase.getInstance().reference.updateChildren(updateLike)
     }
@@ -54,7 +54,7 @@ object FirebaseHelper {
     fun dislikeReview(review: Review) {
         val updateDislike = HashMap<String, Any>()
         updateDislike[REVIEWS + SLASH + review.firebaseKey + DISLIKE] = review.dislike
-        updateDislike[REVIEWS + SLASH + review.firebaseKey + MY_DISLIKE] = review.isMyDislike
+        updateDislike[REVIEWS + SLASH + review.firebaseKey + MY_DISLIKE] = review.myDislike
 
         FirebaseDatabase.getInstance().reference.updateChildren(updateDislike)
     }
@@ -134,7 +134,7 @@ object FirebaseHelper {
     fun likeComment(comment: Comment) {
         val updateLike = HashMap<String, Any>()
         updateLike[COMMENTS + SLASH + comment.id + LIKE] = comment.like
-        updateLike[COMMENTS + SLASH + comment.id + MY_LIKE] = comment.isMyLike
+        updateLike[COMMENTS + SLASH + comment.id + MY_LIKE] = comment.myLike
 
         FirebaseDatabase.getInstance().reference.updateChildren(updateLike)
     }
@@ -142,7 +142,7 @@ object FirebaseHelper {
     fun dislikeComment(comment: Comment) {
         val updateLike = HashMap<String, Any>()
         updateLike[COMMENTS + SLASH + comment.id + DISLIKE] = comment.dislike
-        updateLike[COMMENTS + SLASH + comment.id + MY_DISLIKE] = comment.isMyDislike
+        updateLike[COMMENTS + SLASH + comment.id + MY_DISLIKE] = comment.myDislike
 
         FirebaseDatabase.getInstance().reference.updateChildren(updateLike)
     }
