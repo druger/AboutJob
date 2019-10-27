@@ -16,7 +16,7 @@
 #   public *;
 #}
 
--keepattributes Signature, InnerClasses, EnclosingMethod
+-keepattributes Signature, InnerClasses, EnclosingMethod, Exceptions
 
 -keepattributes RuntimeVisibleAnnotations, RuntimeVisibleParameterAnnotations
 
@@ -37,6 +37,11 @@
 -dontwarn retrofit2.KotlinExtensions
 -dontwarn retrofit2.KotlinExtensions$*
 
+# Platform calls Class.forName on types which do not exist on Android to determine platform.
+-dontnote retrofit2.Platform
+# Platform used when running on Java 8 VMs. Will not be used at runtime.
+-dontwarn retrofit2.Platform$Java8
+
 # With R8 full mode, it sees no subtypes of Retrofit interfaces since they are created with a Proxy
 # and replaces all potential values with null. Explicitly keeping the interfaces prevents this.
 -if interface * { @retrofit2.http.* <methods>; }
@@ -55,10 +60,44 @@
 -keep class com.crashlytics.** { *; }
 -dontwarn com.crashlytics.**
 
- -keepclassmembers class com.druger.aboutwork.model.** { *; }
- -keepclassmembers class com.druger.aboutwork.rest.models.** { *; }
+-keepclassmembers class com.druger.aboutwork.model.** { *; }
+-keepclassmembers class com.druger.aboutwork.model.realm.** { *; }
+-keepclassmembers class com.druger.aboutwork.rest.models.** { *; }
+#-keepclassmembers class com.druger.aboutwork.rest.endpoints.** { *; }
 
- -keepclassmembers class * implements android.text.ParcelableSpan {
+-keepclassmembers class * implements android.text.ParcelableSpan {
    public int getSpanTypeIdInternal();
    public void writeToParcelInternal(android.os.Parcel, int);
- }
+}
+
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+   long producerIndex;
+   long consumerIndex;
+}
+
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+   long producerNode;
+   long consumerNode;
+}
+
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode consumerNode;
+}
+
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode producerNode;
+}
+
+-dontwarn sun.misc.**
+
+-dontnote rx.internal.util.PlatformDependent
+
+-dontwarn org.codehaus.mojo.animal_sniffer.*
+
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+
+-dontwarn okhttp3.internal.platform.ConscryptPlatform
+
+-dontwarn okio.**
+-dontwarn javax.annotation.Nullable
+-dontwarn javax.annotation.ParametersAreNonnullByDefault
