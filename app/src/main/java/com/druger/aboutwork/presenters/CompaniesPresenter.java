@@ -45,7 +45,7 @@ public class CompaniesPresenter extends BasePresenter<CompaniesView> {
 
     private void requestGetCompanies(String query, int page) {
         Disposable request = restApi.getCompany().getCompanies(query, page)
-                .compose(RxUtils.httpSchedulers())
+                .compose(RxUtils.singleTransformers())
                 .subscribe(this::successGetCompanies, this::handleError);
         unSubscribeOnDestroy(request);
     }
