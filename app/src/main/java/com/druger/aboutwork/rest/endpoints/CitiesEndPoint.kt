@@ -1,7 +1,7 @@
 package com.druger.aboutwork.rest.endpoints
 
 import com.druger.aboutwork.rest.models.CityResponse
-import io.reactivex.Single
+import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -11,5 +11,5 @@ import retrofit2.http.Query
 
 interface CitiesEndPoint {
     @GET("/suggests/areas")
-    fun getCities(@Query("text") city: String): Single<CityResponse>
+    fun getCities(@Query("text") city: String): Observable<CityResponse>
 }

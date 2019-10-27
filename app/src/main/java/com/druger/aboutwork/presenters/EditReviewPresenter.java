@@ -102,24 +102,28 @@ public class EditReviewPresenter extends BasePresenter<EditReviewView> {
 
     public void getCities(String city) {
         Disposable request = restApi.getCities().getCities(city)
-                .compose(RxUtils.httpSchedulers())
+                .compose(RxUtils.observableTransformer())
                 .subscribe(this::successGetCities, this::handleError);
         unSubscribeOnDestroy(request);
     }
 
     public void getVacancies(String vacancy) {
         Disposable request = restApi.getVacancies().getVacancies(vacancy)
-                .compose(RxUtils.httpSchedulers())
+                .compose(RxUtils.observableTransformer())
                 .subscribe(this:: successGetVacancies, this::handleError);
         unSubscribeOnDestroy(request);
     }
 
     private void successGetVacancies(VacancyResponse vacancyResponse) {
-        getViewState().showVacancies(vacancyResponse.getItems());
+        if (vacancyResponse.getItems() != null) {
+            getViewState().showVacancies(vacancyResponse.getItems());
+        }
     }
 
     private void successGetCities(CityResponse cityResponse) {
-        getViewState().showCities(cityResponse.getItems());
+        if (cityResponse.getItems() != null) {
+            getViewState().showCities(cityResponse.getItems());
+        }
     }
 
     public void onSelectedWorkingStatus(int position) {
