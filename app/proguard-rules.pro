@@ -63,7 +63,6 @@
 -keepclassmembers class com.druger.aboutwork.model.** { *; }
 -keepclassmembers class com.druger.aboutwork.model.realm.** { *; }
 -keepclassmembers class com.druger.aboutwork.rest.models.** { *; }
-#-keepclassmembers class com.druger.aboutwork.rest.endpoints.** { *; }
 
 -keepclassmembers class * implements android.text.ParcelableSpan {
    public int getSpanTypeIdInternal();

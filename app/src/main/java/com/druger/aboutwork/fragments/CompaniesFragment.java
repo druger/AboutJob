@@ -132,7 +132,6 @@ public class CompaniesFragment extends BaseSupportFragment implements CompaniesV
         itemClickListener = new OnItemClickListener<CompanyRealm>() {
             @Override
             public void onClick(CompanyRealm company, int position) {
-                saveCompanyToDb(company);
                 showCompanyDetail(company.getId());
             }
 
