@@ -89,7 +89,9 @@
                     app:layout_constraintEnd_toStartOf="@+id/tvDate"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Moscow"
-                    app:layout_constrainedWidth="true"/>
+                    app:layout_constrainedWidth="true"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/tvDate"
@@ -115,7 +117,8 @@
                     tools:text="developer"
                     app:layout_constrainedWidth="true"
                     android:lines="1"
-                    android:ellipsize="end"/>
+                    android:ellipsize="end"
+                    android:textColor="@android:color/black"/>
 
                 <TextView
                     android:id="@+id/tvStatus"
