@@ -65,7 +65,7 @@ public class ChangeEmailFragment extends BaseSupportFragment implements ChangeEm
     }
 
     private void setupUX() {
-        btnChangeEmail.setOnClickListener(v -> changeEmailPresenter.changeEmail(email, getActivity()));
+        btnChangeEmail.setOnClickListener(v -> changeEmailPresenter.changeEmail(email));
         etEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -92,7 +92,9 @@ public class ChangeEmailFragment extends BaseSupportFragment implements ChangeEm
 
     @Override
     public void showLoginActivity() {
-        startActivity(new Intent(getActivity(), LoginActivity.class));
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.druger.aboutwork.interfaces.view
 
+import androidx.annotation.StringRes
 import com.druger.aboutwork.enums.TypeMessage
 
 /**
@@ -10,7 +11,9 @@ interface NetworkView {
 
     fun showProgress(show: Boolean)
 
-    fun showMessage(message: String, typeMessage: TypeMessage)
+    fun showMessage(@StringRes message: Int, typeMessage: TypeMessage)
+
+    fun showMessage(message: String)
 
     fun showErrorScreen(show: Boolean)
 }
