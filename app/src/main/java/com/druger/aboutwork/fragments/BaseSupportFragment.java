@@ -8,6 +8,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.IdRes;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -17,6 +18,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.druger.aboutwork.R;
 import com.druger.aboutwork.enums.TypeMessage;
 import com.druger.aboutwork.interfaces.view.NetworkView;
+
+import org.jetbrains.annotations.NotNull;
 
 import moxy.MvpAppCompatFragment;
 
@@ -53,7 +56,7 @@ public abstract class BaseSupportFragment extends MvpAppCompatFragment implement
     }
 
     @Override
-    public void showMessage(String message, TypeMessage typeMessage) {
+    public void showMessage(@StringRes int message, TypeMessage typeMessage) {
         switch (typeMessage) {
             case SUCCESS:
                 showToast(message);
@@ -61,10 +64,15 @@ public abstract class BaseSupportFragment extends MvpAppCompatFragment implement
             case ERROR:
                 showToast(message);
                 break;
-            case UNKNOW:
-                showToast(getString(R.string.network_error));
+            default:
+                showToast(R.string.network_error);
                 break;
         }
+    }
+
+    @Override
+    public void showMessage(@NotNull String message) {
+        showToast(message);
     }
 
     @Override
@@ -76,7 +84,11 @@ public abstract class BaseSupportFragment extends MvpAppCompatFragment implement
         }
     }
 
-    protected void showToast(String message) {
+    private void showToast(@StringRes Integer message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showToast(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 

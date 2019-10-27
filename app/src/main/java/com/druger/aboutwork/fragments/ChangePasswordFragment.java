@@ -43,7 +43,7 @@ public class ChangePasswordFragment extends BaseSupportFragment implements Chang
 
     private void setupUX() {
         btnChangePass.setOnClickListener(v -> passwordPresenter
-                .changePassword(etPassword.getText().toString().trim(), getActivity()));
+                .changePassword(etPassword.getText().toString().trim()));
     }
 
     private void setupUI() {
@@ -54,7 +54,9 @@ public class ChangePasswordFragment extends BaseSupportFragment implements Chang
 
     @Override
     public void showLoginActivity() {
-        startActivity(new Intent(getActivity(), LoginActivity.class));
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override
