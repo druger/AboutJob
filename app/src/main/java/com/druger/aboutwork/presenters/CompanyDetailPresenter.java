@@ -113,7 +113,7 @@ public class CompanyDetailPresenter extends BasePresenter<CompanyDetailView>
 
     private void requestCompanyDetail(String companyID) {
         Disposable request = restApi.getCompany().getCompanyDetail(companyID)
-                .compose(RxUtils.httpSchedulers())
+                .compose(RxUtils.singleTransformers())
                 .subscribe(this::successGetCompanyDetails, this::handleError);
 
         unSubscribeOnDestroy(request);
