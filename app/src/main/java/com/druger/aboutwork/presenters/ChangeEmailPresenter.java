@@ -1,6 +1,5 @@
 package com.druger.aboutwork.presenters;
 
-import android.content.Context;
 import android.util.Patterns;
 
 import com.druger.aboutwork.R;
@@ -18,39 +17,39 @@ import timber.log.Timber;
  */
 @InjectViewState
 public class ChangeEmailPresenter extends MvpPresenter<ChangeEmailView> {
-    private static final String TAG = ChangeEmailPresenter.class.getSimpleName();
 
     private FirebaseUser user;
-    private Context context;
 
-    public void changeEmail(String email, Context context) {
-        this.context = context;
+    public void changeEmail(String email) {
         user = FirebaseAuth.getInstance().getCurrentUser();
         getViewState().showProgress(true);
         if (user != null && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            changeEmail(email);
+            updateEmail(email);
         } else {
             getViewState().showMessage(
-                    context.getString(R.string.failed_update_email),
+                    R.string.failed_update_email,
                     TypeMessage.ERROR);
             getViewState().showProgress(false);
         }
     }
 
-    private void changeEmail(String email) {
+    private void updateEmail(String email) {
         user.updateEmail(email)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Timber.d("User email address updated.");
                         getViewState().showMessage(
-                                context.getString(R.string.updated_email),
+                                R.string.updated_email,
                                 TypeMessage.SUCCESS);
                         logout();
                     } else {
-                        Timber.e(task.getException().getMessage());
-                        getViewState().showMessage(
-                                context.getString(R.string.failed_update_email),
-                                TypeMessage.ERROR);
+                        Timber.e(task.getException());
+                        String error = task.getException().getLocalizedMessage();
+                        if (error != null) {
+                            getViewState().showMessage(error);
+                        } else {
+                            getViewState().showMessage(R.string.failed_update_email, TypeMessage.ERROR);
+                        }
                     }
                     getViewState().showProgress(false);
                 });
