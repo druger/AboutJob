@@ -214,7 +214,10 @@ public class AccountFragment extends BaseSupportFragment implements AccountView{
         if (phone == null || phone.isEmpty()) {
             ltPhone.setVisibility(View.GONE);
             line3.setVisibility(View.GONE);
-        } else tvPhone.setText(phone);
+        } else {
+            tvPhone.setText(phone);
+            cvPassword.setVisibility(View.GONE);
+        }
     }
 
     @Override
