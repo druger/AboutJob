@@ -203,6 +203,20 @@
                 app:layout_constraintTop_toBottomOf="@+id/cvRemoveAcc"
                 app:layout_constraintEnd_toEndOf="parent" />
 
+            <TextView
+                android:id="@+id/tvWriteToDev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_help"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:text="@string/write_to_developers"
+                android:textColor="@android:color/black"
+                app:layout_constraintBottom_toTopOf="@+id/cvLogout"
+                app:layout_constraintStart_toStartOf="@+id/line6"
+                app:layout_constraintTop_toBottomOf="@+id/line6"
+                app:layout_constraintVertical_bias="0.0" />
+
             <LinearLayout
                 android:id="@+id/cvLogout"
                 android:layout_width="match_parent"
@@ -213,7 +227,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/line6"
+                app:layout_constraintTop_toBottomOf="@+id/tvWriteToDev"
                 app:layout_constraintVertical_bias="1.0">
 
                 <ImageView
