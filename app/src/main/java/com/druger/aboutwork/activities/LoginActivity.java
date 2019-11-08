@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
                                 new AuthUI.IdpConfig.PhoneBuilder().build(),
                                 new AuthUI.IdpConfig.EmailBuilder().build()
                         ))
-                        .setLogo(R.drawable.ic_logo_full)
+                        .setLogo(R.drawable.ic_logo)
                         .setIsSmartLockEnabled(!BuildConfig.DEBUG, false)
                         .build(), RC_SIGN_IN);
     }
