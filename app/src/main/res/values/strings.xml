@@ -95,7 +95,7 @@
     <string name="show_all">Show all</string>
     <string name="hide">Hide</string>
     <string name="write_to_developers">Write to developers</string>
-    <string name="no_description">the company has no description</string>
+    <string name="no_description">The company has no description</string>
 
     <string name="email_support" translatable="false">support@aboutjob.ru</string>
     <string name="send_email">Send email</string>
