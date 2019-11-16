@@ -278,11 +278,15 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
 
     private void setDescription() {
         String description = companyDetail.getDescription();
-        tvDescription.setText(description);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            tvDescription.setText(Html.fromHtml(description, Html.FROM_HTML_MODE_LEGACY));
-        else tvDescription.setText(Html.fromHtml(description));
+        if (description != null && !description.isEmpty()) {
+            tvDescription.setText(description);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                tvDescription.setText(Html.fromHtml(description, Html.FROM_HTML_MODE_LEGACY));
+            else tvDescription.setText(Html.fromHtml(description));
+        } else {
+            tvDescription.setText(R.string.no_description);
+            tvShowDescription.setVisibility(View.GONE);
+        }
     }
 
     private void setSite() {
