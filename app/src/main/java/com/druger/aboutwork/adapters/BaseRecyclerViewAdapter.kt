@@ -48,7 +48,7 @@ abstract class BaseRecyclerViewAdapter<T, VH : RecyclerView.ViewHolder> : Recycl
         return LayoutInflater.from(viewGroup.context).inflate(layoutID, viewGroup, false)
     }
 
-    fun setOnItemClickListener(clickListener: OnItemClickListener<T>) {
+    fun setOnItemClickListener(clickListener: OnItemClickListener<T>?) {
         this.clickListener = clickListener
     }
 }
