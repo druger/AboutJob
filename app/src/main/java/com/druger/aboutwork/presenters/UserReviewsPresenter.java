@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import moxy.InjectViewState;
+import timber.log.Timber;
 
 /**
  * Created by druger on 31.01.2018.
@@ -122,7 +123,7 @@ public class UserReviewsPresenter extends BasePresenter<UserReviews> implements 
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Timber.e(databaseError.getMessage());
             }
         };
         queryUser.addValueEventListener(nameEventListener);

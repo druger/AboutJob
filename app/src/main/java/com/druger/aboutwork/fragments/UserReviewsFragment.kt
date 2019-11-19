@@ -1,0 +1,120 @@
+package com.druger.aboutwork.fragments
+
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.DefaultItemAnimator
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.druger.aboutwork.Const.Bundles.USER_ID
+import com.druger.aboutwork.R
+import com.druger.aboutwork.activities.MainActivity
+import com.druger.aboutwork.adapters.MyReviewAdapter
+import com.druger.aboutwork.interfaces.OnItemClickListener
+import com.druger.aboutwork.interfaces.view.UserReviews
+import com.druger.aboutwork.model.Review
+import com.druger.aboutwork.presenters.UserReviewsPresenter
+import com.google.firebase.storage.StorageReference
+import kotlinx.android.synthetic.main.fragment_user_reviews.*
+import kotlinx.android.synthetic.main.toolbar.*
+import moxy.presenter.InjectPresenter
+import java.util.*
+
+class UserReviewsFragment : BaseSupportFragment(), UserReviews {
+
+    @InjectPresenter
+    lateinit var reviewsPresenter: UserReviewsPresenter
+
+    private var reviewAdapter: MyReviewAdapter? = null
+    private val reviews = ArrayList<Review>()
+
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        rootView = inflater.inflate(R.layout.fragment_user_reviews, container, false)
+        reviewsPresenter.downloadPhoto(arguments?.getString(USER_ID))
+        reviewsPresenter.fetchReviews(arguments?.getString(USER_ID))
+        reviewsPresenter.getUserName(arguments?.getString(USER_ID))
+        (activity as MainActivity).hideBottomNavigation()
+        return rootView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupToolbar()
+        setupRecycler(reviews)
+    }
+
+    private fun setupToolbar() {
+        mToolbar = toolbar
+        setActionBar(mToolbar)
+        actionBar.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun setupRecycler(reviews: MutableList<Review>) {
+        reviewAdapter = MyReviewAdapter(reviews)
+        rvReviews.itemAnimator = DefaultItemAnimator()
+        rvReviews.adapter = reviewAdapter
+
+        reviewAdapter?.setOnClickListener(object : OnItemClickListener<Review> {
+            override fun onClick(review: Review, position: Int) {
+                val reviewFragment = SelectedReviewFragment.newInstance(review.firebaseKey, false)
+
+                val transaction = fragmentManager?.beginTransaction()
+                transaction?.replace(R.id.main_container, reviewFragment)
+                transaction?.addToBackStack(null)
+                transaction?.commit()
+            }
+
+            override fun onLongClick(position: Int): Boolean {
+                return false
+            }
+        })
+    }
+
+    override fun showPhoto(storageRef: StorageReference) {
+        activity?.let {
+            Glide.with(it)
+                .load(storageRef)
+                .apply(RequestOptions.circleCropTransform())
+                .error(R.drawable.ic_account_circle_black)
+                .into(ivAvatar)
+        }
+    }
+
+    override fun notifyDataSetChanged() {
+        reviewAdapter?.notifyDataSetChanged()
+    }
+
+    override fun showReviews(reviews: List<Review>) {
+        this.reviews.clear()
+        this.reviews.addAll(reviews)
+        reviewAdapter?.notifyDataSetChanged()
+
+    }
+
+    override fun showName(name: String) {
+        tvName.text = name
+        actionBar.title = name
+    }
+
+    override fun onStop() {
+        super.onStop()
+        reviewsPresenter.removeListeners()
+    }
+
+    companion object {
+
+        fun newInstance(userId: String): UserReviewsFragment {
+
+            val args = Bundle()
+
+            val fragment = UserReviewsFragment()
+            args.putString(USER_ID, userId)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+}
