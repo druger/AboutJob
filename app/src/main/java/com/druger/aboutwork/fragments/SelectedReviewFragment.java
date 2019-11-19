@@ -408,7 +408,7 @@ public class SelectedReviewFragment extends BaseSupportFragment implements View.
     }
 
     private void showReviews(String userId) {
-        UserReviewsFragment reviews = UserReviewsFragment.newInstance(userId);
+        UserReviewsFragment reviews = UserReviewsFragment.Companion.newInstance(userId);
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.main_container, reviews);
