@@ -6,10 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.druger.aboutwork.adapters.ReviewAdapter
 
 
-class RecyclerItemTouchHelper
-@JvmOverloads constructor(dragDirs: Int, swipeDirs: Int,
-                          val listener: RecyclerItemTouchHelperListener,
-                          var itemSwipe: Boolean = true)
+class RecyclerItemTouchHelper(dragDirs: Int, swipeDirs: Int,
+                              private val listener: RecyclerItemTouchHelperListener,
+                              var itemSwipe: Boolean = true)
     : ItemTouchHelper.SimpleCallback(dragDirs, swipeDirs) {
 
     override fun onMove(p0: RecyclerView, p1: RecyclerView.ViewHolder, p2: RecyclerView.ViewHolder): Boolean {
@@ -47,7 +46,7 @@ class RecyclerItemTouchHelper
     }
 
     override fun isItemViewSwipeEnabled(): Boolean =
-            itemSwipe && super.isItemViewSwipeEnabled()
+        itemSwipe && super.isItemViewSwipeEnabled()
 
 
     interface RecyclerItemTouchHelperListener {
