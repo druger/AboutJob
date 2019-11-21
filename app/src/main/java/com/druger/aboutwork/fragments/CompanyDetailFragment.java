@@ -39,7 +39,6 @@ import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.thefinestartist.finestwebview.FinestWebView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import moxy.presenter.InjectPresenter;
@@ -72,7 +71,6 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
 
     @SuppressWarnings("FieldCanBeLocal")
     private RecyclerView rvReviews;
-    private List<Review> reviews = new ArrayList<>();
     private ReviewAdapter reviewAdapter;
 
     private CompanyDetail companyDetail;
@@ -100,7 +98,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         detData(savedInstanceState);
         setupUI();
         setupUX();
-        setupRecycler(reviews);
+        setupRecycler();
         setupFabBehavior();
         ((MainActivity) getActivity()).hideBottomNavigation();
         return rootView;
@@ -160,11 +158,10 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    private void setupRecycler(final List<Review> reviews) {
+    private void setupRecycler() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvReviews = bindView(R.id.rvReviews);
-        reviewAdapter = new ReviewAdapter(reviews);
-        rvReviews.setLayoutManager(layoutManager);
+        reviewAdapter = new ReviewAdapter();
         rvReviews.setItemAnimator(new DefaultItemAnimator());
         rvReviews.setAdapter(reviewAdapter);
 
@@ -253,8 +250,7 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
 
     @Override
     public void showReviews(List<Review> reviews) {
-        this.reviews.clear();
-        this.reviews.addAll(reviews);
+        reviewAdapter.addReviews(reviews);
         if (reviews.isEmpty()) {
             rvReviews.setVisibility(View.GONE);
             ltNoReviews.setVisibility(View.VISIBLE);
@@ -262,7 +258,6 @@ public class CompanyDetailFragment extends BaseSupportFragment implements View.O
             rvReviews.setVisibility(View.VISIBLE);
             ltNoReviews.setVisibility(View.GONE);
         }
-        reviewAdapter.notifyDataSetChanged();
     }
 
     @Override

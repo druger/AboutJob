@@ -1,16 +1,13 @@
 package com.druger.aboutwork.adapters
 
 import android.view.ViewGroup
-
 import androidx.recyclerview.widget.RecyclerView
-
-import com.druger.aboutwork.model.Review
 
 /**
  * Created by druger on 14.12.2017.
  */
 
-class MyReviewAdapter(reviews: MutableList<Review>) : ReviewAdapter(reviews) {
+class MyReviewAdapter : ReviewAdapter() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return super.onCreateViewHolder(parent, viewType)

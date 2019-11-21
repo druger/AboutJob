@@ -28,7 +28,6 @@ import kotlinx.android.synthetic.main.auth_layout.*
 import kotlinx.android.synthetic.main.fragment_my_reviews.*
 import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
-import java.util.*
 import javax.inject.Inject
 
 class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
@@ -40,7 +39,6 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
     lateinit var analytics: Analytics
 
     private lateinit var reviewAdapter: MyReviewAdapter
-    private val reviews = ArrayList<Review>()
     private lateinit var touchHelper: ItemTouchHelper
     private lateinit var simpleCallback: RecyclerItemTouchHelper
 
@@ -68,7 +66,7 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
         initSwipe()
         setupUI()
         setupToolbar()
-        setupRecycler(reviews)
+        setupRecycler()
     }
 
     private fun getData(savedInstanceState: Bundle?) {
@@ -95,8 +93,8 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
         actionBar.setTitle(R.string.my_reviews)
     }
 
-    private fun setupRecycler(reviews: MutableList<Review>) {
-        reviewAdapter = MyReviewAdapter(reviews)
+    private fun setupRecycler() {
+        reviewAdapter = MyReviewAdapter()
         rvReviews.itemAnimator = DefaultItemAnimator()
         rvReviews.adapter = reviewAdapter
 
