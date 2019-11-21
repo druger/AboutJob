@@ -31,8 +31,8 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
 
     private OnItemClickListener<Review> clickListener;
 
-    public ReviewAdapter(List<Review> reviews) {
-        this.reviews = reviews;
+    public ReviewAdapter() {
+        reviews = new ArrayList<>();
         deletedReviews = new ArrayList<>();
     }
 

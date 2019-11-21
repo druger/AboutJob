@@ -20,7 +20,6 @@ import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.fragment_user_reviews.*
 import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
-import java.util.*
 
 class UserReviewsFragment : BaseSupportFragment(), UserReviews {
 
@@ -28,8 +27,6 @@ class UserReviewsFragment : BaseSupportFragment(), UserReviews {
     lateinit var reviewsPresenter: UserReviewsPresenter
 
     private var reviewAdapter: MyReviewAdapter? = null
-    private val reviews = ArrayList<Review>()
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -44,7 +41,7 @@ class UserReviewsFragment : BaseSupportFragment(), UserReviews {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
-        setupRecycler(reviews)
+        setupRecycler()
     }
 
     private fun setupToolbar() {
@@ -53,8 +50,8 @@ class UserReviewsFragment : BaseSupportFragment(), UserReviews {
         actionBar.setDisplayHomeAsUpEnabled(true)
     }
 
-    private fun setupRecycler(reviews: MutableList<Review>) {
-        reviewAdapter = MyReviewAdapter(reviews)
+    private fun setupRecycler() {
+        reviewAdapter = MyReviewAdapter()
         rvReviews.itemAnimator = DefaultItemAnimator()
         rvReviews.adapter = reviewAdapter
 
@@ -89,10 +86,7 @@ class UserReviewsFragment : BaseSupportFragment(), UserReviews {
     }
 
     override fun showReviews(reviews: List<Review>) {
-        this.reviews.clear()
-        this.reviews.addAll(reviews)
-        reviewAdapter?.notifyDataSetChanged()
-
+        reviewAdapter?.addReviews(reviews)
     }
 
     override fun showName(name: String) {
