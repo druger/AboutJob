@@ -35,7 +35,6 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <include
-        android:id="@+id/ltError"
         layout="@layout/network_error"
         android:visibility="gone" />
 
