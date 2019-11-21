@@ -2,7 +2,6 @@ package com.druger.aboutwork.fragments;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -32,8 +31,7 @@ public abstract class BaseSupportFragment extends MvpAppCompatFragment implement
     protected View rootView;
     protected ProgressBar mProgressBar;
     protected Toolbar mToolbar;
-    protected LinearLayout ltError;
-    protected Button btnRetry;
+    protected LinearLayout mLtError;
 
     @SuppressWarnings("unchecked")
     protected <T extends View> T bindView(@IdRes int id) {
@@ -78,9 +76,9 @@ public abstract class BaseSupportFragment extends MvpAppCompatFragment implement
     @Override
     public void showErrorScreen(boolean show) {
         if (show) {
-            ltError.setVisibility(View.VISIBLE);
+            mLtError.setVisibility(View.VISIBLE);
         } else {
-            ltError.setVisibility(View.GONE);
+            mLtError.setVisibility(View.GONE);
         }
     }
 
