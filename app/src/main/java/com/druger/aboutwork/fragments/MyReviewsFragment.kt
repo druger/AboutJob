@@ -63,16 +63,20 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fetchReviews()
         initSwipe()
         setupUI()
         setupToolbar()
         setupRecycler()
     }
 
+    private fun fetchReviews() {
+        userId?.let { myReviewsPresenter.fetchReviews(it) } ?: showAuthAccess()
+    }
+
     private fun getData(savedInstanceState: Bundle?) {
         val bundle = savedInstanceState ?: arguments
         bundle?.let { userId = it.getString(USER_ID, userId) }
-        userId?.let { myReviewsPresenter.fetchReviews(it) } ?: showAuthAccess()
     }
 
     private fun showAuthAccess() {
