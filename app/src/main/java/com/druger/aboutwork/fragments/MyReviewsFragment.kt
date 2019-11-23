@@ -116,8 +116,10 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
     }
 
     private fun showSelectedReview(review: Review) {
-        val reviewFragment = SelectedReviewFragment.newInstance(review.firebaseKey, true)
-        replaceFragment(reviewFragment, R.id.main_container, true)
+        review.firebaseKey?.let {
+            val reviewFragment = SelectedReviewFragment.newInstance(it, true)
+            replaceFragment(reviewFragment, R.id.main_container, true)
+        }
     }
 
     private fun setupUI() {

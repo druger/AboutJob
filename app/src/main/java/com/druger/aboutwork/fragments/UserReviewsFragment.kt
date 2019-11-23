@@ -57,12 +57,15 @@ class UserReviewsFragment : BaseSupportFragment(), UserReviews {
 
         reviewAdapter?.setOnClickListener(object : OnItemClickListener<Review> {
             override fun onClick(review: Review, position: Int) {
-                val reviewFragment = SelectedReviewFragment.newInstance(review.firebaseKey, false)
+                review.firebaseKey?.let {
+                    val reviewFragment = SelectedReviewFragment.newInstance(it, false)
 
-                val transaction = fragmentManager?.beginTransaction()
-                transaction?.replace(R.id.main_container, reviewFragment)
-                transaction?.addToBackStack(null)
-                transaction?.commit()
+                    fragmentManager?.beginTransaction()?.apply {
+                        replace(R.id.main_container, reviewFragment)
+                        addToBackStack(null)
+                        commit()
+                    }
+                }
             }
 
             override fun onLongClick(position: Int): Boolean {
