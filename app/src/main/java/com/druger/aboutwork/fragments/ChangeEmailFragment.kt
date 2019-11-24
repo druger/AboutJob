@@ -54,15 +54,11 @@ class ChangeEmailFragment : BaseSupportFragment(), ChangeEmailView {
     }
 
     private fun setupUX() {
-        btnChangeEmail.setOnClickListener { changeEmailPresenter.changeEmail(email) }
+        btnChangeEmail.setOnClickListener { email?.let { it -> changeEmailPresenter.changeEmail(it) } }
         etEmail.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
-            }
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable) {
                 email = s.toString()
