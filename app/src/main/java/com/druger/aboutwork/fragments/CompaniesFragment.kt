@@ -45,7 +45,7 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     private var inputMode: Int = 0
 
     private val companiesFromDb: RealmResults<CompanyRealm>
-        get() = companiesPresenter.companiesFromDb
+        get() = companiesPresenter.getCompaniesFromDb()
 
     @ProvidePresenter
     internal fun provideCompaniesPresenter(): CompaniesPresenter {
@@ -103,7 +103,7 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
         scrollListener = object : EndlessRecyclerViewScrollListener(
             rvCompanies.layoutManager as LinearLayoutManager?) {
             override fun onLoadMore(currentPage: Int) {
-                companiesPresenter.getCompanies(query, currentPage)
+                query?.let { companiesPresenter.getCompanies(it, currentPage) }
             }
         }
         rvCompanies.addOnScrollListener(scrollListener)

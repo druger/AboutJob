@@ -17,8 +17,6 @@ import timber.log.Timber;
 
 public class BasePresenter<View extends MvpView> extends MvpPresenter<View> {
 
-    protected String TAG = getClass().getSimpleName();
-
     protected RestApi restApi;
     protected RealmHelper realmHelper;
 
