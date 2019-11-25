@@ -9,8 +9,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import java.util.*
 
 /**
@@ -98,10 +96,6 @@ object FirebaseHelper {
         val updateReview = HashMap<String, Any>()
         updateReview[REVIEWS + SLASH + review.firebaseKey] = review
         FirebaseDatabase.getInstance().reference.updateChildren(updateReview)
-    }
-
-    fun downloadPhoto(storage: FirebaseStorage, userId: String): StorageReference {
-        return storage.reference.child(AVATARS + userId + AVATAR_NANE)
     }
 
     fun getComments(reference: DatabaseReference, reviewId: String): Query {

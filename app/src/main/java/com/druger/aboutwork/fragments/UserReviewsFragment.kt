@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DefaultItemAnimator
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.druger.aboutwork.Const.Bundles.USER_ID
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
@@ -16,7 +14,6 @@ import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.UserReviews
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.UserReviewsPresenter
-import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.fragment_user_reviews.*
 import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
@@ -31,9 +28,8 @@ class UserReviewsFragment : BaseSupportFragment(), UserReviews {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_user_reviews, container, false)
-        reviewsPresenter.downloadPhoto(arguments?.getString(USER_ID))
-        reviewsPresenter.fetchReviews(arguments?.getString(USER_ID))
-        reviewsPresenter.getUserName(arguments?.getString(USER_ID))
+        arguments?.getString(USER_ID)?.let { reviewsPresenter.fetchReviews(it) }
+        arguments?.getString(USER_ID)?.let { reviewsPresenter.getUserName(it) }
         (activity as MainActivity).hideBottomNavigation()
         return rootView
     }
@@ -72,16 +68,6 @@ class UserReviewsFragment : BaseSupportFragment(), UserReviews {
                 return false
             }
         })
-    }
-
-    override fun showPhoto(storageRef: StorageReference) {
-        activity?.let {
-            Glide.with(it)
-                .load(storageRef)
-                .apply(RequestOptions.circleCropTransform())
-                .error(R.drawable.ic_account_circle_black)
-                .into(ivAvatar)
-        }
     }
 
     override fun notifyDataSetChanged() {
