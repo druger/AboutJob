@@ -76,7 +76,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
     private fun detData(savedInstanceState: Bundle?) {
         val bundle = savedInstanceState ?: arguments
         companyId = bundle?.getString(COMPANY_ID)
-        presenter.getCompanyDetail(companyId)
+        companyId?.let { presenter.getCompanyDetail(it) }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -94,7 +94,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
 
     private fun setupUX() {
         fabAddReview.setOnClickListener { presenter.checkAuthUser() }
-        btnRetry.setOnClickListener { presenter.getCompanyDetail(companyId) }
+        btnRetry.setOnClickListener { companyId?.let { it -> presenter.getCompanyDetail(it) } }
         btnLogin.setOnClickListener { startActivity(Intent(context, LoginActivity::class.java)) }
         tvShowDescription.setOnClickListener { showDescription() }
     }
@@ -127,7 +127,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
         rvReviews.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int) {
                 var p = page
-                presenter.getReviews(companyDetail?.id, ++p)
+                companyDetail?.id?.let { presenter.getReviews(it, ++p) }
             }
         })
     }
@@ -192,7 +192,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
 
     override fun showCompanyDetail(company: CompanyDetail) {
         companyDetail = company
-        presenter.getReviews(company.id, 1)
+        company.id?.let { presenter.getReviews(it, 1) }
         setSite()
         tvCity.text = companyDetail?.area?.name
         setCompanyName(companyDetail?.name)
