@@ -70,7 +70,7 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
 
     override fun onDestroy() {
         super.onDestroy()
-        unbindDrawables(rootView)
+        rootView?.let { unbindDrawables(it) }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

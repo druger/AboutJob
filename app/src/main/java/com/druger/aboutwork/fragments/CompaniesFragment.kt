@@ -85,8 +85,8 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
 
     private fun setupToolbar() {
         mToolbar = toolbar
-        setActionBar(mToolbar)
-        actionBar.setTitle(R.string.search)
+        mToolbar?.let { setActionBar(it) }
+        actionBar?.setTitle(R.string.search)
     }
 
     private fun setupRecycler() {
@@ -101,7 +101,7 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
 
     private fun setupListeners() {
         scrollListener = object : EndlessRecyclerViewScrollListener(
-            rvCompanies.layoutManager as LinearLayoutManager?) {
+            rvCompanies.layoutManager as LinearLayoutManager) {
             override fun onLoadMore(currentPage: Int) {
                 query?.let { companiesPresenter.getCompanies(it, currentPage) }
             }
@@ -191,7 +191,7 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
 
     private fun showCompanyDetail(id: String) {
         fragment = CompanyDetailFragment.newInstance(id)
-        replaceFragment(fragment, R.id.main_container, true)
+        replaceFragment(fragment as CompanyDetailFragment, R.id.main_container, true)
     }
 
     override fun showProgress(show: Boolean) {

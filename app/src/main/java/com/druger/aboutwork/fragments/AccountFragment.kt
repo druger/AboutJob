@@ -65,8 +65,8 @@ class AccountFragment : BaseSupportFragment(), AccountView {
 
     private fun setupToolbar() {
         mToolbar = toolbar
-        setActionBar(mToolbar)
-        actionBar.setTitle(R.string.settings)
+        mToolbar?.let { setActionBar(it) }
+        actionBar?.setTitle(R.string.settings)
     }
 
     private fun setupListeners() {

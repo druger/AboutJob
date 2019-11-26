@@ -48,7 +48,7 @@ constructor(restApi: RestApi, realmHelper: RealmHelper) : BasePresenter<Companie
     private fun requestGetCompanies(query: String, page: Int) {
         val request = restApi.company.getCompanies(query, page)
             .compose(RxUtils.singleTransformers())
-            .subscribe({ this.successGetCompanies(it) }, { this.handleError(it) })
+            .subscribe({ successGetCompanies(it) }, { handleError(it) })
         unSubscribeOnDestroy(request)
     }
 

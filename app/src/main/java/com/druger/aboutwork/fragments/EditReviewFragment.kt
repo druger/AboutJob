@@ -207,7 +207,7 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
     override fun onDestroy() {
         super.onDestroy()
         (activity as MainActivity).showBottomNavigation()
-        unbindDrawables(rootView)
+        rootView?.let { unbindDrawables(it) }
     }
 
     private fun unbindDrawables(view: View) {

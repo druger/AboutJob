@@ -34,9 +34,9 @@ class ChangePasswordFragment : BaseSupportFragment(), ChangePasswordView {
 
     private fun setupToolbar() {
         mToolbar = toolbar
-        setActionBar(mToolbar)
-        actionBar.setTitle(R.string.change_password)
-        actionBar.setDisplayHomeAsUpEnabled(true)
+        mToolbar?.let { setActionBar(it) }
+        actionBar?.setTitle(R.string.change_password)
+        actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun setupUX() {

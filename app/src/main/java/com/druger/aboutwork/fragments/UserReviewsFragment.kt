@@ -42,8 +42,8 @@ class UserReviewsFragment : BaseSupportFragment(), UserReviews {
 
     private fun setupToolbar() {
         mToolbar = toolbar
-        setActionBar(mToolbar)
-        actionBar.setDisplayHomeAsUpEnabled(true)
+        mToolbar?.let { setActionBar(it) }
+        actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun setupRecycler() {
@@ -80,7 +80,7 @@ class UserReviewsFragment : BaseSupportFragment(), UserReviews {
 
     override fun showName(name: String) {
         tvName.text = name
-        actionBar.title = name
+        actionBar?.title = name
     }
 
     override fun onStop() {
