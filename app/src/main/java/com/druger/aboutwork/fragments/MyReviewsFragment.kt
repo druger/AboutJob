@@ -93,8 +93,8 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
 
     private fun setupToolbar() {
         mToolbar = toolbar
-        setActionBar(mToolbar)
-        actionBar.setTitle(R.string.my_reviews)
+        mToolbar?.let { setActionBar(it) }
+        actionBar?.setTitle(R.string.my_reviews)
     }
 
     private fun setupRecycler() {

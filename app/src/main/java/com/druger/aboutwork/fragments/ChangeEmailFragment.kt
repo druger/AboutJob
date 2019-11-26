@@ -40,9 +40,9 @@ class ChangeEmailFragment : BaseSupportFragment(), ChangeEmailView {
 
     private fun setupToolbar() {
         mToolbar = toolbar
-        setActionBar(mToolbar)
-        actionBar.setTitle(R.string.change_email)
-        actionBar.setDisplayHomeAsUpEnabled(true)
+        mToolbar?.let { setActionBar(it) }
+        actionBar?.setTitle(R.string.change_email)
+        actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun showEmail() {
@@ -54,7 +54,7 @@ class ChangeEmailFragment : BaseSupportFragment(), ChangeEmailView {
     }
 
     private fun setupUX() {
-        btnChangeEmail.setOnClickListener { email?.let { it -> changeEmailPresenter.changeEmail(it) } }
+        btnChangeEmail.setOnClickListener { email?.let { changeEmailPresenter.changeEmail(it) } }
         etEmail.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 

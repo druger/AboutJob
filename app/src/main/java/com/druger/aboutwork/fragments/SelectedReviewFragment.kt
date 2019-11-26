@@ -149,9 +149,9 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
 
     private fun setupToolbar() {
         mToolbar = toolbar
-        setActionBar(mToolbar)
-        actionBar.setDisplayHomeAsUpEnabled(true)
-        actionBar.setTitle(R.string.review)
+        mToolbar?.let { setActionBar(it) }
+        actionBar?.setDisplayHomeAsUpEnabled(true)
+        actionBar?.setTitle(R.string.review)
         if (editMode) ivEdit.visibility = View.VISIBLE
         else ivEdit.visibility = View.GONE
     }

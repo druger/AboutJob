@@ -101,12 +101,11 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
 
     private fun setupToolbar() {
         mToolbar = toolbar
-        setActionBar(mToolbar)
-        actionBar.setDisplayHomeAsUpEnabled(true)
+        mToolbar?.let { setActionBar(it) }
+        actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun setupRecycler() {
-        val layoutManager = LinearLayoutManager(activity)
         reviewAdapter = ReviewAdapter()
         rvReviews.itemAnimator = DefaultItemAnimator()
         rvReviews.adapter = reviewAdapter
@@ -124,7 +123,8 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
             }
         })
 
-        rvReviews.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
+        rvReviews.addOnScrollListener(object : EndlessRecyclerViewScrollListener(
+            rvReviews.layoutManager as LinearLayoutManager) {
             override fun onLoadMore(page: Int) {
                 var p = page
                 companyDetail?.id?.let { presenter.getReviews(it, ++p) }
@@ -238,7 +238,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
 
     private fun setCompanyName(name: String?) {
         tvCompanyName.text = name
-        actionBar.title = name
+        actionBar?.title = name
     }
 
     override fun showProgress(show: Boolean) {
