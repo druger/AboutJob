@@ -1,7 +1,6 @@
 package com.druger.aboutwork.interfaces.view
 
 import com.druger.aboutwork.model.Review
-import com.google.firebase.storage.StorageReference
 import moxy.MvpView
 
 /**
@@ -9,8 +8,6 @@ import moxy.MvpView
  */
 
 interface UserReviews : MvpView {
-
-    fun showPhoto(storageRef: StorageReference)
 
     fun notifyDataSetChanged()
 

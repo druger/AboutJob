@@ -96,7 +96,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/career"
-                        app:layout_constraintStart_toStartOf="@+id/ratingbar_career"
+                        app:layout_constraintStart_toStartOf="@+id/rbCareer"
                         app:layout_constraintTop_toTopOf="@+id/tvSalary" />
 
                     <TextView
@@ -105,8 +105,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/collective"
-                        app:layout_constraintStart_toStartOf="@+id/ratingbar_collective"
-                        app:layout_constraintTop_toBottomOf="@+id/ratingbar_career" />
+                        app:layout_constraintStart_toStartOf="@+id/rbCollective"
+                        app:layout_constraintTop_toBottomOf="@+id/rbCareer" />
 
                     <TextView
                         android:id="@+id/tvSocialPackage"
@@ -114,11 +114,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/social_package"
-                        app:layout_constraintStart_toStartOf="@+id/ratingbar_social_package"
-                        app:layout_constraintTop_toBottomOf="@+id/ratingbar_collective" />
+                        app:layout_constraintStart_toStartOf="@+id/rbSocialPackage"
+                        app:layout_constraintTop_toBottomOf="@+id/rbCollective" />
 
                     <RatingBar
-                        android:id="@+id/ratingbar_salary"
+                        android:id="@+id/rbSalary"
                         style="@style/reviewRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -129,7 +129,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/tvSalary" />
 
                     <RatingBar
-                        android:id="@+id/ratingbar_career"
+                        android:id="@+id/rbCareer"
                         style="@style/reviewRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -141,7 +141,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/tvCareer" />
 
                     <RatingBar
-                        android:id="@+id/ratingbar_collective"
+                        android:id="@+id/rbCollective"
                         style="@style/reviewRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -153,7 +153,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/tvCollective" />
 
                     <RatingBar
-                        android:id="@+id/ratingbar_social_package"
+                        android:id="@+id/rbSocialPackage"
                         style="@style/reviewRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/tvSocialPackage" />
 
                     <RatingBar
-                        android:id="@+id/ratingbar_chief"
+                        android:id="@+id/rbChief"
                         style="@style/reviewRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -176,7 +176,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/tvChief" />
 
                     <RatingBar
-                        android:id="@+id/ratingbar_workplace"
+                        android:id="@+id/rbWorkplace"
                         style="@style/reviewRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -193,8 +193,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/chief"
-                        app:layout_constraintStart_toStartOf="@+id/ratingbar_salary"
-                        app:layout_constraintTop_toBottomOf="@+id/ratingbar_salary" />
+                        app:layout_constraintStart_toStartOf="@+id/rbSalary"
+                        app:layout_constraintTop_toBottomOf="@+id/rbSalary" />
 
                     <TextView
                         android:id="@+id/tvWorkplace"
@@ -202,8 +202,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/workplace"
-                        app:layout_constraintStart_toStartOf="@+id/ratingbar_chief"
-                        app:layout_constraintTop_toBottomOf="@+id/ratingbar_chief" />
+                        app:layout_constraintStart_toStartOf="@+id/rbChief"
+                        app:layout_constraintTop_toBottomOf="@+id/rbChief" />
 
                     <TextView
                         android:id="@+id/tvPluses"
@@ -224,7 +224,7 @@
                         android:layout_marginTop="16dp"
                         android:text="@string/pluses"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/ratingbar_workplace" />
+                        app:layout_constraintTop_toBottomOf="@+id/rbWorkplace" />
 
                     <TextView
                         android:id="@+id/tvMinuses"
@@ -292,10 +292,10 @@
                         app:srcCompat="@drawable/thumb_up" />
 
                     <androidx.constraintlayout.widget.Group
-                        android:id="@+id/group_rating"
+                        android:id="@+id/groupRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:constraint_referenced_ids="line2, ratingbar_collective,ratingbar_social_package,tvWorkplace,tvCollective,tvSalary,tvChief,ratingbar_chief,tvSocialPackage,tvCareer,ratingbar_salary,ratingbar_workplace,ratingbar_career"/>
+                        app:constraint_referenced_ids="line2, ratingbar_collective,rbSocialPackage,tvWorkplace,tvCollective,tvSalary,tvChief,rbChief,tvSocialPackage,tvCareer,rbSalary,rbWorkplace,rbCareer" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -304,7 +304,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/cvContent"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
 
