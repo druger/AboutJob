@@ -75,8 +75,8 @@ constructor(restApi: RestApi) : BasePresenter<AddReviewView>() {
     }
 
     private fun isCorrectStatus(): Boolean =
-        (status == WORKING_STATUS || status == WORKED_STATUS) &&
-            mark?.averageMark != 0f || status == INTERVIEW_STATUS &&
+        ((status == WORKING_STATUS || status == WORKED_STATUS) &&
+            mark?.averageMark != 0f) || status == INTERVIEW_STATUS &&
             mark?.averageMark == 0f
 
 
