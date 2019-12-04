@@ -40,6 +40,10 @@
         android:id="@+id/ltAuthReviews"
         layout="@layout/auth_layout"
         android:visibility="gone" />
+
+    <include
+        layout="@layout/network_error"
+        android:visibility="gone" />
 </FrameLayout>
 
 
