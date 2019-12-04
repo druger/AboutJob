@@ -1,7 +1,10 @@
 package com.druger.aboutwork.fragments
 
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.view.ActionMode
@@ -26,6 +29,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.auth_layout.*
 import kotlinx.android.synthetic.main.fragment_my_reviews.*
+import kotlinx.android.synthetic.main.network_error.*
 import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 import javax.inject.Inject
@@ -63,15 +67,28 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fetchReviews()
-        initSwipe()
         setupUI()
         setupToolbar()
+        initSwipe()
         setupRecycler()
+        fetchReviews()
+        btnRetry.setOnClickListener {
+            showErrorScreen(false)
+            fetchReviews()
+        }
     }
 
     private fun fetchReviews() {
-        userId?.let { myReviewsPresenter.fetchReviews(it) } ?: showAuthAccess()
+        if (isInternetAvailable(requireContext())) {
+            userId?.let { myReviewsPresenter.fetchReviews(it) } ?: showAuthAccess()
+        } else showErrorScreen(true)
+    }
+
+    private fun isInternetAvailable(context: Context): Boolean {
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        // TODO change on WorkManager
+        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+        return activeNetwork?.isConnectedOrConnecting ?: false
     }
 
     private fun getData(savedInstanceState: Bundle?) {
@@ -129,6 +146,7 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
     private fun setupUI() {
         bottomNavigation = activity?.findViewById(R.id.bottomNavigation)
         mProgressBar = progressBar
+        mLtError = ltError
     }
 
     private fun initSwipe() {
