@@ -39,7 +39,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvWatched"
-        tools:visibility="visible" />
+        tools:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCompanies"
@@ -49,7 +50,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include" />
+        app:layout_constraintTop_toBottomOf="@+id/include"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 
     <ImageView

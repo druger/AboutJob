@@ -110,10 +110,11 @@
             android:id="@+id/rvReviews"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:paddingTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/content" />
+            app:layout_constraintTop_toBottomOf="@+id/content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         <ProgressBar
             android:id="@+id/progressReview"

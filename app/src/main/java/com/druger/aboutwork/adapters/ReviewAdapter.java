@@ -31,8 +31,8 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
 
     private OnItemClickListener<Review> clickListener;
 
-    public ReviewAdapter(List<Review> reviews) {
-        this.reviews = reviews;
+    public ReviewAdapter() {
+        reviews = new ArrayList<>();
         deletedReviews = new ArrayList<>();
     }
 
@@ -66,7 +66,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             reviewVH.tvPosition.setText(review.getPosition());
 
             if (review.getStatus() == Review.INTERVIEW) {
-               reviewVH.tvRating.setVisibility(View.GONE);
+                reviewVH.tvRating.setVisibility(View.GONE);
             } else {
                 reviewVH.tvRating.setText(String.valueOf(review.getMarkCompany().getAverageMark()));
             }

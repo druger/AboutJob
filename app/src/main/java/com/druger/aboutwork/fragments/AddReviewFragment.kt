@@ -70,7 +70,7 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
 
     override fun onDestroy() {
         super.onDestroy()
-        unbindDrawables(rootView)
+        rootView?.let { unbindDrawables(it) }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -255,7 +255,7 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         ltEmploymentDate.visibility = View.VISIBLE
         ltDismissalDate.visibility = View.GONE
         ltInterviewDate.visibility = View.GONE
-        group_rating.visibility = View.VISIBLE
+        groupRating.visibility = View.VISIBLE
     }
 
     override fun setIsIndicatorRatingBar(indicator: Boolean) = setIsIndicator(indicator)
@@ -264,13 +264,13 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         ltEmploymentDate.visibility = View.VISIBLE
         ltDismissalDate.visibility = View.VISIBLE
         ltInterviewDate.visibility = View.GONE
-        group_rating.visibility = View.VISIBLE
+        groupRating.visibility = View.VISIBLE
     }
 
     override fun showInterviewDate() {
         ltInterviewDate.visibility = View.VISIBLE
         ltEmploymentDate.visibility = View.GONE
         ltDismissalDate.visibility = View.GONE
-        group_rating.visibility = View.GONE
+        groupRating.visibility = View.GONE
     }
 }
