@@ -1,6 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:animateLayoutChanges="true">
 
     <include layout="@layout/toolbar" />
@@ -13,10 +14,11 @@
         android:visibility="gone">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+            android:id="@+id/rvReviews"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="?android:attr/actionBarSize"/>
+            android:layout_marginBottom="?android:attr/actionBarSize"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     </FrameLayout>
 
     <include
@@ -37,6 +39,10 @@
     <include
         android:id="@+id/ltAuthReviews"
         layout="@layout/auth_layout"
+        android:visibility="gone" />
+
+    <include
+        layout="@layout/network_error"
         android:visibility="gone" />
 </FrameLayout>
 
