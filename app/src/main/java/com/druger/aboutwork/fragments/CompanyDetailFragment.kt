@@ -41,6 +41,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
     private var descriptionShow: Boolean = false
 
     private lateinit var reviewAdapter: ReviewAdapter
+    private lateinit var scrollListener: EndlessRecyclerViewScrollListener
 
     private var companyDetail: CompanyDetail? = null
     private var companyId: String? = null
@@ -123,13 +124,14 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
             }
         })
 
-        rvReviews.addOnScrollListener(object : EndlessRecyclerViewScrollListener(
+        scrollListener = object : EndlessRecyclerViewScrollListener(
             rvReviews.layoutManager as LinearLayoutManager) {
             override fun onLoadMore(page: Int) {
                 var p = page
                 companyDetail?.id?.let { presenter.getReviews(it, ++p) }
             }
-        })
+        }
+        rvReviews.addOnScrollListener(scrollListener)
     }
 
     private fun showDescription() {
@@ -173,6 +175,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
         super.onDestroyView()
         reviewAdapter.setOnClickListener(null)
         presenter.removeAuthListener()
+        rvReviews.removeOnScrollListener(scrollListener)
     }
 
     override fun updateAdapter() {
@@ -180,6 +183,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
     }
 
     override fun showReviews(reviews: List<Review>) {
+        scrollListener.setLoaded()
         reviewAdapter.addReviews(reviews)
         if (reviews.isEmpty()) {
             rvReviews.visibility = View.GONE
