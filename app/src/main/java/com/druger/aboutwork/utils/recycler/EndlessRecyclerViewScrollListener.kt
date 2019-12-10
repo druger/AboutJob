@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class EndlessRecyclerViewScrollListener(private val layoutManager: LinearLayoutManager) :
     RecyclerView.OnScrollListener() {
 
-    private val visibleThreshold = 2
+    private val visibleThreshold = 5
     private var currentPage = 0
     private var previousTotalItemCount = 0
     private var loading = true
@@ -18,15 +18,14 @@ abstract class EndlessRecyclerViewScrollListener(private val layoutManager: Line
     private var pages = 0
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        super.onScrolled(recyclerView, dx, dy)
         val lastVisibleItemPosition: Int = layoutManager.findLastVisibleItemPosition()
         val totalItemCount = layoutManager.itemCount
 
         if (totalItemCount < previousTotalItemCount) {
             currentPage = startingPageIndex
             previousTotalItemCount = totalItemCount
-            if (totalItemCount == 0) {
-                loading = true
-            }
+            if (totalItemCount == 0) loading = true
         }
 
         if (loading && totalItemCount > previousTotalItemCount) {
@@ -37,8 +36,8 @@ abstract class EndlessRecyclerViewScrollListener(private val layoutManager: Line
         if (!loading
             && lastVisibleItemPosition + visibleThreshold >= totalItemCount
             && dy > 0) {
-            currentPage++
             loading = if (currentPage < pages) {
+                currentPage++
                 onLoadMore(currentPage)
                 true
             } else false
