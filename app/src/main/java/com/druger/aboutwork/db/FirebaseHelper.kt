@@ -102,9 +102,8 @@ object FirebaseHelper {
         return reference.child(COMMENTS).orderByChild(REVIEW_ID).equalTo(reviewId)
     }
 
-    fun getReviewsForCompany(dbReference: DatabaseReference, companyId: String, currentPage: Int): Query {
-        return dbReference.child(REVIEWS).orderByChild(COMPANY_ID)
-                .equalTo(companyId).limitToFirst(currentPage * FIRST_COUNT_REVIEWS)
+    fun getReviewsForCompany(dbReference: DatabaseReference, companyId: String): Query {
+        return dbReference.child(REVIEWS).orderByChild(COMPANY_ID).equalTo(companyId)
     }
 
     fun getUser(dbReference: DatabaseReference, userId: String): Query {

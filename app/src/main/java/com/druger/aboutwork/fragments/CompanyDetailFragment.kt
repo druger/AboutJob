@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.druger.aboutwork.App
@@ -24,7 +23,6 @@ import com.druger.aboutwork.interfaces.view.CompanyDetailView
 import com.druger.aboutwork.model.CompanyDetail
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.CompanyDetailPresenter
-import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener
 import com.thefinestartist.finestwebview.FinestWebView
 import kotlinx.android.synthetic.main.auth_layout.*
 import kotlinx.android.synthetic.main.content_company_detail.*
@@ -41,7 +39,6 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
     private var descriptionShow: Boolean = false
 
     private lateinit var reviewAdapter: ReviewAdapter
-    private lateinit var scrollListener: EndlessRecyclerViewScrollListener
 
     private var companyDetail: CompanyDetail? = null
     private var companyId: String? = null
@@ -123,15 +120,6 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
                 return false
             }
         })
-
-        scrollListener = object : EndlessRecyclerViewScrollListener(
-            rvReviews.layoutManager as LinearLayoutManager) {
-            override fun onLoadMore(page: Int) {
-                var p = page
-                companyDetail?.id?.let { presenter.getReviews(it, ++p) }
-            }
-        }
-        rvReviews.addOnScrollListener(scrollListener)
     }
 
     private fun showDescription() {
@@ -175,7 +163,6 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
         super.onDestroyView()
         reviewAdapter.setOnClickListener(null)
         presenter.removeAuthListener()
-        rvReviews.removeOnScrollListener(scrollListener)
     }
 
     override fun updateAdapter() {
@@ -183,7 +170,6 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
     }
 
     override fun showReviews(reviews: List<Review>) {
-        scrollListener.setLoaded()
         reviewAdapter.addReviews(reviews)
         if (reviews.isEmpty()) {
             rvReviews.visibility = View.GONE
@@ -196,7 +182,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
 
     override fun showCompanyDetail(company: CompanyDetail) {
         companyDetail = company
-        company.id?.let { presenter.getReviews(it, 1) }
+        company.id?.let { presenter.getReviews(it) }
         setSite()
         tvCity.text = companyDetail?.area?.name
         setCompanyName(companyDetail?.name)
