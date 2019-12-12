@@ -7,8 +7,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
+import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.fragments.AccountFragment
 import com.druger.aboutwork.fragments.CompaniesFragment
+import com.druger.aboutwork.fragments.CompanyDetailFragment
 import com.druger.aboutwork.fragments.MyReviewsFragment
 import com.druger.aboutwork.interfaces.view.MainView
 import com.druger.aboutwork.presenters.MainPresenter
@@ -23,6 +25,8 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
     internal lateinit var mainPresenter: MainPresenter
 
     private var fragment: Fragment? = null
+    private var nextScreen: String? = null
+    private var companyId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +35,23 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
         checkAuthUser()
         setupUI()
         bottomNavigation.setOnNavigationItemSelectedListener(this)
+        checkNextScreen()
+    }
+
+    private fun checkNextScreen() {
+        nextScreen = intent.getStringExtra(NEXT_SCREEN)
+        companyId = intent.getStringExtra(COMPANY_ID)
+
+        nextScreen?.let { screen ->
+            when(Screen.valueOf(screen)) {
+                Screen.COMPANY_DETAIL -> companyId?.let {
+                    replaceFragment(CompanyDetailFragment.newInstance(it))
+                }
+                Screen.REVIEW -> {}
+                Screen.MY_REVIEWS -> {}
+                Screen.SETTINGS -> {}
+            }
+        }
     }
 
     private fun checkAuthUser() {
@@ -112,5 +133,10 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
             R.id.action_setting -> showAccount()
         }
         return true
+    }
+
+    companion object {
+        const val NEXT_SCREEN = "next_screen"
+        const val COMPANY_ID = "company_id"
     }
 }
