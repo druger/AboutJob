@@ -67,6 +67,7 @@ class LoginActivity : AppCompatActivity() {
                 val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                     putExtra(MainActivity.NEXT_SCREEN, nextScreen)
+                    putExtra(MainActivity.COMPANY_ID, companyId)
                 }
                 startActivity(intent)
                 finish()
