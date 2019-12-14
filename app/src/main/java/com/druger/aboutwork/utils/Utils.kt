@@ -16,6 +16,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.LoginActivity
+import com.druger.aboutwork.activities.MainActivity
+import com.druger.aboutwork.enums.Screen
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -92,7 +94,12 @@ object Utils {
         return string
     }
 
-    fun showAuthDialog(context: Context, @StringRes title: Int) {
+    fun showAuthDialog(
+        context: Context,
+        @StringRes title: Int,
+        reviewId: String? = null,
+        message: String? = null
+    ) {
         val builder = AlertDialog.Builder(context)
         val inflater = LayoutInflater.from(context)
         val dialogView = inflater.inflate(R.layout.auth_layout, null)
@@ -104,6 +111,12 @@ object Utils {
         val btnLogin: Button = dialogView.findViewById(R.id.btnLogin)
 
         tvAuthTitle.setText(title)
-        btnLogin.setOnClickListener { context.startActivity(Intent(context, LoginActivity::class.java)) }
+        btnLogin.setOnClickListener {
+            context.startActivity(Intent(context, LoginActivity::class.java).apply {
+                putExtra(MainActivity.NEXT_SCREEN, Screen.REVIEW.name)
+                putExtra(MainActivity.REVIEW_ID, reviewId)
+                putExtra(MainActivity.MESSAGE, message)
+            })
+        }
     }
 }

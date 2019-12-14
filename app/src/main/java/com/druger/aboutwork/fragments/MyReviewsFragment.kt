@@ -19,6 +19,7 @@ import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.MyReviewAdapter
 import com.druger.aboutwork.adapters.ReviewAdapter
 import com.druger.aboutwork.db.FirebaseHelper
+import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.MyReviewsView
 import com.druger.aboutwork.model.Review
@@ -104,7 +105,9 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
     }
 
     private fun showLoginActivity() {
-        val intent = Intent(context, LoginActivity::class.java)
+        val intent = Intent(context, LoginActivity::class.java).apply {
+            putExtra(MainActivity.NEXT_SCREEN, Screen.MY_REVIEWS.name)
+        }
         startActivity(intent)
     }
 
