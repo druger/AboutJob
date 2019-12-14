@@ -15,6 +15,7 @@ import com.druger.aboutwork.BuildConfig
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.LoginActivity
 import com.druger.aboutwork.activities.MainActivity
+import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.interfaces.view.AccountView
 import com.druger.aboutwork.presenters.AccountPresenter
 import com.druger.aboutwork.utils.PreferencesHelper
@@ -80,7 +81,9 @@ class AccountFragment : BaseSupportFragment(), AccountView {
     }
 
     private fun showLogin() {
-        val intent = Intent(context, LoginActivity::class.java)
+        val intent = Intent(context, LoginActivity::class.java).apply {
+            putExtra(MainActivity.NEXT_SCREEN, Screen.SETTINGS.name)
+        }
         startActivity(intent)
     }
 

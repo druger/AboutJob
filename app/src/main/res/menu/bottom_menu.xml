@@ -6,7 +6,7 @@
         android:icon="@drawable/ic_company"/>
 
     <item
-        android:id="@+id/action_ratings"
+        android:id="@+id/action_my_reviews"
         android:title="@string/my_reviews"
         android:icon="@drawable/ic_my_reviews"/>
 
