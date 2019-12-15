@@ -45,7 +45,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
 
     private var review: Review? = null
     private var reviewKey: String? = null
-    private var message: String? = null
+    private var message: String? = null // if we came after Login shouldn't be null
     private var editMode: Boolean = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -135,9 +135,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
 
     private fun setView(inflater: LayoutInflater, container: ViewGroup?) {
         rootView = inflater.inflate(R.layout.fragment_selected_review, container, false)
-        if (editMode) {
-            (activity as MainActivity).hideBottomNavigation()
-        }
+        (activity as MainActivity).hideBottomNavigation()
     }
 
     private fun setUX() {
@@ -195,7 +193,12 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             }
             setExperience(review)
             message?.let { etMessage.setText(it) }
+            checkMessage()
         }
+    }
+
+    private fun checkMessage() {
+        message?.let { sendMessage(it, NEW) }
     }
 
     private fun setExperience(review: Review) {

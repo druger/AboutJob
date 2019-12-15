@@ -46,7 +46,9 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
                     replaceFragment(CompanyDetailFragment.newInstance(it))
                 }
                 Screen.REVIEW -> {
-                    reviewId?.let { SelectedReviewFragment.newInstance(it, false, message) }
+                    reviewId?.let {
+                        replaceFragment(SelectedReviewFragment.newInstance(it, false, message))
+                    }
                 }
                 Screen.MY_REVIEWS -> { bottomNavigation.selectedItemId = R.id.action_my_reviews }
                 Screen.SETTINGS -> { bottomNavigation.selectedItemId = R.id.action_setting }
