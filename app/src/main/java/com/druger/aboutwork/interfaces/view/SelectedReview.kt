@@ -15,4 +15,5 @@ interface SelectedReview: MvpView {
     fun onLikeClicked()
     fun onDislikeClicked()
     fun setupComments(user: FirebaseUser?)
+    fun clearMessage()
 }

@@ -45,7 +45,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
 
     private var review: Review? = null
     private var reviewKey: String? = null
-    private var bundle: Bundle? = null
+    private var message: String? = null // if we came after Login shouldn't be null
     private var editMode: Boolean = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -63,9 +63,11 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
     }
 
     private fun getBundles() {
-        bundle = arguments
-        reviewKey = bundle?.getString(REVIEW_KEY)
-        arguments?.let { editMode = it.getBoolean(EDIT_MODE) }
+        arguments?.apply {
+            reviewKey = getString(REVIEW_KEY)
+            message = getString(MESSAGE)
+            editMode = getBoolean(EDIT_MODE)
+        }
     }
 
     override fun setupComments(user: FirebaseUser?) {
@@ -128,15 +130,12 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
                 Utils.hideKeyboard(requireContext(), etMessage)
                 this.type = NEW
             }
-            etMessage.text = null
         }
     }
 
     private fun setView(inflater: LayoutInflater, container: ViewGroup?) {
         rootView = inflater.inflate(R.layout.fragment_selected_review, container, false)
-        if (editMode) {
-            (activity as MainActivity).hideBottomNavigation()
-        }
+        (activity as MainActivity).hideBottomNavigation()
     }
 
     private fun setUX() {
@@ -193,7 +192,13 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
                 rbWorkplace.rating = mark.workplace
             }
             setExperience(review)
+            message?.let { etMessage.setText(it) }
+            checkMessage()
         }
+    }
+
+    private fun checkMessage() {
+        message?.let { sendMessage(it, NEW) }
     }
 
     private fun setExperience(review: Review) {
@@ -355,18 +360,24 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
     }
 
     override fun showAuthDialog(title: Int) {
-        Utils.showAuthDialog(requireContext(), title)
+        Utils.showAuthDialog(requireContext(), title, reviewKey, etMessage.text.toString().trim())
+    }
+
+    override fun clearMessage() {
+        etMessage.text = null
     }
 
     companion object {
         private const val NEW = 0
         private const val UPDATE = 1
         private const val REVIEW_KEY = "review_key"
+        private const val MESSAGE = "message"
 
-        fun newInstance(reviewKey: String, editMode: Boolean): SelectedReviewFragment {
+        fun newInstance(reviewKey: String, editMode: Boolean, message: String? = null): SelectedReviewFragment {
 
             val args = Bundle()
             args.putString(REVIEW_KEY, reviewKey)
+            args.putString(MESSAGE, message)
             args.putBoolean(EDIT_MODE, editMode)
 
             val fragment = SelectedReviewFragment()
