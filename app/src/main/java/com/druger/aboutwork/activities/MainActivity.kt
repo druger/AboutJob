@@ -7,9 +7,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
-import com.druger.aboutwork.fragments.AccountFragment
-import com.druger.aboutwork.fragments.CompaniesFragment
-import com.druger.aboutwork.fragments.MyReviewsFragment
+import com.druger.aboutwork.enums.Screen
+import com.druger.aboutwork.fragments.*
 import com.druger.aboutwork.interfaces.view.MainView
 import com.druger.aboutwork.presenters.MainPresenter
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -23,6 +22,10 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
     internal lateinit var mainPresenter: MainPresenter
 
     private var fragment: Fragment? = null
+    private var nextScreen: String? = null
+    private var companyId: String? = null
+    private var reviewId: String? = null
+    private var message: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +34,33 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
         checkAuthUser()
         setupUI()
         bottomNavigation.setOnNavigationItemSelectedListener(this)
+        checkNextScreen()
+    }
+
+    private fun checkNextScreen() {
+        getExtras()
+
+        nextScreen?.let { screen ->
+            when(Screen.valueOf(screen)) {
+                Screen.COMPANY_DETAIL -> companyId?.let {
+                    replaceFragment(CompanyDetailFragment.newInstance(it))
+                }
+                Screen.REVIEW -> {
+                    reviewId?.let {
+                        replaceFragment(SelectedReviewFragment.newInstance(it, false, message))
+                    }
+                }
+                Screen.MY_REVIEWS -> { bottomNavigation.selectedItemId = R.id.action_my_reviews }
+                Screen.SETTINGS -> { bottomNavigation.selectedItemId = R.id.action_setting }
+            }
+        }
+    }
+
+    private fun getExtras() {
+        nextScreen = intent.getStringExtra(NEXT_SCREEN)
+        companyId = intent.getStringExtra(COMPANY_ID)
+        reviewId = intent.getStringExtra(REVIEW_ID)
+        message = intent.getStringExtra(MESSAGE)
     }
 
     private fun checkAuthUser() {
@@ -108,9 +138,16 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_companies -> showCompanies()
-            R.id.action_ratings -> mainPresenter.onClickMyReviews()
+            R.id.action_my_reviews -> mainPresenter.onClickMyReviews()
             R.id.action_setting -> showAccount()
         }
         return true
+    }
+
+    companion object {
+        const val NEXT_SCREEN = "next_screen"
+        const val COMPANY_ID = "company_id"
+        const val REVIEW_ID = "review_id"
+        const val MESSAGE = "message"
     }
 }

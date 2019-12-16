@@ -18,6 +18,7 @@ import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.LoginActivity
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.ReviewAdapter
+import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.CompanyDetailView
 import com.druger.aboutwork.model.CompanyDetail
@@ -92,8 +93,14 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
 
     private fun setupUX() {
         fabAddReview.setOnClickListener { presenter.checkAuthUser() }
-        btnRetry.setOnClickListener { companyId?.let { it -> presenter.getCompanyDetail(it) } }
-        btnLogin.setOnClickListener { startActivity(Intent(context, LoginActivity::class.java)) }
+        btnRetry.setOnClickListener { companyId?.let { presenter.getCompanyDetail(it) } }
+        btnLogin.setOnClickListener {
+            val intent = Intent(context, LoginActivity::class.java).apply {
+                putExtra(MainActivity.NEXT_SCREEN, Screen.COMPANY_DETAIL.name)
+                putExtra(MainActivity.COMPANY_ID, companyId)
+            }
+            startActivity(intent)
+        }
         tvShowDescription.setOnClickListener { showDescription() }
     }
 

@@ -76,7 +76,7 @@ class CommentAdapter(private val user: FirebaseUser?) : BaseRecyclerViewAdapter<
             }
             FirebaseHelper.dislikeComment(comment)
         } else {
-            Utils.showAuthDialog(holder.ivDislike.context, R.string.dislike_login)
+            Utils.showAuthDialog(holder.ivDislike.context, R.string.dislike_login, comment.reviewId)
         }
     }
 
@@ -110,7 +110,7 @@ class CommentAdapter(private val user: FirebaseUser?) : BaseRecyclerViewAdapter<
             }
             FirebaseHelper.likeComment(comment)
         } else {
-            Utils.showAuthDialog(holder.ivLike.context, R.string.like_login)
+            Utils.showAuthDialog(holder.ivLike.context, R.string.like_login, comment.reviewId)
         }
     }
 
