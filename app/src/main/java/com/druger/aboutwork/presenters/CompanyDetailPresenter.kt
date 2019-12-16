@@ -34,10 +34,10 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
         this.restApi = restApi
     }
 
-    fun getReviews(companyID: String, currentPage: Int) {
+    fun getReviews(companyID: String) {
         viewState.showProgressReview()
         dbReference = FirebaseDatabase.getInstance().reference
-        val reviewsQuery = FirebaseHelper.getReviewsForCompany(dbReference, companyID, currentPage)
+        val reviewsQuery = FirebaseHelper.getReviewsForCompany(dbReference, companyID)
         reviewsQuery.addValueEventListener(this)
     }
 

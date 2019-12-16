@@ -26,10 +26,23 @@ class LoginActivity : AppCompatActivity() {
     @Inject
     internal lateinit var analytics: Analytics
 
+    private var nextScreen: String? = null
+    private var companyId: String? = null
+    private var reviewId: String? = null
+    private var message: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.appComponent.inject(this)
         showAuthUI()
+        getExtras()
+    }
+
+    private fun getExtras() {
+        nextScreen = intent.getStringExtra(MainActivity.NEXT_SCREEN)
+        companyId = intent.getStringExtra(MainActivity.COMPANY_ID)
+        reviewId = intent.getStringExtra(MainActivity.REVIEW_ID)
+        message = intent.getStringExtra(MainActivity.MESSAGE)
     }
 
     private fun showAuthUI() {
@@ -55,7 +68,14 @@ class LoginActivity : AppCompatActivity() {
                 if (isNewUser()) {
                     saveNewUser()
                 }
-                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    putExtra(MainActivity.NEXT_SCREEN, nextScreen)
+                    putExtra(MainActivity.COMPANY_ID, companyId)
+                    putExtra(MainActivity.REVIEW_ID, reviewId)
+                    putExtra(MainActivity.MESSAGE, message)
+                }
+                startActivity(intent)
                 finish()
             } else {
 
