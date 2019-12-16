@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.druger.aboutwork.App
@@ -19,12 +18,12 @@ import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.LoginActivity
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.ReviewAdapter
+import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.CompanyDetailView
 import com.druger.aboutwork.model.CompanyDetail
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.CompanyDetailPresenter
-import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener
 import com.thefinestartist.finestwebview.FinestWebView
 import kotlinx.android.synthetic.main.auth_layout.*
 import kotlinx.android.synthetic.main.content_company_detail.*
@@ -94,8 +93,14 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
 
     private fun setupUX() {
         fabAddReview.setOnClickListener { presenter.checkAuthUser() }
-        btnRetry.setOnClickListener { companyId?.let { it -> presenter.getCompanyDetail(it) } }
-        btnLogin.setOnClickListener { startActivity(Intent(context, LoginActivity::class.java)) }
+        btnRetry.setOnClickListener { companyId?.let { presenter.getCompanyDetail(it) } }
+        btnLogin.setOnClickListener {
+            val intent = Intent(context, LoginActivity::class.java).apply {
+                putExtra(MainActivity.NEXT_SCREEN, Screen.COMPANY_DETAIL.name)
+                putExtra(MainActivity.COMPANY_ID, companyId)
+            }
+            startActivity(intent)
+        }
         tvShowDescription.setOnClickListener { showDescription() }
     }
 
@@ -120,14 +125,6 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
 
             override fun onLongClick(position: Int): Boolean {
                 return false
-            }
-        })
-
-        rvReviews.addOnScrollListener(object : EndlessRecyclerViewScrollListener(
-            rvReviews.layoutManager as LinearLayoutManager) {
-            override fun onLoadMore(page: Int) {
-                var p = page
-                companyDetail?.id?.let { presenter.getReviews(it, ++p) }
             }
         })
     }
@@ -192,7 +189,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
 
     override fun showCompanyDetail(company: CompanyDetail) {
         companyDetail = company
-        company.id?.let { presenter.getReviews(it, 1) }
+        company.id?.let { presenter.getReviews(it) }
         setSite()
         tvCity.text = companyDetail?.area?.name
         setCompanyName(companyDetail?.name)

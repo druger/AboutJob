@@ -53,6 +53,7 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
             comment.userName = user?.displayName
             comment.reviewId = reviewId
             FirebaseHelper.addComment(comment)
+            viewState.clearMessage()
             analytics.logEvent(Analytics.ADD_COMMENT)
         } else {
             viewState.showAuthDialog(R.string.comment_login)
@@ -61,6 +62,7 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
 
     fun updateComment(message: String) {
         FirebaseHelper.updateComment(comment.id, message)
+        viewState.clearMessage()
         analytics.logEvent(Analytics.UPDATE_COMMENT)
     }
 
