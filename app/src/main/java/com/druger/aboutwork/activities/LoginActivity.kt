@@ -51,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
                 .createSignInIntentBuilder()
                 .setAvailableProviders(listOf(
                     AuthUI.IdpConfig.PhoneBuilder().build(),
-                    AuthUI.IdpConfig.EmailBuilder().build()
+                    AuthUI.IdpConfig.GoogleBuilder().build()
                 ))
                 .setLogo(R.drawable.ic_logo)
                 .setIsSmartLockEnabled(!BuildConfig.DEBUG, false)
@@ -98,14 +98,9 @@ class LoginActivity : AppCompatActivity() {
     private fun saveNewUser() {
         val firebaseUser = FirebaseAuth.getInstance().currentUser
         val id = firebaseUser?.uid
-        val nameEmail = firebaseUser?.displayName
-        var namePhone = ""
-        if (nameEmail == null) {
-            namePhone = "User_" + id?.substring(0, 4)
-            firebaseUser?.let { setDisplayName(it, namePhone) }
-        }
-        val name = nameEmail ?: namePhone
+        val name = "User_" + id?.substring(0, 4)
         val user = id?.let { User(it, name) }
+        firebaseUser?.let { setDisplayName(it, name) }
         user?.let { FirebaseHelper.addUser(it, id) }
     }
 
