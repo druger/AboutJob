@@ -22,7 +22,7 @@ android {
         }
     }
     compileSdkVersion 29
-    buildToolsVersion '29.0.0'
+    buildToolsVersion '29.0.2'
 
     defaultConfig {
         applicationId "com.druger.aboutwork"

@@ -44,7 +44,7 @@ class AccountPresenter @Inject constructor(
             Timber.d("onAuthStateChanged:signed_in:%s", it.uid)
 
             val email = it.email
-            val name = it.displayName
+            val name = it.displayName?.split(" ")?.get(0)
             val phone = it.phoneNumber
 
             viewState.showEmail(email)
