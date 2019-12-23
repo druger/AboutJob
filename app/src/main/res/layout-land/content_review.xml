@@ -219,7 +219,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout3"
+            android:id="@+id/tilCity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -236,6 +236,20 @@
                 android:completionThreshold="2"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/tvDateInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/review_date_info"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/tilCity"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/tilCity"
+            app:layout_constraintTop_toBottomOf="@+id/tilCity" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ltEmploymentDate"
             android:layout_width="160dp"
@@ -244,7 +258,7 @@
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
+            app:layout_constraintTop_toBottomOf="@+id/tvDateInfo">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etEmploymentDate"
@@ -266,7 +280,7 @@
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
+            app:layout_constraintTop_toBottomOf="@+id/tvDateInfo">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etDismissalDate"
@@ -287,7 +301,7 @@
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
+            app:layout_constraintTop_toBottomOf="@+id/tvDateInfo">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etInterviewDate"
