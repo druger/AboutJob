@@ -45,7 +45,7 @@
     <string name="success_update_pass">Пароль обновлен, войдите с новым паролем</string>
     <string name="undo">Вернуть</string>
     <string name="updated_email">Email обновлен. Войдите с новым Email</string>
-    <string name="worked">Работал</string>
+    <string name="worked">Работал(а)</string>
     <string name="working">Работаю</string>
     <string name="workplace">Рабочее место</string>
     <string name="yes">Да</string>
@@ -104,4 +104,5 @@
     <string name="no_email_apps">Почтовые приложения не установленны</string>
     <string name="version">Версия: %s</string>
     <string name="no_description">У компании нет описания</string>
+    <string name="review_date_info">Точная дата не будет видна, а только общее количество дней</string>
 </resources>
