@@ -64,8 +64,8 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         setupToolbar()
         setDateVisibility()
         setupWorkStatus()
-        setupListeners()
         setupCompanyRating()
+        setupListeners()
     }
 
     override fun onDestroy() {
@@ -99,6 +99,17 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         positionChanges()
         spinnerStatus.onItemSelectedListener = this
         setupRatingChanges()
+        radioGroupRecommendedListener()
+    }
+
+    private fun radioGroupRecommendedListener() {
+        rgRecommended.setOnCheckedChangeListener { _, checkedId ->
+            when(checkedId) {
+                R.id.rbRecommended -> presenter.setRecommendedReview()
+                R.id.rbNotRecommended -> presenter.setNotRecommendedReview()
+                -1 -> presenter.clearRecommended()
+            }
+        }
     }
 
     private fun setupRatingChanges() {

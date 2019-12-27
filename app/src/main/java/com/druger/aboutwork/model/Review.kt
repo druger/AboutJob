@@ -28,6 +28,7 @@ data class Review(var companyId: String? = null,
     var myDislike: Boolean = false
     @JsonIgnore
     var firebaseKey: String? = null
+    var recommended: Boolean? = null
 
 
     companion object {
