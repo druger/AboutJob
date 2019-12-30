@@ -81,13 +81,16 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
 
     private void setRecommendation(Review review, ReviewVH reviewVH) {
         if (review.getRecommended() != null) {
+            reviewVH.ivRecommendation.setVisibility(View.VISIBLE);
             boolean recommended = review.getRecommended();
             if (recommended) {
                 reviewVH.ivRecommendation.setImageResource(R.drawable.ic_recommended);
             } else {
                 reviewVH.ivRecommendation.setImageResource(R.drawable.ic_not_recommended);
             }
-            if (reviewVH.itemView.getContext().getResources().getBoolean(R.bool.is_landscape)) {
+            boolean isLandscape = reviewVH.itemView.getContext().getResources().getBoolean(R.bool.is_landscape);
+            if (isLandscape) {
+                reviewVH.tvRecommendation.setVisibility(View.VISIBLE);
                 if (recommended) reviewVH.tvRecommendation.setText(R.string.recommended);
                 else reviewVH.tvRecommendation.setText(R.string.not_recommended);
             }
@@ -149,7 +152,11 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             tvPosition = bindView(R.id.tvPosition);
             tvRating = bindView(R.id.tvRating);
             ivRecommendation = bindView(R.id.ivRecommendation);
-            tvRecommendation = bindView(R.id.tvRecommendation);
+
+            boolean isLandscape = itemView.getContext().getResources().getBoolean(R.bool.is_landscape);
+            if (isLandscape) {
+                tvRecommendation = bindView(R.id.tvRecommendation);
+            }
         }
     }
 
