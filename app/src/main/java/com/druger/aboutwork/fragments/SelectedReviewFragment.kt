@@ -194,6 +194,21 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             setExperience(review)
             message?.let { etMessage.setText(it) }
             checkMessage()
+            setRecommendation(review)
+        }
+    }
+
+    private fun setRecommendation(review: Review) {
+        review.recommended?.let { recommended ->
+            ivRecommendation.visibility = View.VISIBLE
+            tvRecommendation.visibility = View.VISIBLE
+            if (recommended) {
+                ivRecommendation.setImageResource(R.drawable.ic_recommended)
+                tvRecommendation.text = getString(R.string.recommended)
+            } else {
+                ivRecommendation.setImageResource(R.drawable.ic_not_recommended)
+                tvRecommendation.text = getString(R.string.not_recommended)
+            }
         }
     }
 

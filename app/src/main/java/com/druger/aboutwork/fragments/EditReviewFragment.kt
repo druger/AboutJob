@@ -168,6 +168,21 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
         setUI()
         setupWorkStatus()
         presenter.setupRating(review)
+        setupRecommendation(review)
+    }
+
+    private fun setupRecommendation(review: Review) {
+        review.recommended?.let {recommendation ->
+            if (recommendation) rbRecommended.isChecked = true
+            else rbNotRecommended.isChecked = true
+        }
+        rgRecommended.setOnCheckedChangeListener { _, checkedId ->
+            when(checkedId) {
+                R.id.rbRecommended -> presenter.setRecommendedReview()
+                R.id.rbNotRecommended -> presenter.setNotRecommendedReview()
+                -1 -> presenter.clearRecommended()
+            }
+        }
     }
 
     private fun setupToolbar() {
