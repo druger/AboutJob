@@ -105,4 +105,6 @@
     <string name="version">Версия: %s</string>
     <string name="no_description">У компании нет описания</string>
     <string name="review_date_info">Точная дата не будет видна, а только общее количество дней</string>
+    <string name="recommended">Рекомендую для трудоустройтсва</string>
+    <string name="not_recommended">Не рекомендую для трудоустройтсва</string>
 </resources>

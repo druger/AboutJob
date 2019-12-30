@@ -102,6 +102,8 @@
     <string name="no_email_apps">There are no email clients installed</string>
     <string name="version">Version: %s</string>
     <string name="review_date_info">The exact date won\'t be shown but only the total numbers of days</string>
+    <string name="recommended">I recommend for employment</string>
+    <string name="not_recommended">I don\'t recommend for employment</string>
 
     <string-array name="work_status">
         <item>@string/working</item>
