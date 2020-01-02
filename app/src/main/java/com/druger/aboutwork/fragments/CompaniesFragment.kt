@@ -102,8 +102,8 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     private fun setupListeners() {
         scrollListener = object : EndlessRecyclerViewScrollListener(
             rvCompanies.layoutManager as LinearLayoutManager) {
-            override fun onLoadMore(currentPage: Int) {
-                query?.let { companiesPresenter.getCompanies(it, currentPage) }
+            override fun onLoadMore(page: Int) {
+                query?.let { companiesPresenter.getCompanies(it, page, !cbMoreCompanies.isChecked) }
             }
         }
         rvCompanies.addOnScrollListener(scrollListener)
@@ -138,10 +138,22 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
             .filter { item -> item.length >= 2 }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { newText ->
-                query = newText
+                cbMoreCompanies.visibility = View.VISIBLE
+                query = newText.trim()
                 adapter.clear()
                 scrollListener.resetPageCount()
             }
+
+        searchView.setOnCloseListener {
+            cbMoreCompanies.visibility = View.GONE
+            rvCompanies.visibility = View.GONE
+            true
+        }
+
+        cbMoreCompanies.setOnCheckedChangeListener { _, _ ->
+            adapter.clear()
+            scrollListener.resetPageCount()
+        }
     }
 
     override fun onDestroyView() {

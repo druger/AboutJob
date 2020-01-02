@@ -104,6 +104,7 @@
     <string name="review_date_info">The exact date won\'t be shown but only the total numbers of days</string>
     <string name="recommended">I recommend for employment</string>
     <string name="not_recommended">I don\'t recommend for employment</string>
+    <string name="show_more_companies">Show more companies</string>
 
     <string-array name="work_status">
         <item>@string/working</item>
