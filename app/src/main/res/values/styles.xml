@@ -61,4 +61,9 @@
         <item name="android:layout_height">50dp</item>
         <item name="android:gravity">center</item>
     </style>
+
+    <style name="CheckBoxCustom" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
 </resources>

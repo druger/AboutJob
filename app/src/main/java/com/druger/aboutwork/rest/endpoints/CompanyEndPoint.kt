@@ -13,7 +13,10 @@ import retrofit2.http.Query
 interface CompanyEndPoint {
     @GET("/employers")
     fun getCompanies(@Query("text") query: String,
-                     @Query("page") page: Int): Single<CompanyResponse>
+                     @Query("page") page: Int,
+                     @Query("only_with_vacancies") withVacancies: Boolean = true,
+                     @Query("per_page") perPage: Int = 50
+    ): Single<CompanyResponse>
 
     @GET("/employers/{employer_id}")
     fun getCompanyDetail(@Path("employer_id") id: String): Single<CompanyDetail>

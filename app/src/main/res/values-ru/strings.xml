@@ -107,4 +107,5 @@
     <string name="review_date_info">Точная дата не будет видна, а только общее количество дней</string>
     <string name="recommended">Рекомендую для трудоустройтсва</string>
     <string name="not_recommended">Не рекомендую для трудоустройтсва</string>
+    <string name="show_more_companies">Показать больше компаний</string>
 </resources>
