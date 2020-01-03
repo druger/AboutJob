@@ -41,20 +41,21 @@ constructor(restApi: RestApi, realmHelper: RealmHelper) : BasePresenter<Companie
         return companies
     }
 
-    fun getCompanies(query: String, page: Int) {
-        requestGetCompanies(query, page)
+    fun getCompanies(query: String, page: Int, withVacancies: Boolean) {
+        requestGetCompanies(query, page, withVacancies)
     }
 
-    private fun requestGetCompanies(query: String, page: Int) {
-        val request = restApi.company.getCompanies(query, page)
+    private fun requestGetCompanies(query: String, page: Int, withVacancies: Boolean) {
+        val request = restApi.company.getCompanies(query, page, withVacancies)
             .compose(RxUtils.singleTransformers())
-            .subscribe({ successGetCompanies(it) }, { handleError(it) })
+            .subscribe({ successGetCompanies(it, query) }, { handleError(it) })
         unSubscribeOnDestroy(request)
     }
 
-    private fun successGetCompanies(response: CompanyResponse) {
+    private fun successGetCompanies(response: CompanyResponse, query: String) {
         viewState.showProgress(false)
-        response.items?.let { viewState.showCompanies(it, response.pages) }
+        val filteredList = response.items?.filter { it.name.contains(query, true) }
+        filteredList?.let { viewState.showCompanies(it, response.pages) }
     }
 
     override fun handleError(throwable: Throwable) {

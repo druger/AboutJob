@@ -8,7 +8,7 @@ object Const {
 
     object Bundles {
 
-        const val DEBOUNCE_SEARCH = 300
+        const val DEBOUNCE_SEARCH = 500
 
         const val EDIT_MODE = "editMode"
         const val NAME = "name"
