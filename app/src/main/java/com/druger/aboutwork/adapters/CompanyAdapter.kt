@@ -19,6 +19,8 @@ import com.druger.aboutwork.model.Company
 
 class CompanyAdapter : BaseRecyclerViewAdapter<Company, RecyclerView.ViewHolder>() {
 
+    private var isLoading = false
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         var view = inflate(R.layout.item_company, parent)
         val viewHolder = CompanyVH(view)
@@ -58,7 +60,7 @@ class CompanyAdapter : BaseRecyclerViewAdapter<Company, RecyclerView.ViewHolder>
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (getItem(position) == null) TYPE_LOADING else TYPE_COMPANY
+        return if (isLoading && position == itemCount - 1) TYPE_LOADING else TYPE_COMPANY
     }
 
     private class CompanyVH(itemView: View) : BaseViewHolder(itemView) {
@@ -70,9 +72,20 @@ class CompanyAdapter : BaseRecyclerViewAdapter<Company, RecyclerView.ViewHolder>
         var progressBar: ProgressBar = bindView(R.id.progress_bar)
     }
 
+    fun addLoading() {
+        if (itemCount > 0) {
+            isLoading = true
+        }
+    }
+
+    fun removeLoading() {
+        if (isLoading) {
+            isLoading = false
+        }
+    }
+
     companion object {
-        // TODO Не отображается progress bar
-        private val TYPE_COMPANY = 0
-        private val TYPE_LOADING = 1
+        private const val TYPE_COMPANY = 0
+        private const val TYPE_LOADING = 1
     }
 }
