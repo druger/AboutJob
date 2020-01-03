@@ -17,6 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
+            android:imeOptions="actionSearch|flagNoExtractUi|flagNoFullscreen"
             app:theme="@style/Theme.AppCompat.NoActionBar" />
     </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>

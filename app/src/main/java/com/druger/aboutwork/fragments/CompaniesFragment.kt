@@ -7,39 +7,27 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.druger.aboutwork.App
-import com.druger.aboutwork.Const.Bundles.DEBOUNCE_SEARCH
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
-import com.druger.aboutwork.adapters.CompanyAdapter
 import com.druger.aboutwork.adapters.CompanyRealmAdapter
 import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.CompaniesView
-import com.druger.aboutwork.model.Company
 import com.druger.aboutwork.model.realm.CompanyRealm
 import com.druger.aboutwork.presenters.CompaniesPresenter
-import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener
-import com.druger.aboutwork.utils.rx.RxSearch
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.fragment_companies.*
-import kotlinx.android.synthetic.main.toolbar_searchview.*
+import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
-import java.util.concurrent.TimeUnit
 
 class CompaniesFragment : BaseSupportFragment(), CompaniesView {
 
     @InjectPresenter
     lateinit var companiesPresenter: CompaniesPresenter
 
-    private lateinit var adapter: CompanyAdapter
     private lateinit var realmAdapter: CompanyRealmAdapter
-    private lateinit var scrollListener: EndlessRecyclerViewScrollListener
     private lateinit var itemClickListener: OnItemClickListener<CompanyRealm>
-
-    private var query: String? = null
 
     private var fragment: Fragment? = null
     private var inputMode: Int = 0
@@ -64,10 +52,8 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
         setupToolbar()
-        setupRecycler()
         setupListeners()
         setupRecyclerRealm()
-        setupSearch()
     }
 
     private fun setupUI() {
@@ -87,11 +73,10 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
         mToolbar = toolbar
         mToolbar?.let { setActionBar(it) }
         actionBar?.setTitle(R.string.search)
-    }
-
-    private fun setupRecycler() {
-        adapter = CompanyAdapter()
-        rvCompanies?.adapter = adapter
+        ivSearch.visibility = View.VISIBLE
+        ivSearch.setOnClickListener {
+            replaceFragment(SearchFragment(), R.id.main_container, true)
+        }
     }
 
     private fun setupRecyclerRealm() {
@@ -100,25 +85,6 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     }
 
     private fun setupListeners() {
-        scrollListener = object : EndlessRecyclerViewScrollListener(
-            rvCompanies.layoutManager as LinearLayoutManager) {
-            override fun onLoadMore(page: Int) {
-                query?.let { companiesPresenter.getCompanies(it, page, !cbMoreCompanies.isChecked) }
-            }
-        }
-        rvCompanies.addOnScrollListener(scrollListener)
-
-        adapter.setOnItemClickListener(object : OnItemClickListener<Company> {
-            override fun onClick(company: Company, position: Int) {
-                saveCompanyToDb(setupCompanyRealm(company))
-                showCompanyDetail(company.id)
-            }
-
-            override fun onLongClick(position: Int): Boolean {
-                return false
-            }
-        })
-
         itemClickListener = object : OnItemClickListener<CompanyRealm> {
             override fun onClick(company: CompanyRealm, position: Int) {
                 showCompanyDetail(company.id)
@@ -130,50 +96,10 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
         }
     }
 
-    private fun setupSearch() {
-        searchView.queryHint = resources.getString(R.string.query_hint)
-
-        RxSearch.fromSearchView(searchView)
-            .debounce(DEBOUNCE_SEARCH.toLong(), TimeUnit.MILLISECONDS)
-            .filter { item -> item.length >= 2 }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { newText ->
-                cbMoreCompanies.visibility = View.VISIBLE
-                query = newText.trim()
-                adapter.clear()
-                scrollListener.resetPageCount()
-            }
-
-        searchView.setOnCloseListener {
-            cbMoreCompanies.visibility = View.GONE
-            rvCompanies.visibility = View.GONE
-            true
-        }
-
-        cbMoreCompanies.setOnCheckedChangeListener { _, _ ->
-            adapter.clear()
-            scrollListener.resetPageCount()
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         activity?.window?.setSoftInputMode(inputMode)
-        searchView.setOnQueryTextListener(null)
-        rvCompanies.removeOnScrollListener(scrollListener)
-        adapter.setOnItemClickListener(null)
         companiesPresenter.removeRealmListener()
-    }
-
-    override fun showCompanies(companies: List<Company>, pages: Int) {
-        adapter.addItems(companies)
-        scrollListener.setLoaded()
-        scrollListener.setPages(pages)
-        rvCompanies.visibility = View.VISIBLE
-        rvCompaniesRealm.visibility = View.INVISIBLE
-        tvWatched.visibility = View.GONE
-        ivEmptySearch.visibility = View.INVISIBLE
-        tvEmptySearch.visibility = View.INVISIBLE
     }
 
     override fun showWatchedRecently() {
@@ -186,21 +112,6 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
         tvEmptySearch.visibility = View.INVISIBLE
     }
 
-    private fun saveCompanyToDb(company: CompanyRealm) {
-        companiesPresenter.saveCompanyToDb(company)
-    }
-
-    private fun setupCompanyRealm(company: Company): CompanyRealm {
-        val id = company.id
-        val name = company.name
-        val logo = company.logo
-        val sLogo = logo?.logo90 ?: ""
-
-        val companyRealm = CompanyRealm(id, name, sLogo)
-        companyRealm.city = company.city
-        return companyRealm
-    }
-
     private fun showCompanyDetail(id: String) {
         fragment = CompanyDetailFragment.newInstance(id)
         replaceFragment(fragment as CompanyDetailFragment, R.id.main_container, true)
@@ -211,11 +122,10 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
         if (show) {
             ivEmptySearch.visibility = View.INVISIBLE
             tvEmptySearch.visibility = View.INVISIBLE
-            rvCompanies.visibility = View.INVISIBLE
             rvCompaniesRealm.visibility = View.INVISIBLE
             tvWatched.visibility = View.GONE
         } else {
-            rvCompanies.visibility = View.VISIBLE
+            rvCompaniesRealm.visibility = View.VISIBLE
         }
     }
 }
