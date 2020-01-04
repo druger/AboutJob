@@ -6,12 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.druger.aboutwork.App
 import com.druger.aboutwork.Const.Bundles.DEBOUNCE_SEARCH
 import com.druger.aboutwork.R
-import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.CompanyAdapter
 import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.SearchView
@@ -37,7 +35,6 @@ class SearchFragment : BaseSupportFragment(), SearchView {
 
     private var query: String? = null
 
-    private var fragment: Fragment? = null
     private var inputMode: Int = 0
 
     @ProvidePresenter
@@ -49,7 +46,6 @@ class SearchFragment : BaseSupportFragment(), SearchView {
                               savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_search, container, false)
         setInputMode()
-        (activity as MainActivity).showBottomNavigation()
         return rootView
     }
 
@@ -139,12 +135,12 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     }
 
     override fun showCompanies(companies: List<Company>, pages: Int) {
-        adapter.addItems(companies)
         adapter.removeLoading()
         scrollListener.setLoaded()
         scrollListener.setPages(pages)
         rvCompanies.visibility = View.VISIBLE
         if (companies.isNotEmpty()) {
+            adapter.addItems(companies)
             cbMoreCompanies.visibility = View.VISIBLE
         }
     }
@@ -165,8 +161,7 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     }
 
     private fun showCompanyDetail(id: String) {
-        fragment = CompanyDetailFragment.newInstance(id)
-        replaceFragment(fragment as CompanyDetailFragment, R.id.main_container, true)
+        addFragment(CompanyDetailFragment.newInstance(id), R.id.main_container, true)
     }
 
     override fun showProgress(show: Boolean) {
