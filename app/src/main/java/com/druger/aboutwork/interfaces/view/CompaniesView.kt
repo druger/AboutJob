@@ -1,6 +1,5 @@
 package com.druger.aboutwork.interfaces.view
 
-import com.druger.aboutwork.model.Company
 import moxy.MvpView
 
 /**
@@ -8,8 +7,6 @@ import moxy.MvpView
  */
 
 interface CompaniesView : MvpView, NetworkView {
-
-    fun showCompanies(companies: List<Company>, pages: Int)
 
     fun showWatchedRecently()
 
