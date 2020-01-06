@@ -6,7 +6,6 @@ import android.os.Build
 import com.druger.aboutwork.App
 import com.druger.aboutwork.BuildConfig
 import com.druger.aboutwork.R
-import com.druger.aboutwork.db.RealmHelper
 import com.druger.aboutwork.interfaces.view.AccountView
 import com.druger.aboutwork.utils.Analytics
 import com.google.firebase.auth.FirebaseAuth
@@ -20,18 +19,12 @@ import javax.inject.Inject
  */
 
 @InjectViewState
-class AccountPresenter @Inject constructor(
-    realmHelper: RealmHelper
-) : BasePresenter<AccountView>() {
+class AccountPresenter @Inject constructor() : BasePresenter<AccountView>() {
 
     @Inject
     lateinit var analytics: Analytics
 
     private var user: FirebaseUser? = null
-
-    init {
-        this.realmHelper = realmHelper
-    }
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -55,7 +48,6 @@ class AccountPresenter @Inject constructor(
     }
 
     fun logout() {
-        realmHelper.deleteAllData()
         getUserInfo()
     }
 

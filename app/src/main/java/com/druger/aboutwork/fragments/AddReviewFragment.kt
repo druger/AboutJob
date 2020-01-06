@@ -13,6 +13,7 @@ import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
+import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.interfaces.view.AddReviewView
 import com.druger.aboutwork.model.City
 import com.druger.aboutwork.model.Review
@@ -56,6 +57,7 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         rootView = inflater.inflate(R.layout.fragment_review, container, false)
         getData(savedInstanceState)
         datePicker = DatePickerFragment()
+        (activity as MainActivity).hideBottomNavigation()
         return rootView
     }
 
