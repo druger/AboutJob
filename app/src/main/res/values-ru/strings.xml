@@ -53,8 +53,7 @@
     <string name="company_site">Сайт компании</string>
     <string name="city">Город</string>
     <string name="city_">Город (обязательно)</string>
-    <string name="tvEmptySearch">Вы еще не смотрели никакой компании</string>
-    <string name="watched_recently">Вы смотрели недавно</string>
+    <string name="last_reviews">Последние 10 отзывов</string>
     <string name="no_internet_connection">Нет интернета</string>
     <string name="unknown_error">Неизвестная ошибка</string>
     <string name="add_review">Добавить отзыв</string>

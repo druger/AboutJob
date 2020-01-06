@@ -27,7 +27,7 @@ class MyReviewsPresenter : MvpPresenter<MyReviewsView>(), ValueEventListener {
         reviews.clear()
         dbReference = FirebaseDatabase.getInstance().reference
 
-        val reviewsQuery = FirebaseHelper.getReviews(dbReference, userId)
+        val reviewsQuery = FirebaseHelper.getReviewsById(dbReference, userId)
         reviewsQuery.addValueEventListener(this)
     }
 
@@ -38,6 +38,7 @@ class MyReviewsPresenter : MvpPresenter<MyReviewsView>(), ValueEventListener {
     override fun onCancelled(databaseError: DatabaseError) {
         viewState.showProgress(false)
         viewState.showReviews(reviews)
+        Timber.e(databaseError.toException())
     }
 
     private fun fetchReviews(dataSnapshot: DataSnapshot) {
