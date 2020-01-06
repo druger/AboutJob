@@ -2,8 +2,6 @@ package com.druger.aboutwork
 
 import android.app.Application
 import android.content.Context
-import com.druger.aboutwork.db.RealmHelper.Companion.REALM_NAME
-import com.druger.aboutwork.db.RealmHelper.Companion.SCHEMA_VERSION
 import com.druger.aboutwork.di.components.AppComponent
 import com.druger.aboutwork.di.components.DaggerAppComponent
 import com.druger.aboutwork.di.modules.AppModule
@@ -15,8 +13,6 @@ import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
-import io.realm.Realm
-import io.realm.RealmConfiguration
 import timber.log.Timber
 
 
@@ -40,7 +36,6 @@ class App : Application() {
         super.onCreate()
 //        setupLeakCanary()
         FirebaseApp.initializeApp(this)
-        setupRealm()
         setupDagger2()
         AndroidThreeTen.init(this)
         setupTimber()
@@ -72,15 +67,5 @@ class App : Application() {
             }
             refWatcher = LeakCanary.install(this)
         }
-    }
-
-    private fun setupRealm() {
-        Realm.init(this)
-        val config = RealmConfiguration.Builder()
-                .schemaVersion(SCHEMA_VERSION)
-                .name(REALM_NAME)
-                .deleteRealmIfMigrationNeeded()
-                .build()
-        Realm.setDefaultConfiguration(config)
     }
 }

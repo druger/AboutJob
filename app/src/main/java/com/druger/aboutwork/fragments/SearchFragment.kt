@@ -14,7 +14,6 @@ import com.druger.aboutwork.adapters.CompanyAdapter
 import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.SearchView
 import com.druger.aboutwork.model.Company
-import com.druger.aboutwork.model.realm.CompanyRealm
 import com.druger.aboutwork.presenters.SearchPresenter
 import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener
 import com.druger.aboutwork.utils.rx.RxSearch
@@ -94,7 +93,6 @@ class SearchFragment : BaseSupportFragment(), SearchView {
 
         adapter.setOnItemClickListener(object : OnItemClickListener<Company> {
             override fun onClick(company: Company, position: Int) {
-                saveCompanyToDb(setupCompanyRealm(company))
                 showCompanyDetail(company.id)
             }
 
@@ -143,21 +141,6 @@ class SearchFragment : BaseSupportFragment(), SearchView {
             adapter.addItems(companies)
             cbMoreCompanies.visibility = View.VISIBLE
         }
-    }
-
-    private fun saveCompanyToDb(company: CompanyRealm) {
-        presenter.saveCompanyToDb(company)
-    }
-
-    private fun setupCompanyRealm(company: Company): CompanyRealm {
-        val id = company.id
-        val name = company.name
-        val logo = company.logo
-        val sLogo = logo?.logo90 ?: ""
-
-        val companyRealm = CompanyRealm(id, name, sLogo)
-        companyRealm.city = company.city
-        return companyRealm
     }
 
     private fun showCompanyDetail(id: String) {
