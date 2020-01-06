@@ -25,14 +25,12 @@ object FirebaseHelper {
     private const val COMPANIES = "companies"
     private const val COMMENTS = "comments"
     private const val MESSAGE = "/message"
-    private const val AVATARS = "avatars/"
-    private const val AVATAR_NANE = "/avatar.jpg"
     private const val REVIEW_ID = "reviewId"
     private const val COMPANY_ID = "companyId"
     private const val ID = "id"
     private const val USER_ID = "userId"
     private const val SLASH = "/"
-    private const val FIRST_COUNT_REVIEWS = 10
+    private const val LAST_COUNT_REVIEWS = 10
 
     fun addReview(review: Review) {
         val mapper = ObjectMapper()
@@ -110,9 +108,14 @@ object FirebaseHelper {
         return dbReference.child(USERS).orderByChild(ID).equalTo(userId)
     }
 
-    fun getReviews(dbReference: DatabaseReference, userId: String): Query {
-        return dbReference.child(REVIEWS).orderByChild(USER_ID).equalTo(userId)
-    }
+    fun getReviewsById(dbReference: DatabaseReference, userId: String): Query =
+        getReviews(dbReference).orderByChild(USER_ID).equalTo(userId)
+
+    fun getLastReviews(dbReference: DatabaseReference): Query =
+        getReviews(dbReference).limitToLast(LAST_COUNT_REVIEWS)
+
+    private fun getReviews(dbReference: DatabaseReference): DatabaseReference =
+        dbReference.child(REVIEWS)
 
     fun getReview(dbReference: DatabaseReference, reviewKey: String): Query =
         dbReference.child(REVIEWS).child(reviewKey)

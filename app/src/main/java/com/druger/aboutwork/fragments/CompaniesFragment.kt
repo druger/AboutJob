@@ -6,16 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.fragment.app.Fragment
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
-import com.druger.aboutwork.adapters.CompanyRealmAdapter
+import com.druger.aboutwork.adapters.ReviewAdapter
 import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.CompaniesView
-import com.druger.aboutwork.model.realm.CompanyRealm
+import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.CompaniesPresenter
-import io.realm.RealmResults
 import kotlinx.android.synthetic.main.fragment_companies.*
 import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
@@ -26,14 +24,10 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     @InjectPresenter
     lateinit var companiesPresenter: CompaniesPresenter
 
-    private lateinit var realmAdapter: CompanyRealmAdapter
-    private lateinit var itemClickListener: OnItemClickListener<CompanyRealm>
+    private lateinit var reviewAdapter: ReviewAdapter
+    private lateinit var itemClickListener: OnItemClickListener<Review>
 
-    private var fragment: Fragment? = null
     private var inputMode: Int = 0
-
-    private val companiesFromDb: RealmResults<CompanyRealm>
-        get() = companiesPresenter.getCompaniesFromDb()
 
     @ProvidePresenter
     internal fun provideCompaniesPresenter(): CompaniesPresenter {
@@ -53,7 +47,9 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
         setupUI()
         setupToolbar()
         setupListeners()
-        setupRecyclerRealm()
+        setupRecycler()
+        reviewAdapter.removeReviews()
+        companiesPresenter.fetchReviews()
     }
 
     private fun setupUI() {
@@ -79,15 +75,16 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
         }
     }
 
-    private fun setupRecyclerRealm() {
-        realmAdapter = CompanyRealmAdapter(companiesFromDb, itemClickListener)
-        rvCompaniesRealm.adapter = realmAdapter
+    private fun setupRecycler() {
+        reviewAdapter = ReviewAdapter()
+        rvLastReviews.adapter = reviewAdapter
+        reviewAdapter.setOnClickListener(itemClickListener)
     }
 
     private fun setupListeners() {
-        itemClickListener = object : OnItemClickListener<CompanyRealm> {
-            override fun onClick(company: CompanyRealm, position: Int) {
-                showCompanyDetail(company.id)
+        itemClickListener = object : OnItemClickListener<Review> {
+            override fun onClick(review: Review, position: Int) {
+                review.firebaseKey?.let { showSelectedReview(it) }
             }
 
             override fun onLongClick(position: Int): Boolean {
@@ -99,33 +96,29 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     override fun onDestroyView() {
         super.onDestroyView()
         activity?.window?.setSoftInputMode(inputMode)
-        companiesPresenter.removeRealmListener()
     }
 
-    override fun showWatchedRecently() {
-        tvWatched.visibility = View.VISIBLE
+    override fun showReview(review: Review) {
+        reviewAdapter.addReview(review)
     }
 
-    override fun showCompaniesRealm() {
-        rvCompaniesRealm.visibility = View.VISIBLE
-        ivEmptySearch.visibility = View.INVISIBLE
-        tvEmptySearch.visibility = View.INVISIBLE
+    override fun showEmptyReviews() {
+        groupReviews.visibility = View.GONE
+        ltNoReviews.visibility = View.VISIBLE
     }
 
-    private fun showCompanyDetail(id: String) {
-        fragment = CompanyDetailFragment.newInstance(id)
-        replaceFragment(fragment as CompanyDetailFragment, R.id.main_container, true)
+    private fun showSelectedReview(id: String) {
+        val fragment = SelectedReviewFragment.newInstance(id, false)
+        replaceFragment(fragment, R.id.main_container, true)
     }
 
     override fun showProgress(show: Boolean) {
         super.showProgress(show)
         if (show) {
-            ivEmptySearch.visibility = View.INVISIBLE
-            tvEmptySearch.visibility = View.INVISIBLE
-            rvCompaniesRealm.visibility = View.INVISIBLE
-            tvWatched.visibility = View.GONE
+            rvLastReviews.visibility = View.INVISIBLE
+            tvLastReviews.visibility = View.GONE
         } else {
-            rvCompaniesRealm.visibility = View.VISIBLE
+            rvLastReviews.visibility = View.VISIBLE
         }
     }
 }

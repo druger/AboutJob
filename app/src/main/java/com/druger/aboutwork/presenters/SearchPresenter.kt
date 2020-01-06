@@ -1,8 +1,6 @@
 package com.druger.aboutwork.presenters
 
-import com.druger.aboutwork.db.RealmHelper
 import com.druger.aboutwork.interfaces.view.SearchView
-import com.druger.aboutwork.model.realm.CompanyRealm
 import com.druger.aboutwork.rest.RestApi
 import com.druger.aboutwork.rest.models.CompanyResponse
 import com.druger.aboutwork.utils.rx.RxUtils
@@ -15,11 +13,10 @@ import javax.inject.Inject
 
 @InjectViewState
 class SearchPresenter @Inject
-constructor(restApi: RestApi, realmHelper: RealmHelper) : BasePresenter<SearchView>() {
+constructor(restApi: RestApi) : BasePresenter<SearchView>() {
 
     init {
         this.restApi = restApi
-        this.realmHelper = realmHelper
     }
 
     fun getCompanies(query: String, page: Int, withVacancies: Boolean) {
@@ -42,9 +39,5 @@ constructor(restApi: RestApi, realmHelper: RealmHelper) : BasePresenter<SearchVi
     override fun handleError(throwable: Throwable) {
         super.handleError(throwable)
         viewState.showProgress(false)
-    }
-
-    fun saveCompanyToDb(company: CompanyRealm) {
-        realmHelper.saveCompany(company)
     }
 }
