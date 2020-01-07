@@ -28,9 +28,11 @@ import com.druger.aboutwork.utils.Analytics
 import com.druger.aboutwork.utils.recycler.RecyclerItemTouchHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.auth_layout.*
 import kotlinx.android.synthetic.main.fragment_my_reviews.*
 import kotlinx.android.synthetic.main.network_error.*
+import kotlinx.android.synthetic.main.no_reviews.*
 import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 import javax.inject.Inject
@@ -77,6 +79,11 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
             showErrorScreen(false)
             fetchReviews()
         }
+        btnFind.setOnClickListener { goToSearch() }
+    }
+
+    private fun goToSearch() {
+        (activity as MainActivity).bottomNavigation.selectedItemId = R.id.action_search
     }
 
     private fun fetchReviews() {
@@ -187,6 +194,8 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
     override fun showReviews(reviews: List<Review>) {
         if (reviews.isEmpty()) {
             ltNoReviews.visibility = View.VISIBLE
+            tvNoReviews.text = getString(R.string.no_my_reviews)
+            btnFind.visibility = View.VISIBLE
             content.visibility = View.GONE
         } else {
             ltNoReviews.visibility = View.INVISIBLE

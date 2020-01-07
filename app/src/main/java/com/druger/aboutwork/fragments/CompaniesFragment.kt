@@ -15,6 +15,7 @@ import com.druger.aboutwork.interfaces.view.CompaniesView
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.CompaniesPresenter
 import kotlinx.android.synthetic.main.fragment_companies.*
+import kotlinx.android.synthetic.main.no_reviews.*
 import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
@@ -105,6 +106,7 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     override fun showEmptyReviews() {
         groupReviews.visibility = View.GONE
         ltNoReviews.visibility = View.VISIBLE
+        tvNoReviews.text = getString(R.string.no_recent_reviews)
     }
 
     private fun showSelectedReview(id: String) {
