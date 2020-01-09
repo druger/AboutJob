@@ -41,7 +41,7 @@
     <string name="salary">Зарплата</string>
     <string name="settings">Настройки</string>
     <string name="social_package">Соц. пакет</string>
-    <string name="something_went_wrong">Что-то пошло не так</string>
+    <string name="something_went_wrong">Проверьте подключение к сети</string>
     <string name="success_update_pass">Пароль обновлен, войдите с новым паролем</string>
     <string name="undo">Вернуть</string>
     <string name="updated_email">Email обновлен. Войдите с новым Email</string>

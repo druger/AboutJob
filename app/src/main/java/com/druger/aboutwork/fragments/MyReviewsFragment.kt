@@ -1,9 +1,6 @@
 package com.druger.aboutwork.fragments
 
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.view.ActionMode
@@ -87,13 +84,6 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
         if (isInternetAvailable(requireContext())) {
             userId?.let { myReviewsPresenter.fetchReviews(it) } ?: showAuthAccess()
         } else showErrorScreen(true)
-    }
-
-    private fun isInternetAvailable(context: Context): Boolean {
-        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        // TODO change on WorkManager
-        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
-        return activeNetwork?.isConnectedOrConnecting ?: false
     }
 
     private fun getData(savedInstanceState: Bundle?) {
