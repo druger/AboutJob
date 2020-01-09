@@ -10,7 +10,7 @@ interface SelectedReview: MvpView {
     fun showChangeDialog(position: Int)
     fun notifyItemRemoved(position: Int, size: Int)
     fun showComments(comments: List<Comment>)
-    fun showAuthDialog(@StringRes title: Int)
+    fun showAuth(@StringRes title: Int)
     fun setReview(review: Review?)
     fun onLikeClicked()
     fun onDislikeClicked()

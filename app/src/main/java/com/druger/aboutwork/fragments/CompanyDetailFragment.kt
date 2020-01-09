@@ -1,7 +1,6 @@
 package com.druger.aboutwork.fragments
 
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -15,7 +14,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
-import com.druger.aboutwork.activities.LoginActivity
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.ReviewAdapter
 import com.druger.aboutwork.enums.Screen
@@ -25,7 +23,6 @@ import com.druger.aboutwork.model.CompanyDetail
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.CompanyDetailPresenter
 import com.thefinestartist.finestwebview.FinestWebView
-import kotlinx.android.synthetic.main.auth_layout.*
 import kotlinx.android.synthetic.main.content_company_detail.*
 import kotlinx.android.synthetic.main.fragment_company_detail.*
 import kotlinx.android.synthetic.main.network_error.*
@@ -94,13 +91,6 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
     private fun setupUX() {
         fabAddReview.setOnClickListener { presenter.checkAuthUser() }
         btnRetry.setOnClickListener { companyId?.let { presenter.getCompanyDetail(it) } }
-        btnLogin.setOnClickListener {
-            val intent = Intent(context, LoginActivity::class.java).apply {
-                putExtra(MainActivity.NEXT_SCREEN, Screen.COMPANY_DETAIL.name)
-                putExtra(MainActivity.COMPANY_ID, companyId)
-            }
-            startActivity(intent)
-        }
         tvShowDescription.setOnClickListener { showDescription() }
     }
 
@@ -266,10 +256,13 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
     }
 
     override fun showAuth() {
-        scrollView.visibility = View.GONE
-        fabAddReview.hide()
-        ltAuthCompany.visibility = View.VISIBLE
-        tvAuth.setText(R.string.company_login)
+        replaceFragment(
+            AuthFragment.newInstance(
+                getString(R.string.company_login),
+                Screen.COMPANY_DETAIL.name,
+                companyId),
+            R.id.main_container,
+            true)
     }
 
     companion object {

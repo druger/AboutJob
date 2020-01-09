@@ -68,7 +68,7 @@ abstract class BaseSupportFragment : MvpAppCompatFragment(), NetworkView {
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
     }
 
-    protected fun replaceFragment(fragment: Fragment, @IdRes container: Int, addToBackStack: Boolean) {
+    protected fun replaceFragment(fragment: Fragment, @IdRes container: Int, addToBackStack: Boolean = false) {
         fragmentManager?.beginTransaction()?.apply {
             replace(container, fragment)
             if (addToBackStack) addToBackStack(null)
@@ -76,7 +76,7 @@ abstract class BaseSupportFragment : MvpAppCompatFragment(), NetworkView {
         }
     }
 
-    protected fun addFragment(fragment: Fragment, @IdRes container: Int, addToBackStack: Boolean) {
+    protected fun addFragment(fragment: Fragment, @IdRes container: Int, addToBackStack: Boolean = false) {
         fragmentManager?.beginTransaction()?.apply {
             add(container, fragment)
             if (addToBackStack) addToBackStack(null)
