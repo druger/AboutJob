@@ -1,23 +1,13 @@
 package com.druger.aboutwork.utils
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.*
 import android.text.SpannableString
 import android.text.Spanned
 import android.util.Patterns
-import android.view.LayoutInflater
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
-import androidx.annotation.StringRes
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import com.druger.aboutwork.R
-import com.druger.aboutwork.activities.LoginActivity
-import com.druger.aboutwork.activities.MainActivity
-import com.druger.aboutwork.enums.Screen
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -92,31 +82,5 @@ object Utils {
             5, 20),
             0, text?.length ?: 0, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         return string
-    }
-
-    fun showAuthDialog(
-        context: Context,
-        @StringRes title: Int,
-        reviewId: String? = null,
-        message: String? = null
-    ) {
-        val builder = AlertDialog.Builder(context)
-        val inflater = LayoutInflater.from(context)
-        val dialogView = inflater.inflate(R.layout.auth_layout, null)
-        builder.setView(dialogView)
-            .setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
-        builder.show()
-
-        val tvAuthTitle: TextView = dialogView.findViewById(R.id.tvAuth)
-        val btnLogin: Button = dialogView.findViewById(R.id.btnLogin)
-
-        tvAuthTitle.setText(title)
-        btnLogin.setOnClickListener {
-            context.startActivity(Intent(context, LoginActivity::class.java).apply {
-                putExtra(MainActivity.NEXT_SCREEN, Screen.REVIEW.name)
-                putExtra(MainActivity.REVIEW_ID, reviewId)
-                putExtra(MainActivity.MESSAGE, message)
-            })
-        }
     }
 }

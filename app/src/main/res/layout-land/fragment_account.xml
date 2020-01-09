@@ -14,7 +14,7 @@
         android:layout_marginBottom="?attr/actionBarSize">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/content"
+            android:id="@+id/content_account"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="16dp">
@@ -260,9 +260,4 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <include
-        android:id="@+id/ltAuthAccount"
-        layout="@layout/auth_layout"
-        android:visibility="gone" />
 </FrameLayout>

@@ -2,7 +2,6 @@ package com.druger.aboutwork.fragments
 
 
 import android.content.Context
-import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
-import com.druger.aboutwork.activities.LoginActivity
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.MyReviewAdapter
 import com.druger.aboutwork.adapters.ReviewAdapter
@@ -29,7 +27,6 @@ import com.druger.aboutwork.utils.recycler.RecyclerItemTouchHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.auth_layout.*
 import kotlinx.android.synthetic.main.fragment_my_reviews.*
 import kotlinx.android.synthetic.main.network_error.*
 import kotlinx.android.synthetic.main.no_reviews.*
@@ -105,17 +102,9 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
     }
 
     private fun showAuthAccess() {
-        content.visibility = View.INVISIBLE
-        ltAuthReviews.visibility = View.VISIBLE
-        tvAuth.setText(R.string.reviews_login)
-        btnLogin.setOnClickListener { showLoginActivity() }
-    }
-
-    private fun showLoginActivity() {
-        val intent = Intent(context, LoginActivity::class.java).apply {
-            putExtra(MainActivity.NEXT_SCREEN, Screen.MY_REVIEWS.name)
-        }
-        startActivity(intent)
+        addFragment(
+            AuthFragment.newInstance(getString(R.string.reviews_login), Screen.MY_REVIEWS.name),
+            R.id.main_container, false)
     }
 
     private fun setupToolbar() {
