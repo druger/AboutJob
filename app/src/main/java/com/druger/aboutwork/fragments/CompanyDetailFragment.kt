@@ -261,8 +261,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
                 getString(R.string.company_login),
                 Screen.COMPANY_DETAIL.name,
                 companyId),
-            R.id.main_container,
-            true)
+            R.id.content_company)
     }
 
     companion object {
