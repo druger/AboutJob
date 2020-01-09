@@ -5,8 +5,8 @@ import android.graphics.*
 import android.text.SpannableString
 import android.text.Spanned
 import android.util.Patterns
+import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import androidx.core.content.ContextCompat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,9 +35,9 @@ object Utils {
         manager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
     }
 
-    fun hideKeyboard(context: Context, editText: EditText) {
+    fun hideKeyboard(context: Context, view: View) {
         val manager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        manager.hideSoftInputFromWindow(editText.windowToken, 0)
+        manager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     fun crateArcBitmap(context: Context, percent: Int): Bitmap {

@@ -376,6 +376,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
     }
 
     override fun showAuth(title: Int) {
+        Utils.hideKeyboard(requireContext(), etMessage)
         replaceFragment(
             AuthFragment.newInstance(
                 getString(title),
@@ -383,8 +384,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
                 null,
                 reviewKey,
                 etMessage.text.toString().trim()),
-            R.id.main_container,
-            false)
+            R.id.content_review)
     }
 
     override fun clearMessage() {

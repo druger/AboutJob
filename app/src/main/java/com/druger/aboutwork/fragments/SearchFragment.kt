@@ -15,6 +15,7 @@ import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.SearchView
 import com.druger.aboutwork.model.Company
 import com.druger.aboutwork.presenters.SearchPresenter
+import com.druger.aboutwork.utils.Utils
 import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener
 import com.druger.aboutwork.utils.rx.RxSearch
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -144,6 +145,7 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     }
 
     private fun showCompanyDetail(id: String) {
+        Utils.hideKeyboard(requireContext(), searchView)
         addFragment(CompanyDetailFragment.newInstance(id), R.id.main_container, true)
     }
 
