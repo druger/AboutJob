@@ -111,7 +111,7 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     }
 
     override fun showReview(review: Review) {
-        tvLastReviews.visibility = View.VISIBLE
+        groupReviews.visibility = View.VISIBLE
         reviewAdapter.addReview(review)
     }
 
@@ -124,15 +124,5 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     private fun showSelectedReview(id: String) {
         val fragment = SelectedReviewFragment.newInstance(id, false)
         replaceFragment(fragment, R.id.main_container, true)
-    }
-
-    override fun showProgress(show: Boolean) {
-        super.showProgress(show)
-        if (show) {
-            rvLastReviews.visibility = View.INVISIBLE
-            tvLastReviews.visibility = View.GONE
-        } else {
-            rvLastReviews.visibility = View.VISIBLE
-        }
     }
 }
