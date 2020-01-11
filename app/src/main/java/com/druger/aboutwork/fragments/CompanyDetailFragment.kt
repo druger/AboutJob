@@ -50,7 +50,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
                               savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_company_detail, container, false)
 
-        detData(savedInstanceState)
+        getData(savedInstanceState)
         (activity as MainActivity).hideBottomNavigation()
         return rootView
     }
@@ -69,7 +69,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
         mLtError = ltError
     }
 
-    private fun detData(savedInstanceState: Bundle?) {
+    private fun getData(savedInstanceState: Bundle?) {
         val bundle = savedInstanceState ?: arguments
         companyId = bundle?.getString(COMPANY_ID)
         companyId?.let { presenter.getCompanyDetail(it) }
