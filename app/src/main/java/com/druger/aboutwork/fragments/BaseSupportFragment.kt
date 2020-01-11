@@ -1,8 +1,10 @@
 package com.druger.aboutwork.fragments
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.IdRes
@@ -10,6 +12,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.druger.aboutwork.R
 import com.druger.aboutwork.enums.TypeMessage
@@ -24,7 +27,7 @@ abstract class BaseSupportFragment : MvpAppCompatFragment(), NetworkView {
     protected var rootView: View? = null
     protected var mProgressBar: ProgressBar? = null
     protected var mToolbar: Toolbar? = null
-    protected var mLtError: LinearLayout? = null
+    protected var mLtError: ConstraintLayout? = null
 
     protected val actionBar: ActionBar?
         get() = (activity as AppCompatActivity).supportActionBar
@@ -68,7 +71,7 @@ abstract class BaseSupportFragment : MvpAppCompatFragment(), NetworkView {
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
     }
 
-    protected fun replaceFragment(fragment: Fragment, @IdRes container: Int, addToBackStack: Boolean) {
+    protected fun replaceFragment(fragment: Fragment, @IdRes container: Int, addToBackStack: Boolean = false) {
         fragmentManager?.beginTransaction()?.apply {
             replace(container, fragment)
             if (addToBackStack) addToBackStack(null)
@@ -76,12 +79,19 @@ abstract class BaseSupportFragment : MvpAppCompatFragment(), NetworkView {
         }
     }
 
-    protected fun addFragment(fragment: Fragment, @IdRes container: Int, addToBackStack: Boolean) {
+    protected fun addFragment(fragment: Fragment, @IdRes container: Int, addToBackStack: Boolean = false) {
         fragmentManager?.beginTransaction()?.apply {
             add(container, fragment)
             if (addToBackStack) addToBackStack(null)
             commit()
         }
+    }
+
+    protected fun isInternetAvailable(context: Context): Boolean {
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        // TODO change on WorkManager
+        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+        return activeNetwork?.isConnectedOrConnecting ?: false
     }
 
     //    @Override

@@ -8,7 +8,7 @@
     <include layout="@layout/toolbar" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/content"
+        android:id="@+id/content_account"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize">
@@ -260,9 +260,4 @@
             app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <include
-        android:id="@+id/ltAuthAccount"
-        layout="@layout/auth_layout"
-        android:visibility="gone" />
 </FrameLayout>

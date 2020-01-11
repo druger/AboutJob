@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="?attr/actionBarSize">
+    android:paddingBottom="?attr/actionBarSize"
+    android:animateLayoutChanges="true">
 
     <include
         android:id="@+id/include"
@@ -25,7 +26,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvLastReviews"
@@ -70,6 +71,12 @@
         android:id="@+id/groupReviews"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:constraint_referenced_ids="tvLastReviews,rvLastReviews" />
+
+    <include
+        layout="@layout/network_error"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

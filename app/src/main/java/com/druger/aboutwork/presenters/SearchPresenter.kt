@@ -20,6 +20,8 @@ constructor(restApi: RestApi) : BasePresenter<SearchView>() {
     }
 
     fun getCompanies(query: String, page: Int, withVacancies: Boolean) {
+        viewState.showErrorScreen(false)
+        viewState.showProgress(true)
         requestGetCompanies(query, page, withVacancies)
     }
 
@@ -39,5 +41,6 @@ constructor(restApi: RestApi) : BasePresenter<SearchView>() {
     override fun handleError(throwable: Throwable) {
         super.handleError(throwable)
         viewState.showProgress(false)
+        viewState.showErrorScreen(true)
     }
 }

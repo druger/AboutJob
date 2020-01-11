@@ -1,5 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_company"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="ContentDescription">
@@ -28,7 +29,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@drawable/ic_add" />
+            app:srcCompat="@drawable/ic_add"
+            app:tint="@null"
+            app:backgroundTint="@color/colorAccent"/>
 
         <include layout="@layout/content_company_detail" />
 
@@ -44,10 +47,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="invisible" />
-
-    <include
-        android:id="@+id/ltAuthCompany"
-        layout="@layout/auth_layout"
-        android:visibility="gone"/>
 </FrameLayout>
 

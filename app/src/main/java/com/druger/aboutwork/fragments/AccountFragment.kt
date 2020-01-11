@@ -13,14 +13,12 @@ import androidx.annotation.StringRes
 import com.druger.aboutwork.App
 import com.druger.aboutwork.BuildConfig
 import com.druger.aboutwork.R
-import com.druger.aboutwork.activities.LoginActivity
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.interfaces.view.AccountView
 import com.druger.aboutwork.presenters.AccountPresenter
 import com.druger.aboutwork.utils.PreferencesHelper
 import com.firebase.ui.auth.AuthUI
-import kotlinx.android.synthetic.main.auth_layout.*
 import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
@@ -76,15 +74,7 @@ class AccountFragment : BaseSupportFragment(), AccountView {
         cvName.setOnClickListener { showChangeName() }
         cvPassword.setOnClickListener { showChangePassword() }
         cvRemoveAcc.setOnClickListener { showRemoveDialog() }
-        btnLogin.setOnClickListener { showLogin() }
         tvWriteToDev.setOnClickListener { accountPresenter.writeToDevelopers(getString(R.string.email_support)) }
-    }
-
-    private fun showLogin() {
-        val intent = Intent(context, LoginActivity::class.java).apply {
-            putExtra(MainActivity.NEXT_SCREEN, Screen.SETTINGS.name)
-        }
-        startActivity(intent)
     }
 
     private fun showRemoveDialog() {
@@ -159,9 +149,9 @@ class AccountFragment : BaseSupportFragment(), AccountView {
     }
 
     override fun showAuthAccess() {
-        content.visibility = View.INVISIBLE
-        ltAuthAccount.visibility = View.VISIBLE
-        tvAuth.setText(R.string.account_login)
+        replaceFragment(
+            AuthFragment.newInstance(getString(R.string.account_login), Screen.SETTINGS.name),
+            R.id.main_container)
     }
 
     override fun showPhone(phone: String?) {

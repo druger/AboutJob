@@ -15,10 +15,12 @@ import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.SearchView
 import com.druger.aboutwork.model.Company
 import com.druger.aboutwork.presenters.SearchPresenter
+import com.druger.aboutwork.utils.Utils
 import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener
 import com.druger.aboutwork.utils.rx.RxSearch
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.android.synthetic.main.network_error.*
 import kotlinx.android.synthetic.main.toolbar_search.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
@@ -33,6 +35,7 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
 
     private var query: String? = null
+    private var page = 0
 
     private var inputMode: Int = 0
 
@@ -59,6 +62,7 @@ class SearchFragment : BaseSupportFragment(), SearchView {
 
     private fun setupUI() {
         mProgressBar = progressBar
+        mLtError = ltError
     }
 
     private fun setInputMode() {
@@ -85,8 +89,9 @@ class SearchFragment : BaseSupportFragment(), SearchView {
         scrollListener = object : EndlessRecyclerViewScrollListener(
             rvCompanies.layoutManager as LinearLayoutManager) {
             override fun onLoadMore(page: Int) {
+                this@SearchFragment.page = page
                 if (page > 0) adapter.addLoading()
-                query?.let { presenter.getCompanies(it, page, !cbMoreCompanies.isChecked) }
+                getCompanies(page)
             }
         }
         rvCompanies.addOnScrollListener(scrollListener)
@@ -100,6 +105,12 @@ class SearchFragment : BaseSupportFragment(), SearchView {
                 return false
             }
         })
+
+        btnRetry.setOnClickListener { getCompanies(page) }
+    }
+
+    private fun getCompanies(page: Int) {
+        query?.let { presenter.getCompanies(it, page, !cbMoreCompanies.isChecked) }
     }
 
     private fun setupSearch() {
@@ -111,11 +122,9 @@ class SearchFragment : BaseSupportFragment(), SearchView {
             .filter { item -> item.length >= 2 }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { newText ->
-                cbMoreCompanies.visibility = View.VISIBLE
                 query = newText.trim()
                 adapter.clear()
                 scrollListener.resetPageCount()
-                showProgress(true)
             }
 
         cbMoreCompanies.setOnCheckedChangeListener { _, _ ->
@@ -133,18 +142,19 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     }
 
     override fun showCompanies(companies: List<Company>, pages: Int) {
+        cbMoreCompanies.visibility = View.VISIBLE
         adapter.removeLoading()
         scrollListener.setLoaded()
         scrollListener.setPages(pages)
-        rvCompanies.visibility = View.VISIBLE
         if (companies.isNotEmpty()) {
+            rvCompanies.visibility = View.VISIBLE
             adapter.addItems(companies)
-            cbMoreCompanies.visibility = View.VISIBLE
         }
     }
 
     private fun showCompanyDetail(id: String) {
-        addFragment(CompanyDetailFragment.newInstance(id), R.id.main_container, true)
+        Utils.hideKeyboard(requireContext(), searchView)
+        replaceFragment(CompanyDetailFragment.newInstance(id), R.id.main_container, true)
     }
 
     override fun showProgress(show: Boolean) {
@@ -153,7 +163,6 @@ class SearchFragment : BaseSupportFragment(), SearchView {
             rvCompanies.visibility = View.INVISIBLE
         } else {
             adapter.removeLoading()
-            rvCompanies.visibility = View.VISIBLE
         }
     }
 }
