@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.collection.ArrayMap
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.druger.aboutwork.Const.Bundles.EDIT_MODE
 import com.druger.aboutwork.Const.Colors.DISLIKE
@@ -48,6 +49,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
     private var reviewKey: String? = null
     private var message: String? = null // if we came after Login shouldn't be null
     private var editMode: Boolean = false
+    private var likesDislikes: MutableMap<String, Boolean>? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -161,22 +163,9 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
     }
 
     override fun setReview(review: Review?) {
-        if (review != null) {
+        review?.let {
             this.review = review
-            val myLike = review.myLike
-            val myDislike = review.myDislike
-            if (!myLike) {
-                ivLike.tag = requireActivity().getString(R.string.like_inactive)
-            } else {
-                ivLike.tag = requireActivity().getString(R.string.like_active)
-                ivLike.setColorFilter(Color.parseColor(LIKE))
-            }
-            if (!myDislike) {
-                ivDislike.tag = requireActivity().getString(R.string.dislike_inactive)
-            } else {
-                ivDislike.tag = requireActivity().getString(R.string.dislike_active)
-                ivDislike.setColorFilter(Color.parseColor(DISLIKE))
-            }
+            setMyLikeDislike(review)
             tvPluses.text = Utils.getQuoteSpan(requireContext(), review.pluses, R.color.review_positive)
             tvMinuses.text = Utils.getQuoteSpan(requireContext(), review.minuses, R.color.review_negative)
             tvName.text = review.name
@@ -184,18 +173,39 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             tvPosition.text = review.position
             tvDislike.text = review.dislike.toString()
             tvLike.text = review.like.toString()
-            review.markCompany?.let { mark ->
-                rbSalary.rating = mark.salary
-                rbCareer.rating = mark.career
-                rbCollective.rating = mark.collective
-                rbSocialPackage.rating = mark.socialPackage
-                rbChief.rating = mark.chief
-                rbWorkplace.rating = mark.workplace
-            }
+            setMarkCompany(review)
             setExperience(review)
             message?.let { etMessage.setText(it) }
             checkMessage()
             setRecommendation(review)
+        }
+    }
+
+    private fun setMyLikeDislike(review: Review) {
+        likesDislikes = review.likesDislikes
+        likesDislikes?.let { likes ->
+            likes[presenter.user?.uid]?.let { myLike ->
+                if (myLike) {
+                    ivLike.tag = requireActivity().getString(R.string.like_active)
+                    ivLike.setColorFilter(Color.parseColor(LIKE))
+                    ivDislike.tag = requireActivity().getString(R.string.dislike_inactive)
+                } else {
+                    ivDislike.tag = requireActivity().getString(R.string.dislike_active)
+                    ivDislike.setColorFilter(Color.parseColor(DISLIKE))
+                    ivLike.tag = requireActivity().getString(R.string.like_inactive)
+                }
+            }
+        }
+    }
+
+    private fun setMarkCompany(review: Review) {
+        review.markCompany?.let { mark ->
+            rbSalary.rating = mark.salary
+            rbCareer.rating = mark.career
+            rbCollective.rating = mark.collective
+            rbSocialPackage.rating = mark.socialPackage
+            rbChief.rating = mark.chief
+            rbWorkplace.rating = mark.workplace
         }
     }
 
@@ -274,55 +284,70 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
 
     override fun onLikeClicked() {
         review?.let { review ->
-            var like = review.like
-            var dislike = review.dislike
-            if (!review.myLike) {
-                ivLike.setColorFilter(Color.parseColor(LIKE))
-                review.like = ++like
-                tvLike.text = like.toString()
-                review.myLike = true
-
-                if (review.myDislike) {
+            if (likesDislikes == null) likesDislikes = ArrayMap<String, Boolean>()
+            var likes = review.like
+            var dislikes = review.dislike
+            val userId = presenter.user?.uid
+            val myLikeDislike = likesDislikes?.get(userId)
+            myLikeDislike?.let { likeDislike ->
+                if (likeDislike) {
+                    ivLike.setColorFilter(Color.parseColor(GRAY_500))
+                    review.like = --likes
+                    tvLike.text = likes.toString()
+                } else {
                     ivDislike.setColorFilter(Color.parseColor(GRAY_500))
-                    review.dislike = --dislike
-                    tvDislike.text = dislike.toString()
-                    review.myDislike = false
-                    FirebaseHelper.dislikeReview(review)
+                    review.dislike = --dislikes
+                    tvDislike.text = dislikes.toString()
+
+                    ivLike.setColorFilter(Color.parseColor(LIKE))
+                    review.like = ++likes
+                    tvLike.text = likes.toString()
                 }
-            } else {
-                ivLike.setColorFilter(Color.parseColor(GRAY_500))
-                review.like = --like
-                tvLike.text = like.toString()
-                review.myLike = false
+                likesDislikes?.remove(userId)
+
+            } ?: run {
+                ivLike.setColorFilter(Color.parseColor(LIKE))
+                review.like = ++likes
+                tvLike.text = likes.toString()
+                userId?.let { likesDislikes?.put(it, true) }
             }
-            FirebaseHelper.likeReview(review)
+            review.likesDislikes = this.likesDislikes
+            FirebaseHelper.likeOrDislikeReview(review)
         }
     }
 
     override fun onDislikeClicked() {
         review?.let { review ->
-            var like = review.like
-            var dislike = review.dislike
-            if (!review.myDislike) {
-                ivDislike.setColorFilter(Color.parseColor(DISLIKE))
-                review.dislike = ++dislike
-                tvDislike.text = dislike.toString()
-                review.myDislike = true
+            if (likesDislikes == null) likesDislikes = ArrayMap<String, Boolean>()
+            var likes = review.like
+            var dislikes = review.dislike
+            val userId = presenter.user?.uid
+            val myLikeDislike = likesDislikes?.get(userId)
 
-                if (review.myLike) {
+            myLikeDislike?.let { likeDislike ->
+                if (!likeDislike) {
+                    ivDislike.setColorFilter(Color.parseColor(GRAY_500))
+                    review.dislike = --dislikes
+                    tvDislike.text = dislikes.toString()
+                } else {
                     ivLike.setColorFilter(Color.parseColor(GRAY_500))
-                    review.like = --like
-                    tvLike.text = like.toString()
-                    review.myLike = false
-                    FirebaseHelper.likeReview(review)
+                    review.like = --likes
+                    tvLike.text = likes.toString()
+
+                    ivDislike.setColorFilter(Color.parseColor(DISLIKE))
+                    review.dislike = ++dislikes
+                    tvDislike.text = dislikes.toString()
                 }
-            } else {
-                ivDislike.setColorFilter(Color.parseColor(GRAY_500))
-                review.dislike = --dislike
-                tvDislike.text = dislike.toString()
-                review.myDislike = false
+                likesDislikes?.remove(userId)
+
+            } ?: run {
+                ivDislike.setColorFilter(Color.parseColor(DISLIKE))
+                review.dislike = ++dislikes
+                tvDislike.text = dislikes.toString()
+                userId?.let { likesDislikes?.put(it, false) }
             }
-            FirebaseHelper.dislikeReview(review)
+            review.likesDislikes = this.likesDislikes
+            FirebaseHelper.likeOrDislikeReview(review)
         }
     }
 
