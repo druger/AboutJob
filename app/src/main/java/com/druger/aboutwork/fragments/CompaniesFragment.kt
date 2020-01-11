@@ -15,6 +15,8 @@ import com.druger.aboutwork.interfaces.view.CompaniesView
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.CompaniesPresenter
 import kotlinx.android.synthetic.main.fragment_companies.*
+import kotlinx.android.synthetic.main.network_error.*
+import kotlinx.android.synthetic.main.no_reviews.*
 import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
@@ -49,11 +51,17 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
         setupListeners()
         setupRecycler()
         reviewAdapter.removeReviews()
-        companiesPresenter.fetchReviews()
+        fetchReviews()
+    }
+
+    private fun fetchReviews() {
+        if (isInternetAvailable(requireContext())) companiesPresenter.fetchReviews()
+        else showErrorScreen(true)
     }
 
     private fun setupUI() {
         mProgressBar = progressBar
+        mLtError = ltError
     }
 
     private fun setInputMode() {
@@ -91,6 +99,10 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
                 return false
             }
         }
+        btnRetry.setOnClickListener {
+            showErrorScreen(false)
+            fetchReviews()
+        }
     }
 
     override fun onDestroyView() {
@@ -99,26 +111,18 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     }
 
     override fun showReview(review: Review) {
+        groupReviews.visibility = View.VISIBLE
         reviewAdapter.addReview(review)
     }
 
     override fun showEmptyReviews() {
         groupReviews.visibility = View.GONE
         ltNoReviews.visibility = View.VISIBLE
+        tvNoReviews.text = getString(R.string.no_recent_reviews)
     }
 
     private fun showSelectedReview(id: String) {
         val fragment = SelectedReviewFragment.newInstance(id, false)
         replaceFragment(fragment, R.id.main_container, true)
-    }
-
-    override fun showProgress(show: Boolean) {
-        super.showProgress(show)
-        if (show) {
-            rvLastReviews.visibility = View.INVISIBLE
-            tvLastReviews.visibility = View.GONE
-        } else {
-            rvLastReviews.visibility = View.VISIBLE
-        }
     }
 }

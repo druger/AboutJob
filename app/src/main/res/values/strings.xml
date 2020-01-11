@@ -64,7 +64,7 @@
     <string name="dislike_active" translatable="false">dislikeActive</string>
 
     <string name="network_error">Network error</string>
-    <string name="something_went_wrong">Something went wrong</string>
+    <string name="something_went_wrong">Check your internet connection</string>
     <string name="retry">Try again</string>
     <string name="company_site">Company\'s site</string>
     <string name="city">City</string>
@@ -77,7 +77,9 @@
     <string name="review_edited">Review edited</string>
     <string name="error_review_edit">@string/error_review_add</string>
     <string name="review">Review</string>
-    <string name="no_reviews">No reviews</string>
+    <string name="no_reviews">There\'re no reviews about this company yet. Your review may be first</string>
+    <string name="no_my_reviews">You don\'t add any reviews yet. \n\n To add review find company that you\'re working in or you worked in</string>
+    <string name="no_recent_reviews">Nobody add no reviews yet. Your review may be first</string>
     <string name="profile_updated">"Profile updated</string>
     <string name="updating_error">"Updating failed"</string>
 
@@ -104,6 +106,7 @@
     <string name="recommended">I recommend for employment</string>
     <string name="not_recommended">I don\'t recommend for employment</string>
     <string name="show_more_companies">Show more companies</string>
+    <string name="find_company">Find company</string>
 
     <string-array name="work_status">
         <item>@string/working</item>

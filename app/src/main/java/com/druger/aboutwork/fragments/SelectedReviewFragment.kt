@@ -19,6 +19,7 @@ import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.CommentAdapter
 import com.druger.aboutwork.db.FirebaseHelper
+import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.SelectedReview
 import com.druger.aboutwork.model.Comment
@@ -374,8 +375,16 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         commentAdapter.addItems(comments)
     }
 
-    override fun showAuthDialog(title: Int) {
-        Utils.showAuthDialog(requireContext(), title, reviewKey, etMessage.text.toString().trim())
+    override fun showAuth(title: Int) {
+        Utils.hideKeyboard(requireContext(), etMessage)
+        replaceFragment(
+            AuthFragment.newInstance(
+                getString(title),
+                Screen.REVIEW.name,
+                null,
+                reviewKey,
+                etMessage.text.toString().trim()),
+            R.id.content_review)
     }
 
     override fun clearMessage() {

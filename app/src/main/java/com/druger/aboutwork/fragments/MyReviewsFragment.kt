@@ -1,10 +1,6 @@
 package com.druger.aboutwork.fragments
 
 
-import android.content.Context
-import android.content.Intent
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.view.ActionMode
@@ -14,7 +10,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
-import com.druger.aboutwork.activities.LoginActivity
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.MyReviewAdapter
 import com.druger.aboutwork.adapters.ReviewAdapter
@@ -28,9 +23,10 @@ import com.druger.aboutwork.utils.Analytics
 import com.druger.aboutwork.utils.recycler.RecyclerItemTouchHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.auth_layout.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_my_reviews.*
 import kotlinx.android.synthetic.main.network_error.*
+import kotlinx.android.synthetic.main.no_reviews.*
 import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 import javax.inject.Inject
@@ -77,6 +73,11 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
             showErrorScreen(false)
             fetchReviews()
         }
+        btnFind.setOnClickListener { goToSearch() }
+    }
+
+    private fun goToSearch() {
+        (activity as MainActivity).bottomNavigation.selectedItemId = R.id.action_search
     }
 
     private fun fetchReviews() {
@@ -85,30 +86,15 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
         } else showErrorScreen(true)
     }
 
-    private fun isInternetAvailable(context: Context): Boolean {
-        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        // TODO change on WorkManager
-        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
-        return activeNetwork?.isConnectedOrConnecting ?: false
-    }
-
     private fun getData(savedInstanceState: Bundle?) {
         val bundle = savedInstanceState ?: arguments
         bundle?.let { userId = it.getString(USER_ID, userId) }
     }
 
     private fun showAuthAccess() {
-        content.visibility = View.INVISIBLE
-        ltAuthReviews.visibility = View.VISIBLE
-        tvAuth.setText(R.string.reviews_login)
-        btnLogin.setOnClickListener { showLoginActivity() }
-    }
-
-    private fun showLoginActivity() {
-        val intent = Intent(context, LoginActivity::class.java).apply {
-            putExtra(MainActivity.NEXT_SCREEN, Screen.MY_REVIEWS.name)
-        }
-        startActivity(intent)
+        addFragment(
+            AuthFragment.newInstance(getString(R.string.reviews_login), Screen.MY_REVIEWS.name),
+            R.id.main_container, false)
     }
 
     private fun setupToolbar() {
@@ -187,6 +173,8 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
     override fun showReviews(reviews: List<Review>) {
         if (reviews.isEmpty()) {
             ltNoReviews.visibility = View.VISIBLE
+            tvNoReviews.text = getString(R.string.no_my_reviews)
+            btnFind.visibility = View.VISIBLE
             content.visibility = View.GONE
         } else {
             ltNoReviews.visibility = View.INVISIBLE

@@ -41,7 +41,7 @@
     <string name="salary">Зарплата</string>
     <string name="settings">Настройки</string>
     <string name="social_package">Соц. пакет</string>
-    <string name="something_went_wrong">Что-то пошло не так</string>
+    <string name="something_went_wrong">Проверьте подключение к сети</string>
     <string name="success_update_pass">Пароль обновлен, войдите с новым паролем</string>
     <string name="undo">Вернуть</string>
     <string name="updated_email">Email обновлен. Войдите с новым Email</string>
@@ -61,7 +61,9 @@
     <string name="review_edited">Отзыв отредактирован</string>
     <string name="error_review_edit">@string/error_review_add</string>
     <string name="review">Отзыв</string>
-    <string name="no_reviews">Нет отзывов</string>
+    <string name="no_reviews">Об этой компании пока нет отзывов. Ваш отзыв может стать первым</string>
+    <string name="no_my_reviews">Вы еще не оставили ни одного отзыва. \n\n Что бы добавить отзыв, найдите компанию, в которой Вы работаете или работали</string>
+    <string name="no_recent_reviews">Никто еще не оставил отзывов. Ваш отзыв может стать первым</string>
 
     <plurals name="year">
         <item quantity="one">%d год</item>
@@ -107,4 +109,5 @@
     <string name="recommended">Рекомендую для трудоустройтсва</string>
     <string name="not_recommended">Не рекомендую для трудоустройтсва</string>
     <string name="show_more_companies">Показать больше компаний</string>
+    <string name="find_company">Найти компанию</string>
 </resources>
