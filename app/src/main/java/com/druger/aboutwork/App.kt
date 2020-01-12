@@ -39,7 +39,9 @@ class App : Application() {
         setupDagger2()
         AndroidThreeTen.init(this)
         setupTimber()
-        setupAppCenter()
+        if (!BuildConfig.DEBUG) {
+            setupAppCenter()
+        }
     }
 
     private fun setupAppCenter() {
