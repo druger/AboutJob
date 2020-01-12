@@ -1,5 +1,6 @@
 package com.druger.aboutwork.db
 
+import android.util.ArrayMap
 import com.druger.aboutwork.model.Comment
 import com.druger.aboutwork.model.Company
 import com.druger.aboutwork.model.Review
@@ -18,8 +19,7 @@ object FirebaseHelper {
     private const val REVIEWS = "reviews"
     private const val LIKE = "/like"
     private const val DISLIKE = "/dislike"
-    private const val MY_LIKE = "/myLike"
-    private const val MY_DISLIKE = "/myDislike"
+    private const val LIKES_DISLIKES = "/likesDislikes"
     private const val USERS = "users"
     private const val NAME = "/name"
     private const val COMPANIES = "companies"
@@ -39,20 +39,13 @@ object FirebaseHelper {
         FirebaseDatabase.getInstance().reference.child(REVIEWS).push().setValue(map)
     }
 
-    fun likeReview(review: Review) {
-        val updateLike = HashMap<String, Any>()
+    fun likeOrDislikeReview(review: Review) {
+        val updateLike = ArrayMap<String, Any>()
         updateLike[REVIEWS + SLASH + review.firebaseKey + LIKE] = review.like
-        updateLike[REVIEWS + SLASH + review.firebaseKey + MY_LIKE] = review.myLike
+        updateLike[REVIEWS + SLASH + review.firebaseKey + DISLIKE] = review.dislike
+        updateLike[REVIEWS + SLASH + review.firebaseKey + LIKES_DISLIKES] = review.likesDislikes
 
         FirebaseDatabase.getInstance().reference.updateChildren(updateLike)
-    }
-
-    fun dislikeReview(review: Review) {
-        val updateDislike = HashMap<String, Any>()
-        updateDislike[REVIEWS + SLASH + review.firebaseKey + DISLIKE] = review.dislike
-        updateDislike[REVIEWS + SLASH + review.firebaseKey + MY_DISLIKE] = review.myDislike
-
-        FirebaseDatabase.getInstance().reference.updateChildren(updateDislike)
     }
 
     fun changeUserName(name: String, key: String) {
@@ -127,18 +120,11 @@ object FirebaseHelper {
     fun getCompany(dbReference: DatabaseReference, companyId: String) : Query =
         dbReference.child(COMPANIES).child(companyId)
 
-    fun likeComment(comment: Comment) {
-        val updateLike = HashMap<String, Any>()
+    fun likeOrDislikeComment(comment: Comment) {
+        val updateLike = ArrayMap<String, Any>()
         updateLike[COMMENTS + SLASH + comment.id + LIKE] = comment.like
-        updateLike[COMMENTS + SLASH + comment.id + MY_LIKE] = comment.myLike
-
-        FirebaseDatabase.getInstance().reference.updateChildren(updateLike)
-    }
-
-    fun dislikeComment(comment: Comment) {
-        val updateLike = HashMap<String, Any>()
         updateLike[COMMENTS + SLASH + comment.id + DISLIKE] = comment.dislike
-        updateLike[COMMENTS + SLASH + comment.id + MY_DISLIKE] = comment.myDislike
+        updateLike[COMMENTS + SLASH + comment.id + LIKES_DISLIKES] = comment.likesDislikes
 
         FirebaseDatabase.getInstance().reference.updateChildren(updateLike)
     }
