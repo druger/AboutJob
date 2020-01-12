@@ -7,8 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.collection.ArrayMap
 import androidx.recyclerview.widget.RecyclerView
+import com.druger.aboutwork.Const.Colors.BLACK
 import com.druger.aboutwork.Const.Colors.DISLIKE
-import com.druger.aboutwork.Const.Colors.GRAY_500
 import com.druger.aboutwork.Const.Colors.LIKE
 import com.druger.aboutwork.R
 import com.druger.aboutwork.db.FirebaseHelper
@@ -48,6 +48,8 @@ class CommentAdapter(private val user: FirebaseUser?) : BaseRecyclerViewAdapter<
     }
 
     private fun setColorLikeDislike(comment: Comment, holder: CommentVH) {
+        holder.ivLike.setColorFilter(Color.parseColor(BLACK))
+        holder.ivDislike.setColorFilter(Color.parseColor(BLACK))
         likesDislikes = comment.likesDislikes
         likesDislikes?.let { likes ->
             likes[user?.uid]?.let { myLike ->
@@ -70,22 +72,18 @@ class CommentAdapter(private val user: FirebaseUser?) : BaseRecyclerViewAdapter<
 
             myLikeDislike?.let { likeDislike ->
                 if (!likeDislike) {
-                    holder.ivDislike.setColorFilter(Color.parseColor(GRAY_500))
                     comment.dislike = --dislikes
                     holder.tvCountDislikes.text = dislikes.toString()
+                    likesDislikes?.remove(userId)
                 } else {
-                    holder.ivLike.setColorFilter(Color.parseColor(GRAY_500))
                     comment.like = --likes
                     holder.tvCountLikes.text = likes.toString()
 
-                    holder.ivDislike.setColorFilter(Color.parseColor(DISLIKE))
                     comment.dislike = ++dislikes
                     holder.tvCountDislikes.text = dislikes.toString()
+                    userId.let { likesDislikes?.put(it, false) }
                 }
-                likesDislikes?.remove(userId)
-
             } ?: run {
-                holder.ivDislike.setColorFilter(Color.parseColor(DISLIKE))
                 comment.dislike = ++dislikes
                 holder.tvCountDislikes.text = dislikes.toString()
                 userId.let { likesDislikes?.put(it, false) }
@@ -104,22 +102,19 @@ class CommentAdapter(private val user: FirebaseUser?) : BaseRecyclerViewAdapter<
             val myLikeDislike = likesDislikes?.get(userId)
             myLikeDislike?.let { likeDislike ->
                 if (likeDislike) {
-                    holder.ivLike.setColorFilter(Color.parseColor(GRAY_500))
                     comment.like = --likes
                     holder.tvCountLikes.text = likes.toString()
+                    likesDislikes?.remove(userId)
                 } else {
-                    holder.ivDislike.setColorFilter(Color.parseColor(GRAY_500))
                     comment.dislike = --dislikes
                     holder.tvCountDislikes.text = dislikes.toString()
 
-                    holder.ivLike.setColorFilter(Color.parseColor(LIKE))
                     comment.like = ++likes
                     holder.tvCountLikes.text = likes.toString()
+                    userId.let { likesDislikes?.put(it, true) }
                 }
-                likesDislikes?.remove(userId)
 
             } ?: run {
-                holder.ivLike.setColorFilter(Color.parseColor(LIKE))
                 comment.like = ++likes
                 holder.tvCountLikes.text = likes.toString()
                 userId.let { likesDislikes?.put(it, true) }

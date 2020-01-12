@@ -11,8 +11,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.collection.ArrayMap
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.druger.aboutwork.Const.Bundles.EDIT_MODE
+import com.druger.aboutwork.Const.Colors.BLACK
 import com.druger.aboutwork.Const.Colors.DISLIKE
-import com.druger.aboutwork.Const.Colors.GRAY_500
 import com.druger.aboutwork.Const.Colors.LIKE
 import com.druger.aboutwork.Const.Colors.PURPLE_100
 import com.druger.aboutwork.Const.Colors.PURPLE_500
@@ -182,17 +182,15 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
     }
 
     private fun setMyLikeDislike(review: Review) {
+        ivLike.setColorFilter(Color.parseColor(BLACK))
+        ivDislike.setColorFilter(Color.parseColor(BLACK))
         likesDislikes = review.likesDislikes
         likesDislikes?.let { likes ->
             likes[presenter.user?.uid]?.let { myLike ->
                 if (myLike) {
-                    ivLike.tag = requireActivity().getString(R.string.like_active)
                     ivLike.setColorFilter(Color.parseColor(LIKE))
-                    ivDislike.tag = requireActivity().getString(R.string.dislike_inactive)
                 } else {
-                    ivDislike.tag = requireActivity().getString(R.string.dislike_active)
                     ivDislike.setColorFilter(Color.parseColor(DISLIKE))
-                    ivLike.tag = requireActivity().getString(R.string.like_inactive)
                 }
             }
         }
@@ -291,22 +289,19 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             val myLikeDislike = likesDislikes?.get(userId)
             myLikeDislike?.let { likeDislike ->
                 if (likeDislike) {
-                    ivLike.setColorFilter(Color.parseColor(GRAY_500))
                     review.like = --likes
                     tvLike.text = likes.toString()
+                    likesDislikes?.remove(userId)
                 } else {
-                    ivDislike.setColorFilter(Color.parseColor(GRAY_500))
                     review.dislike = --dislikes
                     tvDislike.text = dislikes.toString()
-
-                    ivLike.setColorFilter(Color.parseColor(LIKE))
                     review.like = ++likes
                     tvLike.text = likes.toString()
+
+                    userId?.let { likesDislikes?.put(it, true) }
                 }
-                likesDislikes?.remove(userId)
 
             } ?: run {
-                ivLike.setColorFilter(Color.parseColor(LIKE))
                 review.like = ++likes
                 tvLike.text = likes.toString()
                 userId?.let { likesDislikes?.put(it, true) }
@@ -326,22 +321,19 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
 
             myLikeDislike?.let { likeDislike ->
                 if (!likeDislike) {
-                    ivDislike.setColorFilter(Color.parseColor(GRAY_500))
                     review.dislike = --dislikes
                     tvDislike.text = dislikes.toString()
+                    likesDislikes?.remove(userId)
                 } else {
-                    ivLike.setColorFilter(Color.parseColor(GRAY_500))
                     review.like = --likes
                     tvLike.text = likes.toString()
-
-                    ivDislike.setColorFilter(Color.parseColor(DISLIKE))
                     review.dislike = ++dislikes
                     tvDislike.text = dislikes.toString()
+
+                    userId?.let { likesDislikes?.put(it, false) }
                 }
-                likesDislikes?.remove(userId)
 
             } ?: run {
-                ivDislike.setColorFilter(Color.parseColor(DISLIKE))
                 review.dislike = ++dislikes
                 tvDislike.text = dislikes.toString()
                 userId?.let { likesDislikes?.put(it, false) }
