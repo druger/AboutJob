@@ -34,6 +34,8 @@ class AccountFragment : BaseSupportFragment(), AccountView {
     @Inject
     lateinit var preferencesHelper: PreferencesHelper
 
+    private var name: String? = null
+
     @ProvidePresenter
     internal fun getAccountPresenter(): AccountPresenter {
         return App.appComponent.accountPresenter
@@ -89,7 +91,7 @@ class AccountFragment : BaseSupportFragment(), AccountView {
     }
 
     private fun showChangeName() {
-        val nameFragment = ChangeNameFragment()
+        val nameFragment = ChangeNameFragment.newInstance(name)
         replaceFragment(nameFragment, R.id.main_container, true)
     }
 
@@ -121,6 +123,7 @@ class AccountFragment : BaseSupportFragment(), AccountView {
     }
 
     override fun showName(name: String?) {
+        this.name = name
         if (name.isNullOrEmpty()) {
             tvName.setText(R.string.add_name)
         } else

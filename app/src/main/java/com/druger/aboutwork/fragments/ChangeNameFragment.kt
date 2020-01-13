@@ -21,16 +21,6 @@ class ChangeNameFragment : BaseSupportFragment(), ChangeNameView {
 
     private var name: String? = null
 
-    fun newInstance(name: String): ChangeNameFragment {
-
-        val args = Bundle()
-        args.putString(NAME, name)
-
-        val fragment = ChangeNameFragment()
-        fragment.arguments = args
-        return fragment
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_change_name, container, false)
@@ -73,6 +63,18 @@ class ChangeNameFragment : BaseSupportFragment(), ChangeNameView {
         } else {
             etName.visibility = View.VISIBLE
             btnChangeName.visibility = View.VISIBLE
+        }
+    }
+
+    companion object {
+        fun newInstance(name: String?): ChangeNameFragment {
+
+            val args = Bundle()
+            args.putString(NAME, name)
+
+            val fragment = ChangeNameFragment()
+            fragment.arguments = args
+            return fragment
         }
     }
 }
