@@ -11,13 +11,8 @@
     <string name="settings">Settings</string>
 
     <string name="change">Change</string>
-    <string name="change_email">Change Email</string>
     <string name="change_name">Change Name</string>
-    <string name="change_password">Change Password</string>
     <string name="remove_account">Remove Account</string>
-    <string name="updated_email">Email address is updated. Please sign in with new email!</string>
-    <string name="failed_update_email">Failed to update email!</string>
-    <string name="failed_update_pass">Failed to update password!</string>
     <string name="profile_deleted">Your profile is deleted:(</string>
     <string name="failed_delete_user">Failed to delete your account!</string>
     <string name="remove_account_ask">Remove Account?</string>
@@ -51,7 +46,6 @@
     <string name="undo">Undo</string>
 
     <string name="your_message">Your message</string>
-    <string name="success_update_pass">Password is updated, sign in with new password!</string>
 
     <string-array name="comments_change">
         <item>@string/delete</item>
@@ -91,7 +85,6 @@
     <string name="like_login">Login to like</string>
     <string name="dislike_login">Login to dislike</string>
     <string name="phone">Phone</string>
-    <string name="add_email">Add email</string>
     <string name="add_name">Add name</string>
     <string name="show_all">Show all</string>
     <string name="hide">Hide</string>
