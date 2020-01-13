@@ -13,7 +13,6 @@ object Const {
         const val EDIT_MODE = "editMode"
         const val NAME = "name"
         const val USER_ID = "userId"
-        const val EMAIL = "email"
     }
 
     object Colors {

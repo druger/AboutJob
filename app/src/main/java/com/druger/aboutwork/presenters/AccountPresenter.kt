@@ -33,16 +33,16 @@ class AccountPresenter @Inject constructor() : BasePresenter<AccountView>() {
 
     fun getUserInfo() {
         user = FirebaseAuth.getInstance().currentUser
-        user?.let {
-            Timber.d("onAuthStateChanged:signed_in:%s", it.uid)
+        user?.let { firebaseUser ->
+            Timber.d("onAuthStateChanged:signed_in:%s", firebaseUser.uid)
 
-            val email = it.email
-            val name = it.displayName?.split(" ")?.get(0)
-            val phone = it.phoneNumber
+            val email = firebaseUser.email
+            val name = firebaseUser.displayName?.split(" ")?.get(0)
+            val phone = firebaseUser.phoneNumber
 
-            viewState.showEmail(email)
             viewState.showName(name)
-            viewState.showPhone(phone)
+            email?.let { if (it.isNotEmpty()) viewState.showEmail(it) }
+            phone?.let { if (it.isNotEmpty()) viewState.showPhone(it) }
 
         } ?: viewState.showAuthAccess()
     }

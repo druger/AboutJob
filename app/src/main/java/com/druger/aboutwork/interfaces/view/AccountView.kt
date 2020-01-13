@@ -18,10 +18,10 @@ interface AccountView : MvpView {
 
     fun showToast(@StringRes resId: Int)
 
-    fun showEmail(email: String?)
+    fun showEmail(email: String)
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun showAuthAccess()
-    fun showPhone(phone: String?)
+    fun showPhone(phone: String)
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun sendEmail(emailIntent: Intent)
 }
