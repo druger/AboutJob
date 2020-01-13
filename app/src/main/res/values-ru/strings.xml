@@ -4,8 +4,6 @@
     <string name="cancel">Отмена</string>
     <string name="career">Карьера</string>
     <string name="change">Изменить</string>
-    <string name="change_email">Изменить Email</string>
-    <string name="change_password">Изменить пароль</string>
     <string name="chief">Начальство</string>
     <string name="collective">Коллектив</string>
     <string name="search">Поиск</string>
@@ -14,8 +12,6 @@
     <string name="empoyment_date">Дата устройства</string>
     <string name="error_review_add">Заполните обязательные поля</string>
     <string name="failed_delete_user">Ошибка удаления пользователя!</string>
-    <string name="failed_update_email">Ошибка обновления почты!</string>
-    <string name="failed_update_pass">Ошибка обновления пароля!</string>
     <string name="interview">Интервью</string>
     <string name="interview_date">Дата интервью</string>
     <string name="log_out">Выход</string>
@@ -42,9 +38,7 @@
     <string name="settings">Настройки</string>
     <string name="social_package">Соц. пакет</string>
     <string name="something_went_wrong">Проверьте подключение к сети</string>
-    <string name="success_update_pass">Пароль обновлен, войдите с новым паролем</string>
     <string name="undo">Вернуть</string>
-    <string name="updated_email">Email обновлен. Войдите с новым Email</string>
     <string name="worked">Работал(а)</string>
     <string name="working">Работаю</string>
     <string name="workplace">Рабочее место</string>
@@ -93,7 +87,6 @@
     <string name="account_login">Авторизуйтесь чтобы получить доступ к вашему аккаунту</string>
     <string name="company_login">Авторизуйтесь чтобы добавить отзыв</string>
     <string name="phone">Телефон</string>
-    <string name="add_email">Добавить email</string>
     <string name="add_name">Добавить имя</string>
     <string name="show_all">Показать полностью</string>
     <string name="hide">Скрыть</string>

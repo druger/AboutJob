@@ -70,9 +70,7 @@ class AccountFragment : BaseSupportFragment(), AccountView {
 
     private fun setupListeners() {
         cvLogout.setOnClickListener { showLogoutDialog() }
-        cvEmail.setOnClickListener { showChangeEmail() }
         cvName.setOnClickListener { showChangeName() }
-        cvPassword.setOnClickListener { showChangePassword() }
         cvRemoveAcc.setOnClickListener { showRemoveDialog() }
         tvWriteToDev.setOnClickListener { accountPresenter.writeToDevelopers(getString(R.string.email_support)) }
     }
@@ -90,20 +88,9 @@ class AccountFragment : BaseSupportFragment(), AccountView {
         dialog.show()
     }
 
-    private fun showChangePassword() {
-        val passwordFragment = ChangePasswordFragment()
-        replaceFragment(passwordFragment, R.id.main_container, true)
-    }
-
     private fun showChangeName() {
         val nameFragment = ChangeNameFragment()
         replaceFragment(nameFragment, R.id.main_container, true)
-    }
-
-    private fun showChangeEmail() {
-        val email = tvEmail.text.toString().trim { it <= ' ' }
-        val changeEmail = ChangeEmailFragment.newInstance(email)
-        replaceFragment(changeEmail, R.id.main_container, true)
     }
 
     private fun showLogoutDialog() {
@@ -134,34 +121,26 @@ class AccountFragment : BaseSupportFragment(), AccountView {
     }
 
     override fun showName(name: String?) {
-        if (name == null || name.isEmpty()) {
+        if (name.isNullOrEmpty()) {
             tvName.setText(R.string.add_name)
         } else
             tvName.text = name
     }
 
-    override fun showEmail(email: String?) {
-        if (email == null || email.isEmpty()) {
-            tvEmail.setText(R.string.add_email)
-        } else
-            tvEmail.text = email
+    override fun showEmail(email: String) {
+        ltEmail.visibility = View.VISIBLE
+        tvEmail.text = email
+    }
 
+    override fun showPhone(phone: String) {
+        ltPhone.visibility = View.VISIBLE
+        tvPhone.text = phone
     }
 
     override fun showAuthAccess() {
         replaceFragment(
             AuthFragment.newInstance(getString(R.string.account_login), Screen.SETTINGS.name),
             R.id.main_container)
-    }
-
-    override fun showPhone(phone: String?) {
-        if (phone == null || phone.isEmpty()) {
-            ltPhone.visibility = View.GONE
-            line3.visibility = View.GONE
-        } else {
-            tvPhone.text = phone
-            cvPassword.visibility = View.GONE
-        }
     }
 
     override fun sendEmail(emailIntent: Intent) {
