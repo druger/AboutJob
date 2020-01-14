@@ -25,7 +25,7 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
     private lateinit var auth: FirebaseAuth
     private var authListener: FirebaseAuth.AuthStateListener? = null
 
-    private lateinit var dbReference: DatabaseReference
+    private var dbReference: DatabaseReference? = null
     private var valueEventListener: ValueEventListener? = null
 
     private val reviews = ArrayList<Review>()
@@ -37,8 +37,10 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
     fun getReviews(companyID: String) {
         viewState.showProgressReview()
         dbReference = FirebaseDatabase.getInstance().reference
-        val reviewsQuery = FirebaseHelper.getReviewsForCompany(dbReference, companyID)
-        reviewsQuery.addValueEventListener(this)
+        dbReference?.let {
+            val reviewsQuery = FirebaseHelper.getReviewsForCompany(it, companyID)
+            reviewsQuery.addValueEventListener(this)
+        }
     }
 
     override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -50,7 +52,10 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
 
         for (snapshot in dataSnapshot.children) {
             val review = snapshot.getValue(Review::class.java)
-            val queryUser = review?.userId?.let { FirebaseHelper.getUser(dbReference, it) }
+            dbReference?.let { db ->
+                val queryUser = review?.userId?.let { FirebaseHelper.getUser(db, it) }
+                queryUser?.addValueEventListener(valueEventListener as ValueEventListener)
+            }
             valueEventListener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
@@ -66,7 +71,6 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
                     Timber.e(databaseError.message)
                 }
             }
-            queryUser?.addValueEventListener(valueEventListener as ValueEventListener)
             review?.firebaseKey = snapshot.key
             review?.let { reviews.add(it) }
         }
@@ -80,8 +84,8 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
     }
 
     fun removeListeners() {
-        dbReference.removeEventListener(this)
-        valueEventListener?.let { dbReference.removeEventListener(it) }
+        dbReference?.removeEventListener(this)
+        valueEventListener?.let { dbReference?.removeEventListener(it) }
     }
 
     fun getCompanyDetail(companyID: String) {
