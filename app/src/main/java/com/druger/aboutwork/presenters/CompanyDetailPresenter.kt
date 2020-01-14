@@ -54,7 +54,7 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
             val review = snapshot.getValue(Review::class.java)
             dbReference?.let { db ->
                 val queryUser = review?.userId?.let { FirebaseHelper.getUser(db, it) }
-                queryUser?.addValueEventListener(valueEventListener as ValueEventListener)
+                valueEventListener?.let { queryUser?.addValueEventListener(it) }
             }
             valueEventListener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -81,6 +81,14 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
 
     override fun onCancelled(databaseError: DatabaseError) {
         Timber.e(databaseError.message)
+    }
+
+    override fun detachView(view: CompanyDetailView?) {
+        super.detachView(view)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
     fun removeListeners() {
