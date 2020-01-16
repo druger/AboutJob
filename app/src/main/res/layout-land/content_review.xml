@@ -159,10 +159,10 @@
             app:layout_constraintTop_toBottomOf="@+id/rbSocialPackage" />
 
         <androidx.constraintlayout.widget.Group
-            android:id="@+id/groupRating"
+            android:id="@+id/groupInterview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="rbCollective,rbSocialPackage,tvWorkplace,tvCollective,tvSalary,tvChief,rbChief,tvSocialPackage,tvCareer,rbSalary,rbWorkplace,rbCareer,view,rgRecommended" />
+            app:constraint_referenced_ids="rbCollective,rbSocialPackage,tvWorkplace,tvCollective,tvSalary,tvChief,rbChief,tvSocialPackage,tvCareer,rbSalary,rbWorkplace,rbCareer,view,rgRecommended,tvDateInfo" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/position"
@@ -287,27 +287,6 @@
                 android:cursorVisible="false"
                 android:focusableInTouchMode="false"
                 android:hint="@string/dismissal_date"
-                android:inputType="none" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/ltInterviewDate"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDateInfo">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etInterviewDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
-                android:hint="@string/interview_date"
                 android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 

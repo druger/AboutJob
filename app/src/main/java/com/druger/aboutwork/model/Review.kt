@@ -21,7 +21,6 @@ data class Review(var companyId: String? = null,
     var position: String? = null
     var employmentDate: Long = 0
     var dismissalDate: Long = 0
-    var interviewDate: Long = 0
     var like: Int = 0
     var dislike: Int = 0
     @JsonIgnore

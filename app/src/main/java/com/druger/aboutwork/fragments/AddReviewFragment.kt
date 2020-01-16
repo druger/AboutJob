@@ -96,7 +96,6 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     private fun setupListeners() {
         etEmploymentDate.setOnClickListener{ employmentDateClick() }
         etDismissalDate.setOnClickListener{ dismissalDateClick() }
-        etInterviewDate.setOnClickListener{ interviewDateClick() }
         cityChanges()
         positionChanges()
         spinnerStatus.onItemSelectedListener = this
@@ -147,14 +146,6 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         })
     }
 
-    private fun interviewDateClick() {
-        presenter.interviewDateClick()
-        datePicker.flag = DatePickerFragment.INTERVIEW_DATE
-        fragmentManager?.let { datePicker.show(it, DatePickerFragment.TAG)
-        }
-        datePicker.setData(etInterviewDate, getReview())
-    }
-
     private fun dismissalDateClick() {
         presenter.dismissalDateClick()
         datePicker.flag = DatePickerFragment.DISMISSAL_DATE
@@ -181,7 +172,6 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     private fun setDateVisibility() {
         ltEmploymentDate.visibility = View.GONE
         ltDismissalDate.visibility = View.GONE
-        ltInterviewDate.visibility = View.GONE
     }
 
     private fun getData(savedInstanceState: Bundle?) {
@@ -267,8 +257,7 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     override fun showWorkingDate() {
         ltEmploymentDate.visibility = View.VISIBLE
         ltDismissalDate.visibility = View.GONE
-        ltInterviewDate.visibility = View.GONE
-        groupRating.visibility = View.VISIBLE
+        groupInterview.visibility = View.VISIBLE
     }
 
     override fun setIsIndicatorRatingBar(indicator: Boolean) = setIsIndicator(indicator)
@@ -276,14 +265,12 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     override fun showWorkedDate() {
         ltEmploymentDate.visibility = View.VISIBLE
         ltDismissalDate.visibility = View.VISIBLE
-        ltInterviewDate.visibility = View.GONE
-        groupRating.visibility = View.VISIBLE
+        groupInterview.visibility = View.VISIBLE
     }
 
     override fun showInterviewDate() {
-        ltInterviewDate.visibility = View.VISIBLE
         ltEmploymentDate.visibility = View.GONE
         ltDismissalDate.visibility = View.GONE
-        groupRating.visibility = View.GONE
+        groupInterview.visibility = View.GONE
     }
 }
