@@ -322,7 +322,7 @@
                         app:srcCompat="@drawable/thumb_up" />
 
                     <androidx.constraintlayout.widget.Group
-                        android:id="@+id/groupRating"
+                        android:id="@+id/groupInterview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:constraint_referenced_ids="rbCollective,rbSocialPackage,tvWorkplace,tvCollective,tvSalary,tvChief,rbChief,tvSocialPackage,tvCareer,rbSalary,rbWorkplace,rbCareer" />

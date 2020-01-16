@@ -237,9 +237,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             }
             Review.INTERVIEW -> {
                 tvStatus.setText(R.string.interview)
-                val interviewDate = review.interviewDate
-                if (interviewDate != 0L) tvDescriptionStatus.text = Utils.getDate(interviewDate)
-                groupRating.visibility = View.GONE
+                groupInterview.visibility = View.GONE
             }
         }
     }

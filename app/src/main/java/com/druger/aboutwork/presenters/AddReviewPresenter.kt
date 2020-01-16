@@ -167,10 +167,6 @@ constructor(restApi: RestApi) : BasePresenter<AddReviewView>() {
         analytics.logEvent(Analytics.DISMISSAL_DATE_CLICK)
     }
 
-    fun interviewDateClick() {
-        analytics.logEvent(Analytics.INTERVIEW_DATE_CLICK)
-    }
-
     fun setRecommendedReview() {
         review.recommended = true
     }
