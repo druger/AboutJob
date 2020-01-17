@@ -10,6 +10,7 @@ import moxy.viewstate.strategy.StateStrategyType
  * Created by druger on 09.05.2017.
  */
 
+@StateStrategyType(OneExecutionStateStrategy::class)
 interface AccountView : MvpView {
 
     fun showName(name: String?)
@@ -19,9 +20,8 @@ interface AccountView : MvpView {
     fun showToast(@StringRes resId: Int)
 
     fun showEmail(email: String)
-    @StateStrategyType(OneExecutionStateStrategy::class)
     fun showAuthAccess()
     fun showPhone(phone: String)
-    @StateStrategyType(OneExecutionStateStrategy::class)
     fun sendEmail(emailIntent: Intent)
+    fun showContent()
 }
