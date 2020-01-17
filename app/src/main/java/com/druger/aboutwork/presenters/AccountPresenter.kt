@@ -24,6 +24,8 @@ class AccountPresenter @Inject constructor() : BasePresenter<AccountView>() {
     @Inject
     lateinit var analytics: Analytics
 
+    private var auth: FirebaseAuth? = null
+    private var authListener: FirebaseAuth.AuthStateListener? = null
     private var user: FirebaseUser? = null
 
     override fun onFirstViewAttach() {
@@ -32,23 +34,25 @@ class AccountPresenter @Inject constructor() : BasePresenter<AccountView>() {
     }
 
     fun getUserInfo() {
-        user = FirebaseAuth.getInstance().currentUser
-        user?.let { firebaseUser ->
-            Timber.d("onAuthStateChanged:signed_in:%s", firebaseUser.uid)
+        auth = FirebaseAuth.getInstance()
+        authListener = FirebaseAuth.AuthStateListener { auth ->
+            user = auth.currentUser
+            if (user != null) {
+                Timber.d("onAuthStateChanged:signed_in:%s", user?.uid)
+                viewState.showContent()
 
-            val email = firebaseUser.email
-            val name = firebaseUser.displayName?.split(" ")?.get(0)
-            val phone = firebaseUser.phoneNumber
+                val email = user?.email
+                val name = user?.displayName?.split(" ")?.get(0)
+                val phone = user?.phoneNumber
 
-            viewState.showName(name)
-            email?.let { if (it.isNotEmpty()) viewState.showEmail(it) }
-            phone?.let { if (it.isNotEmpty()) viewState.showPhone(it) }
-
-        } ?: viewState.showAuthAccess()
-    }
-
-    fun logout() {
-        getUserInfo()
+                viewState.showName(name)
+                email?.let { if (it.isNotEmpty()) viewState.showEmail(it) }
+                phone?.let { if (it.isNotEmpty()) viewState.showPhone(it) }
+            } else {
+                viewState.showAuthAccess()
+            }
+        }
+        authListener?.let { auth?.addAuthStateListener(it) }
     }
 
     fun removeAccount() {
@@ -88,6 +92,10 @@ class AccountPresenter @Inject constructor() : BasePresenter<AccountView>() {
             .plus(BuildConfig.VERSION_NAME).plus(NEW_LINE)
             .plus(OS_VERSION)
             .plus(Build.VERSION.RELEASE)
+    }
+
+    fun removeAuthListener() {
+        authListener?.let { auth?.removeAuthStateListener(it) }
     }
 
     companion object {
