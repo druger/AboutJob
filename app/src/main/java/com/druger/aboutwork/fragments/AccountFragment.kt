@@ -60,6 +60,11 @@ class AccountFragment : BaseSupportFragment(), AccountView {
         showVersion()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        accountPresenter.removeAuthListener()
+    }
+
     private fun showVersion() {
         tvVersion.text = getString(R.string.version, BuildConfig.VERSION_NAME)
     }
@@ -105,7 +110,6 @@ class AccountFragment : BaseSupportFragment(), AccountView {
                     .signOut(it)
                     .addOnCompleteListener { task ->
                         Timber.tag("Log out").d("result: %s", task.isSuccessful)
-                        accountPresenter.logout()
                     }
             }
             dialog.dismiss()
@@ -144,6 +148,10 @@ class AccountFragment : BaseSupportFragment(), AccountView {
         replaceFragment(
             AuthFragment.newInstance(getString(R.string.account_login), Screen.SETTINGS.name),
             R.id.main_container)
+    }
+
+    override fun showContent() {
+        ltAccount.visibility = View.VISIBLE
     }
 
     override fun sendEmail(emailIntent: Intent) {

@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.druger.aboutwork.R
 import com.druger.aboutwork.enums.TypeMessage
 import com.druger.aboutwork.interfaces.view.NetworkView
@@ -75,6 +76,7 @@ abstract class BaseSupportFragment : MvpAppCompatFragment(), NetworkView {
         fragmentManager?.beginTransaction()?.apply {
             replace(container, fragment)
             if (addToBackStack) addToBackStack(null)
+            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             commit()
         }
     }
