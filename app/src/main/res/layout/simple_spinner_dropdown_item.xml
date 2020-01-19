@@ -5,4 +5,5 @@
     android:singleLine="true"
     android:layout_width="match_parent"
     android:layout_height="?attr/dropdownListPreferredItemHeight"
+    android:paddingStart="8dp"
     android:ellipsize="marquee"/>

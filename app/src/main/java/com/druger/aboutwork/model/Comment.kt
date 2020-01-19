@@ -16,9 +16,8 @@ class Comment {
     var message: String? = null
     var like: Int = 0
     var dislike: Int = 0
-    var myLike: Boolean = false
-    var myDislike: Boolean = false
     var replyId: String? = null
+    var likesDislikes: MutableMap<String, Boolean>? = null // key - userId, value - like(true) or dislike(false)
 
     constructor() {}
 

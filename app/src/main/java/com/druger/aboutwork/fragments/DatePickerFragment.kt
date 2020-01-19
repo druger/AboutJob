@@ -17,7 +17,6 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
         const val TAG = "DatePickerDialog"
         const val EMPLOYMENT_DATE = 0
         const val DISMISSAL_DATE = 1
-        const val INTERVIEW_DATE = 2
     }
 
     var flag = -1
@@ -54,7 +53,6 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
         when (flag) {
             EMPLOYMENT_DATE -> review!!.employmentDate = date
             DISMISSAL_DATE -> review!!.dismissalDate = date
-            INTERVIEW_DATE -> review!!.interviewDate = date
             else -> { }
         }
     }

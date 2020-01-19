@@ -21,14 +21,12 @@ data class Review(var companyId: String? = null,
     var position: String? = null
     var employmentDate: Long = 0
     var dismissalDate: Long = 0
-    var interviewDate: Long = 0
     var like: Int = 0
     var dislike: Int = 0
-    var myLike: Boolean = false
-    var myDislike: Boolean = false
     @JsonIgnore
     var firebaseKey: String? = null
-
+    var recommended: Boolean? = null
+    var likesDislikes: MutableMap<String, Boolean>? = null // key - userId, value - like(true) or dislike(false)
 
     companion object {
         /**

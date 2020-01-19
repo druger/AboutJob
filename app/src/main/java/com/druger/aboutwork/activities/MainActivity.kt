@@ -137,7 +137,7 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_companies -> showCompanies()
+            R.id.action_search -> showCompanies()
             R.id.action_my_reviews -> mainPresenter.onClickMyReviews()
             R.id.action_setting -> showAccount()
         }

@@ -30,7 +30,7 @@ class UserReviewsPresenter : BasePresenter<UserReviews>(), ValueEventListener {
     fun fetchReviews(userId: String) {
         dbReference = FirebaseDatabase.getInstance().reference
 
-        val reviewsQuery = FirebaseHelper.getReviews(dbReference, userId)
+        val reviewsQuery = FirebaseHelper.getReviewsById(dbReference, userId)
         reviewsQuery.addValueEventListener(this)
     }
 
