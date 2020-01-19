@@ -4,53 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="?attr/actionBarSize"
-    android:animateLayoutChanges="true">
+    android:animateLayoutChanges="true"
+    android:paddingBottom="?attr/actionBarSize">
 
     <include
-        android:id="@+id/include"
-        layout="@layout/toolbar"
+        android:id="@+id/tbSearch"
+        layout="@layout/toolbar_search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvLastReviews"
+    <CheckBox
+        android:id="@+id/cbMoreCompanies"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/last_reviews"
+        android:layout_marginTop="8dp"
+        android:text="@string/show_more_companies"
+        android:theme="@style/CheckBoxCustom"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include"
-        app:layout_constraintVertical_bias="0.0"/>
+        app:layout_constraintTop_toBottomOf="@+id/tbSearch"
+        tools:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvLastReviews"
-        android:layout_width="match_parent"
+        android:id="@+id/rvCompanies"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         android:scrollbars="vertical"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvLastReviews" />
-
-    <include
-        android:id="@+id/ltNoReviews"
-        layout="@layout/no_reviews"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toBottomOf="@+id/cbMoreCompanies" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -65,18 +53,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/groupReviews"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        tools:visibility="visible"
-        app:constraint_referenced_ids="tvLastReviews,rvLastReviews" />
+        app:layout_constraintTop_toBottomOf="@+id/tbSearch" />
 
     <include
         layout="@layout/network_error"
-        android:visibility="gone" />
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tbSearch"
+        app:layout_constraintVertical_bias="1.0"
+        tools:visibility="visible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

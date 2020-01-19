@@ -71,7 +71,6 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
     private fun setupListeners() {
         etEmploymentDate.setOnClickListener{employmentDateClick()}
         etDismissalDate.setOnClickListener{dismissalDateClick()}
-        etInterviewDate.setOnClickListener{interviewDateClick()}
         cityChanges()
         positionChanges()
         spinnerStatus.onItemSelectedListener = this
@@ -111,12 +110,6 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
         })
     }
 
-    private fun interviewDateClick() {
-        datePicker.flag = DatePickerFragment.INTERVIEW_DATE
-        fragmentManager?.let { datePicker.show(it, DatePickerFragment.TAG) }
-        datePicker.setData(etInterviewDate, review)
-    }
-
     private fun dismissalDateClick() {
         datePicker.flag = DatePickerFragment.DISMISSAL_DATE
         fragmentManager?.let { datePicker.show(it, DatePickerFragment.TAG) }
@@ -142,7 +135,6 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
     private fun setDateVisibility() {
         ltEmploymentDate.visibility = View.GONE
         ltDismissalDate.visibility = View.GONE
-        ltInterviewDate.visibility = View.GONE
     }
 
     private fun setUI() {
@@ -152,7 +144,6 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
         etCity.setText(review.city)
         etEmploymentDate.setText(review.employmentDate.let { Utils.getDate(it) })
         etDismissalDate.setText(review.dismissalDate.let { Utils.getDate(it) })
-        etInterviewDate.setText(review.interviewDate.let { Utils.getDate(it) })
     }
 
     private fun getBundles() {
@@ -168,6 +159,21 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
         setUI()
         setupWorkStatus()
         presenter.setupRating(review)
+        setupRecommendation(review)
+    }
+
+    private fun setupRecommendation(review: Review) {
+        review.recommended?.let {recommendation ->
+            if (recommendation) rbRecommended.isChecked = true
+            else rbNotRecommended.isChecked = true
+        }
+        rgRecommended.setOnCheckedChangeListener { _, checkedId ->
+            when(checkedId) {
+                R.id.rbRecommended -> presenter.setRecommendedReview()
+                R.id.rbNotRecommended -> presenter.setNotRecommendedReview()
+                -1 -> presenter.clearRecommended()
+            }
+        }
     }
 
     private fun setupToolbar() {
@@ -263,8 +269,7 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
     override fun showWorkingDate() {
         ltEmploymentDate.visibility = View.VISIBLE
         ltDismissalDate.visibility = View.GONE
-        ltInterviewDate.visibility = View.GONE
-        groupRating.visibility = View.VISIBLE
+        groupInterview.visibility = View.VISIBLE
     }
 
     override fun setIsIndicatorRatingBar(indicator: Boolean) = setIsIndicator(indicator)
@@ -272,15 +277,13 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
     override fun showWorkedDate() {
         ltEmploymentDate.visibility = View.VISIBLE
         ltDismissalDate.visibility = View.VISIBLE
-        ltInterviewDate.visibility = View.GONE
-        groupRating.visibility = View.VISIBLE
+        groupInterview.visibility = View.VISIBLE
     }
 
     override fun showInterviewDate() {
-        ltInterviewDate.visibility = View.VISIBLE
         ltEmploymentDate.visibility = View.GONE
         ltDismissalDate.visibility = View.GONE
-        groupRating.visibility = View.GONE
+        groupInterview.visibility = View.GONE
     }
 
     override fun clearRatingBar() {

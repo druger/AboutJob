@@ -1,15 +1,13 @@
 package com.druger.aboutwork.presenters
 
-import com.druger.aboutwork.db.RealmHelper
+import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.interfaces.view.CompaniesView
-import com.druger.aboutwork.model.realm.CompanyRealm
+import com.druger.aboutwork.model.Company
+import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.rest.RestApi
-import com.druger.aboutwork.rest.models.CompanyResponse
-import com.druger.aboutwork.utils.rx.RxUtils
-import io.realm.OrderedCollectionChangeSet.State.INITIAL
-import io.realm.OrderedRealmCollectionChangeListener
-import io.realm.RealmResults
+import com.google.firebase.database.*
 import moxy.InjectViewState
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -18,43 +16,16 @@ import javax.inject.Inject
 
 @InjectViewState
 class CompaniesPresenter @Inject
-constructor(restApi: RestApi, realmHelper: RealmHelper) : BasePresenter<CompaniesView>() {
+constructor(restApi: RestApi) : BasePresenter<CompaniesView>() {
 
-    private lateinit var companies: RealmResults<CompanyRealm>
+    private lateinit var dbReference: DatabaseReference
+    private var reviewEventListener: ValueEventListener? = null
+    private var companyEventListener: ValueEventListener? = null
 
-    private val realmCallback: OrderedRealmCollectionChangeListener<RealmResults<CompanyRealm>> =
-        OrderedRealmCollectionChangeListener { companies, changeSet ->
-            if (companies.size > 0 && changeSet.state == INITIAL) {
-                viewState.showWatchedRecently()
-                viewState.showCompaniesRealm()
-            }
-        }
+    private var reviews = ArrayList<Review>()
 
     init {
         this.restApi = restApi
-        this.realmHelper = realmHelper
-    }
-
-    fun getCompaniesFromDb(): RealmResults<CompanyRealm> {
-        companies = realmHelper.getCompanies()
-        companies.addChangeListener(realmCallback)
-        return companies
-    }
-
-    fun getCompanies(query: String, page: Int) {
-        requestGetCompanies(query, page)
-    }
-
-    private fun requestGetCompanies(query: String, page: Int) {
-        val request = restApi.company.getCompanies(query, page)
-            .compose(RxUtils.singleTransformers())
-            .subscribe({ successGetCompanies(it) }, { handleError(it) })
-        unSubscribeOnDestroy(request)
-    }
-
-    private fun successGetCompanies(response: CompanyResponse) {
-        viewState.showProgress(false)
-        response.items?.let { viewState.showCompanies(it, response.pages) }
     }
 
     override fun handleError(throwable: Throwable) {
@@ -62,11 +33,66 @@ constructor(restApi: RestApi, realmHelper: RealmHelper) : BasePresenter<Companie
         viewState.showProgress(false)
     }
 
-    fun saveCompanyToDb(company: CompanyRealm) {
-        realmHelper.saveCompany(company)
+    fun fetchReviews() {
+        dbReference = FirebaseDatabase.getInstance().reference
+        viewState.showProgress(true)
+        reviews.clear()
+        getReviews()
     }
 
-    fun removeRealmListener() {
-        companies.removeChangeListener(realmCallback)
+    private fun getReviews() {
+        val reviewsQuery = FirebaseHelper.getLastReviews(dbReference)
+        reviewEventListener = object : ValueEventListener {
+            override fun onCancelled(databaseError: DatabaseError) {
+                viewState.showProgress(false)
+                Timber.e(databaseError.toException())
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (snapshot in dataSnapshot.children) {
+                        snapshot.getValue(Review::class.java)?.let { review ->
+                            review.firebaseKey = snapshot.key
+                            reviews.add(review)
+                        }
+                    }
+                    getCompanies()
+                } else {
+                    viewState.showProgress(false)
+                    viewState.showEmptyReviews()
+                }
+            }
+        }
+        reviewsQuery.addValueEventListener(reviewEventListener as ValueEventListener)
+    }
+
+    private fun getCompanies() {
+        for (review in reviews) {
+            review.companyId?.let { companyId ->
+                val queryCompanies = FirebaseHelper.getCompany(dbReference, companyId)
+                companyEventListener = object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            val company = dataSnapshot.getValue(Company::class.java)
+                            review.name = company?.name
+                        }
+                        viewState.showProgress(false)
+                        viewState.showReview(review)
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        Timber.e(databaseError.message)
+                        viewState.showProgress(false)
+                    }
+                }
+                queryCompanies.addValueEventListener(companyEventListener as ValueEventListener)
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        reviewEventListener?.let { dbReference.removeEventListener(it) }
+        companyEventListener?.let { dbReference.removeEventListener(it) }
     }
 }

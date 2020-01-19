@@ -13,6 +13,7 @@ import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
+import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.interfaces.view.AddReviewView
 import com.druger.aboutwork.model.City
 import com.druger.aboutwork.model.Review
@@ -56,6 +57,7 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         rootView = inflater.inflate(R.layout.fragment_review, container, false)
         getData(savedInstanceState)
         datePicker = DatePickerFragment()
+        (activity as MainActivity).hideBottomNavigation()
         return rootView
     }
 
@@ -64,8 +66,8 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         setupToolbar()
         setDateVisibility()
         setupWorkStatus()
-        setupListeners()
         setupCompanyRating()
+        setupListeners()
     }
 
     override fun onDestroy() {
@@ -94,11 +96,21 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     private fun setupListeners() {
         etEmploymentDate.setOnClickListener{ employmentDateClick() }
         etDismissalDate.setOnClickListener{ dismissalDateClick() }
-        etInterviewDate.setOnClickListener{ interviewDateClick() }
         cityChanges()
         positionChanges()
         spinnerStatus.onItemSelectedListener = this
         setupRatingChanges()
+        radioGroupRecommendedListener()
+    }
+
+    private fun radioGroupRecommendedListener() {
+        rgRecommended.setOnCheckedChangeListener { _, checkedId ->
+            when(checkedId) {
+                R.id.rbRecommended -> presenter.setRecommendedReview()
+                R.id.rbNotRecommended -> presenter.setNotRecommendedReview()
+                -1 -> presenter.clearRecommended()
+            }
+        }
     }
 
     private fun setupRatingChanges() {
@@ -134,14 +146,6 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         })
     }
 
-    private fun interviewDateClick() {
-        presenter.interviewDateClick()
-        datePicker.flag = DatePickerFragment.INTERVIEW_DATE
-        fragmentManager?.let { datePicker.show(it, DatePickerFragment.TAG)
-        }
-        datePicker.setData(etInterviewDate, getReview())
-    }
-
     private fun dismissalDateClick() {
         presenter.dismissalDateClick()
         datePicker.flag = DatePickerFragment.DISMISSAL_DATE
@@ -168,7 +172,6 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     private fun setDateVisibility() {
         ltEmploymentDate.visibility = View.GONE
         ltDismissalDate.visibility = View.GONE
-        ltInterviewDate.visibility = View.GONE
     }
 
     private fun getData(savedInstanceState: Bundle?) {
@@ -254,8 +257,7 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     override fun showWorkingDate() {
         ltEmploymentDate.visibility = View.VISIBLE
         ltDismissalDate.visibility = View.GONE
-        ltInterviewDate.visibility = View.GONE
-        groupRating.visibility = View.VISIBLE
+        groupInterview.visibility = View.VISIBLE
     }
 
     override fun setIsIndicatorRatingBar(indicator: Boolean) = setIsIndicator(indicator)
@@ -263,14 +265,12 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     override fun showWorkedDate() {
         ltEmploymentDate.visibility = View.VISIBLE
         ltDismissalDate.visibility = View.VISIBLE
-        ltInterviewDate.visibility = View.GONE
-        groupRating.visibility = View.VISIBLE
+        groupInterview.visibility = View.VISIBLE
     }
 
     override fun showInterviewDate() {
-        ltInterviewDate.visibility = View.VISIBLE
         ltEmploymentDate.visibility = View.GONE
         ltDismissalDate.visibility = View.GONE
-        groupRating.visibility = View.GONE
+        groupInterview.visibility = View.GONE
     }
 }

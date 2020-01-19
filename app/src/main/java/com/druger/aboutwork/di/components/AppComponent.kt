@@ -27,6 +27,8 @@ interface AppComponent {
 
     val accountPresenter: AccountPresenter
 
+    val searchPresenter: SearchPresenter
+
     fun inject(fragment: AccountFragment)
 
     fun inject(activity: LoginActivity)

@@ -152,4 +152,16 @@ constructor(restApi: RestApi) : BasePresenter<EditReviewView>() {
         }
         queryReview.addValueEventListener(reviewListener)
     }
+
+    fun setRecommendedReview() {
+       review?.recommended = true
+    }
+
+    fun setNotRecommendedReview() {
+        review?.recommended = false
+    }
+
+    fun clearRecommended() {
+        review?.recommended = null
+    }
 }

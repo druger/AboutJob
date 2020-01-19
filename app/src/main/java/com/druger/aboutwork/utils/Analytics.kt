@@ -16,7 +16,6 @@ class Analytics(val firebase: FirebaseAnalytics) {
     companion object {
         const val EMPLOYMENT_DATE_CLICK = "employment_date_click"
         const val DISMISSAL_DATE_CLICK = "dismissal_date_click"
-        const val INTERVIEW_DATE_CLICK = "interview_date_click"
         const val ADD_REVIEW_CLICK = "add_review_click"
         const val CLOSE_ADD_REVIEW_CLICK = "close_add_review_click"
         const val INTERVIEW_STATUS_CLICK = "interview_status_click"

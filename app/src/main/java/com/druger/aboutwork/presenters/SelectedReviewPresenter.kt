@@ -56,7 +56,7 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
             viewState.clearMessage()
             analytics.logEvent(Analytics.ADD_COMMENT)
         } else {
-            viewState.showAuthDialog(R.string.comment_login)
+            viewState.showAuth(R.string.comment_login)
         }
     }
 
@@ -137,12 +137,12 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
     }
 
     fun clickLike() {
-        if (user == null) viewState.showAuthDialog(R.string.like_login)
+        if (user == null) viewState.showAuth(R.string.like_login)
         else viewState.onLikeClicked()
     }
 
     fun clickDislike() {
-        if (user == null) viewState.showAuthDialog(R.string.dislike_login)
+        if (user == null) viewState.showAuth(R.string.dislike_login)
         else viewState.onDislikeClicked()
     }
 }

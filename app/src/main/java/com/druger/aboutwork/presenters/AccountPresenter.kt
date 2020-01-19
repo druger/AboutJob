@@ -6,7 +6,6 @@ import android.os.Build
 import com.druger.aboutwork.App
 import com.druger.aboutwork.BuildConfig
 import com.druger.aboutwork.R
-import com.druger.aboutwork.db.RealmHelper
 import com.druger.aboutwork.interfaces.view.AccountView
 import com.druger.aboutwork.utils.Analytics
 import com.google.firebase.auth.FirebaseAuth
@@ -20,18 +19,14 @@ import javax.inject.Inject
  */
 
 @InjectViewState
-class AccountPresenter @Inject constructor(
-    realmHelper: RealmHelper
-) : BasePresenter<AccountView>() {
+class AccountPresenter @Inject constructor() : BasePresenter<AccountView>() {
 
     @Inject
     lateinit var analytics: Analytics
 
+    private var auth: FirebaseAuth? = null
+    private var authListener: FirebaseAuth.AuthStateListener? = null
     private var user: FirebaseUser? = null
-
-    init {
-        this.realmHelper = realmHelper
-    }
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -39,24 +34,25 @@ class AccountPresenter @Inject constructor(
     }
 
     fun getUserInfo() {
-        user = FirebaseAuth.getInstance().currentUser
-        user?.let {
-            Timber.d("onAuthStateChanged:signed_in:%s", it.uid)
+        auth = FirebaseAuth.getInstance()
+        authListener = FirebaseAuth.AuthStateListener { auth ->
+            user = auth.currentUser
+            if (user != null) {
+                Timber.d("onAuthStateChanged:signed_in:%s", user?.uid)
+                viewState.showContent()
 
-            val email = it.email
-            val name = it.displayName
-            val phone = it.phoneNumber
+                val email = user?.email
+                val name = user?.displayName?.split(" ")?.get(0)
+                val phone = user?.phoneNumber
 
-            viewState.showEmail(email)
-            viewState.showName(name)
-            viewState.showPhone(phone)
-
-        } ?: viewState.showAuthAccess()
-    }
-
-    fun logout() {
-        realmHelper.deleteAllData()
-        getUserInfo()
+                viewState.showName(name)
+                email?.let { if (it.isNotEmpty()) viewState.showEmail(it) }
+                phone?.let { if (it.isNotEmpty()) viewState.showPhone(it) }
+            } else {
+                viewState.showAuthAccess()
+            }
+        }
+        authListener?.let { auth?.addAuthStateListener(it) }
     }
 
     fun removeAccount() {
@@ -96,6 +92,10 @@ class AccountPresenter @Inject constructor(
             .plus(BuildConfig.VERSION_NAME).plus(NEW_LINE)
             .plus(OS_VERSION)
             .plus(Build.VERSION.RELEASE)
+    }
+
+    fun removeAuthListener() {
+        authListener?.let { auth?.removeAuthStateListener(it) }
     }
 
     companion object {

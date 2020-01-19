@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="?android:attr/actionBarSize"
+            android:scrollbars="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     </FrameLayout>
 
@@ -37,12 +38,10 @@
         android:visibility="invisible"/>
 
     <include
-        android:id="@+id/ltAuthReviews"
-        layout="@layout/auth_layout"
-        android:visibility="gone" />
-
-    <include
         layout="@layout/network_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="?attr/actionBarSize"
         android:visibility="gone" />
 </FrameLayout>
 

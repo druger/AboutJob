@@ -13,14 +13,12 @@ import androidx.annotation.StringRes
 import com.druger.aboutwork.App
 import com.druger.aboutwork.BuildConfig
 import com.druger.aboutwork.R
-import com.druger.aboutwork.activities.LoginActivity
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.interfaces.view.AccountView
 import com.druger.aboutwork.presenters.AccountPresenter
 import com.druger.aboutwork.utils.PreferencesHelper
 import com.firebase.ui.auth.AuthUI
-import kotlinx.android.synthetic.main.auth_layout.*
 import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
@@ -35,6 +33,8 @@ class AccountFragment : BaseSupportFragment(), AccountView {
     lateinit var accountPresenter: AccountPresenter
     @Inject
     lateinit var preferencesHelper: PreferencesHelper
+
+    private var name: String? = null
 
     @ProvidePresenter
     internal fun getAccountPresenter(): AccountPresenter {
@@ -60,6 +60,11 @@ class AccountFragment : BaseSupportFragment(), AccountView {
         showVersion()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        accountPresenter.removeAuthListener()
+    }
+
     private fun showVersion() {
         tvVersion.text = getString(R.string.version, BuildConfig.VERSION_NAME)
     }
@@ -72,19 +77,9 @@ class AccountFragment : BaseSupportFragment(), AccountView {
 
     private fun setupListeners() {
         cvLogout.setOnClickListener { showLogoutDialog() }
-        cvEmail.setOnClickListener { showChangeEmail() }
         cvName.setOnClickListener { showChangeName() }
-        cvPassword.setOnClickListener { showChangePassword() }
         cvRemoveAcc.setOnClickListener { showRemoveDialog() }
-        btnLogin.setOnClickListener { showLogin() }
         tvWriteToDev.setOnClickListener { accountPresenter.writeToDevelopers(getString(R.string.email_support)) }
-    }
-
-    private fun showLogin() {
-        val intent = Intent(context, LoginActivity::class.java).apply {
-            putExtra(MainActivity.NEXT_SCREEN, Screen.SETTINGS.name)
-        }
-        startActivity(intent)
     }
 
     private fun showRemoveDialog() {
@@ -100,20 +95,9 @@ class AccountFragment : BaseSupportFragment(), AccountView {
         dialog.show()
     }
 
-    private fun showChangePassword() {
-        val passwordFragment = ChangePasswordFragment()
-        replaceFragment(passwordFragment, R.id.main_container, true)
-    }
-
     private fun showChangeName() {
-        val nameFragment = ChangeNameFragment()
+        val nameFragment = ChangeNameFragment.newInstance(name)
         replaceFragment(nameFragment, R.id.main_container, true)
-    }
-
-    private fun showChangeEmail() {
-        val email = tvEmail.text.toString().trim { it <= ' ' }
-        val changeEmail = ChangeEmailFragment.newInstance(email)
-        replaceFragment(changeEmail, R.id.main_container, true)
     }
 
     private fun showLogoutDialog() {
@@ -126,7 +110,6 @@ class AccountFragment : BaseSupportFragment(), AccountView {
                     .signOut(it)
                     .addOnCompleteListener { task ->
                         Timber.tag("Log out").d("result: %s", task.isSuccessful)
-                        accountPresenter.logout()
                     }
             }
             dialog.dismiss()
@@ -144,34 +127,31 @@ class AccountFragment : BaseSupportFragment(), AccountView {
     }
 
     override fun showName(name: String?) {
-        if (name == null || name.isEmpty()) {
+        this.name = name
+        if (name.isNullOrEmpty()) {
             tvName.setText(R.string.add_name)
         } else
             tvName.text = name
     }
 
-    override fun showEmail(email: String?) {
-        if (email == null || email.isEmpty()) {
-            tvEmail.setText(R.string.add_email)
-        } else
-            tvEmail.text = email
+    override fun showEmail(email: String) {
+        ltEmail.visibility = View.VISIBLE
+        tvEmail.text = email
+    }
 
+    override fun showPhone(phone: String) {
+        ltPhone.visibility = View.VISIBLE
+        tvPhone.text = phone
     }
 
     override fun showAuthAccess() {
-        content.visibility = View.INVISIBLE
-        ltAuthAccount.visibility = View.VISIBLE
-        tvAuth.setText(R.string.account_login)
+        replaceFragment(
+            AuthFragment.newInstance(getString(R.string.account_login), Screen.SETTINGS.name),
+            R.id.main_container)
     }
 
-    override fun showPhone(phone: String?) {
-        if (phone == null || phone.isEmpty()) {
-            ltPhone.visibility = View.GONE
-            line3.visibility = View.GONE
-        } else {
-            tvPhone.text = phone
-            cvPassword.visibility = View.GONE
-        }
+    override fun showContent() {
+        ltAccount.visibility = View.VISIBLE
     }
 
     override fun sendEmail(emailIntent: Intent) {

@@ -4,8 +4,6 @@
     <string name="cancel">Отмена</string>
     <string name="career">Карьера</string>
     <string name="change">Изменить</string>
-    <string name="change_email">Изменить Email</string>
-    <string name="change_password">Изменить пароль</string>
     <string name="chief">Начальство</string>
     <string name="collective">Коллектив</string>
     <string name="search">Поиск</string>
@@ -14,8 +12,6 @@
     <string name="empoyment_date">Дата устройства</string>
     <string name="error_review_add">Заполните обязательные поля</string>
     <string name="failed_delete_user">Ошибка удаления пользователя!</string>
-    <string name="failed_update_email">Ошибка обновления почты!</string>
-    <string name="failed_update_pass">Ошибка обновления пароля!</string>
     <string name="interview">Интервью</string>
     <string name="interview_date">Дата интервью</string>
     <string name="log_out">Выход</string>
@@ -41,11 +37,9 @@
     <string name="salary">Зарплата</string>
     <string name="settings">Настройки</string>
     <string name="social_package">Соц. пакет</string>
-    <string name="something_went_wrong">Что-то пошло не так</string>
-    <string name="success_update_pass">Пароль обновлен, войдите с новым паролем</string>
+    <string name="something_went_wrong">Проверьте подключение к сети</string>
     <string name="undo">Вернуть</string>
-    <string name="updated_email">Email обновлен. Войдите с новым Email</string>
-    <string name="worked">Работал</string>
+    <string name="worked">Работал(а)</string>
     <string name="working">Работаю</string>
     <string name="workplace">Рабочее место</string>
     <string name="yes">Да</string>
@@ -53,8 +47,7 @@
     <string name="company_site">Сайт компании</string>
     <string name="city">Город</string>
     <string name="city_">Город (обязательно)</string>
-    <string name="tvEmptySearch">Вы еще не смотрели никакой компании</string>
-    <string name="watched_recently">Вы смотрели недавно</string>
+    <string name="last_reviews">Последние 10 отзывов</string>
     <string name="no_internet_connection">Нет интернета</string>
     <string name="unknown_error">Неизвестная ошибка</string>
     <string name="add_review">Добавить отзыв</string>
@@ -62,7 +55,9 @@
     <string name="review_edited">Отзыв отредактирован</string>
     <string name="error_review_edit">@string/error_review_add</string>
     <string name="review">Отзыв</string>
-    <string name="no_reviews">Нет отзывов</string>
+    <string name="no_reviews">Об этой компании пока нет отзывов. Ваш отзыв может стать первым</string>
+    <string name="no_my_reviews">Вы еще не оставили ни одного отзыва. \n\n Что бы добавить отзыв, найдите компанию, в которой Вы работаете или работали</string>
+    <string name="no_recent_reviews">Никто еще не оставил отзывов. Ваш отзыв может стать первым</string>
 
     <plurals name="year">
         <item quantity="one">%d год</item>
@@ -92,7 +87,6 @@
     <string name="account_login">Авторизуйтесь чтобы получить доступ к вашему аккаунту</string>
     <string name="company_login">Авторизуйтесь чтобы добавить отзыв</string>
     <string name="phone">Телефон</string>
-    <string name="add_email">Добавить email</string>
     <string name="add_name">Добавить имя</string>
     <string name="show_all">Показать полностью</string>
     <string name="hide">Скрыть</string>
@@ -104,4 +98,9 @@
     <string name="no_email_apps">Почтовые приложения не установленны</string>
     <string name="version">Версия: %s</string>
     <string name="no_description">У компании нет описания</string>
+    <string name="review_date_info">Точная дата не будет видна, а только общее количество дней</string>
+    <string name="recommended">Рекомендую для трудоустройтсва</string>
+    <string name="not_recommended">Не рекомендую для трудоустройтсва</string>
+    <string name="show_more_companies">Показать больше компаний</string>
+    <string name="find_company">Найти компанию</string>
 </resources>

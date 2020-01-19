@@ -18,5 +18,8 @@
     <color name="ic_reply">#3F2B96</color>
     <color name="selected_review">#B39DDB</color>
     <color name="bg_deleted_review">#fa315b</color>
+
+    <color name="recommended">#66bb6a</color>
+    <color name="not_recommended">#ef5350</color>
 </resources>
 
