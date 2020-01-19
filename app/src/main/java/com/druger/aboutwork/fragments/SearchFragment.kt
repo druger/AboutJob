@@ -158,11 +158,11 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     }
 
     override fun showProgress(show: Boolean) {
-        super.showProgress(show)
         if (show) {
             rvCompanies.visibility = View.INVISIBLE
         } else {
             adapter.removeLoading()
+            rvCompanies.visibility = View.VISIBLE
         }
     }
 }
