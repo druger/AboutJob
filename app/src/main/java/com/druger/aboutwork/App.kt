@@ -13,6 +13,8 @@ import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
+import com.yandex.metrica.YandexMetrica
+import com.yandex.metrica.YandexMetricaConfig
 import timber.log.Timber
 
 
@@ -41,7 +43,17 @@ class App : Application() {
         setupTimber()
         if (!BuildConfig.DEBUG) {
             setupAppCenter()
+            setupAppMetrica()
         }
+    }
+
+    private fun setupAppMetrica() {
+        YandexMetricaConfig
+            .newConfigBuilder("246ea65a-18fd-4e97-b275-7c81f74e43b2")
+            .build().apply {
+            YandexMetrica.activate(applicationContext, this)
+        }
+        YandexMetrica.enableActivityAutoTracking(this)
     }
 
     private fun setupAppCenter() {
