@@ -28,6 +28,20 @@
         app:layout_constraintTop_toBottomOf="@+id/include"
         app:layout_constraintVertical_bias="0.0"/>
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/reviewPlaceholder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLastReviews"
+        app:layout_constraintVertical_bias="0.0">
+
+        <include layout="@layout/review_card_placeholder" />
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvLastReviews"
         android:layout_width="match_parent"
