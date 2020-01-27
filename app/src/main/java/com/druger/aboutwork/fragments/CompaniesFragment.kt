@@ -125,4 +125,14 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
         val fragment = SelectedReviewFragment.newInstance(id, false)
         replaceFragment(fragment, R.id.main_container, true)
     }
+
+    override fun showProgress(show: Boolean) {
+        if (show) {
+            reviewPlaceholder.visibility = View.VISIBLE
+            reviewPlaceholder.startShimmer()
+        } else {
+            reviewPlaceholder.stopShimmer()
+            reviewPlaceholder.visibility = View.GONE
+        }
+    }
 }
