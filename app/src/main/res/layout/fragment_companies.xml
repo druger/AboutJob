@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="?attr/actionBarSize"
-    android:animateLayoutChanges="true">
+    android:animateLayoutChanges="true"
+    android:paddingBottom="?attr/actionBarSize">
 
     <include
         android:id="@+id/include"
@@ -26,7 +26,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include"
-        app:layout_constraintVertical_bias="0.0"/>
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/reviewPlaceholder"
@@ -39,7 +39,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvLastReviews"
         app:layout_constraintVertical_bias="0.0">
 
-        <include layout="@layout/review_card_placeholder" />
+        <include layout="@layout/shimmer_content_companies" />
     </com.facebook.shimmer.ShimmerFrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -53,8 +53,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvLastReviews"
-        tools:listitem="@layout/review_card"
-        tools:itemCount="4"/>
+        tools:itemCount="4"
+        tools:listitem="@layout/review_card" />
 
     <include
         android:id="@+id/ltNoReviews"
@@ -87,8 +87,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        tools:visibility="visible"
-        app:constraint_referenced_ids="tvLastReviews,rvLastReviews" />
+        app:constraint_referenced_ids="tvLastReviews,rvLastReviews"
+        tools:visibility="visible" />
 
     <include
         layout="@layout/network_error"
