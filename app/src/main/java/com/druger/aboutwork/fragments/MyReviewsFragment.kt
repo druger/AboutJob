@@ -134,7 +134,6 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
 
     private fun setupUI() {
         bottomNavigation = activity?.findViewById(R.id.bottomNavigation)
-        mProgressBar = progressBar
         mLtError = ltError
     }
 
@@ -184,9 +183,13 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
     }
 
     override fun showProgress(show: Boolean) {
-        super.showProgress(show)
-        if (show) content.visibility = View.INVISIBLE
-        else content.visibility = View.VISIBLE
+        if (show) {
+            reviewPlaceholder.visibility = View.VISIBLE
+            reviewPlaceholder.startShimmer()
+        } else {
+            reviewPlaceholder.stopShimmer()
+            reviewPlaceholder.visibility = View.GONE
+        }
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
