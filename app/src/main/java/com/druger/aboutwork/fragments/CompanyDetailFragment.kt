@@ -65,7 +65,6 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
     }
 
     private fun setupUI() {
-        mProgressBar = progressBar
         mLtError = ltError
     }
 
@@ -230,11 +229,12 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
     }
 
     override fun showProgress(show: Boolean) {
-        super.showProgress(show)
         if (show) {
-            ltContent.visibility = View.INVISIBLE
+            reviewPlaceholder.visibility = View.VISIBLE
+            reviewPlaceholder.startShimmer()
         } else {
-            ltContent.visibility = View.VISIBLE
+            reviewPlaceholder.stopShimmer()
+            reviewPlaceholder.visibility = View.GONE
         }
     }
 
@@ -245,14 +245,6 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
         } else {
             ltContent.visibility = View.VISIBLE
         }
-    }
-
-    override fun showProgressReview() {
-        progressReview.visibility = View.VISIBLE
-    }
-
-    override fun hideProgressReview() {
-        progressReview.visibility = View.INVISIBLE
     }
 
     override fun showAuth() {

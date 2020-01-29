@@ -35,7 +35,7 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
     }
 
     fun getReviews(companyID: String) {
-        viewState.showProgressReview()
+        viewState.showProgress(true)
         dbReference = FirebaseDatabase.getInstance().reference
         dbReference?.let {
             val reviewsQuery = FirebaseHelper.getReviewsForCompany(it, companyID)
@@ -69,26 +69,20 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
 
                 override fun onCancelled(databaseError: DatabaseError) {
                     Timber.e(databaseError.message)
+                    viewState.showProgress(false)
                 }
             }
             review?.firebaseKey = snapshot.key
             review?.let { reviews.add(it) }
         }
-        viewState.hideProgressReview()
+        viewState.showProgress(false)
         reviews.reverse()
         viewState.showReviews(reviews)
     }
 
     override fun onCancelled(databaseError: DatabaseError) {
         Timber.e(databaseError.message)
-    }
-
-    override fun detachView(view: CompanyDetailView?) {
-        super.detachView(view)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
+        viewState.showProgress(false)
     }
 
     fun removeListeners() {
