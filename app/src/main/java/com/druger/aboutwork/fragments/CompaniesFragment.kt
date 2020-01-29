@@ -17,6 +17,7 @@ import com.druger.aboutwork.presenters.CompaniesPresenter
 import kotlinx.android.synthetic.main.fragment_companies.*
 import kotlinx.android.synthetic.main.network_error.*
 import kotlinx.android.synthetic.main.no_reviews.*
+import kotlinx.android.synthetic.main.shimmer_content_companies.*
 import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
@@ -60,7 +61,6 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     }
 
     private fun setupUI() {
-        mProgressBar = progressBar
         mLtError = ltError
     }
 
@@ -129,6 +129,7 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     override fun showProgress(show: Boolean) {
         if (show) {
             reviewPlaceholder.visibility = View.VISIBLE
+            shimmerText.visibility = View.VISIBLE
             reviewPlaceholder.startShimmer()
         } else {
             reviewPlaceholder.stopShimmer()

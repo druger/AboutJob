@@ -18,10 +18,6 @@ interface CompanyDetailView : MvpView, NetworkView {
 
     fun showCompanyDetail(company: CompanyDetail)
 
-    fun showProgressReview()
-
-    fun hideProgressReview()
-
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun showAuth()
 
