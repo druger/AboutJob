@@ -100,6 +100,9 @@
     <string name="not_recommended">I don\'t recommend for employment</string>
     <string name="show_more_companies">Show more companies</string>
     <string name="find_company">Find company</string>
+    <string name="filter_params">Filter parameters</string>
+    <string name="clear">Clear</string>
+    <string name="apply">Apply</string>
 
     <string-array name="work_status">
         <item>@string/working</item>
