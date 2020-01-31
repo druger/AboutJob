@@ -103,4 +103,7 @@
     <string name="not_recommended">Не рекомендую для трудоустройтсва</string>
     <string name="show_more_companies">Показать больше компаний</string>
     <string name="find_company">Найти компанию</string>
+    <string name="filter_params">Парметры фильтра</string>
+    <string name="clear">Очистить</string>
+    <string name="apply">Применить</string>
 </resources>
