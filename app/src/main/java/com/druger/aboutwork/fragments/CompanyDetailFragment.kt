@@ -91,6 +91,12 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
         fabAddReview.setOnClickListener { presenter.checkAuthUser() }
         btnRetry.setOnClickListener { companyId?.let { presenter.getCompanyDetail(it) } }
         tvShowDescription.setOnClickListener { showDescription() }
+        ivFilter.setOnClickListener { showFilterDialog() }
+    }
+
+    private fun showFilterDialog() {
+        val filter = FilterDialogFragment()
+        fragmentManager?.let { filter.show(it, null) }
     }
 
     private fun setupToolbar() {
