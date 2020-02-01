@@ -103,6 +103,7 @@
     <string name="filter_params">Filter parameters</string>
     <string name="clear">Clear</string>
     <string name="apply">Apply</string>
+    <string name="filter">Filter</string>
 
     <string-array name="work_status">
         <item>@string/working</item>
