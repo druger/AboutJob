@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="@+id/tvParams" />
 
     <Spinner
-        android:id="@+id/spinnerFilters"
+        android:id="@+id/spinnerFilter"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
@@ -39,28 +39,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvParams" />
 
-    <Spinner
-        android:id="@+id/spinnerCity"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/filterPosition"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/spinnerFilters"
-        app:layout_constraintStart_toStartOf="@+id/spinnerFilters"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerFilters" />
+        app:layout_constraintEnd_toEndOf="@+id/spinnerFilter"
+        app:layout_constraintStart_toStartOf="@+id/spinnerFilter"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerFilter">
 
-    <Spinner
-        android:id="@+id/spinnerPosition"
+        <AutoCompleteTextView
+            android:id="@+id/etPosition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="2"
+            android:hint="@string/position" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/filterCity"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/spinnerCity"
-        app:layout_constraintStart_toStartOf="@+id/spinnerCity"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCity" />
+        app:layout_constraintEnd_toEndOf="@+id/filterPosition"
+        app:layout_constraintStart_toStartOf="@+id/filterPosition"
+        app:layout_constraintTop_toBottomOf="@+id/filterPosition">
+
+        <AutoCompleteTextView
+            android:id="@+id/etCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="2"
+            android:hint="@string/city" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btnApply"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_marginTop="24dp"
         android:gravity="center"
         android:text="@string/apply"
@@ -68,5 +84,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerPosition" />
+        app:layout_constraintTop_toBottomOf="@+id/filterCity"
+        style="@style/RegularButton"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
