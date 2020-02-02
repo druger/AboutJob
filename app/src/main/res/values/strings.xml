@@ -25,7 +25,7 @@
     <string name="workplace">Workplace</string>
     <string name="career">Career</string>
     <string name="collective">Collective</string>
-    <string name="social_package">Social package</string>
+    <string name="social_package">Employee benefits</string>
 
     <string name="pluses">Pluses</string>
     <string name="pluses_">Pluses (required)</string>
@@ -35,6 +35,7 @@
     <string name="worked">Worked</string>
     <string name="interview">Interview</string>
     <string name="position_">Position (required)</string>
+    <string name="position">Position</string>
     <string name="empoyment_date">Employment date</string>
     <string name="dismissal_date">Dismissal date</string>
     <string name="interview_date">Interview date</string>
@@ -104,11 +105,30 @@
     <string name="clear">Clear</string>
     <string name="apply">Apply</string>
     <string name="filter">Filter</string>
+    <string name="at_rating">At rating</string>
+    <string name="at_salary">At salary</string>
+    <string name="at_chief">At chief</string>
+    <string name="at_workplace">At workplace</string>
+    <string name="at_career">At career</string>
+    <string name="at_collective">At collective</string>
+    <string name="at_benefits">At employee benefits</string>
+    <string name="at_popularity">At popularity</string>
 
     <string-array name="work_status">
         <item>@string/working</item>
         <item>@string/worked</item>
         <item>@string/interview</item>
+    </string-array>
+
+    <string-array name="filter_reviews">
+        <item>@string/at_rating</item>
+        <item>@string/at_salary</item>
+        <item>@string/at_chief</item>
+        <item>@string/at_workplace</item>
+        <item>@string/at_career</item>
+        <item>@string/at_collective</item>
+        <item>@string/at_benefits</item>
+        <item>@string/at_popularity</item>
     </string-array>
 
     <plurals name="year">
