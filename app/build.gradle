@@ -102,6 +102,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
     implementation "com.github.moxy-community:moxy:2.0.2"
     implementation "com.github.moxy-community:moxy-androidx:2.0.2"
+    implementation "com.github.moxy-community:moxy-material:2.0.2"
     kapt "com.github.moxy-community:moxy-compiler:2.0.2"
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
