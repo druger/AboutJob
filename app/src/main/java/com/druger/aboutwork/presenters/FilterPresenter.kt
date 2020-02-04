@@ -6,8 +6,10 @@ import com.druger.aboutwork.rest.RestApi
 import com.druger.aboutwork.rest.models.CityResponse
 import com.druger.aboutwork.rest.models.VacancyResponse
 import com.druger.aboutwork.utils.rx.RxUtils
+import moxy.InjectViewState
 import javax.inject.Inject
 
+@InjectViewState
 class FilterPresenter @Inject constructor(restApi: RestApi) : BasePresenter<FilterView>() {
 
     init {

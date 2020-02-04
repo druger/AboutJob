@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.fragment.app.DialogFragment
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.interfaces.view.FilterView
@@ -28,6 +29,11 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView, Adapter
     @ProvidePresenter
     fun provideFilterPresenter(): FilterPresenter {
         return App.appComponent.filterPresenter
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.BottomSheetDialogStyle)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
