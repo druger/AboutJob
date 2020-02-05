@@ -33,13 +33,12 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView, Adapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.BottomSheetDialogStyle)
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogStyle)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        val view = inflater.inflate(R.layout.fragment_filter_review, container, false)
-        return view
+        return inflater.inflate(R.layout.fragment_filter_review, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
