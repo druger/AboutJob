@@ -16,6 +16,8 @@ import com.druger.aboutwork.model.City
 import com.druger.aboutwork.model.Vacancy
 import com.druger.aboutwork.presenters.FilterPresenter
 import com.druger.aboutwork.utils.Utils
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.fragment_filter_review.*
 import moxy.MvpBottomSheetDialogFragment
 import moxy.presenter.InjectPresenter
@@ -43,6 +45,14 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView, Adapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        dialog?.setOnShowListener {
+            val dialog = it as BottomSheetDialog
+            val bottomSheet = dialog.findViewById<View>(R.id.design_bottom_sheet)
+            bottomSheet?.let { sheet ->
+                dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                sheet.parent.parent.requestLayout()
+            }
+        }
         setupSpinnerFilter()
         getPositions()
         getCities()
