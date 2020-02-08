@@ -1,11 +1,14 @@
 package com.druger.aboutwork.presenters
 
 import com.druger.aboutwork.App
+import com.druger.aboutwork.db.FirebaseHelper
+import com.druger.aboutwork.enums.FilterType
 import com.druger.aboutwork.interfaces.view.FilterView
 import com.druger.aboutwork.rest.RestApi
 import com.druger.aboutwork.rest.models.CityResponse
 import com.druger.aboutwork.rest.models.VacancyResponse
 import com.druger.aboutwork.utils.rx.RxUtils
+import com.google.firebase.database.FirebaseDatabase
 import moxy.InjectViewState
 import javax.inject.Inject
 
@@ -16,41 +19,16 @@ class FilterPresenter @Inject constructor(restApi: RestApi) : BasePresenter<Filt
         this.restApi = restApi
     }
 
+    private var dbReference = FirebaseDatabase.getInstance().reference
+    private var filterType = FilterType.RATING
+
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         App.appComponent.inject(this)
     }
 
-    fun filterAtRating() {
-
-    }
-
-    fun filterAtSalary() {
-
-    }
-
-    fun filterAtChief() {
-
-    }
-
-    fun filterAtWorkplace() {
-
-    }
-
-    fun filterAtCareer() {
-
-    }
-
-    fun filterAtCollective() {
-
-    }
-
-    fun filterAtBenefits() {
-
-    }
-
-    fun filterAtPopularity() {
-
+    fun setFilterType(filterType: FilterType) {
+        this.filterType = filterType
     }
 
     fun getCities(city: String) {
@@ -73,5 +51,9 @@ class FilterPresenter @Inject constructor(restApi: RestApi) : BasePresenter<Filt
 
     private fun successGetVacancies(vacancyResponse: VacancyResponse) {
         vacancyResponse.items?.let { viewState.showPositions(vacancyResponse.items) }
+    }
+
+    fun applyFilter(position: String, city: String) {
+        FirebaseHelper.filterReview(dbReference, filterType)
     }
 }

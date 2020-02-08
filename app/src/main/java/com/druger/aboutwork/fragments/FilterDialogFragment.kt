@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
+import com.druger.aboutwork.enums.FilterType
 import com.druger.aboutwork.interfaces.view.FilterView
 import com.druger.aboutwork.model.City
 import com.druger.aboutwork.model.Vacancy
@@ -45,6 +46,18 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView, Adapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        showBottomSheetAboveKeyboard()
+        setupSpinnerFilter()
+        getPositions()
+        getCities()
+        btnApply.setOnClickListener {
+            val position = etPosition.text.toString().trim()
+            val city = etCity.text.toString().trim()
+            presenter.applyFilter(position, city)
+        }
+    }
+
+    private fun showBottomSheetAboveKeyboard() {
         dialog?.setOnShowListener {
             val dialog = it as BottomSheetDialog
             val bottomSheet = dialog.findViewById<View>(R.id.design_bottom_sheet)
@@ -53,9 +66,6 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView, Adapter
                 sheet.parent.parent.requestLayout()
             }
         }
-        setupSpinnerFilter()
-        getPositions()
-        getCities()
     }
 
     private fun getPositions() {
@@ -101,14 +111,14 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView, Adapter
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (position) {
-            0 -> presenter.filterAtRating()
-            1 -> presenter.filterAtSalary()
-            2 -> presenter.filterAtChief()
-            3 -> presenter.filterAtWorkplace()
-            4 -> presenter.filterAtCareer()
-            5 -> presenter.filterAtCollective()
-            6 -> presenter.filterAtBenefits()
-            7 -> presenter.filterAtPopularity()
+            0 -> presenter.setFilterType(FilterType.RATING)
+            1 -> presenter.setFilterType(FilterType.SALARY)
+            2 -> presenter.setFilterType(FilterType.CHIEF)
+            3 -> presenter.setFilterType(FilterType.WORKPLACE)
+            4 -> presenter.setFilterType(FilterType.CAREER)
+            5 -> presenter.setFilterType(FilterType.COLLECTIVE)
+            6 -> presenter.setFilterType(FilterType.BENEFITS)
+            7 -> presenter.setFilterType(FilterType.POPULARITY)
         }
     }
 

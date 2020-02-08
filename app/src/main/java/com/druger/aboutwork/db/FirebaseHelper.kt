@@ -1,6 +1,7 @@
 package com.druger.aboutwork.db
 
 import android.util.ArrayMap
+import com.druger.aboutwork.enums.FilterType
 import com.druger.aboutwork.model.Comment
 import com.druger.aboutwork.model.Company
 import com.druger.aboutwork.model.Review
@@ -17,7 +18,7 @@ import java.util.*
  */
 object FirebaseHelper {
     private const val REVIEWS = "reviews"
-    private const val LIKE = "/like"
+    private const val LIKE = "like"
     private const val DISLIKE = "/dislike"
     private const val LIKES_DISLIKES = "/likesDislikes"
     private const val USERS = "users"
@@ -41,7 +42,7 @@ object FirebaseHelper {
 
     fun likeOrDislikeReview(review: Review) {
         val updateLike = ArrayMap<String, Any>()
-        updateLike[REVIEWS + SLASH + review.firebaseKey + LIKE] = review.like
+        updateLike[REVIEWS + SLASH + review.firebaseKey + SLASH + LIKE] = review.like
         updateLike[REVIEWS + SLASH + review.firebaseKey + DISLIKE] = review.dislike
         updateLike[REVIEWS + SLASH + review.firebaseKey + LIKES_DISLIKES] = review.likesDislikes
 
@@ -122,10 +123,24 @@ object FirebaseHelper {
 
     fun likeOrDislikeComment(comment: Comment) {
         val updateLike = ArrayMap<String, Any>()
-        updateLike[COMMENTS + SLASH + comment.id + LIKE] = comment.like
+        updateLike[COMMENTS + SLASH + comment.id + SLASH + LIKE] = comment.like
         updateLike[COMMENTS + SLASH + comment.id + DISLIKE] = comment.dislike
         updateLike[COMMENTS + SLASH + comment.id + LIKES_DISLIKES] = comment.likesDislikes
 
         FirebaseDatabase.getInstance().reference.updateChildren(updateLike)
+    }
+
+    fun filterReview(dbReference: DatabaseReference, filterType: FilterType): Query {
+        val filter = when(filterType) {
+            FilterType.POPULARITY -> LIKE
+            FilterType.BENEFITS -> ""
+            FilterType.COLLECTIVE -> ""
+            FilterType.CAREER -> ""
+            FilterType.WORKPLACE -> ""
+            FilterType.CHIEF -> ""
+            FilterType.SALARY -> ""
+            FilterType.RATING -> ""
+        }
+        return dbReference.child(REVIEWS).orderByChild(filter)
     }
 }
