@@ -16,6 +16,7 @@ import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.ReviewAdapter
+import com.druger.aboutwork.enums.FilterType
 import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.CompanyDetailView
@@ -29,7 +30,8 @@ import kotlinx.android.synthetic.main.network_error.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
-class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
+class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
+    FilterDialogFragment.OnApplyFilterListener {
 
     @InjectPresenter
     lateinit var presenter: CompanyDetailPresenter
@@ -260,6 +262,10 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
                 Screen.COMPANY_DETAIL.name,
                 companyId),
             R.id.content_company)
+    }
+
+    override fun onFilter(filterType: FilterType, position: String, city: String) {
+        presenter.filterReviews(filterType, position, city)
     }
 
     companion object {

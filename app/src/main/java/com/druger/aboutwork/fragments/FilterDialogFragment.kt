@@ -1,5 +1,6 @@
 package com.druger.aboutwork.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -29,9 +30,16 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView, Adapter
     @InjectPresenter
     lateinit var presenter: FilterPresenter
 
+    private var applyFilterListener: OnApplyFilterListener? = null
+
     @ProvidePresenter
     fun provideFilterPresenter(): FilterPresenter {
         return App.appComponent.filterPresenter
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        applyFilterListener = parentFragment as OnApplyFilterListener
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -128,5 +136,13 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView, Adapter
 
     override fun showCities(cities: List<City>) {
         Utils.showSuggestions(requireContext(), cities, etCity)
+    }
+
+    override fun applyFilter(filterType: FilterType, position: String, city: String) {
+        applyFilterListener?.onFilter(filterType, position, city)
+    }
+
+    interface OnApplyFilterListener {
+        fun onFilter(filterType: FilterType, position: String, city: String)
     }
 }

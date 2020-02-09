@@ -1,14 +1,12 @@
 package com.druger.aboutwork.presenters
 
 import com.druger.aboutwork.App
-import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.enums.FilterType
 import com.druger.aboutwork.interfaces.view.FilterView
 import com.druger.aboutwork.rest.RestApi
 import com.druger.aboutwork.rest.models.CityResponse
 import com.druger.aboutwork.rest.models.VacancyResponse
 import com.druger.aboutwork.utils.rx.RxUtils
-import com.google.firebase.database.FirebaseDatabase
 import moxy.InjectViewState
 import javax.inject.Inject
 
@@ -19,7 +17,6 @@ class FilterPresenter @Inject constructor(restApi: RestApi) : BasePresenter<Filt
         this.restApi = restApi
     }
 
-    private var dbReference = FirebaseDatabase.getInstance().reference
     private var filterType = FilterType.RATING
 
     override fun onFirstViewAttach() {
@@ -54,6 +51,6 @@ class FilterPresenter @Inject constructor(restApi: RestApi) : BasePresenter<Filt
     }
 
     fun applyFilter(position: String, city: String) {
-        FirebaseHelper.filterReview(dbReference, filterType)
+        viewState.applyFilter(filterType, position, city)
     }
 }

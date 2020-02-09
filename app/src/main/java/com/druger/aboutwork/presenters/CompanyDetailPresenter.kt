@@ -1,6 +1,7 @@
 package com.druger.aboutwork.presenters
 
 import com.druger.aboutwork.db.FirebaseHelper
+import com.druger.aboutwork.enums.FilterType
 import com.druger.aboutwork.interfaces.view.CompanyDetailView
 import com.druger.aboutwork.model.CompanyDetail
 import com.druger.aboutwork.model.Review
@@ -131,5 +132,9 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
 
     fun removeAuthListener() {
         authListener?.let { auth.removeAuthStateListener(it) }
+    }
+
+    fun filterReviews(filterType: FilterType, position: String, city: String) {
+        reviews.filter {  }
     }
 }
