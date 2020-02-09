@@ -1,7 +1,6 @@
 package com.druger.aboutwork.db
 
 import android.util.ArrayMap
-import com.druger.aboutwork.enums.FilterType
 import com.druger.aboutwork.model.Comment
 import com.druger.aboutwork.model.Company
 import com.druger.aboutwork.model.Review
@@ -128,19 +127,5 @@ object FirebaseHelper {
         updateLike[COMMENTS + SLASH + comment.id + LIKES_DISLIKES] = comment.likesDislikes
 
         FirebaseDatabase.getInstance().reference.updateChildren(updateLike)
-    }
-
-    fun filterReview(dbReference: DatabaseReference, filterType: FilterType): Query {
-        val filter = when(filterType) {
-            FilterType.POPULARITY -> LIKE
-            FilterType.BENEFITS -> ""
-            FilterType.COLLECTIVE -> ""
-            FilterType.CAREER -> ""
-            FilterType.WORKPLACE -> ""
-            FilterType.CHIEF -> ""
-            FilterType.SALARY -> ""
-            FilterType.RATING -> ""
-        }
-        return dbReference.child(REVIEWS).orderByChild(filter)
     }
 }
