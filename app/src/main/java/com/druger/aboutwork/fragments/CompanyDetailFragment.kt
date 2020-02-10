@@ -98,7 +98,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
 
     private fun showFilterDialog() {
         val filter = FilterDialogFragment()
-        fragmentManager?.let { filter.show(it, null) }
+        filter.show(childFragmentManager, null)
     }
 
     private fun setupToolbar() {
