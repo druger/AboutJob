@@ -1,6 +1,5 @@
 package com.druger.aboutwork.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -37,14 +36,10 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView, Adapter
         return App.appComponent.filterPresenter
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        applyFilterListener = parentFragment as OnApplyFilterListener
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogStyle)
+        applyFilterListener = parentFragment as? OnApplyFilterListener
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
