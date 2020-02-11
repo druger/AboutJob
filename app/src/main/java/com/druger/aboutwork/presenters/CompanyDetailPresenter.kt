@@ -135,7 +135,7 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
     }
 
     fun filterReviews(filterType: FilterType, position: String, city: String) {
-        val filteredReviews = when(filterType) {
+        val sortedReviews = when(filterType) {
             FilterType.RATING -> reviews.sortedByDescending { it.markCompany?.averageMark }
             FilterType.SALARY -> reviews.sortedByDescending { it.markCompany?.salary }
             FilterType.CHIEF -> reviews.sortedByDescending { it.markCompany?.chief }
@@ -145,6 +145,14 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
             FilterType.BENEFITS -> reviews.sortedByDescending { it.markCompany?.socialPackage }
             FilterType.POPULARITY -> reviews.sortedByDescending { it.like }
         }
-        viewState.showReviews(filteredReviews)
+        val filteredPosition =
+            if (position.isNotEmpty()) sortedReviews.filter { it.position.equals(position, true) }
+            else emptyList()
+        val filteredCity =
+            if (city.isNotEmpty()) sortedReviews.filter { it.city.equals(city, true) }
+            else emptyList()
+        val filteredReviews = filteredPosition.union(filteredCity).toList()
+        if (filteredReviews.isNotEmpty()) viewState.showReviews(filteredReviews)
+        else viewState.showReviews(sortedReviews)
     }
 }
