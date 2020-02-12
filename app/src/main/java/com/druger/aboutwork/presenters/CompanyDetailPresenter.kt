@@ -135,7 +135,7 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
     }
 
     fun filterReviews(filterType: FilterType, position: String, city: String) {
-        val sortedReviews = when(filterType) {
+        val sortedReviews = when (filterType) {
             FilterType.RATING -> reviews.sortedByDescending { it.markCompany?.averageMark }
             FilterType.SALARY -> reviews.sortedByDescending { it.markCompany?.salary }
             FilterType.CHIEF -> reviews.sortedByDescending { it.markCompany?.chief }
@@ -145,14 +145,22 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
             FilterType.BENEFITS -> reviews.sortedByDescending { it.markCompany?.socialPackage }
             FilterType.POPULARITY -> reviews.sortedByDescending { it.like }
         }
-        val filteredPosition =
-            if (position.isNotEmpty()) sortedReviews.filter { it.position.equals(position, true) }
-            else emptyList()
-        val filteredCity =
-            if (city.isNotEmpty()) sortedReviews.filter { it.city.equals(city, true) }
-            else emptyList()
-        val filteredReviews = filteredPosition.union(filteredCity).toList()
-        if (filteredReviews.isNotEmpty()) viewState.showReviews(filteredReviews)
-        else viewState.showReviews(sortedReviews)
+        if (position.isEmpty() && city.isEmpty()) {
+            viewState.showReviews(sortedReviews)
+            return
+        }
+        var filteredReviews = emptyList<Review>()
+        if (position.isNotEmpty() && city.isNotEmpty()) {
+            filteredReviews = sortedReviews
+                .filter { it.position.equals(position, true) }
+                .filter { it.city.equals(city, true) }
+        } else if (position.isNotEmpty() && city.isEmpty()) {
+            filteredReviews = sortedReviews
+                .filter { it.position.equals(position, true) }
+        } else if (position.isEmpty() && city.isNotEmpty()) {
+            filteredReviews = sortedReviews
+                .filter { it.city.equals(city, true) }
+        }
+        viewState.showReviews(filteredReviews)
     }
 }
