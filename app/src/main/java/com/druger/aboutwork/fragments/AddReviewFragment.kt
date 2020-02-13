@@ -196,7 +196,7 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         presenter.review.pluses = etPluses.text.toString().trim()
         presenter.review.minuses = etMinuses.text.toString().trim()
         presenter.review.position = etPosition.text.toString().trim()
-        presenter.review.city = etCity.text.toString()
+        presenter.review.city = etCity.text.toString().trim()
 
         presenter.doneClick()
     }

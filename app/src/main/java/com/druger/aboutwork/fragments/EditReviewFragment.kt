@@ -187,7 +187,7 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
         review.pluses = etPluses.text.toString().trim()
         review.minuses = etMinuses.text.toString().trim()
         review.position = etPosition.text.toString().trim()
-        review.city = etCity.text.toString()
+        review.city = etCity.text.toString().trim()
 
         presenter.doneClick()
     }

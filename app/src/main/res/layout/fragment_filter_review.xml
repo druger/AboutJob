@@ -40,8 +40,8 @@
         app:layout_constraintTop_toBottomOf="@+id/tvParams" />
 
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:id="@+id/filterPosition"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginTop="8dp"
@@ -59,8 +59,8 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:id="@+id/filterCity"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginTop="8dp"
@@ -77,17 +77,20 @@
             android:completionThreshold="2" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnApply"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="24dp"
         android:gravity="center"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
         android:text="@string/apply"
         android:textAllCaps="true"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:cornerRadius="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filterCity"
-        style="@style/RegularButton"/>
+        app:layout_constraintTop_toBottomOf="@+id/filterCity" />
 </androidx.constraintlayout.widget.ConstraintLayout>
