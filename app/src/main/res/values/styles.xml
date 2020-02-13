@@ -6,7 +6,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="buttonStyle">@style/RegularButton</item>
         <item name="android:datePickerDialogTheme">@style/DatePickerCustom</item>
 
         <item name="windowActionModeOverlay">true</item>
@@ -31,6 +30,7 @@
 
     <style name="BottomSheetDialogStyle" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
@@ -39,12 +39,6 @@
     <style name="reviewRating" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/ratingstars</item>
         <item name="android:minHeight">@dimen/height_review_rating</item>
-    </style>
-    
-    <style name="RegularButton">
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:padding">@dimen/middle_margin</item>
     </style>
 
     <style name="DatePickerCustom" parent="Theme.AppCompat.Light.Dialog">
