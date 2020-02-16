@@ -30,6 +30,8 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
     private var valueEventListener: ValueEventListener? = null
 
     private val reviews = ArrayList<Review>()
+    private var position: String = ""
+    private var city: String = ""
 
     init {
         this.restApi = restApi
@@ -135,6 +137,8 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
     }
 
     fun filterReviews(filterType: FilterType, position: String, city: String) {
+        this.position = position
+        this.city = city
         val sortedReviews = when (filterType) {
             FilterType.RATING -> reviews.sortedByDescending { it.markCompany?.averageMark }
             FilterType.SALARY -> reviews.sortedByDescending { it.markCompany?.salary }
@@ -162,5 +166,9 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
                 .filter { it.city.equals(city, true) }
         }
         viewState.showReviews(filteredReviews)
+    }
+
+    fun filterClick() {
+        viewState.showFilterDialog(position, city)
     }
 }

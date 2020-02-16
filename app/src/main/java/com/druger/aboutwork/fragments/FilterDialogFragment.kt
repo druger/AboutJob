@@ -29,7 +29,7 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView, Adapter
     @InjectPresenter
     lateinit var presenter: FilterPresenter
 
-    private var applyFilterListener: OnApplyFilterListener? = null
+    private var filterListener: OnFilterListener? = null
 
     @ProvidePresenter
     fun provideFilterPresenter(): FilterPresenter {
@@ -39,7 +39,7 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView, Adapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogStyle)
-        applyFilterListener = parentFragment as? OnApplyFilterListener
+        filterListener = parentFragment as? OnFilterListener
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -58,6 +58,13 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView, Adapter
             val city = etCity.text.toString().trim()
             presenter.applyFilter(position, city)
         }
+        tvClear.setOnClickListener { presenter.clearFilter() }
+        setupFilters()
+    }
+
+    private fun setupFilters() {
+        etPosition.setText(arguments?.getString(POSITION_KEY))
+        etCity.setText(arguments?.getString(CITY_KEY))
     }
 
     private fun showBottomSheetAboveKeyboard() {
@@ -134,10 +141,30 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView, Adapter
     }
 
     override fun applyFilter(filterType: FilterType, position: String, city: String) {
-        applyFilterListener?.onFilter(filterType, position, city)
+        dismiss()
+        filterListener?.onFilter(filterType, position, city)
     }
 
-    interface OnApplyFilterListener {
+    override fun clearClick() {
+        etPosition.setText("")
+        etCity.setText("")
+    }
+
+    interface OnFilterListener {
         fun onFilter(filterType: FilterType, position: String, city: String)
+    }
+
+    companion object {
+        private const val POSITION_KEY = "position"
+        private const val CITY_KEY = "city"
+
+        fun newInstance(position: String, city: String): FilterDialogFragment {
+            return FilterDialogFragment().apply {
+                arguments = Bundle().apply {
+                    putString(POSITION_KEY, position)
+                    putString(CITY_KEY, city)
+                }
+            }
+        }
     }
 }

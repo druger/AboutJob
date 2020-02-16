@@ -31,7 +31,7 @@ import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
 class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
-    FilterDialogFragment.OnApplyFilterListener {
+    FilterDialogFragment.OnFilterListener {
 
     @InjectPresenter
     lateinit var presenter: CompanyDetailPresenter
@@ -93,12 +93,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
         fabAddReview.setOnClickListener { presenter.checkAuthUser() }
         btnRetry.setOnClickListener { companyId?.let { presenter.getCompanyDetail(it) } }
         tvShowDescription.setOnClickListener { showDescription() }
-        ivFilter.setOnClickListener { showFilterDialog() }
-    }
-
-    private fun showFilterDialog() {
-        val filter = FilterDialogFragment()
-        filter.show(childFragmentManager, null)
+        ivFilter.setOnClickListener { presenter.filterClick() }
     }
 
     private fun setupToolbar() {
@@ -262,6 +257,11 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
                 Screen.COMPANY_DETAIL.name,
                 companyId),
             R.id.content_company)
+    }
+
+    override fun showFilterDialog(position: String, city: String) {
+        val filter = FilterDialogFragment.newInstance(position, city)
+        filter.show(childFragmentManager, null)
     }
 
     override fun onFilter(filterType: FilterType, position: String, city: String) {

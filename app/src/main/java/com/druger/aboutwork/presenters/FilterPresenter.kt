@@ -53,4 +53,8 @@ class FilterPresenter @Inject constructor(restApi: RestApi) : BasePresenter<Filt
     fun applyFilter(position: String, city: String) {
         viewState.applyFilter(filterType, position, city)
     }
+
+    fun clearFilter() {
+        viewState.clearClick()
+    }
 }
