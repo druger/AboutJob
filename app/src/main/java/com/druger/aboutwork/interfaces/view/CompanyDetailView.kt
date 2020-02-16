@@ -23,4 +23,7 @@ interface CompanyDetailView : MvpView, NetworkView {
 
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun addReview()
+
+    @StateStrategyType(OneExecutionStateStrategy::class)
+    fun showFilterDialog(position: String, city: String)
 }

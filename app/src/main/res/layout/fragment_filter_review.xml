@@ -24,6 +24,7 @@
         android:layout_marginEnd="16dp"
         android:text="@string/clear"
         android:textColor="@color/colorPrimary"
+        android:background="?android:attr/selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="@+id/tvParams"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvParams" />

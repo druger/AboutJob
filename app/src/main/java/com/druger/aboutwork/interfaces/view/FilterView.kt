@@ -9,4 +9,5 @@ interface FilterView : MvpView {
     fun showCities(cities: List<City>)
     fun showPositions(positions: List<Vacancy>)
     fun applyFilter(filterType: FilterType, position: String, city: String)
+    fun clearClick()
 }
