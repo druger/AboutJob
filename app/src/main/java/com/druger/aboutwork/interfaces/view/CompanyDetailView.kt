@@ -1,5 +1,6 @@
 package com.druger.aboutwork.interfaces.view
 
+import androidx.annotation.DrawableRes
 import com.druger.aboutwork.model.CompanyDetail
 import com.druger.aboutwork.model.Review
 import moxy.MvpView
@@ -26,4 +27,6 @@ interface CompanyDetailView : MvpView, NetworkView {
 
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun showFilterDialog(position: String, city: String)
+
+    fun setFilterIcon(@DrawableRes icFilter: Int)
 }

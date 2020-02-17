@@ -1,5 +1,6 @@
 package com.druger.aboutwork.presenters
 
+import com.druger.aboutwork.R
 import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.enums.FilterType
 import com.druger.aboutwork.interfaces.view.CompanyDetailView
@@ -32,6 +33,7 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
     private val reviews = ArrayList<Review>()
     private var position: String = ""
     private var city: String = ""
+    private var filterType = FilterType.RATING
 
     init {
         this.restApi = restApi
@@ -81,6 +83,16 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
         viewState.showProgress(false)
         reviews.reverse()
         viewState.showReviews(reviews)
+        checkFilterSettings()
+    }
+
+    private fun checkFilterSettings() {
+        if (position.isNotEmpty() || city.isNotEmpty()) {
+            filterReviews(filterType, position, city)
+            viewState.setFilterIcon(R.drawable.ic_filter_applied)
+        } else {
+            viewState.setFilterIcon(R.drawable.ic_filter)
+        }
     }
 
     override fun onCancelled(databaseError: DatabaseError) {
@@ -149,6 +161,7 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
             FilterType.BENEFITS -> reviews.sortedByDescending { it.markCompany?.socialPackage }
             FilterType.POPULARITY -> reviews.sortedByDescending { it.like }
         }
+        viewState.setFilterIcon(R.drawable.ic_filter_applied)
         if (position.isEmpty() && city.isEmpty()) {
             viewState.showReviews(sortedReviews)
             return

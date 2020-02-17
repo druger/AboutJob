@@ -174,9 +174,11 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
         if (reviews.isEmpty()) {
             rvReviews.visibility = View.GONE
             ltNoReviews.visibility = View.VISIBLE
+            groupFilter.visibility = View.GONE
         } else {
             rvReviews.visibility = View.VISIBLE
             ltNoReviews.visibility = View.GONE
+            groupFilter.visibility = View.VISIBLE
         }
     }
 
@@ -266,6 +268,10 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
 
     override fun onFilter(filterType: FilterType, position: String, city: String) {
         presenter.filterReviews(filterType, position, city)
+    }
+
+    override fun setFilterIcon(icFilter: Int) {
+        ivFilter.setImageResource(icFilter)
     }
 
     companion object {
