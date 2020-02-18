@@ -16,6 +16,7 @@ import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.ReviewAdapter
+import com.druger.aboutwork.enums.FilterType
 import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.CompanyDetailView
@@ -29,7 +30,8 @@ import kotlinx.android.synthetic.main.network_error.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
-class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
+class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
+    FilterDialogFragment.OnFilterListener {
 
     @InjectPresenter
     lateinit var presenter: CompanyDetailPresenter
@@ -91,6 +93,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
         fabAddReview.setOnClickListener { presenter.checkAuthUser() }
         btnRetry.setOnClickListener { companyId?.let { presenter.getCompanyDetail(it) } }
         tvShowDescription.setOnClickListener { showDescription() }
+        ivFilter.setOnClickListener { presenter.filterClick() }
     }
 
     private fun setupToolbar() {
@@ -166,14 +169,25 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
         reviewAdapter.notifyDataSetChanged()
     }
 
-    override fun showReviews(reviews: List<Review>) {
+    override fun showReviews(reviews: List<Review>, isFilter: Boolean) {
         reviewAdapter.addReviews(reviews)
         if (reviews.isEmpty()) {
-            rvReviews.visibility = View.GONE
-            ltNoReviews.visibility = View.VISIBLE
+            if (isFilter) {
+                filterEmpty.visibility = View.VISIBLE
+            } else {
+                rvReviews.visibility = View.GONE
+                ltNoReviews.visibility = View.VISIBLE
+                groupFilter.visibility = View.GONE
+            }
         } else {
-            rvReviews.visibility = View.VISIBLE
-            ltNoReviews.visibility = View.GONE
+            if (isFilter) {
+                filterEmpty.visibility = View.GONE
+            } else {
+                rvReviews.visibility = View.VISIBLE
+                ltNoReviews.visibility = View.GONE
+                groupFilter.visibility = View.VISIBLE
+
+            }
         }
     }
 
@@ -254,6 +268,19 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
                 Screen.COMPANY_DETAIL.name,
                 companyId),
             R.id.content_company)
+    }
+
+    override fun showFilterDialog(position: String, city: String) {
+        val filter = FilterDialogFragment.newInstance(position, city)
+        filter.show(childFragmentManager, null)
+    }
+
+    override fun onFilter(filterType: FilterType, position: String, city: String) {
+        presenter.filterReviews(filterType, position, city)
+    }
+
+    override fun setFilterIcon(icFilter: Int) {
+        ivFilter.setImageResource(icFilter)
     }
 
     companion object {

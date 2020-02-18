@@ -26,6 +26,7 @@
     <string name="pluses">Плюсы</string>
     <string name="pluses_">Плюсы (обязательно)</string>
     <string name="position_">Должность (обязательно)</string>
+    <string name="position">Должность</string>
     <string name="profile_deleted">Ваш профиль удален:(</string>
     <string name="query_hint">Поиск компании</string>
     <string name="ratings">Рейтинги</string>
@@ -103,4 +104,17 @@
     <string name="not_recommended">Не рекомендую для трудоустройтсва</string>
     <string name="show_more_companies">Показать больше компаний</string>
     <string name="find_company">Найти компанию</string>
+    <string name="filter_params">Парметры фильтра</string>
+    <string name="clear">Очистить</string>
+    <string name="apply">Применить</string>
+    <string name="filter">Фильтр</string>
+    <string name="at_benefits">По соц. пакету</string>
+    <string name="at_career">По карьерному росту</string>
+    <string name="at_chief">По начальству</string>
+    <string name="at_collective">По коллективу</string>
+    <string name="at_popularity">По популярности</string>
+    <string name="at_rating">По рейтингу</string>
+    <string name="at_salary">По зарплате</string>
+    <string name="at_workplace">По рабочему месту</string>
+    <string name="filter_empty">По вашему запросу ничего не найдено</string>
 </resources>

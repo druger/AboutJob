@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
@@ -19,6 +18,7 @@ import com.druger.aboutwork.model.City
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.model.Vacancy
 import com.druger.aboutwork.presenters.AddReviewPresenter
+import com.druger.aboutwork.utils.Utils
 import kotlinx.android.synthetic.main.content_review.*
 import kotlinx.android.synthetic.main.toolbar_review.*
 import moxy.presenter.InjectPresenter
@@ -196,7 +196,7 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         presenter.review.pluses = etPluses.text.toString().trim()
         presenter.review.minuses = etMinuses.text.toString().trim()
         presenter.review.position = etPosition.text.toString().trim()
-        presenter.review.city = etCity.text.toString()
+        presenter.review.city = etCity.text.toString().trim()
 
         presenter.doneClick()
     }
@@ -228,19 +228,11 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     fun getReview(): Review = presenter.review
 
     override fun showVacancies(vacancies: List<Vacancy>) {
-        showSuggestions(vacancies, etPosition)
-    }
-
-    private fun showSuggestions(items: List<Any>, view: AutoCompleteTextView) {
-        context?.let {
-            val arrayAdapter = ArrayAdapter<Any>(
-                it, android.R.layout.simple_dropdown_item_1line, items)
-            view.setAdapter<ArrayAdapter<*>>(arrayAdapter)
-        }
+        Utils.showSuggestions(requireContext(), vacancies, etPosition)
     }
 
     override fun showCities(cities: List<City>) {
-        showSuggestions(cities, etCity)
+        Utils.showSuggestions(requireContext(), cities, etCity)
     }
 
     override fun successfulAddition() {
