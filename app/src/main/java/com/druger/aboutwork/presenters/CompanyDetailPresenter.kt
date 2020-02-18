@@ -178,7 +178,7 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
             filteredReviews = sortedReviews
                 .filter { it.city.equals(city, true) }
         }
-        viewState.showReviews(filteredReviews)
+        viewState.showReviews(filteredReviews, true)
     }
 
     fun filterClick() {
