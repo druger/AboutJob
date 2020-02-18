@@ -113,6 +113,7 @@
     <string name="at_collective">At collective</string>
     <string name="at_benefits">At employee benefits</string>
     <string name="at_popularity">At popularity</string>
+    <string name="filter_empty">Your search returned no results</string>
 
     <string-array name="work_status">
         <item>@string/working</item>

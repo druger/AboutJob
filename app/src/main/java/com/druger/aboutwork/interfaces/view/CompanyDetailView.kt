@@ -15,7 +15,7 @@ interface CompanyDetailView : MvpView, NetworkView {
 
     fun updateAdapter()
 
-    fun showReviews(reviews: List<Review>)
+    fun showReviews(reviews: List<Review>, isFilter: Boolean = false)
 
     fun showCompanyDetail(company: CompanyDetail)
 
