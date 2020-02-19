@@ -179,6 +179,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
                 ltNoReviews.visibility = View.VISIBLE
                 groupFilter.visibility = View.GONE
             }
+            tvCountReviews.visibility = View.GONE
         } else {
             if (isFilter) {
                 filterEmpty.visibility = View.GONE
@@ -186,8 +187,9 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
                 rvReviews.visibility = View.VISIBLE
                 ltNoReviews.visibility = View.GONE
                 groupFilter.visibility = View.VISIBLE
-
             }
+            tvCountReviews.visibility = View.VISIBLE
+            tvCountReviews.text = resources.getQuantityString(R.plurals.reviews, reviews.size, reviews.size)
         }
     }
 
