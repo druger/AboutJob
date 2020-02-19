@@ -127,6 +127,18 @@
             app:layout_constraintTop_toTopOf="@+id/tvFilter"
             app:srcCompat="@drawable/ic_filter" />
 
+        <TextView
+            android:id="@+id/tvCountReviews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/tvFilter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvFilter"
+            tools:text="10 reviews"
+            tools:visibility="visible"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvReviews"
             android:layout_width="0dp"

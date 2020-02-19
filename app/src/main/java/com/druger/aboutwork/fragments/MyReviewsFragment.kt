@@ -174,11 +174,14 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
             ltNoReviews.visibility = View.VISIBLE
             tvNoReviews.text = getString(R.string.no_my_reviews)
             btnFind.visibility = View.VISIBLE
-            content.visibility = View.GONE
+            rvReviews.visibility = View.GONE
+            tvCountReviews.visibility = View.GONE
         } else {
             ltNoReviews.visibility = View.INVISIBLE
-            content.visibility = View.VISIBLE
+            rvReviews.visibility = View.VISIBLE
             reviewAdapter.addReviews(reviews)
+            tvCountReviews.visibility = View.VISIBLE
+            tvCountReviews.text = resources.getQuantityString(R.plurals.reviews, reviews.size, reviews.size)
         }
     }
 
