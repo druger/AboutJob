@@ -159,5 +159,12 @@
         <item quantity="other">%d days</item>
     </plurals>
 
-
+    <plurals name="reviews">
+        <item quantity="zero">%d reviews</item>
+        <item quantity="one">%d review</item>
+        <item quantity="two">%d reviews</item>
+        <item quantity="few">%d reviews</item>
+        <item quantity="many">%d reviews</item>
+        <item quantity="other">%d reviews</item>
+    </plurals>
 </resources>
