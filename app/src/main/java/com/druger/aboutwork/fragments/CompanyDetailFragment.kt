@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -63,7 +62,6 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
         setupUI()
         setupUX()
         setupRecycler()
-        setupFabBehavior()
     }
 
     private fun setupUI() {
@@ -79,14 +77,6 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(COMPANY_ID, companyId)
-    }
-
-    private fun setupFabBehavior() {
-        scrollView.setOnScrollChangeListener(
-            NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
-                if (scrollY > oldScrollY) fabAddReview.hide()
-                else fabAddReview.show()
-            })
     }
 
     private fun setupUX() {
