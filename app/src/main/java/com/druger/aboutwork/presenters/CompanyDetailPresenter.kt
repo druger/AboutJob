@@ -1,6 +1,8 @@
 package com.druger.aboutwork.presenters
 
+import com.druger.aboutwork.R
 import com.druger.aboutwork.db.FirebaseHelper
+import com.druger.aboutwork.enums.FilterType
 import com.druger.aboutwork.interfaces.view.CompanyDetailView
 import com.druger.aboutwork.model.CompanyDetail
 import com.druger.aboutwork.model.Review
@@ -29,13 +31,16 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
     private var valueEventListener: ValueEventListener? = null
 
     private val reviews = ArrayList<Review>()
+    private var position: String = ""
+    private var city: String = ""
+    private var filterType = FilterType.RATING
 
     init {
         this.restApi = restApi
     }
 
     fun getReviews(companyID: String) {
-        viewState.showProgressReview()
+        viewState.showProgress(true)
         dbReference = FirebaseDatabase.getInstance().reference
         dbReference?.let {
             val reviewsQuery = FirebaseHelper.getReviewsForCompany(it, companyID)
@@ -69,26 +74,30 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
 
                 override fun onCancelled(databaseError: DatabaseError) {
                     Timber.e(databaseError.message)
+                    viewState.showProgress(false)
                 }
             }
             review?.firebaseKey = snapshot.key
             review?.let { reviews.add(it) }
         }
-        viewState.hideProgressReview()
+        viewState.showProgress(false)
         reviews.reverse()
         viewState.showReviews(reviews)
+        checkFilterSettings()
+    }
+
+    private fun checkFilterSettings() {
+        if (position.isNotEmpty() || city.isNotEmpty()) {
+            filterReviews(filterType, position, city)
+            viewState.setFilterIcon(R.drawable.ic_filter_applied)
+        } else {
+            viewState.setFilterIcon(R.drawable.ic_filter)
+        }
     }
 
     override fun onCancelled(databaseError: DatabaseError) {
         Timber.e(databaseError.message)
-    }
-
-    override fun detachView(view: CompanyDetailView?) {
-        super.detachView(view)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
+        viewState.showProgress(false)
     }
 
     fun removeListeners() {
@@ -137,5 +146,42 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
 
     fun removeAuthListener() {
         authListener?.let { auth.removeAuthStateListener(it) }
+    }
+
+    fun filterReviews(filterType: FilterType, position: String, city: String) {
+        this.position = position
+        this.city = city
+        val sortedReviews = when (filterType) {
+            FilterType.RATING -> reviews.sortedByDescending { it.markCompany?.averageMark }
+            FilterType.SALARY -> reviews.sortedByDescending { it.markCompany?.salary }
+            FilterType.CHIEF -> reviews.sortedByDescending { it.markCompany?.chief }
+            FilterType.WORKPLACE -> reviews.sortedByDescending { it.markCompany?.workplace }
+            FilterType.CAREER -> reviews.sortedByDescending { it.markCompany?.career }
+            FilterType.COLLECTIVE -> reviews.sortedByDescending { it.markCompany?.collective }
+            FilterType.BENEFITS -> reviews.sortedByDescending { it.markCompany?.socialPackage }
+            FilterType.POPULARITY -> reviews.sortedByDescending { it.like }
+        }
+        viewState.setFilterIcon(R.drawable.ic_filter_applied)
+        if (position.isEmpty() && city.isEmpty()) {
+            viewState.showReviews(sortedReviews)
+            return
+        }
+        var filteredReviews = emptyList<Review>()
+        if (position.isNotEmpty() && city.isNotEmpty()) {
+            filteredReviews = sortedReviews
+                .filter { it.position.equals(position, true) }
+                .filter { it.city.equals(city, true) }
+        } else if (position.isNotEmpty() && city.isEmpty()) {
+            filteredReviews = sortedReviews
+                .filter { it.position.equals(position, true) }
+        } else if (position.isEmpty() && city.isNotEmpty()) {
+            filteredReviews = sortedReviews
+                .filter { it.city.equals(city, true) }
+        }
+        viewState.showReviews(filteredReviews, true)
+    }
+
+    fun filterClick() {
+        viewState.showFilterDialog(position, city)
     }
 }

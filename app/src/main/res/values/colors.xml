@@ -21,5 +21,7 @@
 
     <color name="recommended">#66bb6a</color>
     <color name="not_recommended">#ef5350</color>
+
+    <color name="shimmer_bg">#D1C4E9</color>
 </resources>
 

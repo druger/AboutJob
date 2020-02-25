@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -16,6 +15,7 @@ import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.ReviewAdapter
+import com.druger.aboutwork.enums.FilterType
 import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.CompanyDetailView
@@ -29,7 +29,8 @@ import kotlinx.android.synthetic.main.network_error.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
-class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
+class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
+    FilterDialogFragment.OnFilterListener {
 
     @InjectPresenter
     lateinit var presenter: CompanyDetailPresenter
@@ -61,11 +62,9 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
         setupUI()
         setupUX()
         setupRecycler()
-        setupFabBehavior()
     }
 
     private fun setupUI() {
-        mProgressBar = progressBar
         mLtError = ltError
     }
 
@@ -80,18 +79,11 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
         outState.putString(COMPANY_ID, companyId)
     }
 
-    private fun setupFabBehavior() {
-        scrollView.setOnScrollChangeListener(
-            NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
-                if (scrollY > oldScrollY) fabAddReview.hide()
-                else fabAddReview.show()
-            })
-    }
-
     private fun setupUX() {
         fabAddReview.setOnClickListener { presenter.checkAuthUser() }
         btnRetry.setOnClickListener { companyId?.let { presenter.getCompanyDetail(it) } }
         tvShowDescription.setOnClickListener { showDescription() }
+        ivFilter.setOnClickListener { presenter.filterClick() }
     }
 
     private fun setupToolbar() {
@@ -167,14 +159,24 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
         reviewAdapter.notifyDataSetChanged()
     }
 
-    override fun showReviews(reviews: List<Review>) {
+    override fun showReviews(reviews: List<Review>, isFilter: Boolean) {
         reviewAdapter.addReviews(reviews)
         if (reviews.isEmpty()) {
-            rvReviews.visibility = View.GONE
-            ltNoReviews.visibility = View.VISIBLE
+            if (isFilter) {
+                filterEmpty.visibility = View.VISIBLE
+            } else {
+                rvReviews.visibility = View.GONE
+                ltNoReviews.visibility = View.VISIBLE
+                groupFilter.visibility = View.GONE
+            }
+            tvCountReviews.visibility = View.GONE
         } else {
             rvReviews.visibility = View.VISIBLE
             ltNoReviews.visibility = View.GONE
+            groupFilter.visibility = View.VISIBLE
+            filterEmpty.visibility = View.GONE
+            tvCountReviews.visibility = View.VISIBLE
+            tvCountReviews.text = resources.getQuantityString(R.plurals.reviews, reviews.size, reviews.size)
         }
     }
 
@@ -230,11 +232,12 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
     }
 
     override fun showProgress(show: Boolean) {
-        super.showProgress(show)
         if (show) {
-            ltContent.visibility = View.INVISIBLE
+            reviewPlaceholder.visibility = View.VISIBLE
+            reviewPlaceholder.startShimmer()
         } else {
-            ltContent.visibility = View.VISIBLE
+            reviewPlaceholder.stopShimmer()
+            reviewPlaceholder.visibility = View.GONE
         }
     }
 
@@ -247,14 +250,6 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
         }
     }
 
-    override fun showProgressReview() {
-        progressReview.visibility = View.VISIBLE
-    }
-
-    override fun hideProgressReview() {
-        progressReview.visibility = View.INVISIBLE
-    }
-
     override fun showAuth() {
         replaceFragment(
             AuthFragment.newInstance(
@@ -262,6 +257,19 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView {
                 Screen.COMPANY_DETAIL.name,
                 companyId),
             R.id.content_company)
+    }
+
+    override fun showFilterDialog(position: String, city: String) {
+        val filter = FilterDialogFragment.newInstance(position, city)
+        filter.show(childFragmentManager, null)
+    }
+
+    override fun onFilter(filterType: FilterType, position: String, city: String) {
+        presenter.filterReviews(filterType, position, city)
+    }
+
+    override fun setFilterIcon(icFilter: Int) {
+        ivFilter.setImageResource(icFilter)
     }
 
     companion object {

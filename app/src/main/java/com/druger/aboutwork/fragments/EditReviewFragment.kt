@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
@@ -188,7 +187,7 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
         review.pluses = etPluses.text.toString().trim()
         review.minuses = etMinuses.text.toString().trim()
         review.position = etPosition.text.toString().trim()
-        review.city = etCity.text.toString()
+        review.city = etCity.text.toString().trim()
 
         presenter.doneClick()
     }
@@ -237,14 +236,6 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
         rbSocialPackage.setIsIndicator(indicator)
     }
 
-    private fun showSuggestions(items: List<Any>, view: AutoCompleteTextView) {
-        context?.let {
-            val arrayAdapter = ArrayAdapter<Any>(
-                    it, android.R.layout.simple_dropdown_item_1line, items)
-            view.setAdapter<ArrayAdapter<*>>(arrayAdapter)
-        }
-    }
-
     override fun onNothingSelected(parent: AdapterView<*>?) {
         setIsIndicator(true)
     }
@@ -259,11 +250,11 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
     }
 
     override fun showVacancies(vacancies: List<Vacancy>) {
-        showSuggestions(vacancies, etPosition)
+        Utils.showSuggestions(requireContext(), vacancies, etPosition)
     }
 
     override fun showCities(cities: List<City>) {
-        showSuggestions(cities, etCity)
+        Utils.showSuggestions(requireContext(), cities, etCity)
     }
 
     override fun showWorkingDate() {

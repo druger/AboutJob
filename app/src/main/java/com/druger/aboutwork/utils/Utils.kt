@@ -1,5 +1,6 @@
 package com.druger.aboutwork.utils
 
+import android.R
 import android.content.Context
 import android.graphics.*
 import android.text.SpannableString
@@ -7,6 +8,8 @@ import android.text.Spanned
 import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import androidx.core.content.ContextCompat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -82,5 +85,11 @@ object Utils {
             5, 20),
             0, text?.length ?: 0, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         return string
+    }
+
+    fun showSuggestions(context: Context, items: List<Any>, view: AutoCompleteTextView) {
+        val arrayAdapter = ArrayAdapter<Any>(
+            context, R.layout.simple_dropdown_item_1line, items)
+        view.setAdapter<ArrayAdapter<*>>(arrayAdapter)
     }
 }
