@@ -134,7 +134,6 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
 
     private fun setupUI() {
         bottomNavigation = activity?.findViewById(R.id.bottomNavigation)
-        mProgressBar = progressBar
         mLtError = ltError
     }
 
@@ -175,18 +174,25 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
             ltNoReviews.visibility = View.VISIBLE
             tvNoReviews.text = getString(R.string.no_my_reviews)
             btnFind.visibility = View.VISIBLE
-            content.visibility = View.GONE
+            rvReviews.visibility = View.GONE
+            tvCountReviews.visibility = View.GONE
         } else {
             ltNoReviews.visibility = View.INVISIBLE
-            content.visibility = View.VISIBLE
+            rvReviews.visibility = View.VISIBLE
             reviewAdapter.addReviews(reviews)
+            tvCountReviews.visibility = View.VISIBLE
+            tvCountReviews.text = resources.getQuantityString(R.plurals.reviews, reviews.size, reviews.size)
         }
     }
 
     override fun showProgress(show: Boolean) {
-        super.showProgress(show)
-        if (show) content.visibility = View.INVISIBLE
-        else content.visibility = View.VISIBLE
+        if (show) {
+            reviewPlaceholder.visibility = View.VISIBLE
+            reviewPlaceholder.startShimmer()
+        } else {
+            reviewPlaceholder.stopShimmer()
+            reviewPlaceholder.visibility = View.GONE
+        }
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {

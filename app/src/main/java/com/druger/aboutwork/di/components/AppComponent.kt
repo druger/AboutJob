@@ -29,6 +29,8 @@ interface AppComponent {
 
     val searchPresenter: SearchPresenter
 
+    val filterPresenter: FilterPresenter
+
     fun inject(fragment: AccountFragment)
 
     fun inject(activity: LoginActivity)
@@ -40,4 +42,6 @@ interface AppComponent {
     fun inject(presenter: SelectedReviewPresenter)
 
     fun inject(presenter: AccountPresenter)
+
+    fun inject(presenter: FilterPresenter)
 }

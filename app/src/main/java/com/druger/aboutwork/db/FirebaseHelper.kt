@@ -17,7 +17,7 @@ import java.util.*
  */
 object FirebaseHelper {
     private const val REVIEWS = "reviews"
-    private const val LIKE = "/like"
+    private const val LIKE = "like"
     private const val DISLIKE = "/dislike"
     private const val LIKES_DISLIKES = "/likesDislikes"
     private const val USERS = "users"
@@ -41,7 +41,7 @@ object FirebaseHelper {
 
     fun likeOrDislikeReview(review: Review) {
         val updateLike = ArrayMap<String, Any>()
-        updateLike[REVIEWS + SLASH + review.firebaseKey + LIKE] = review.like
+        updateLike[REVIEWS + SLASH + review.firebaseKey + SLASH + LIKE] = review.like
         updateLike[REVIEWS + SLASH + review.firebaseKey + DISLIKE] = review.dislike
         updateLike[REVIEWS + SLASH + review.firebaseKey + LIKES_DISLIKES] = review.likesDislikes
 
@@ -122,7 +122,7 @@ object FirebaseHelper {
 
     fun likeOrDislikeComment(comment: Comment) {
         val updateLike = ArrayMap<String, Any>()
-        updateLike[COMMENTS + SLASH + comment.id + LIKE] = comment.like
+        updateLike[COMMENTS + SLASH + comment.id + SLASH + LIKE] = comment.like
         updateLike[COMMENTS + SLASH + comment.id + DISLIKE] = comment.dislike
         updateLike[COMMENTS + SLASH + comment.id + LIKES_DISLIKES] = comment.likesDislikes
 

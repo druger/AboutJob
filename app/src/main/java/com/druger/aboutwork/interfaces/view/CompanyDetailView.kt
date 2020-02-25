@@ -1,5 +1,6 @@
 package com.druger.aboutwork.interfaces.view
 
+import androidx.annotation.DrawableRes
 import com.druger.aboutwork.model.CompanyDetail
 import com.druger.aboutwork.model.Review
 import moxy.MvpView
@@ -14,17 +15,18 @@ interface CompanyDetailView : MvpView, NetworkView {
 
     fun updateAdapter()
 
-    fun showReviews(reviews: List<Review>)
+    fun showReviews(reviews: List<Review>, isFilter: Boolean = false)
 
     fun showCompanyDetail(company: CompanyDetail)
-
-    fun showProgressReview()
-
-    fun hideProgressReview()
 
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun showAuth()
 
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun addReview()
+
+    @StateStrategyType(OneExecutionStateStrategy::class)
+    fun showFilterDialog(position: String, city: String)
+
+    fun setFilterIcon(@DrawableRes icFilter: Int)
 }
