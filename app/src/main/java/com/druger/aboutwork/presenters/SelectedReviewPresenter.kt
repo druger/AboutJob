@@ -145,4 +145,8 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
         if (user == null) viewState.showAuth(R.string.dislike_login)
         else viewState.onDislikeClicked()
     }
+
+    fun onClickCompanyName() {
+        viewState.showCompanyDetail(review?.companyId)
+    }
 }

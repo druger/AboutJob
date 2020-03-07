@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.druger.aboutwork.App
 import com.druger.aboutwork.Const.Bundles.DEBOUNCE_SEARCH
 import com.druger.aboutwork.R
+import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.CompanyAdapter
 import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.SearchView
@@ -58,6 +59,7 @@ class SearchFragment : BaseSupportFragment(), SearchView {
         setupRecycler()
         setupListeners()
         setupSearch()
+        (activity as MainActivity).showBottomNavigation()
     }
 
     private fun setupUI() {
