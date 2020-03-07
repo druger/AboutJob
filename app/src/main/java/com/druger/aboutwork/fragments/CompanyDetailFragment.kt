@@ -152,7 +152,6 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
         super.onDestroyView()
         reviewAdapter.setOnClickListener(null)
         presenter.removeAuthListener()
-        (activity as MainActivity).showBottomNavigation()
     }
 
     override fun updateAdapter() {
