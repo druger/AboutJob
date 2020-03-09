@@ -42,7 +42,7 @@ class AccountPresenter @Inject constructor() : BasePresenter<AccountView>() {
                 viewState.showContent()
 
                 val email = user?.email
-                val name = user?.displayName?.split(" ")?.get(0)
+                val name = getUserName()
                 val phone = user?.phoneNumber
 
                 viewState.showName(name)
@@ -53,6 +53,21 @@ class AccountPresenter @Inject constructor() : BasePresenter<AccountView>() {
             }
         }
         authListener?.let { auth?.addAuthStateListener(it) }
+    }
+
+    private fun getUserName(): String? {
+        var name: String? = null
+        user?.let { user ->
+            for (userInfo in user.providerData) {
+                name = if (userInfo.providerId == "google.com") {
+                    userInfo.displayName?.split(" ")?.get(0)
+                    return name
+                } else {
+                    user.displayName
+                }
+            }
+        }
+        return name
     }
 
     fun removeAccount() {

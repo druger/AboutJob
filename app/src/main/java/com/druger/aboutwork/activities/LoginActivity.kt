@@ -104,9 +104,9 @@ class LoginActivity : AppCompatActivity() {
         user?.let { FirebaseHelper.addUser(it, id) }
     }
 
-    private fun setDisplayName(firebaseUser: FirebaseUser, namePhone: String) {
+    private fun setDisplayName(firebaseUser: FirebaseUser, name: String) {
         val profileUpdates = UserProfileChangeRequest.Builder()
-            .setDisplayName(namePhone).build()
+            .setDisplayName(name).build()
         firebaseUser.updateProfile(profileUpdates)
     }
 
