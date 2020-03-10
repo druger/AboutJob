@@ -61,7 +61,6 @@ class AccountPresenter @Inject constructor() : BasePresenter<AccountView>() {
             for (userInfo in user.providerData) {
                 name = if (userInfo.providerId == "google.com") {
                     userInfo.displayName?.split(" ")?.get(0)
-                    return name
                 } else {
                     user.displayName
                 }
