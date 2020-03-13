@@ -6,10 +6,13 @@ import android.os.Build
 import com.druger.aboutwork.App
 import com.druger.aboutwork.BuildConfig
 import com.druger.aboutwork.R
+import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.interfaces.view.AccountView
+import com.druger.aboutwork.model.User
 import com.druger.aboutwork.utils.Analytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.*
 import moxy.InjectViewState
 import timber.log.Timber
 import javax.inject.Inject
@@ -27,6 +30,8 @@ class AccountPresenter @Inject constructor() : BasePresenter<AccountView>() {
     private var auth: FirebaseAuth? = null
     private var authListener: FirebaseAuth.AuthStateListener? = null
     private var user: FirebaseUser? = null
+    private lateinit var dbReference: DatabaseReference
+    private var nameEventListener: ValueEventListener? = null
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -34,6 +39,7 @@ class AccountPresenter @Inject constructor() : BasePresenter<AccountView>() {
     }
 
     fun getUserInfo() {
+        dbReference = FirebaseDatabase.getInstance().reference
         auth = FirebaseAuth.getInstance()
         authListener = FirebaseAuth.AuthStateListener { auth ->
             user = auth.currentUser
@@ -42,10 +48,9 @@ class AccountPresenter @Inject constructor() : BasePresenter<AccountView>() {
                 viewState.showContent()
 
                 val email = user?.email
-                val name = user?.displayName?.split(" ")?.get(0)
                 val phone = user?.phoneNumber
+                getUserName()
 
-                viewState.showName(name)
                 email?.let { if (it.isNotEmpty()) viewState.showEmail(it) }
                 phone?.let { if (it.isNotEmpty()) viewState.showPhone(it) }
             } else {
@@ -53,6 +58,42 @@ class AccountPresenter @Inject constructor() : BasePresenter<AccountView>() {
             }
         }
         authListener?.let { auth?.addAuthStateListener(it) }
+    }
+
+    private fun getUserName() {
+        user?.let { user ->
+            for (userInfo in user.providerData) {
+                if (userInfo.providerId == "google.com") {
+                    getNameFromUsersDb(user.uid, userInfo.displayName)
+                } else {
+                    viewState.showName(user.displayName)
+                }
+            }
+        }
+    }
+
+    private fun getNameFromUsersDb(id: String, displayName: String?) {
+        val queryUser = FirebaseHelper.getUser(dbReference, id)
+        nameEventListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (snapshot in dataSnapshot.children) {
+                        val user = snapshot.getValue(User::class.java)
+                        user?.name?.let { viewState.showName(it) } ?: run {
+                            displayName?.let {
+                                val name = it.split(" ")[0]
+                                viewState.showName(name)
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Timber.e(databaseError.message)
+            }
+        }
+        queryUser.addValueEventListener(nameEventListener as ValueEventListener)
     }
 
     fun removeAccount() {
