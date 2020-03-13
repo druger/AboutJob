@@ -92,7 +92,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun isNewUser(): Boolean {
         val metadata = FirebaseAuth.getInstance().currentUser?.metadata
-        return metadata?.creationTimestamp == metadata?.lastSignInTimestamp
+        val diff = metadata?.lastSignInTimestamp?.minus(metadata.creationTimestamp)
+        return diff == 0L || diff == 1L
     }
 
     private fun saveNewUser() {
@@ -104,9 +105,9 @@ class LoginActivity : AppCompatActivity() {
         user?.let { FirebaseHelper.addUser(it, id) }
     }
 
-    private fun setDisplayName(firebaseUser: FirebaseUser, namePhone: String) {
+    private fun setDisplayName(firebaseUser: FirebaseUser, name: String) {
         val profileUpdates = UserProfileChangeRequest.Builder()
-            .setDisplayName(namePhone).build()
+            .setDisplayName(name).build()
         firebaseUser.updateProfile(profileUpdates)
     }
 
