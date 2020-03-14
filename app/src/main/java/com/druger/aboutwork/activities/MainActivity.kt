@@ -34,7 +34,7 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
         checkAuthUser()
         setupUI()
         bottomNavigation.setOnNavigationItemSelectedListener(this)
-        checkNextScreen()
+        if (savedInstanceState == null) checkNextScreen()
     }
 
     private fun checkNextScreen() {
