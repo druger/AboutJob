@@ -110,15 +110,19 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
         activity?.window?.setSoftInputMode(inputMode)
     }
 
-    override fun showReview(review: Review) {
+    override fun showReviews(reviews: List<Review>) {
         groupReviews.visibility = View.VISIBLE
-        reviewAdapter.addReview(review)
+        reviewAdapter.addReviews(reviews)
     }
 
     override fun showEmptyReviews() {
         groupReviews.visibility = View.GONE
         ltNoReviews.visibility = View.VISIBLE
         tvNoReviews.text = getString(R.string.no_recent_reviews)
+    }
+
+    override fun updateAdapter() {
+        reviewAdapter.notifyDataSetChanged()
     }
 
     private fun showSelectedReview(id: String) {
