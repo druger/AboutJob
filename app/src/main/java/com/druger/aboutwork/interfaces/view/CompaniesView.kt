@@ -12,6 +12,7 @@ import moxy.viewstate.strategy.StateStrategyType
 @StateStrategyType(OneExecutionStateStrategy::class)
 interface CompaniesView : MvpView, NetworkView {
 
-    fun showReview(review: Review)
+    fun showReviews(reviews: List<Review>)
     fun showEmptyReviews()
+    fun updateAdapter()
 }

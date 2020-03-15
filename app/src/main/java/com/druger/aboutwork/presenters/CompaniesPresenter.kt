@@ -51,12 +51,15 @@ constructor(restApi: RestApi) : BasePresenter<CompaniesView>() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (snapshot in dataSnapshot.children) {
-                        snapshot.getValue(Review::class.java)?.let { review ->
-                            review.firebaseKey = snapshot.key
-                            reviews.add(review)
+                        val review = snapshot.getValue(Review::class.java)
+                        review?.let {
+                            it.firebaseKey = snapshot.key
+                            getCompanies(it)
                         }
                     }
-                    getCompanies()
+                    viewState.showProgress(false)
+                    reviews.reverse()
+                    viewState.showReviews(reviews)
                 } else {
                     viewState.showProgress(false)
                     viewState.showEmptyReviews()
@@ -66,18 +69,16 @@ constructor(restApi: RestApi) : BasePresenter<CompaniesView>() {
         reviewsQuery.addValueEventListener(reviewEventListener as ValueEventListener)
     }
 
-    private fun getCompanies() {
-        for (review in reviews) {
-            review.companyId?.let { companyId ->
+    private fun getCompanies(review: Review?) {
+            review?.companyId?.let { companyId ->
                 val queryCompanies = FirebaseHelper.getCompany(dbReference, companyId)
                 companyEventListener = object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         if (dataSnapshot.exists()) {
                             val company = dataSnapshot.getValue(Company::class.java)
                             review.name = company?.name
+                            viewState.updateAdapter()
                         }
-                        viewState.showProgress(false)
-                        viewState.showReview(review)
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {
@@ -86,8 +87,8 @@ constructor(restApi: RestApi) : BasePresenter<CompaniesView>() {
                     }
                 }
                 queryCompanies.addValueEventListener(companyEventListener as ValueEventListener)
+                reviews.add(review)
             }
-        }
     }
 
     override fun onDestroy() {
