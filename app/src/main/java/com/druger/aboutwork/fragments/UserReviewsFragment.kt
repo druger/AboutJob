@@ -15,6 +15,7 @@ import com.druger.aboutwork.interfaces.view.UserReviews
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.UserReviewsPresenter
 import kotlinx.android.synthetic.main.fragment_user_reviews.*
+import kotlinx.android.synthetic.main.no_reviews.*
 import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 
@@ -75,7 +76,14 @@ class UserReviewsFragment : BaseSupportFragment(), UserReviews {
     }
 
     override fun showReviews(reviews: List<Review>) {
-        reviewAdapter?.addReviews(reviews)
+        if (reviews.isNotEmpty()) {
+            reviewAdapter?.addReviews(reviews)
+            tvCountReviews.text = resources.getQuantityString(R.plurals.reviews, reviews.size, reviews.size)
+        } else {
+            groupReviews.visibility = View.GONE
+            ltNoReviews.visibility = View.VISIBLE
+            tvNoReviews.text = getString(R.string.user_no_reviews)
+        }
     }
 
     override fun showName(name: String) {

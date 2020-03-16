@@ -114,6 +114,7 @@
     <string name="at_benefits">At employee benefits</string>
     <string name="at_popularity">At popularity</string>
     <string name="filter_empty">Your search returned no results</string>
+    <string name="user_no_reviews">User don\'t have reviews</string>
 
     <string-array name="work_status">
         <item>@string/working</item>
