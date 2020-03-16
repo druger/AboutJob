@@ -117,6 +117,7 @@
     <string name="at_salary">По зарплате</string>
     <string name="at_workplace">По рабочему месту</string>
     <string name="filter_empty">По вашему запросу ничего не найдено</string>
+    <string name="user_no_reviews">У пользователя нет отзывов</string>
 
     <plurals name="reviews">
         <item quantity="one">%d отзыв</item>
