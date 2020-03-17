@@ -55,10 +55,8 @@ class MyReviewsPresenter : MvpPresenter<MyReviewsView>(), ValueEventListener {
                                     for (data in dataSnapshot.children) {
                                         val company = data.getValue(Company::class.java)
                                         review.name = company?.name
+                                        viewState.updateAdapter()
                                     }
-                                    viewState.showProgress(false)
-                                    // TODO сделать вставку по одному элементу
-                                    viewState.showReviews(reviews)
                                 }
                             }
 
@@ -73,6 +71,8 @@ class MyReviewsPresenter : MvpPresenter<MyReviewsView>(), ValueEventListener {
                     }
                 }
             }
+            viewState.showProgress(false)
+            viewState.showReviews(reviews)
         } else {
             viewState.showProgress(false)
             viewState.showReviews(reviews)
