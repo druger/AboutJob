@@ -185,6 +185,10 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
         }
     }
 
+    override fun updateAdapter() {
+        reviewAdapter.notifyDataSetChanged()
+    }
+
     override fun showProgress(show: Boolean) {
         if (show) {
             reviewPlaceholder.visibility = View.VISIBLE
