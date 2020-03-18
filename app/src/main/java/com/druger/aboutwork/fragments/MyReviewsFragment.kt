@@ -8,7 +8,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.MyReviewAdapter
@@ -29,15 +28,11 @@ import kotlinx.android.synthetic.main.network_error.*
 import kotlinx.android.synthetic.main.no_reviews.*
 import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
-import javax.inject.Inject
 
 class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
     @InjectPresenter
     lateinit var myReviewsPresenter: MyReviewsPresenter
-
-    @Inject
-    lateinit var analytics: Analytics
 
     private lateinit var reviewAdapter: MyReviewAdapter
     private lateinit var touchHelper: ItemTouchHelper
@@ -49,11 +44,6 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
     private var bottomNavigation: BottomNavigationView? = null
 
     private var userId: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        App.appComponent.inject(this)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -119,7 +109,7 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
                     simpleCallback.itemSwipe = false
                 }
                 toggleSelection(position)
-                analytics.logEvent(Analytics.LONG_CLICK_MY_REVIEW)
+                myReviewsPresenter.logEvent(Analytics.LONG_CLICK_MY_REVIEW)
                 return true
             }
         })
@@ -141,11 +131,6 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
         simpleCallback = RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this)
         touchHelper = ItemTouchHelper(simpleCallback)
         touchHelper.attachToRecyclerView(rvReviews)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        myReviewsPresenter.removeListeners()
     }
 
     /**
@@ -216,7 +201,7 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
             }
             reviewAdapter.removeReview(position)
             myReviewsPresenter.removeReview(position)
-            analytics.logEvent(Analytics.SWIPE_MY_REVIEW)
+            myReviewsPresenter.logEvent(Analytics.SWIPE_MY_REVIEW)
         }
     }
 
