@@ -8,6 +8,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.MyReviewAdapter
@@ -28,11 +29,15 @@ import kotlinx.android.synthetic.main.network_error.*
 import kotlinx.android.synthetic.main.no_reviews.*
 import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 
 class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
     @InjectPresenter
     lateinit var myReviewsPresenter: MyReviewsPresenter
+
+    @ProvidePresenter
+    internal fun provideMyReviewsPresenter() = App.appComponent.myReviewsPresenter
 
     private lateinit var reviewAdapter: MyReviewAdapter
     private lateinit var touchHelper: ItemTouchHelper
@@ -155,19 +160,17 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
     }
 
     override fun showReviews(reviews: List<Review>) {
-        if (reviews.isEmpty()) {
-            ltNoReviews.visibility = View.VISIBLE
-            tvNoReviews.text = getString(R.string.no_my_reviews)
-            btnFind.visibility = View.VISIBLE
-            rvReviews.visibility = View.GONE
-            tvCountReviews.visibility = View.GONE
-        } else {
-            ltNoReviews.visibility = View.INVISIBLE
-            rvReviews.visibility = View.VISIBLE
-            reviewAdapter.addReviews(reviews)
-            tvCountReviews.visibility = View.VISIBLE
-            tvCountReviews.text = resources.getQuantityString(R.plurals.reviews, reviews.size, reviews.size)
-        }
+        groupReviews.visibility = View.VISIBLE
+        ltNoReviews.visibility = View.GONE
+        tvCountReviews.text = resources.getQuantityString(R.plurals.reviews, reviews.size, reviews.size)
+        reviewAdapter.addReviews(reviews)
+    }
+
+    override fun showEmptyReviews() {
+        groupReviews.visibility = View.GONE
+        ltNoReviews.visibility = View.VISIBLE
+        tvNoReviews.text = getString(R.string.no_my_reviews)
+        btnFind.visibility = View.VISIBLE
     }
 
     override fun updateAdapter() {
