@@ -48,7 +48,6 @@ class MyReviewsPresenter @Inject constructor() : MvpPresenter<MyReviewsView>(), 
 
     override fun onCancelled(databaseError: DatabaseError) {
         viewState.showProgress(false)
-        viewState.showReviews(reviews)
         Timber.e(databaseError.toException())
     }
 
@@ -86,7 +85,7 @@ class MyReviewsPresenter @Inject constructor() : MvpPresenter<MyReviewsView>(), 
             viewState.showReviews(reviews)
         } else {
             viewState.showProgress(false)
-            viewState.showReviews(reviews)
+            viewState.showEmptyReviews()
         }
     }
 
