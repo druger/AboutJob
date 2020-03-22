@@ -11,6 +11,7 @@ import moxy.viewstate.strategy.StateStrategyType
  * Created by druger on 01.05.2017.
  */
 
+@StateStrategyType(OneExecutionStateStrategy::class)
 interface CompanyDetailView : MvpView, NetworkView {
 
     fun updateAdapter()
@@ -19,14 +20,13 @@ interface CompanyDetailView : MvpView, NetworkView {
 
     fun showCompanyDetail(company: CompanyDetail)
 
-    @StateStrategyType(OneExecutionStateStrategy::class)
     fun showAuth()
 
-    @StateStrategyType(OneExecutionStateStrategy::class)
     fun addReview()
 
-    @StateStrategyType(OneExecutionStateStrategy::class)
     fun showFilterDialog(position: String, city: String)
 
     fun setFilterIcon(@DrawableRes icFilter: Int)
+
+    fun showEmptyReviews(isFilter: Boolean = false)
 }

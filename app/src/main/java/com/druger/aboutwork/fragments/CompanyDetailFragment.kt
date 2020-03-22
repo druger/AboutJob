@@ -160,23 +160,21 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
 
     override fun showReviews(reviews: List<Review>, isFilter: Boolean) {
         reviewAdapter.addReviews(reviews)
-        if (reviews.isEmpty()) {
-            if (isFilter) {
-                filterEmpty.visibility = View.VISIBLE
-            } else {
-                rvReviews.visibility = View.GONE
-                ltNoReviews.visibility = View.VISIBLE
-                groupFilter.visibility = View.GONE
-            }
-            tvCountReviews.visibility = View.GONE
+        groupReviews.visibility = View.VISIBLE
+        ltNoReviews.visibility = View.GONE
+        groupFilter.visibility = View.VISIBLE
+        filterEmpty.visibility = View.GONE
+        tvCountReviews.text = resources.getQuantityString(R.plurals.reviews, reviews.size, reviews.size)
+    }
+
+    override fun showEmptyReviews(isFilter: Boolean) {
+        if (isFilter) {
+            filterEmpty.visibility = View.VISIBLE
         } else {
-            rvReviews.visibility = View.VISIBLE
-            ltNoReviews.visibility = View.GONE
-            groupFilter.visibility = View.VISIBLE
-            filterEmpty.visibility = View.GONE
-            tvCountReviews.visibility = View.VISIBLE
-            tvCountReviews.text = resources.getQuantityString(R.plurals.reviews, reviews.size, reviews.size)
+            ltNoReviews.visibility = View.VISIBLE
+            groupFilter.visibility = View.GONE
         }
+        groupReviews.visibility = View.GONE
     }
 
     override fun showCompanyDetail(company: CompanyDetail) {
