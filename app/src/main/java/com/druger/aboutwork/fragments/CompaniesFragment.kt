@@ -51,7 +51,6 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
         setupToolbar()
         setupListeners()
         setupRecycler()
-        reviewAdapter.removeReviews()
         fetchReviews()
     }
 

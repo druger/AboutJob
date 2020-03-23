@@ -137,7 +137,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tvFilter"
             tools:text="10 reviews"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvReviews"
@@ -163,7 +163,6 @@
 
             <include layout="@layout/shimmer_content_companies" />
         </com.facebook.shimmer.ShimmerFrameLayout>
-
 
         <include
             android:id="@+id/ltNoReviews"
@@ -193,6 +192,14 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:constraint_referenced_ids="tvFilter,ivFilter"
+            tools:visibility="visible" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/groupReviews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="rvReviews,tvCountReviews"
             tools:visibility="visible"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
