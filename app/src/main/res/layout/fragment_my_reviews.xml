@@ -50,6 +50,14 @@
         <include layout="@layout/shimmer_content_companies" />
     </com.facebook.shimmer.ShimmerFrameLayout>
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupReviews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="tvCountReviews,rvReviews"
+        tools:visibility="visible" />
+
     <include
         android:id="@+id/ltNoReviews"
         layout="@layout/no_reviews"

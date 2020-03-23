@@ -12,4 +12,6 @@ import moxy.viewstate.strategy.StateStrategyType
 interface MyReviewsView : MvpView, NetworkView {
 
     fun showReviews(reviews: List<Review>)
+    fun updateAdapter()
+    fun showEmptyReviews()
 }

@@ -1,26 +1,37 @@
 package com.druger.aboutwork.presenters
 
+import com.druger.aboutwork.App
 import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.interfaces.view.MyReviewsView
 import com.druger.aboutwork.model.Company
 import com.druger.aboutwork.model.Review
+import com.druger.aboutwork.utils.Analytics
 import com.google.firebase.database.*
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import timber.log.Timber
 import java.util.*
+import javax.inject.Inject
 
 /**
  * Created by druger on 09.05.2017.
  */
 
 @InjectViewState
-class MyReviewsPresenter : MvpPresenter<MyReviewsView>(), ValueEventListener {
+class MyReviewsPresenter @Inject constructor() : MvpPresenter<MyReviewsView>(), ValueEventListener {
+
+    @Inject
+    lateinit var analytics: Analytics
 
     private lateinit var dbReference: DatabaseReference
     private var valueEventListener: ValueEventListener? = null
 
     private val reviews = ArrayList<Review>()
+
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        App.appComponent.inject(this)
+    }
 
     fun fetchReviews(userId: String) {
         viewState.showProgress(true)
@@ -37,7 +48,6 @@ class MyReviewsPresenter : MvpPresenter<MyReviewsView>(), ValueEventListener {
 
     override fun onCancelled(databaseError: DatabaseError) {
         viewState.showProgress(false)
-        viewState.showReviews(reviews)
         Timber.e(databaseError.toException())
     }
 
@@ -55,10 +65,8 @@ class MyReviewsPresenter : MvpPresenter<MyReviewsView>(), ValueEventListener {
                                     for (data in dataSnapshot.children) {
                                         val company = data.getValue(Company::class.java)
                                         review.name = company?.name
+                                        viewState.updateAdapter()
                                     }
-                                    viewState.showProgress(false)
-                                    // TODO сделать вставку по одному элементу
-                                    viewState.showReviews(reviews)
                                 }
                             }
 
@@ -73,13 +81,20 @@ class MyReviewsPresenter : MvpPresenter<MyReviewsView>(), ValueEventListener {
                     }
                 }
             }
-        } else {
             viewState.showProgress(false)
             viewState.showReviews(reviews)
+        } else {
+            viewState.showProgress(false)
+            viewState.showEmptyReviews()
         }
     }
 
-    fun removeListeners() {
+    override fun onDestroy() {
+        super.onDestroy()
+        removeListeners()
+    }
+
+    private fun removeListeners() {
         valueEventListener?.let {
             dbReference.removeEventListener(this)
             dbReference.removeEventListener(it)
@@ -104,5 +119,9 @@ class MyReviewsPresenter : MvpPresenter<MyReviewsView>(), ValueEventListener {
 
     fun addToFirebase(review: Review) {
         FirebaseHelper.addReview(review)
+    }
+
+    fun logEvent(event: String) {
+        analytics.logEvent(event)
     }
 }

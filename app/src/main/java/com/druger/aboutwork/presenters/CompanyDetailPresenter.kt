@@ -55,35 +55,40 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
     private fun fetchReviews(dataSnapshot: DataSnapshot) {
         reviews.clear()
 
-        for (snapshot in dataSnapshot.children) {
-            val review = snapshot.getValue(Review::class.java)
-            dbReference?.let { db ->
-                val queryUser = review?.userId?.let { FirebaseHelper.getUser(db, it) }
-                valueEventListener = object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            for (data in dataSnapshot.children) {
-                                val user = data.getValue(User::class.java)
-                                review?.name = user?.name
-                                viewState.updateAdapter()
+        if (dataSnapshot.exists()) {
+            for (snapshot in dataSnapshot.children) {
+                val review = snapshot.getValue(Review::class.java)
+                dbReference?.let { db ->
+                    val queryUser = review?.userId?.let { FirebaseHelper.getUser(db, it) }
+                    valueEventListener = object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                for (data in dataSnapshot.children) {
+                                    val user = data.getValue(User::class.java)
+                                    review?.name = user?.name
+                                    viewState.updateAdapter()
+                                }
                             }
                         }
-                    }
 
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        Timber.e(databaseError.message)
-                        viewState.showProgress(false)
+                        override fun onCancelled(databaseError: DatabaseError) {
+                            Timber.e(databaseError.message)
+                            viewState.showProgress(false)
+                        }
                     }
+                    valueEventListener?.let { queryUser?.addValueEventListener(it) }
                 }
-                valueEventListener?.let { queryUser?.addValueEventListener(it) }
+                review?.firebaseKey = snapshot.key
+                review?.let { reviews.add(it) }
             }
-            review?.firebaseKey = snapshot.key
-            review?.let { reviews.add(it) }
+            viewState.showProgress(false)
+            reviews.reverse()
+            viewState.showReviews(reviews)
+            checkFilterSettings()
+        } else {
+            viewState.showProgress(false)
+            viewState.showEmptyReviews()
         }
-        viewState.showProgress(false)
-        reviews.reverse()
-        viewState.showReviews(reviews)
-        checkFilterSettings()
     }
 
     private fun checkFilterSettings() {
@@ -163,7 +168,8 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
         }
         viewState.setFilterIcon(R.drawable.ic_filter_applied)
         if (position.isEmpty() && city.isEmpty()) {
-            viewState.showReviews(sortedReviews)
+            if (sortedReviews.isNotEmpty()) viewState.showReviews(sortedReviews)
+            else viewState.showEmptyReviews()
             return
         }
         var filteredReviews = emptyList<Review>()
@@ -178,7 +184,8 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
             filteredReviews = sortedReviews
                 .filter { it.city.equals(city, true) }
         }
-        viewState.showReviews(filteredReviews, true)
+        if (filteredReviews.isNotEmpty()) viewState.showReviews(filteredReviews, true)
+        else viewState.showEmptyReviews(true)
     }
 
     fun filterClick() {

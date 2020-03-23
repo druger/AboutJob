@@ -409,7 +409,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
 
     override fun showCompanyDetail(companyId: String?) {
         companyId?.let {
-            addFragment(CompanyDetailFragment.newInstance(companyId), R.id.main_container, true)
+            replaceFragment(CompanyDetailFragment.newInstance(companyId), R.id.main_container, true)
         }
     }
 
