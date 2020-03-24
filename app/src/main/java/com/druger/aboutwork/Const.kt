@@ -10,7 +10,6 @@ object Const {
 
         const val DEBOUNCE_SEARCH = 500
 
-        const val EDIT_MODE = "editMode"
         const val NAME = "name"
         const val USER_ID = "userId"
     }

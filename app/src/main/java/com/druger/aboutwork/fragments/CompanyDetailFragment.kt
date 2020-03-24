@@ -100,7 +100,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
         reviewAdapter.setOnClickListener(object : OnItemClickListener<Review> {
             override fun onClick(review: Review, position: Int) {
                 review.firebaseKey?.let {
-                    val reviewFragment = SelectedReviewFragment.newInstance(it, false)
+                    val reviewFragment = SelectedReviewFragment.newInstance(it)
                     replaceFragment(reviewFragment, R.id.main_container, true)
                 }
             }
