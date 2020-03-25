@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.collection.ArrayMap
 import androidx.recyclerview.widget.DefaultItemAnimator
-import com.druger.aboutwork.Const.Bundles.EDIT_MODE
 import com.druger.aboutwork.Const.Colors.BLACK
 import com.druger.aboutwork.Const.Colors.DISLIKE
 import com.druger.aboutwork.Const.Colors.LIKE
@@ -49,6 +48,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
     private var reviewKey: String? = null
     private var message: String? = null // if we came after Login shouldn't be null
     private var editMode: Boolean = false
+    private var showUserName: Boolean = false
     private var likesDislikes: MutableMap<String, Boolean>? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -70,6 +70,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             reviewKey = getString(REVIEW_KEY)
             message = getString(MESSAGE)
             editMode = getBoolean(EDIT_MODE)
+            showUserName = getBoolean(SHOW_USER_NAME)
         }
     }
 
@@ -147,7 +148,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         if (editMode) {
             ivEdit.setOnClickListener { showEditReview() }
         }
-        tvName.setOnClickListener { presenter.onClickCompanyName() }
+        tvName.setOnClickListener { presenter.onClickName(showUserName) }
     }
 
     private fun setupToolbar() {
@@ -160,7 +161,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
     }
 
     private fun getReview() {
-        reviewKey?.let { presenter.getReview(it) }
+        reviewKey?.let { presenter.getReview(it, showUserName) }
     }
 
     override fun setReview(review: Review?) {
@@ -413,19 +414,38 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         }
     }
 
+    override fun showUserReviews(userId: String?) {
+        userId?.let { replaceFragment(UserReviewsFragment.newInstance(userId), R.id.main_container, true) }
+    }
+
     companion object {
         private const val NEW = 0
         private const val UPDATE = 1
         private const val REVIEW_KEY = "review_key"
         private const val MESSAGE = "message"
+        private const val EDIT_MODE = "editMode"
+        private const val SHOW_USER_NAME = "show_user_name"
 
         fun newInstance(reviewKey: String, editMode: Boolean, message: String? = null): SelectedReviewFragment {
 
-            val args = Bundle()
-            args.putString(REVIEW_KEY, reviewKey)
-            args.putString(MESSAGE, message)
-            args.putBoolean(EDIT_MODE, editMode)
+            val args = Bundle().apply {
+                putString(REVIEW_KEY, reviewKey)
+                putString(MESSAGE, message)
+                putBoolean(EDIT_MODE, editMode)
+            }
 
+            return createSelectedReviewFragment(args)
+        }
+
+        fun newInstance(reviewKey: String): SelectedReviewFragment {
+            val args = Bundle().apply {
+                putString(REVIEW_KEY, reviewKey)
+                putBoolean(SHOW_USER_NAME, true)
+            }
+            return createSelectedReviewFragment(args)
+        }
+
+        private fun createSelectedReviewFragment(args: Bundle): SelectedReviewFragment {
             val fragment = SelectedReviewFragment()
             fragment.arguments = args
             return fragment
