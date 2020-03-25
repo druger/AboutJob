@@ -148,7 +148,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         if (editMode) {
             ivEdit.setOnClickListener { showEditReview() }
         }
-        tvName.setOnClickListener { presenter.onClickCompanyName() }
+        tvName.setOnClickListener { presenter.onClickName(showUserName) }
     }
 
     private fun setupToolbar() {
@@ -412,6 +412,10 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         companyId?.let {
             replaceFragment(CompanyDetailFragment.newInstance(companyId), R.id.main_container, true)
         }
+    }
+
+    override fun showUserReviews(userId: String?) {
+        userId?.let { replaceFragment(UserReviewsFragment.newInstance(userId), R.id.main_container, true) }
     }
 
     companion object {
