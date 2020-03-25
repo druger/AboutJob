@@ -8,6 +8,7 @@ import com.druger.aboutwork.interfaces.view.SelectedReview
 import com.druger.aboutwork.model.Comment
 import com.druger.aboutwork.model.Company
 import com.druger.aboutwork.model.Review
+import com.druger.aboutwork.model.User
 import com.druger.aboutwork.utils.Analytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -16,6 +17,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import moxy.InjectViewState
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -27,8 +29,8 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
 
     var user: FirebaseUser? = null
     private var dbReference = FirebaseDatabase.getInstance().reference
-    private lateinit var reviewListener: ValueEventListener
-    private lateinit var companyListener: ValueEventListener
+    private var reviewListener: ValueEventListener? = null
+    private var nameListener: ValueEventListener? = null
 
     private var comments: List<Comment> = emptyList()
     lateinit var comment: Comment
@@ -102,10 +104,10 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
 
     fun removeListeners() {
         dbReference.removeEventListener(this)
-        reviewListener.let { dbReference.removeEventListener(reviewListener) }
+        reviewListener?.let { dbReference.removeEventListener(it) }
     }
 
-    fun getReview(reviewKey: String) {
+    fun getReview(reviewKey: String, showUserName: Boolean) {
         val queryReview = FirebaseHelper.getReview(dbReference, reviewKey)
         reviewListener = object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
@@ -113,10 +115,29 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
             override fun onDataChange(snapshot: DataSnapshot) {
                 review = snapshot.getValue(Review::class.java)
                 review?.firebaseKey = snapshot.key
-                getCompany()
+                if (showUserName) getUserName()
+                else getCompany()
             }
         }
-        queryReview.addValueEventListener(reviewListener)
+        queryReview.addValueEventListener(reviewListener as ValueEventListener)
+    }
+
+    private fun getUserName() {
+        val queryUser = review?.userId?.let { FirebaseHelper.getUser(dbReference, it) }
+        nameListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (data in dataSnapshot.children) {
+                    val user = data.getValue(User::class.java)
+                    review?.name = user?.name
+                    viewState.setReview(review)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Timber.e(databaseError.message)
+            }
+        }
+        queryUser?.addValueEventListener(nameListener as ValueEventListener)
     }
 
     private fun getCompany() {
@@ -124,8 +145,10 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
             review.companyId?.let { id ->
             FirebaseHelper.getCompany(dbReference, id)
         } }
-        companyListener = object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {}
+        nameListener = object : ValueEventListener {
+            override fun onCancelled(databaseError: DatabaseError) {
+                Timber.e(databaseError.message)
+            }
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 val company = snapshot.getValue(Company::class.java)
@@ -133,7 +156,7 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
                 viewState.setReview(review)
             }
         }
-        queryCompany?.addValueEventListener(companyListener)
+        queryCompany?.addValueEventListener(nameListener as ValueEventListener)
     }
 
     fun clickLike() {
@@ -146,7 +169,8 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
         else viewState.onDislikeClicked()
     }
 
-    fun onClickCompanyName() {
-        viewState.showCompanyDetail(review?.companyId)
+    fun onClickName(showUserName: Boolean) {
+        if (showUserName) viewState.showUserReviews(review?.userId)
+        else viewState.showCompanyDetail(review?.companyId)
     }
 }

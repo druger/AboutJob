@@ -20,4 +20,5 @@ interface SelectedReview: MvpView {
     fun setupComments(user: FirebaseUser?)
     fun clearMessage()
     fun showCompanyDetail(companyId: String?)
+    fun showUserReviews(userId: String?)
 }
