@@ -118,6 +118,7 @@
     <string name="at_workplace">По рабочему месту</string>
     <string name="filter_empty">По вашему запросу ничего не найдено</string>
     <string name="user_no_reviews">У пользователя нет отзывов</string>
+    <string name="add_photo">Добавить фото</string>
 
     <plurals name="reviews">
         <item quantity="one">%d отзыв</item>

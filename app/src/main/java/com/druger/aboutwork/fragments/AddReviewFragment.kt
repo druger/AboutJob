@@ -94,13 +94,18 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     }
 
     private fun setupListeners() {
-        etEmploymentDate.setOnClickListener{ employmentDateClick() }
-        etDismissalDate.setOnClickListener{ dismissalDateClick() }
+        etEmploymentDate.setOnClickListener { employmentDateClick() }
+        etDismissalDate.setOnClickListener { dismissalDateClick() }
         cityChanges()
         positionChanges()
         spinnerStatus.onItemSelectedListener = this
         setupRatingChanges()
         radioGroupRecommendedListener()
+        ivAddPhoto.setOnClickListener { chosePhoto() }
+    }
+
+    private fun chosePhoto() {
+
     }
 
     private fun radioGroupRecommendedListener() {
