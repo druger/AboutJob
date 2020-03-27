@@ -311,6 +311,29 @@
                 android:text="@string/not_recommended" />
         </RadioGroup>
 
+        <ImageView
+            android:id="@+id/ivAddPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rgRecommended"
+            app:srcCompat="@drawable/ic_add_photo" />
+
+        <TextView
+            android:id="@+id/tvAddPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/add_photo"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/ivAddPhoto"
+            app:layout_constraintStart_toStartOf="@+id/ivAddPhoto"
+            app:layout_constraintTop_toBottomOf="@+id/ivAddPhoto"/>
+
         <include
             android:id="@+id/include2"
             layout="@layout/separate_line"
