@@ -1,6 +1,7 @@
 package com.druger.aboutwork.fragments
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -23,6 +24,8 @@ import kotlinx.android.synthetic.main.content_review.*
 import kotlinx.android.synthetic.main.toolbar_review.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
+import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.EasyPermissions
 
 
 class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListener, AddReviewView {
@@ -38,6 +41,10 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     }
 
     companion object{
+        private const val RC_FILES = 1111
+        private const val RC_PICK_IMAGE = 1
+        private const val MIME_TYPE = "image/*"
+
         fun newInstance(companyId: String, companyName: String): AddReviewFragment {
 
             val args = Bundle()
@@ -101,11 +108,31 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         spinnerStatus.onItemSelectedListener = this
         setupRatingChanges()
         radioGroupRecommendedListener()
-        ivAddPhoto.setOnClickListener { chosePhoto() }
+        ivAddPhoto.setOnClickListener { checkPermission() }
     }
 
-    private fun chosePhoto() {
+    @AfterPermissionGranted(RC_FILES)
+    private fun checkPermission() {
+        val perms = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        if (EasyPermissions.hasPermissions(requireContext(), *perms)) {
+            choosePhotos()
+        } else {
+            EasyPermissions.requestPermissions(this, getString(R.string.permision_read_files), RC_FILES, *perms)
+        }
+    }
 
+    private fun choosePhotos() {
+        val intent = Intent().apply {
+            type = MIME_TYPE
+            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            action = Intent.ACTION_GET_CONTENT
+        }
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.select_photo)), RC_PICK_IMAGE)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 
     private fun radioGroupRecommendedListener() {

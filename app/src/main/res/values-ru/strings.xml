@@ -126,5 +126,7 @@
         <item quantity="many">%d отзывов</item>
         <item quantity="other">%d отзывов</item>
     </plurals>
+    <string name="permision_read_files">Разрешите доступ чтобы добавить фото</string>
+    <string name="select_photo">Выбрать фото</string>
 
 </resources>
