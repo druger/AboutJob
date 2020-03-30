@@ -1,5 +1,7 @@
 package com.druger.aboutwork.presenters
 
+import android.content.Intent
+import android.net.Uri
 import android.text.TextUtils
 import com.druger.aboutwork.App
 import com.druger.aboutwork.Const.ReviewStatus.INTERVIEW_STATUS
@@ -35,6 +37,8 @@ constructor(restApi: RestApi) : BasePresenter<AddReviewView>() {
 
     lateinit var review: Review
     private var mark: MarkCompany? = null
+
+    private lateinit var uri: Array<Uri?>
 
     init {
         this.restApi = restApi
@@ -177,5 +181,15 @@ constructor(restApi: RestApi) : BasePresenter<AddReviewView>() {
 
     fun clearRecommended() {
         review.recommended = null
+    }
+
+    fun getUriImages(data: Intent?) {
+        val clipData = data?.clipData
+        clipData?.let { cd ->
+            uri = arrayOfNulls(cd.itemCount)
+            for (i in 0..uri.size) {
+                uri[i] = cd.getItemAt(i).uri
+            }
+        }
     }
 }
