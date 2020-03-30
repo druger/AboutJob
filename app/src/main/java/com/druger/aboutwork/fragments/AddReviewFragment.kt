@@ -1,6 +1,7 @@
 package com.druger.aboutwork.fragments
 
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -133,6 +134,13 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK && requestCode == RC_PICK_IMAGE) {
+            presenter.getUriImages(data)
+        }
     }
 
     private fun radioGroupRecommendedListener() {
