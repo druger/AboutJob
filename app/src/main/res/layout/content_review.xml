@@ -333,7 +333,7 @@
             android:id="@+id/groupInterview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="rbCollective,rbSocialPackage,tvWorkplace,tvCollective,tvSalary,tvChief,rbChief,tvSocialPackage,tvCareer,rbSalary,rbWorkplace,rbCareer,view,rgRecommended,tvDateInfo" />
+            app:constraint_referenced_ids="rbCollective,rbSocialPackage,tvWorkplace,tvCollective,tvSalary,tvChief,rbChief,tvSocialPackage,tvCareer,rbSalary,rbWorkplace,rbCareer,view,rgRecommended,tvDateInfo,ivAddPhoto,tvAddPhoto" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

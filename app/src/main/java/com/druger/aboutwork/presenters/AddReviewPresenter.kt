@@ -9,6 +9,7 @@ import com.druger.aboutwork.Const.ReviewStatus.NOT_SELECTED_STATUS
 import com.druger.aboutwork.Const.ReviewStatus.WORKED_STATUS
 import com.druger.aboutwork.Const.ReviewStatus.WORKING_STATUS
 import com.druger.aboutwork.db.FirebaseHelper
+import com.druger.aboutwork.db.FirebaseHelper.REVIEW_PHOTOS
 import com.druger.aboutwork.interfaces.view.AddReviewView
 import com.druger.aboutwork.model.Company
 import com.druger.aboutwork.model.MarkCompany
@@ -19,7 +20,10 @@ import com.druger.aboutwork.rest.models.VacancyResponse
 import com.druger.aboutwork.utils.Analytics
 import com.druger.aboutwork.utils.rx.RxUtils
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import moxy.InjectViewState
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -70,11 +74,28 @@ constructor(restApi: RestApi) : BasePresenter<AddReviewView>() {
     private fun addReview(company: Company) {
         if (isCorrectStatus() && isCorrectReview(review)) {
             review.status = status
+            uploadPhotos()
             FirebaseHelper.addReview(review)
             FirebaseHelper.addCompany(company)
             viewState.successfulAddition()
         } else {
             viewState.showErrorAdding()
+        }
+    }
+
+    private fun uploadPhotos() {
+        val storageRef = Firebase.storage.reference
+        for (uri in uri) {
+            val lastPathSegment = uri?.lastPathSegment
+            val photoRef = storageRef.child(REVIEW_PHOTOS + review.firebaseKey + "/$lastPathSegment")
+            uri?.let { u ->
+                photoRef.putFile(u).apply {
+                    addOnSuccessListener { snapshot ->
+                        Timber.d(snapshot.metadata.toString())
+                    }
+                    addOnFailureListener { Timber.e(it) }
+                }
+            }
         }
     }
 
@@ -187,9 +208,9 @@ constructor(restApi: RestApi) : BasePresenter<AddReviewView>() {
         val clipData = data?.clipData
         clipData?.let { cd ->
             uri = arrayOfNulls(cd.itemCount)
-            for (i in 0..uri.size) {
+            for (i in uri.indices) {
                 uri[i] = cd.getItemAt(i).uri
             }
-        }
+        } ?: run { uri = arrayOf(data?.data) }
     }
 }
