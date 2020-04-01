@@ -74,20 +74,20 @@ constructor(restApi: RestApi) : BasePresenter<AddReviewView>() {
     private fun addReview(company: Company) {
         if (isCorrectStatus() && isCorrectReview(review)) {
             review.status = status
-            uploadPhotos()
-            FirebaseHelper.addReview(review)
+            val reviewKey = FirebaseHelper.addReview(review)
             FirebaseHelper.addCompany(company)
+            uploadPhotos(reviewKey)
             viewState.successfulAddition()
         } else {
             viewState.showErrorAdding()
         }
     }
 
-    private fun uploadPhotos() {
+    private fun uploadPhotos(reviewKey: String?) {
         val storageRef = Firebase.storage.reference
         for (uri in uri) {
             val lastPathSegment = uri?.lastPathSegment
-            val photoRef = storageRef.child(REVIEW_PHOTOS + review.firebaseKey + "/$lastPathSegment")
+            val photoRef = storageRef.child("$REVIEW_PHOTOS$reviewKey/$lastPathSegment")
             uri?.let { u ->
                 photoRef.putFile(u).apply {
                     addOnSuccessListener { snapshot ->
