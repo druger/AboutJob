@@ -90,9 +90,9 @@
             style="@style/reviewRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:stepSize="1"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:stepSize="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvCollective" />
 
@@ -171,8 +171,8 @@
                 android:id="@+id/etPosition"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/position_"
-                android:completionThreshold="2"/>
+                android:completionThreshold="2"
+                android:hint="@string/position_" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -224,8 +224,8 @@
                 android:id="@+id/etCity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/city_"
-                android:completionThreshold="2" />
+                android:completionThreshold="2"
+                android:hint="@string/city_" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -327,13 +327,33 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/ivAddPhoto"
             app:layout_constraintStart_toStartOf="@+id/ivAddPhoto"
-            app:layout_constraintTop_toBottomOf="@+id/ivAddPhoto"/>
+            app:layout_constraintTop_toBottomOf="@+id/ivAddPhoto" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/groupInterview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:constraint_referenced_ids="rbCollective,rbSocialPackage,tvWorkplace,tvCollective,tvSalary,tvChief,rbChief,tvSocialPackage,tvCareer,rbSalary,rbWorkplace,rbCareer,view,rgRecommended,tvDateInfo,ivAddPhoto,tvAddPhoto" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPhotos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rgRecommended" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/groupPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="ivAddPhoto,tvAddPhoto" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
