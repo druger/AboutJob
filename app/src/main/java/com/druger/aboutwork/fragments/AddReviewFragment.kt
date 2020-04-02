@@ -3,6 +3,7 @@ package com.druger.aboutwork.fragments
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,6 +16,7 @@ import android.widget.Toast
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
+import com.druger.aboutwork.adapters.PhotoAdapter
 import com.druger.aboutwork.interfaces.view.AddReviewView
 import com.druger.aboutwork.model.City
 import com.druger.aboutwork.model.Review
@@ -35,6 +37,8 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     lateinit var presenter: AddReviewPresenter
 
     private lateinit var datePicker: DatePickerFragment
+
+    private var photoAdapter: PhotoAdapter? = null
 
     @ProvidePresenter
     fun provideAddReviewPresenter(): AddReviewPresenter {
@@ -76,6 +80,15 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         setupWorkStatus()
         setupCompanyRating()
         setupListeners()
+        setupRecycler()
+    }
+
+    private fun setupRecycler() {
+        photoAdapter = PhotoAdapter()
+        rvPhotos.apply {
+            adapter = photoAdapter
+            setHasFixedSize(true)
+        }
     }
 
     override fun onDestroy() {
@@ -304,5 +317,11 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         ltEmploymentDate.visibility = View.GONE
         ltDismissalDate.visibility = View.GONE
         groupInterview.visibility = View.GONE
+    }
+
+    override fun showPhotos(uri: Array<Uri?>) {
+        groupPhoto.visibility = View.GONE
+        rvPhotos.visibility = View.VISIBLE
+        photoAdapter?.addItems(uri)
     }
 }

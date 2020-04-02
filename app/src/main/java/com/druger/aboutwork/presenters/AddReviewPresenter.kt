@@ -212,5 +212,6 @@ constructor(restApi: RestApi) : BasePresenter<AddReviewView>() {
                 uri[i] = cd.getItemAt(i).uri
             }
         } ?: run { uri = arrayOf(data?.data) }
+        viewState.showPhotos(uri)
     }
 }
