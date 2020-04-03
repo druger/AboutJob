@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.recyclerview.widget.DefaultItemAnimator
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
@@ -88,6 +89,7 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         rvPhotos.apply {
             adapter = photoAdapter
             setHasFixedSize(true)
+            itemAnimator = DefaultItemAnimator()
         }
     }
 
@@ -322,6 +324,6 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     override fun showPhotos(uri: Array<Uri?>) {
         groupPhoto.visibility = View.GONE
         rvPhotos.visibility = View.VISIBLE
-        photoAdapter?.addItems(uri)
+        photoAdapter?.addPhotos(uri)
     }
 }

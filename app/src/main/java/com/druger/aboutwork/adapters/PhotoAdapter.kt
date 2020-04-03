@@ -19,13 +19,19 @@ class PhotoAdapter(private val uri: MutableList<Uri?> = mutableListOf()): Recycl
     override fun getItemCount(): Int = uri.size
 
     override fun onBindViewHolder(holder: PhotoHolder, position: Int) {
-        Glide.with(holder.itemView).load(uri[position]).into(holder.itemView.ivPhoto)
+        Glide.with(holder.itemView).load(uri[position]).centerCrop().into(holder.itemView.ivPhoto)
+        holder.itemView.ivRemove.setOnClickListener { removePhoto(position) }
     }
 
     class PhotoHolder(view: View): RecyclerView.ViewHolder(view)
 
-    fun addItems(uri: Array<Uri?>) {
+    fun addPhotos(uri: Array<Uri?>) {
         this.uri.addAll(uri)
         notifyDataSetChanged()
+    }
+
+    private fun removePhoto(position: Int) {
+        uri.removeAt(position)
+        notifyItemRemoved(position)
     }
 }
