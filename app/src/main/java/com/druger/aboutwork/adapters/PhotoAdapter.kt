@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.druger.aboutwork.R
 import kotlinx.android.synthetic.main.item_photo.view.*
 
-class PhotoAdapter(private val uri: Array<Uri?> = emptyArray()): RecyclerView.Adapter<PhotoAdapter.PhotoHolder>() {
+class PhotoAdapter(private val uri: MutableList<Uri?> = mutableListOf()): RecyclerView.Adapter<PhotoAdapter.PhotoHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_photo, parent, false)
@@ -25,7 +25,7 @@ class PhotoAdapter(private val uri: Array<Uri?> = emptyArray()): RecyclerView.Ad
     class PhotoHolder(view: View): RecyclerView.ViewHolder(view)
 
     fun addItems(uri: Array<Uri?>) {
-        this.uri.toMutableSet().addAll(uri)
+        this.uri.addAll(uri)
         notifyDataSetChanged()
     }
 }
