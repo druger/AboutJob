@@ -180,6 +180,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             message?.let { etMessage.setText(it) }
             checkMessage()
             setRecommendation(review)
+            presenter.getPhotos(review.firebaseKey)
         }
     }
 
