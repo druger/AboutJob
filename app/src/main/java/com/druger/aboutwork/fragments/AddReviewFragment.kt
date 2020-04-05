@@ -39,7 +39,7 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
 
     private lateinit var datePicker: DatePickerFragment
 
-    private var photoAdapter: PhotoAdapter? = null
+    private var photoAdapter: PhotoAdapter<Uri>? = null
 
     @ProvidePresenter
     fun provideAddReviewPresenter(): AddReviewPresenter {

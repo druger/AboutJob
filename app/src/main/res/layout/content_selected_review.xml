@@ -50,9 +50,9 @@
                         android:id="@+id/tvDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/tvMinuses"
-                        app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
                         tools:text="06.08.2018" />
 
                     <TextView
@@ -279,6 +279,21 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvPluses" />
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvPhotos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintBottom_toTopOf="@+id/tvDate"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
+                        tools:listitem="@layout/item_photo"
+                        tools:visibility="visible" />
 
                     <TextView
                         android:id="@+id/tvDislike"
@@ -317,10 +332,10 @@
                         android:id="@+id/ivLike"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="@dimen/ultra_small_margin"
+                        app:layout_constraintBottom_toBottomOf="@+id/tvDate"
                         app:layout_constraintEnd_toStartOf="@+id/tvLike"
-                        app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
+                        app:layout_constraintTop_toTopOf="@+id/tvDate"
                         app:srcCompat="@drawable/thumb_up" />
 
                     <androidx.constraintlayout.widget.Group

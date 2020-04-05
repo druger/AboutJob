@@ -179,8 +179,9 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
     fun getPhotos(reviewId: String?) {
         val storageRef = Firebase.storage.reference
         val path = FirebaseHelper.REVIEW_PHOTOS + reviewId
-        storageRef.child(path).listAll().addOnSuccessListener {
-
-        }.addOnFailureListener { Timber.e(it) }
+        storageRef.child(path).listAll()
+            .addOnSuccessListener { if (it.items.isNotEmpty()) viewState.showPhotos(it.items)
+            }
+            .addOnFailureListener { Timber.e(it) }
     }
 }
