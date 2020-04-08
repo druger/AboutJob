@@ -1,11 +1,13 @@
 package com.druger.aboutwork.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.druger.aboutwork.R
+import com.stfalcon.imageviewer.StfalconImageViewer
 import kotlinx.android.synthetic.main.item_photo.view.*
 
 class PhotoAdapter<T>(
@@ -27,6 +29,13 @@ class PhotoAdapter<T>(
         } else {
             holder.itemView.ivRemove.visibility = View.GONE
         }
+        holder.itemView.ivPhoto.setOnClickListener { showFullScreen(holder.itemView.context) }
+    }
+
+    private fun showFullScreen(context: Context) {
+        StfalconImageViewer.Builder<T>(context, uri) { imageView, image ->
+            Glide.with(context).load(image).centerCrop().into(imageView)
+        }.show()
     }
 
     class PhotoHolder(view: View): RecyclerView.ViewHolder(view)
@@ -41,3 +50,5 @@ class PhotoAdapter<T>(
         notifyItemRemoved(position)
     }
 }
+
+typealias ItemClickListener = (Int) -> Unit
