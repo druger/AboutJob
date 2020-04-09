@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.druger.aboutwork.R
@@ -29,13 +30,16 @@ class PhotoAdapter<T>(
         } else {
             holder.itemView.ivRemove.visibility = View.GONE
         }
-        holder.itemView.ivPhoto.setOnClickListener { showFullScreen(holder.itemView.context) }
+        holder.itemView.ivPhoto.setOnClickListener { showFullScreen(holder.itemView.context, position, holder.itemView.ivPhoto) }
     }
 
-    private fun showFullScreen(context: Context) {
+    private fun showFullScreen(context: Context, position: Int, ivPhoto: ImageView) {
         StfalconImageViewer.Builder<T>(context, uri) { imageView, image ->
-            Glide.with(context).load(image).centerCrop().into(imageView)
-        }.show()
+                Glide.with(context).load(image).into(imageView)
+            }
+            .withStartPosition(position)
+            .withTransitionFrom(ivPhoto)
+            .show()
     }
 
     class PhotoHolder(view: View): RecyclerView.ViewHolder(view)
