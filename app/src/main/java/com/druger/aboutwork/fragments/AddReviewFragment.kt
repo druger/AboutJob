@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ScrollView
 import android.widget.Toast
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.druger.aboutwork.App
@@ -322,7 +323,7 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     }
 
     override fun showPhotos(uri: Array<Uri?>) {
-        groupPhoto.visibility = View.GONE
+        scrollContent.post { scrollContent.fullScroll(ScrollView.FOCUS_DOWN) }
         rvPhotos.visibility = View.VISIBLE
         photoAdapter?.addPhotos(uri)
     }
