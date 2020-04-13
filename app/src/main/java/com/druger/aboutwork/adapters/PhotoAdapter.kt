@@ -54,5 +54,3 @@ class PhotoAdapter<T>(
         notifyItemRemoved(position)
     }
 }
-
-typealias ItemClickListener = (Int) -> Unit
