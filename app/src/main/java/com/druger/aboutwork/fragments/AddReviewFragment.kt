@@ -29,11 +29,10 @@ import kotlinx.android.synthetic.main.content_review.*
 import kotlinx.android.synthetic.main.toolbar_review.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
-import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 
 
-class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListener, AddReviewView {
+class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, AddReviewView {
 
     @InjectPresenter
     lateinit var presenter: AddReviewPresenter
@@ -48,9 +47,6 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     }
 
     companion object{
-        private const val RC_FILES = 1111
-        private const val RC_PICK_IMAGE = 1
-        private const val MIME_TYPE = "image/*"
 
         fun newInstance(companyId: String, companyName: String): AddReviewFragment {
 
@@ -127,25 +123,6 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         ivAddPhoto.setOnClickListener { checkPermission() }
     }
 
-    @AfterPermissionGranted(RC_FILES)
-    private fun checkPermission() {
-        val perms = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-        if (EasyPermissions.hasPermissions(requireContext(), *perms)) {
-            choosePhotos()
-        } else {
-            EasyPermissions.requestPermissions(this, getString(R.string.permision_read_files), RC_FILES, *perms)
-        }
-    }
-
-    private fun choosePhotos() {
-        val intent = Intent().apply {
-            type = MIME_TYPE
-            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-            action = Intent.ACTION_GET_CONTENT
-        }
-        startActivityForResult(Intent.createChooser(intent, getString(R.string.select_photo)), RC_PICK_IMAGE)
-    }
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
@@ -153,7 +130,7 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK && requestCode == RC_PICK_IMAGE) {
+        if (resultCode == RESULT_OK && requestCode == ReviewFragment.RC_PICK_IMAGE) {
             presenter.getUriImages(data)
         }
     }
