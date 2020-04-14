@@ -89,7 +89,6 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         photoAdapter = PhotoAdapter()
         rvPhotos.apply {
             adapter = photoAdapter
-            setHasFixedSize(true)
             itemAnimator = DefaultItemAnimator()
         }
     }
