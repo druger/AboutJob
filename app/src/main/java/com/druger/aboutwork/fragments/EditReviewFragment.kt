@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.toolbar_review.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
-class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnItemSelectedListener {
+class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSelectedListener {
 
     @InjectPresenter
     lateinit var presenter: EditReviewPresenter
@@ -74,6 +74,7 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
         positionChanges()
         spinnerStatus.onItemSelectedListener = this
         setupRatingChanges()
+        ivAddPhoto.setOnClickListener { checkPermission() }
     }
 
     private fun setupRatingChanges() {
