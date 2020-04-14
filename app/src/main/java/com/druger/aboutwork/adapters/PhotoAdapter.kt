@@ -52,5 +52,6 @@ class PhotoAdapter<T>(
     private fun removePhoto(position: Int) {
         uri.removeAt(position)
         notifyItemRemoved(position)
+        notifyItemRangeChanged(position, uri.size)
     }
 }
