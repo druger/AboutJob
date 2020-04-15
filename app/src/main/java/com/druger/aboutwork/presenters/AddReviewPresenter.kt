@@ -1,7 +1,5 @@
 package com.druger.aboutwork.presenters
 
-import android.content.Intent
-import android.net.Uri
 import android.text.TextUtils
 import com.druger.aboutwork.App
 import com.druger.aboutwork.Const.ReviewStatus.INTERVIEW_STATUS
@@ -9,7 +7,6 @@ import com.druger.aboutwork.Const.ReviewStatus.NOT_SELECTED_STATUS
 import com.druger.aboutwork.Const.ReviewStatus.WORKED_STATUS
 import com.druger.aboutwork.Const.ReviewStatus.WORKING_STATUS
 import com.druger.aboutwork.db.FirebaseHelper
-import com.druger.aboutwork.db.FirebaseHelper.REVIEW_PHOTOS
 import com.druger.aboutwork.interfaces.view.AddReviewView
 import com.druger.aboutwork.model.Company
 import com.druger.aboutwork.model.MarkCompany
@@ -20,16 +17,13 @@ import com.druger.aboutwork.rest.models.VacancyResponse
 import com.druger.aboutwork.utils.Analytics
 import com.druger.aboutwork.utils.rx.RxUtils
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import moxy.InjectViewState
-import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
 @InjectViewState
 class AddReviewPresenter @Inject
-constructor(restApi: RestApi) : BasePresenter<AddReviewView>() {
+constructor(restApi: RestApi) : ReviewPresenter<AddReviewView>() {
 
     @Inject
     lateinit var analytics: Analytics
@@ -41,8 +35,6 @@ constructor(restApi: RestApi) : BasePresenter<AddReviewView>() {
 
     lateinit var review: Review
     private var mark: MarkCompany? = null
-
-    private lateinit var uri: Array<Uri?>
 
     init {
         this.restApi = restApi
@@ -80,22 +72,6 @@ constructor(restApi: RestApi) : BasePresenter<AddReviewView>() {
             viewState.successfulAddition()
         } else {
             viewState.showErrorAdding()
-        }
-    }
-
-    private fun uploadPhotos(reviewKey: String?) {
-        val storageRef = Firebase.storage.reference
-        for (uri in uri) {
-            val lastPathSegment = uri?.lastPathSegment
-            val photoRef = storageRef.child("$REVIEW_PHOTOS$reviewKey/$lastPathSegment")
-            uri?.let { u ->
-                photoRef.putFile(u).apply {
-                    addOnSuccessListener { snapshot ->
-                        Timber.d(snapshot.metadata.toString())
-                    }
-                    addOnFailureListener { Timber.e(it) }
-                }
-            }
         }
     }
 
@@ -202,16 +178,5 @@ constructor(restApi: RestApi) : BasePresenter<AddReviewView>() {
 
     fun clearRecommended() {
         review.recommended = null
-    }
-
-    fun getUriImages(data: Intent?) {
-        val clipData = data?.clipData
-        clipData?.let { cd ->
-            uri = arrayOfNulls(cd.itemCount)
-            for (i in uri.indices) {
-                uri[i] = cd.getItemAt(i).uri
-            }
-        } ?: run { uri = arrayOf(data?.data) }
-        viewState.showPhotos(uri)
     }
 }
