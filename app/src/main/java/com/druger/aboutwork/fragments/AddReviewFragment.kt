@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
-import com.druger.aboutwork.adapters.PhotoAdapter
 import com.druger.aboutwork.interfaces.view.AddReviewView
 import com.druger.aboutwork.model.City
 import com.druger.aboutwork.model.Review
@@ -29,8 +28,6 @@ import kotlinx.android.synthetic.main.content_review.*
 import kotlinx.android.synthetic.main.toolbar_review.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
-import pub.devrel.easypermissions.EasyPermissions
-
 
 class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, AddReviewView {
 
@@ -38,8 +35,6 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
     lateinit var presenter: AddReviewPresenter
 
     private lateinit var datePicker: DatePickerFragment
-
-    private var photoAdapter: PhotoAdapter<Uri>? = null
 
     @ProvidePresenter
     fun provideAddReviewPresenter(): AddReviewPresenter {
@@ -82,7 +77,6 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
     }
 
     private fun setupRecycler() {
-        photoAdapter = PhotoAdapter()
         rvPhotos.apply {
             adapter = photoAdapter
             itemAnimator = DefaultItemAnimator()
@@ -123,14 +117,9 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
         ivAddPhoto.setOnClickListener { checkPermission() }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK && requestCode == ReviewFragment.RC_PICK_IMAGE) {
+        if (resultCode == RESULT_OK && requestCode == RC_PICK_IMAGE) {
             presenter.getUriImages(data)
         }
     }

@@ -17,13 +17,15 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import moxy.InjectViewState
 import timber.log.Timber
 import javax.inject.Inject
 
 @InjectViewState
 class EditReviewPresenter @Inject
-constructor(restApi: RestApi) : BasePresenter<EditReviewView>() {
+constructor(restApi: RestApi) : ReviewPresenter<EditReviewView>() {
 
     private var status: Int = NOT_SELECTED_STATUS
 
@@ -53,6 +55,7 @@ constructor(restApi: RestApi) : BasePresenter<EditReviewView>() {
             if (isCorrectStatus() && isCorrectReview(it)) {
                 it.status = status
                 FirebaseHelper.updateReview(it)
+                uploadPhotos(it.firebaseKey)
                 viewState.successfulEditing()
             } else {
                 viewState.showErrorEditing()
@@ -163,5 +166,14 @@ constructor(restApi: RestApi) : BasePresenter<EditReviewView>() {
 
     fun clearRecommended() {
         review?.recommended = null
+    }
+
+    fun getPhotos(reviewId: String) {
+        val storageRef = Firebase.storage.reference
+        val path = FirebaseHelper.REVIEW_PHOTOS + reviewId
+        storageRef.child(path).listAll()
+            .addOnSuccessListener { if (it.items.isNotEmpty()) viewState.showPhotos(it.items)
+            }
+            .addOnFailureListener { Timber.e(it) }
     }
 }

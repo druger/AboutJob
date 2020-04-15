@@ -4,9 +4,9 @@ import com.druger.aboutwork.model.City
 import com.druger.aboutwork.model.MarkCompany
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.model.Vacancy
-import moxy.MvpView
+import com.google.firebase.storage.StorageReference
 
-interface EditReviewView: MvpView {
+interface EditReviewView: ReviewView {
     fun showVacancies(vacancies: List<Vacancy>)
     fun showCities(cities: List<City>)
     fun showWorkingDate()
@@ -18,4 +18,5 @@ interface EditReviewView: MvpView {
     fun showErrorEditing()
     fun setupCompanyRating(mark: MarkCompany)
     fun setReview(review: Review)
+    fun showPhotos(photos: List<StorageReference>)
 }

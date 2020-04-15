@@ -1,11 +1,26 @@
 package com.druger.aboutwork.fragments
 
 import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
 import com.druger.aboutwork.R
+import com.druger.aboutwork.adapters.PhotoAdapter
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 
 open class ReviewFragment : BaseSupportFragment() {
+
+    protected var photoAdapter: PhotoAdapter<Uri>? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        photoAdapter = PhotoAdapter()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
 
     @AfterPermissionGranted(RC_FILES)
     protected fun checkPermission() {
