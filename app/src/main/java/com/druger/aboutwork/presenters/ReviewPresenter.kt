@@ -10,16 +10,15 @@ import timber.log.Timber
 
 open class ReviewPresenter<View: ReviewView>: BasePresenter<View>() {
 
-    private lateinit var uri: Array<Uri?>
+    private var uri: MutableList<Uri?> = mutableListOf()
 
     fun getUriImages(data: Intent?) {
         val clipData = data?.clipData
         clipData?.let { cd ->
-            uri = arrayOfNulls(cd.itemCount)
-            for (i in uri.indices) {
-                uri[i] = cd.getItemAt(i).uri
+            for (i in 0 until cd.itemCount) {
+                uri.add(cd.getItemAt(i).uri)
             }
-        } ?: run { uri = arrayOf(data?.data) }
+        } ?: run { uri.add(data?.data) }
         viewState.showPhotos(uri)
     }
 

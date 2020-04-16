@@ -172,7 +172,7 @@ constructor(restApi: RestApi) : ReviewPresenter<EditReviewView>() {
         val storageRef = Firebase.storage.reference
         val path = FirebaseHelper.REVIEW_PHOTOS + reviewId
         storageRef.child(path).listAll()
-            .addOnSuccessListener { if (it.items.isNotEmpty()) viewState.showPhotos(it.items)
+            .addOnSuccessListener { if (it.items.isNotEmpty()) viewState.showDownloadedPhotos(it.items)
             }
             .addOnFailureListener { Timber.e(it) }
     }

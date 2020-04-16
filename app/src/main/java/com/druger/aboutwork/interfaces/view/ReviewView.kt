@@ -7,5 +7,5 @@ import moxy.viewstate.strategy.StateStrategyType
 
 @StateStrategyType(OneExecutionStateStrategy::class)
 interface ReviewView: MvpView {
-    fun showPhotos(uri: Array<Uri?>)
+    fun showPhotos(uri: List<Uri?>)
 }

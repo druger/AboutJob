@@ -44,7 +44,8 @@ class PhotoAdapter<T>(
 
     class PhotoHolder(view: View): RecyclerView.ViewHolder(view)
 
-    fun addPhotos(uri: Array<T?>) {
+    fun addPhotos(uri: List<T?>) {
+        this.uri.clear()
         this.uri.addAll(uri)
         notifyDataSetChanged()
     }

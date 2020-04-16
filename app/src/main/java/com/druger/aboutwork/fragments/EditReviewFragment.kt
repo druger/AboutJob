@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter
 import android.widget.ScrollView
 import android.widget.Toast
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.MergeAdapter
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
@@ -35,6 +36,8 @@ class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSe
 
     @InjectPresenter
     lateinit var presenter: EditReviewPresenter
+
+    private lateinit var storageRefPhotoAdapter: PhotoAdapter<StorageReference>
 
     @ProvidePresenter
     fun provideEditReviewPresenter(): EditReviewPresenter {
@@ -83,8 +86,10 @@ class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSe
     }
 
     private fun setupRecycler() {
+        storageRefPhotoAdapter = PhotoAdapter()
+        val mergeAdapter = MergeAdapter(uriPhotoAdapter, storageRefPhotoAdapter)
         rvPhotos.apply {
-            adapter = photoAdapter
+            adapter = mergeAdapter
             itemAnimator = DefaultItemAnimator()
         }
     }
@@ -321,16 +326,14 @@ class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSe
                 Toast.LENGTH_SHORT).show()
     }
 
-    override fun showPhotos(uri: Array<Uri?>) {
+    override fun showPhotos(uri: List<Uri?>) {
         scrollContent.post { scrollContent.fullScroll(ScrollView.FOCUS_DOWN) }
         rvPhotos.visibility = View.VISIBLE
-        photoAdapter?.addPhotos(uri)
+        uriPhotoAdapter?.addPhotos(uri)
     }
 
-    override fun showPhotos(photos: List<StorageReference>) {
-        rvPhotos.apply {
-            visibility = View.VISIBLE
-            adapter = PhotoAdapter<StorageReference>(photos.toMutableList(), false)
-        }
+    override fun showDownloadedPhotos(photos: List<StorageReference>) {
+        rvPhotos.visibility = View.VISIBLE
+        storageRefPhotoAdapter.addPhotos(photos)
     }
 }
