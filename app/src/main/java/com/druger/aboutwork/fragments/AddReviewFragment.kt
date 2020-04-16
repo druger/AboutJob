@@ -78,7 +78,7 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
 
     private fun setupRecycler() {
         rvPhotos.apply {
-            adapter = photoAdapter
+            adapter = uriPhotoAdapter
             itemAnimator = DefaultItemAnimator()
         }
     }
@@ -287,9 +287,9 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
         groupInterview.visibility = View.GONE
     }
 
-    override fun showPhotos(uri: Array<Uri?>) {
+    override fun showPhotos(uri: List<Uri?>) {
         scrollContent.post { scrollContent.fullScroll(ScrollView.FOCUS_DOWN) }
         rvPhotos.visibility = View.VISIBLE
-        photoAdapter?.addPhotos(uri)
+        uriPhotoAdapter?.addPhotos(uri)
     }
 }

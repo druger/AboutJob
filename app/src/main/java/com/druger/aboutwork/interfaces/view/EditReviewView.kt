@@ -18,5 +18,5 @@ interface EditReviewView: ReviewView {
     fun showErrorEditing()
     fun setupCompanyRating(mark: MarkCompany)
     fun setReview(review: Review)
-    fun showPhotos(photos: List<StorageReference>)
+    fun showDownloadedPhotos(photos: List<StorageReference>)
 }

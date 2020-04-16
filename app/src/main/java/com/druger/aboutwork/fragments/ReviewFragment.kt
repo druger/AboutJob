@@ -10,11 +10,11 @@ import pub.devrel.easypermissions.EasyPermissions
 
 open class ReviewFragment : BaseSupportFragment() {
 
-    protected var photoAdapter: PhotoAdapter<Uri>? = null
+    protected var uriPhotoAdapter: PhotoAdapter<Uri>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        photoAdapter = PhotoAdapter()
+        uriPhotoAdapter = PhotoAdapter()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
