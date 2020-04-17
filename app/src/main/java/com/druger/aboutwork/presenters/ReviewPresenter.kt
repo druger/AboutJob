@@ -11,6 +11,7 @@ import timber.log.Timber
 open class ReviewPresenter<View: ReviewView>: BasePresenter<View>() {
 
     private var uri: MutableList<Uri?> = mutableListOf()
+    protected var photosCount: Int = 0
 
     fun getUriImages(data: Intent?) {
         val clipData = data?.clipData
@@ -23,16 +24,18 @@ open class ReviewPresenter<View: ReviewView>: BasePresenter<View>() {
     }
 
     protected fun uploadPhotos(reviewKey: String?) {
-        val storageRef = Firebase.storage.reference
-        for (uri in uri) {
-            val lastPathSegment = uri?.lastPathSegment
-            val photoRef = storageRef.child("${FirebaseHelper.REVIEW_PHOTOS}$reviewKey/$lastPathSegment")
-            uri?.let { u ->
-                photoRef.putFile(u).apply {
-                    addOnSuccessListener { snapshot ->
-                        Timber.d(snapshot.metadata.toString())
+        if (photosCount > 0) {
+            val storageRef = Firebase.storage.reference
+            for (uri in uri) {
+                val lastPathSegment = uri?.lastPathSegment
+                val photoRef = storageRef.child("${FirebaseHelper.REVIEW_PHOTOS}$reviewKey/$lastPathSegment")
+                uri?.let { u ->
+                    photoRef.putFile(u).apply {
+                        addOnSuccessListener { snapshot ->
+                            Timber.d(snapshot.metadata.toString())
+                        }
+                        addOnFailureListener { Timber.e(it) }
                     }
-                    addOnFailureListener { Timber.e(it) }
                 }
             }
         }
