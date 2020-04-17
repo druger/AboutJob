@@ -27,6 +27,7 @@ data class Review(var companyId: String? = null,
     var firebaseKey: String? = null
     var recommended: Boolean? = null
     var likesDislikes: MutableMap<String, Boolean>? = null // key - userId, value - like(true) or dislike(false)
+    var hasPhotos: Boolean = false
 
     companion object {
         /**

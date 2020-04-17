@@ -57,8 +57,9 @@ constructor(restApi: RestApi) : ReviewPresenter<AddReviewView>() {
         review.markCompany = mark
     }
 
-    fun doneClick() {
+    fun doneClick(photosCount: Int) {
         analytics.logEvent(Analytics.ADD_REVIEW_CLICK)
+        super.photosCount = photosCount
         val company = companyId?.let { companyId -> companyName?.let { name -> Company(companyId, name) } }
         company?.let { addReview(it) }
     }
@@ -66,6 +67,7 @@ constructor(restApi: RestApi) : ReviewPresenter<AddReviewView>() {
     private fun addReview(company: Company) {
         if (isCorrectStatus() && isCorrectReview(review)) {
             review.status = status
+            if (photosCount > 0) review.hasPhotos = true
             val reviewKey = FirebaseHelper.addReview(review)
             FirebaseHelper.addCompany(company)
             uploadPhotos(reviewKey)

@@ -38,6 +38,7 @@ class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSe
     lateinit var presenter: EditReviewPresenter
 
     private lateinit var storageRefPhotoAdapter: PhotoAdapter<StorageReference>
+    private lateinit var mergeAdapter: MergeAdapter
 
     @ProvidePresenter
     fun provideEditReviewPresenter(): EditReviewPresenter {
@@ -87,7 +88,7 @@ class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSe
 
     private fun setupRecycler() {
         storageRefPhotoAdapter = PhotoAdapter()
-        val mergeAdapter = MergeAdapter(uriPhotoAdapter, storageRefPhotoAdapter)
+        mergeAdapter = MergeAdapter(uriPhotoAdapter, storageRefPhotoAdapter)
         rvPhotos.apply {
             adapter = mergeAdapter
             itemAnimator = DefaultItemAnimator()
@@ -218,7 +219,7 @@ class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSe
         review.position = etPosition.text.toString().trim()
         review.city = etCity.text.toString().trim()
 
-        presenter.doneClick()
+        presenter.doneClick(mergeAdapter.itemCount)
     }
 
     private fun setStatus() =

@@ -46,7 +46,8 @@ constructor(restApi: RestApi) : ReviewPresenter<EditReviewView>() {
         mark?.let { viewState.setupCompanyRating(it) }
     }
 
-    fun doneClick() {
+    fun doneClick(photosCount: Int) {
+        super.photosCount = photosCount
         updateReview()
     }
 
