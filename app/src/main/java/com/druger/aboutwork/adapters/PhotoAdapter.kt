@@ -6,7 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.druger.aboutwork.GlideApp
 import com.druger.aboutwork.R
 import com.stfalcon.imageviewer.StfalconImageViewer
 import kotlinx.android.synthetic.main.item_photo.view.*
@@ -24,7 +25,12 @@ class PhotoAdapter<T>(
     override fun getItemCount(): Int = uri.size
 
     override fun onBindViewHolder(holder: PhotoHolder, position: Int) {
-        Glide.with(holder.itemView).load(uri[position]).centerCrop().into(holder.itemView.ivPhoto)
+        GlideApp.with(holder.itemView)
+            .load(uri[position])
+            .centerCrop()
+            .placeholder(startProgressDrawable(holder.itemView.context))
+            .error(R.drawable.ic_broken_image)
+            .into(holder.itemView.ivPhoto)
         if (canRemovePhoto) {
             holder.itemView.ivRemove.setOnClickListener { removePhoto(position) }
         } else {
@@ -33,9 +39,17 @@ class PhotoAdapter<T>(
         holder.itemView.ivPhoto.setOnClickListener { showFullScreen(holder.itemView.context, position, holder.itemView.ivPhoto) }
     }
 
+    private fun startProgressDrawable(context: Context): CircularProgressDrawable {
+        return CircularProgressDrawable(context).apply {
+            strokeWidth = 5f
+            centerRadius = 40f
+            start()
+        }
+    }
+
     private fun showFullScreen(context: Context, position: Int, ivPhoto: ImageView) {
         StfalconImageViewer.Builder<T>(context, uri) { imageView, image ->
-                Glide.with(context).load(image).into(imageView)
+                GlideApp.with(context).load(image).into(imageView)
             }
             .withStartPosition(position)
             .withTransitionFrom(ivPhoto)
