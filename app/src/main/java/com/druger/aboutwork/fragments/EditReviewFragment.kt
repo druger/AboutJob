@@ -102,7 +102,10 @@ class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSe
         positionChanges()
         spinnerStatus.onItemSelectedListener = this
         setupRatingChanges()
-        ivAddPhoto.setOnClickListener { checkPermission() }
+        ivAddPhoto.setOnClickListener {
+            presenter.sendAnalytics()
+            checkPermission()
+        }
     }
 
     private fun setupRatingChanges() {
@@ -330,7 +333,7 @@ class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSe
     override fun showPhotos(uri: List<Uri?>) {
         scrollContent.post { scrollContent.fullScroll(ScrollView.FOCUS_DOWN) }
         rvPhotos.visibility = View.VISIBLE
-        uriPhotoAdapter?.addPhotos(uri)
+        uriPhotoAdapter.addPhotos(uri)
     }
 
     override fun showDownloadedPhotos(photos: List<StorageReference>) {

@@ -15,6 +15,9 @@ import com.druger.aboutwork.rest.RestApi
 import com.druger.aboutwork.rest.models.CityResponse
 import com.druger.aboutwork.rest.models.VacancyResponse
 import com.druger.aboutwork.utils.Analytics
+import com.druger.aboutwork.utils.Analytics.Companion.ADD_PHOTO_CLICK
+import com.druger.aboutwork.utils.Analytics.Companion.ADD_REVIEW
+import com.druger.aboutwork.utils.Analytics.Companion.SCREEN
 import com.druger.aboutwork.utils.rx.RxUtils
 import com.google.firebase.auth.FirebaseAuth
 import moxy.InjectViewState
@@ -180,5 +183,9 @@ constructor(restApi: RestApi) : ReviewPresenter<AddReviewView>() {
 
     fun clearRecommended() {
         review.recommended = null
+    }
+
+    fun sendAnalytics() {
+        analytics.logEvent(ADD_PHOTO_CLICK, SCREEN, ADD_REVIEW)
     }
 }
