@@ -76,6 +76,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             holder.itemView.setOnLongClickListener(v ->
                     clickListener != null && clickListener.onLongClick(reviewVH.getAdapterPosition()));
             setRecommendation(review, reviewVH);
+            if (review.getHasPhotos()) reviewVH.ivPhotos.setVisibility(View.VISIBLE);
         }
     }
 
@@ -138,6 +139,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
         TextView tvRating;
         ImageView ivRecommendation;
         TextView tvRecommendation;
+        ImageView ivPhotos;
 
         ReviewVH(View itemView) {
             super(itemView);
@@ -152,6 +154,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             tvPosition = bindView(R.id.tvPosition);
             tvRating = bindView(R.id.tvRating);
             ivRecommendation = bindView(R.id.ivRecommendation);
+            ivPhotos = bindView(R.id.ivPhotos);
 
             boolean isLandscape = itemView.getContext().getResources().getBoolean(R.bool.is_landscape);
             if (isLandscape) {

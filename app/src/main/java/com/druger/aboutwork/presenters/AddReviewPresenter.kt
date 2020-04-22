@@ -15,6 +15,9 @@ import com.druger.aboutwork.rest.RestApi
 import com.druger.aboutwork.rest.models.CityResponse
 import com.druger.aboutwork.rest.models.VacancyResponse
 import com.druger.aboutwork.utils.Analytics
+import com.druger.aboutwork.utils.Analytics.Companion.ADD_PHOTO_CLICK
+import com.druger.aboutwork.utils.Analytics.Companion.ADD_REVIEW
+import com.druger.aboutwork.utils.Analytics.Companion.SCREEN
 import com.druger.aboutwork.utils.rx.RxUtils
 import com.google.firebase.auth.FirebaseAuth
 import moxy.InjectViewState
@@ -23,7 +26,7 @@ import javax.inject.Inject
 
 @InjectViewState
 class AddReviewPresenter @Inject
-constructor(restApi: RestApi) : BasePresenter<AddReviewView>() {
+constructor(restApi: RestApi) : ReviewPresenter<AddReviewView>() {
 
     @Inject
     lateinit var analytics: Analytics
@@ -57,8 +60,9 @@ constructor(restApi: RestApi) : BasePresenter<AddReviewView>() {
         review.markCompany = mark
     }
 
-    fun doneClick() {
+    fun doneClick(photosCount: Int) {
         analytics.logEvent(Analytics.ADD_REVIEW_CLICK)
+        super.photosCount = photosCount
         val company = companyId?.let { companyId -> companyName?.let { name -> Company(companyId, name) } }
         company?.let { addReview(it) }
     }
@@ -66,8 +70,10 @@ constructor(restApi: RestApi) : BasePresenter<AddReviewView>() {
     private fun addReview(company: Company) {
         if (isCorrectStatus() && isCorrectReview(review)) {
             review.status = status
-            FirebaseHelper.addReview(review)
+            if (photosCount > 0) review.hasPhotos = true
+            val reviewKey = FirebaseHelper.addReview(review)
             FirebaseHelper.addCompany(company)
+            uploadPhotos(reviewKey)
             viewState.successfulAddition()
         } else {
             viewState.showErrorAdding()
@@ -177,5 +183,9 @@ constructor(restApi: RestApi) : BasePresenter<AddReviewView>() {
 
     fun clearRecommended() {
         review.recommended = null
+    }
+
+    fun sendAnalytics() {
+        analytics.logEvent(ADD_PHOTO_CLICK, SCREEN, ADD_REVIEW)
     }
 }

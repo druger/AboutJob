@@ -2,6 +2,8 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollContent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="?android:attr/actionBarSize">
@@ -90,9 +92,9 @@
             style="@style/reviewRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:stepSize="1"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:stepSize="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvCollective" />
 
@@ -171,8 +173,8 @@
                 android:id="@+id/etPosition"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/position_"
-                android:completionThreshold="2"/>
+                android:completionThreshold="2"
+                android:hint="@string/position_" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -224,8 +226,8 @@
                 android:id="@+id/etCity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/city_"
-                android:completionThreshold="2" />
+                android:completionThreshold="2"
+                android:hint="@string/city_" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -290,8 +292,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/ltEmploymentDate"
             app:layout_constraintTop_toBottomOf="@+id/ltEmploymentDate">
 
@@ -308,12 +308,50 @@
                 android:text="@string/not_recommended" />
         </RadioGroup>
 
+        <ImageView
+            android:id="@+id/ivAddPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rvPhotos"
+            app:srcCompat="@drawable/ic_add_photo" />
+
+        <TextView
+            android:id="@+id/tvAddPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/add_photo"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/ivAddPhoto"
+            app:layout_constraintStart_toStartOf="@+id/ivAddPhoto"
+            app:layout_constraintTop_toBottomOf="@+id/ivAddPhoto" />
+
         <androidx.constraintlayout.widget.Group
             android:id="@+id/groupInterview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="rbCollective,rbSocialPackage,tvWorkplace,tvCollective,tvSalary,tvChief,rbChief,tvSocialPackage,tvCareer,rbSalary,rbWorkplace,rbCareer,view,rgRecommended,tvDateInfo" />
+            app:constraint_referenced_ids="rbCollective,rbSocialPackage,tvWorkplace,tvCollective,tvSalary,tvChief,rbChief,tvSocialPackage,tvCareer,rbSalary,rbWorkplace,rbCareer,view,rgRecommended,tvDateInfo,ivAddPhoto,tvAddPhoto,rvPhotos" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPhotos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rgRecommended"
+            app:spanCount="3"
+            tools:visibility="visible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
 

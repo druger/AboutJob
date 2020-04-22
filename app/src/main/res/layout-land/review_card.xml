@@ -171,13 +171,25 @@
                     tools:text="3.0" />
 
                 <ImageView
-                    android:id="@+id/ivRecommendation"
+                    android:id="@+id/ivPhotos"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginStart="8dp"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/tvRating"
                     app:layout_constraintStart_toEndOf="@+id/tvRating"
+                    app:layout_constraintTop_toTopOf="@+id/tvRating"
+                    app:srcCompat="@drawable/ic_photos"
+                    tools:visibility="visible"/>
+
+                <ImageView
+                    android:id="@+id/ivRecommendation"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvRating"
+                    app:layout_constraintStart_toEndOf="@+id/ivPhotos"
                     app:layout_constraintTop_toTopOf="@+id/tvRating"
                     tools:srcCompat="@drawable/ic_recommended"
                     tools:visibility="visible"/>

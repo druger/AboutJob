@@ -16,6 +16,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import moxy.InjectViewState
 import timber.log.Timber
 import java.util.*
@@ -172,5 +174,13 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
     fun onClickName(showUserName: Boolean) {
         if (showUserName) viewState.showUserReviews(review?.userId)
         else viewState.showCompanyDetail(review?.companyId)
+    }
+
+    fun getPhotos(reviewId: String?) {
+        val storageRef = Firebase.storage.reference
+        val path = FirebaseHelper.REVIEW_PHOTOS + reviewId
+        storageRef.child(path).listAll()
+            .addOnSuccessListener { if (it.items.isNotEmpty()) viewState.showPhotos(it.items) }
+            .addOnFailureListener { Timber.e(it) }
     }
 }
