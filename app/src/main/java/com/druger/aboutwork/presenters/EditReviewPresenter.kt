@@ -12,18 +12,27 @@ import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.rest.RestApi
 import com.druger.aboutwork.rest.models.CityResponse
 import com.druger.aboutwork.rest.models.VacancyResponse
+import com.druger.aboutwork.utils.Analytics
+import com.druger.aboutwork.utils.Analytics.Companion.ADD_PHOTO_CLICK
+import com.druger.aboutwork.utils.Analytics.Companion.EDIT_REVIEW
+import com.druger.aboutwork.utils.Analytics.Companion.SCREEN
 import com.druger.aboutwork.utils.rx.RxUtils
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import moxy.InjectViewState
 import timber.log.Timber
 import javax.inject.Inject
 
 @InjectViewState
 class EditReviewPresenter @Inject
-constructor(restApi: RestApi) : BasePresenter<EditReviewView>() {
+constructor(restApi: RestApi) : ReviewPresenter<EditReviewView>() {
+
+    @Inject
+    lateinit var analytics: Analytics
 
     private var status: Int = NOT_SELECTED_STATUS
 
@@ -44,7 +53,8 @@ constructor(restApi: RestApi) : BasePresenter<EditReviewView>() {
         mark?.let { viewState.setupCompanyRating(it) }
     }
 
-    fun doneClick() {
+    fun doneClick(photosCount: Int) {
+        super.photosCount = photosCount
         updateReview()
     }
 
@@ -53,6 +63,7 @@ constructor(restApi: RestApi) : BasePresenter<EditReviewView>() {
             if (isCorrectStatus() && isCorrectReview(it)) {
                 it.status = status
                 FirebaseHelper.updateReview(it)
+                uploadPhotos(it.firebaseKey)
                 viewState.successfulEditing()
             } else {
                 viewState.showErrorEditing()
@@ -163,5 +174,18 @@ constructor(restApi: RestApi) : BasePresenter<EditReviewView>() {
 
     fun clearRecommended() {
         review?.recommended = null
+    }
+
+    fun getPhotos(reviewId: String) {
+        val storageRef = Firebase.storage.reference
+        val path = FirebaseHelper.REVIEW_PHOTOS + reviewId
+        storageRef.child(path).listAll()
+            .addOnSuccessListener { if (it.items.isNotEmpty()) viewState.showDownloadedPhotos(it.items)
+            }
+            .addOnFailureListener { Timber.e(it) }
+    }
+
+    fun sendAnalytics() {
+        analytics.logEvent(ADD_PHOTO_CLICK, SCREEN, EDIT_REVIEW)
     }
 }

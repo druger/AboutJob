@@ -21,6 +21,7 @@ class Analytics(val firebase: FirebaseAnalytics) {
         const val INTERVIEW_STATUS_CLICK = "interview_status_click"
         const val WORKING_STATUS_CLICK = "working_status_click"
         const val WORKED_STATUS_CLICK = "worked_status_click"
+        const val ADD_PHOTO_CLICK = "add_photo_click"
 
         const val LONG_CLICK_MY_REVIEW = "long_click_my_review"
         const val SWIPE_MY_REVIEW = "swipe_my_review"
@@ -31,5 +32,9 @@ class Analytics(val firebase: FirebaseAnalytics) {
         const val DELETE_COMMENT = "delete_comment"
 
         const val REMOVE_ACCOUNT = "remove_account"
+
+        const val SCREEN = "screen"
+        const val ADD_REVIEW = "add_review"
+        const val EDIT_REVIEW = "edit_review"
     }
 }

@@ -1,5 +1,8 @@
 package com.druger.aboutwork.fragments
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,10 +11,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ScrollView
 import android.widget.Toast
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.MergeAdapter
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
+import com.druger.aboutwork.adapters.PhotoAdapter
 import com.druger.aboutwork.interfaces.view.EditReviewView
 import com.druger.aboutwork.model.City
 import com.druger.aboutwork.model.MarkCompany
@@ -19,15 +26,19 @@ import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.model.Vacancy
 import com.druger.aboutwork.presenters.EditReviewPresenter
 import com.druger.aboutwork.utils.Utils
+import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.content_review.*
 import kotlinx.android.synthetic.main.toolbar_review.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
-class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnItemSelectedListener {
+class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSelectedListener {
 
     @InjectPresenter
     lateinit var presenter: EditReviewPresenter
+
+    private lateinit var storageRefPhotoAdapter: PhotoAdapter<StorageReference>
+    private lateinit var mergeAdapter: MergeAdapter
 
     @ProvidePresenter
     fun provideEditReviewPresenter(): EditReviewPresenter {
@@ -65,6 +76,23 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
         setupToolbar()
         setDateVisibility()
         setupListeners()
+        setupRecycler()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == RC_PICK_IMAGE) {
+            presenter.getUriImages(data)
+        }
+    }
+
+    private fun setupRecycler() {
+        storageRefPhotoAdapter = PhotoAdapter()
+        mergeAdapter = MergeAdapter(uriPhotoAdapter, storageRefPhotoAdapter)
+        rvPhotos.apply {
+            adapter = mergeAdapter
+            itemAnimator = DefaultItemAnimator()
+        }
     }
 
     private fun setupListeners() {
@@ -74,6 +102,10 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
         positionChanges()
         spinnerStatus.onItemSelectedListener = this
         setupRatingChanges()
+        ivAddPhoto.setOnClickListener {
+            presenter.sendAnalytics()
+            checkPermission()
+        }
     }
 
     private fun setupRatingChanges() {
@@ -159,6 +191,7 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
         setupWorkStatus()
         presenter.setupRating(review)
         setupRecommendation(review)
+        review.firebaseKey?.let { presenter.getPhotos(it) }
     }
 
     private fun setupRecommendation(review: Review) {
@@ -189,7 +222,7 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
         review.position = etPosition.text.toString().trim()
         review.city = etCity.text.toString().trim()
 
-        presenter.doneClick()
+        presenter.doneClick(mergeAdapter.itemCount)
     }
 
     private fun setStatus() =
@@ -295,5 +328,16 @@ class EditReviewFragment: BaseSupportFragment(), EditReviewView, AdapterView.OnI
     override fun showErrorEditing() {
         Toast.makeText(activity?.applicationContext, R.string.error_review_edit,
                 Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showPhotos(uri: List<Uri?>) {
+        scrollContent.post { scrollContent.fullScroll(ScrollView.FOCUS_DOWN) }
+        rvPhotos.visibility = View.VISIBLE
+        uriPhotoAdapter.addPhotos(uri)
+    }
+
+    override fun showDownloadedPhotos(photos: List<StorageReference>) {
+        rvPhotos.visibility = View.VISIBLE
+        storageRefPhotoAdapter.addPhotos(photos)
     }
 }

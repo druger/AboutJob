@@ -18,6 +18,7 @@ import com.druger.aboutwork.Const.Colors.PURPLE_500
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.CommentAdapter
+import com.druger.aboutwork.adapters.PhotoAdapter
 import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.interfaces.OnItemClickListener
@@ -27,6 +28,7 @@ import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.SelectedReviewPresenter
 import com.druger.aboutwork.utils.Utils
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.content_selected_review.*
 import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
@@ -180,6 +182,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             message?.let { etMessage.setText(it) }
             checkMessage()
             setRecommendation(review)
+            presenter.getPhotos(review.firebaseKey)
         }
     }
 
@@ -416,6 +419,14 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
 
     override fun showUserReviews(userId: String?) {
         userId?.let { replaceFragment(UserReviewsFragment.newInstance(userId), R.id.main_container, true) }
+    }
+
+    override fun showPhotos(photos: List<StorageReference>) {
+        rvPhotos.visibility = View.VISIBLE
+        rvPhotos.apply {
+            adapter = PhotoAdapter<StorageReference>(photos.toMutableList(), false)
+            setHasFixedSize(true)
+        }
     }
 
     companion object {

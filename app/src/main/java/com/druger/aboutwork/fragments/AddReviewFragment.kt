@@ -1,6 +1,9 @@
 package com.druger.aboutwork.fragments
 
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,7 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ScrollView
 import android.widget.Toast
+import androidx.recyclerview.widget.DefaultItemAnimator
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
@@ -24,8 +29,7 @@ import kotlinx.android.synthetic.main.toolbar_review.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
-
-class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListener, AddReviewView {
+class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, AddReviewView {
 
     @InjectPresenter
     lateinit var presenter: AddReviewPresenter
@@ -38,6 +42,7 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     }
 
     companion object{
+
         fun newInstance(companyId: String, companyName: String): AddReviewFragment {
 
             val args = Bundle()
@@ -68,6 +73,14 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         setupWorkStatus()
         setupCompanyRating()
         setupListeners()
+        setupRecycler()
+    }
+
+    private fun setupRecycler() {
+        rvPhotos.apply {
+            adapter = uriPhotoAdapter
+            itemAnimator = DefaultItemAnimator()
+        }
     }
 
     override fun onDestroy() {
@@ -94,13 +107,24 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
     }
 
     private fun setupListeners() {
-        etEmploymentDate.setOnClickListener{ employmentDateClick() }
-        etDismissalDate.setOnClickListener{ dismissalDateClick() }
+        etEmploymentDate.setOnClickListener { employmentDateClick() }
+        etDismissalDate.setOnClickListener { dismissalDateClick() }
         cityChanges()
         positionChanges()
         spinnerStatus.onItemSelectedListener = this
         setupRatingChanges()
         radioGroupRecommendedListener()
+        ivAddPhoto.setOnClickListener {
+            presenter.sendAnalytics()
+            checkPermission()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK && requestCode == RC_PICK_IMAGE) {
+            presenter.getUriImages(data)
+        }
     }
 
     private fun radioGroupRecommendedListener() {
@@ -198,7 +222,7 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         presenter.review.position = etPosition.text.toString().trim()
         presenter.review.city = etCity.text.toString().trim()
 
-        presenter.doneClick()
+        presenter.doneClick(uriPhotoAdapter.itemCount)
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
@@ -264,5 +288,11 @@ class AddReviewFragment : BaseSupportFragment(), AdapterView.OnItemSelectedListe
         ltEmploymentDate.visibility = View.GONE
         ltDismissalDate.visibility = View.GONE
         groupInterview.visibility = View.GONE
+    }
+
+    override fun showPhotos(uri: List<Uri?>) {
+        scrollContent.post { scrollContent.fullScroll(ScrollView.FOCUS_DOWN) }
+        rvPhotos.visibility = View.VISIBLE
+        uriPhotoAdapter?.addPhotos(uri)
     }
 }

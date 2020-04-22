@@ -31,12 +31,18 @@ object FirebaseHelper {
     private const val USER_ID = "userId"
     private const val SLASH = "/"
     private const val LAST_COUNT_REVIEWS = 10
+    const val REVIEW_PHOTOS = "reviewPhotos/"
 
-    fun addReview(review: Review) {
+    /**
+     * return review key
+     */
+    fun addReview(review: Review): String? {
         val mapper = ObjectMapper()
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
         val map = mapper.convertValue(review, Map::class.java)
-        FirebaseDatabase.getInstance().reference.child(REVIEWS).push().setValue(map)
+        val dbReference = FirebaseDatabase.getInstance().reference.child(REVIEWS).push()
+        dbReference.setValue(map)
+        return dbReference.key
     }
 
     fun likeOrDislikeReview(review: Review) {

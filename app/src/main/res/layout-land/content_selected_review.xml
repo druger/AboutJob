@@ -283,7 +283,7 @@
                         android:id="@+id/rvPhotos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="5dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp"
                         android:orientation="vertical"
@@ -293,7 +293,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvMinuses"
-                        app:spanCount="3"
+                        app:spanCount="6"
                         tools:listitem="@layout/item_photo"
                         tools:visibility="visible" />
 

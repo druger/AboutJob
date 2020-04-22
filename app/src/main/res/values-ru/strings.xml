@@ -118,6 +118,7 @@
     <string name="at_workplace">По рабочему месту</string>
     <string name="filter_empty">По вашему запросу ничего не найдено</string>
     <string name="user_no_reviews">У пользователя нет отзывов</string>
+    <string name="add_photo">Добавить фото</string>
 
     <plurals name="reviews">
         <item quantity="one">%d отзыв</item>
@@ -125,5 +126,7 @@
         <item quantity="many">%d отзывов</item>
         <item quantity="other">%d отзывов</item>
     </plurals>
+    <string name="permision_read_files">Разрешите доступ чтобы добавить фото</string>
+    <string name="select_photo">Выбрать фото</string>
 
 </resources>
