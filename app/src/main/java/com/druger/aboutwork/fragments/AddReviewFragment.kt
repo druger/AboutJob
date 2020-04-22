@@ -114,7 +114,10 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
         spinnerStatus.onItemSelectedListener = this
         setupRatingChanges()
         radioGroupRecommendedListener()
-        ivAddPhoto.setOnClickListener { checkPermission() }
+        ivAddPhoto.setOnClickListener {
+            presenter.sendAnalytics()
+            checkPermission()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
