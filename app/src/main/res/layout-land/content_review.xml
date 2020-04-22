@@ -164,7 +164,7 @@
             android:id="@+id/groupInterview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="rbCollective,rbSocialPackage,tvWorkplace,tvCollective,tvSalary,tvChief,rbChief,tvSocialPackage,tvCareer,rbSalary,rbWorkplace,rbCareer,view,rgRecommended,tvDateInfo" />
+            app:constraint_referenced_ids="rbCollective,rbSocialPackage,tvWorkplace,tvCollective,tvSalary,tvChief,rbChief,tvSocialPackage,tvCareer,rbSalary,rbWorkplace,rbCareer,view,rgRecommended,tvDateInfo,ivAddPhoto,tvAddPhoto,rvPhotos" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/position"
@@ -359,13 +359,6 @@
             app:layout_constraintTop_toBottomOf="@+id/rgRecommended"
             app:spanCount="6"
             tools:visibility="visible" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/groupPhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="ivAddPhoto,tvAddPhoto" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
 
