@@ -11,7 +11,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.ReviewAdapter
@@ -43,9 +42,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
     private var companyId: String? = null
 
     @ProvidePresenter
-    internal fun provideCompanyDetailPresenter(): CompanyDetailPresenter {
-        return App.appComponent.companyDetailPresenter
-    }
+    internal fun provideCompanyDetailPresenter() = CompanyDetailPresenter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

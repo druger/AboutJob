@@ -24,15 +24,15 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import moxy.InjectViewState
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import timber.log.Timber
-import javax.inject.Inject
 
 @InjectViewState
-class EditReviewPresenter @Inject
-constructor(restApi: RestApi) : ReviewPresenter<EditReviewView>() {
+class EditReviewPresenter: ReviewPresenter<EditReviewView>(), KoinComponent {
 
-    @Inject
-    lateinit var analytics: Analytics
+    private val analytics: Analytics by inject()
+    private val restApi: RestApi by inject()
 
     private var status: Int = NOT_SELECTED_STATUS
 
@@ -41,10 +41,6 @@ constructor(restApi: RestApi) : ReviewPresenter<EditReviewView>() {
 
     private val dbReference = FirebaseDatabase.getInstance().reference
     private lateinit var reviewListener: ValueEventListener
-
-    init {
-        this.restApi = restApi
-    }
 
     fun setupRating(review: Review) {
         this.review = review

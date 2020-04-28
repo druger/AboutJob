@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
-import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.enums.FilterType
 import com.druger.aboutwork.interfaces.view.FilterView
@@ -32,9 +31,7 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView, Adapter
     private var filterListener: OnFilterListener? = null
 
     @ProvidePresenter
-    fun provideFilterPresenter(): FilterPresenter {
-        return App.appComponent.filterPresenter
-    }
+    fun provideFilterPresenter() = FilterPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,6 +1,5 @@
 package com.druger.aboutwork.presenters
 
-import com.druger.aboutwork.App
 import com.druger.aboutwork.enums.FilterType
 import com.druger.aboutwork.interfaces.view.FilterView
 import com.druger.aboutwork.rest.RestApi
@@ -8,21 +7,16 @@ import com.druger.aboutwork.rest.models.CityResponse
 import com.druger.aboutwork.rest.models.VacancyResponse
 import com.druger.aboutwork.utils.rx.RxUtils
 import moxy.InjectViewState
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import javax.inject.Inject
 
 @InjectViewState
-class FilterPresenter @Inject constructor(restApi: RestApi) : BasePresenter<FilterView>() {
+class FilterPresenter: BasePresenter<FilterView>(), KoinComponent {
 
-    init {
-        this.restApi = restApi
-    }
+    private val restApi: RestApi by inject()
 
     private var filterType = FilterType.RATING
-
-    override fun onFirstViewAttach() {
-        super.onFirstViewAttach()
-        App.appComponent.inject(this)
-    }
 
     fun setFilterType(filterType: FilterType) {
         this.filterType = filterType

@@ -1,7 +1,6 @@
 package com.druger.aboutwork.presenters
 
 import android.text.TextUtils
-import com.druger.aboutwork.App
 import com.druger.aboutwork.Const.ReviewStatus.INTERVIEW_STATUS
 import com.druger.aboutwork.Const.ReviewStatus.NOT_SELECTED_STATUS
 import com.druger.aboutwork.Const.ReviewStatus.WORKED_STATUS
@@ -21,15 +20,16 @@ import com.druger.aboutwork.utils.Analytics.Companion.SCREEN
 import com.druger.aboutwork.utils.rx.RxUtils
 import com.google.firebase.auth.FirebaseAuth
 import moxy.InjectViewState
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import java.util.*
 import javax.inject.Inject
 
 @InjectViewState
-class AddReviewPresenter @Inject
-constructor(restApi: RestApi) : ReviewPresenter<AddReviewView>() {
+class AddReviewPresenter: ReviewPresenter<AddReviewView>(), KoinComponent {
 
-    @Inject
-    lateinit var analytics: Analytics
+    private val analytics: Analytics by inject()
+    private val restApi: RestApi by inject()
 
     private var status = NOT_SELECTED_STATUS
 
@@ -38,15 +38,6 @@ constructor(restApi: RestApi) : ReviewPresenter<AddReviewView>() {
 
     lateinit var review: Review
     private var mark: MarkCompany? = null
-
-    init {
-        this.restApi = restApi
-    }
-
-    override fun onFirstViewAttach() {
-        super.onFirstViewAttach()
-        App.appComponent.inject(this)
-    }
 
     fun setupReview() {
         val user = FirebaseAuth.getInstance().currentUser

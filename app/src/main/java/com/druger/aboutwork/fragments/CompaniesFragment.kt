@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.ReviewAdapter
@@ -33,9 +32,7 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     private var inputMode: Int = 0
 
     @ProvidePresenter
-    internal fun provideCompaniesPresenter(): CompaniesPresenter {
-        return App.appComponent.companiesPresenter
-    }
+    internal fun provideCompaniesPresenter() = CompaniesPresenter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

@@ -4,7 +4,6 @@ import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.interfaces.view.CompaniesView
 import com.druger.aboutwork.model.Company
 import com.druger.aboutwork.model.Review
-import com.druger.aboutwork.rest.RestApi
 import com.google.firebase.database.*
 import moxy.InjectViewState
 import timber.log.Timber
@@ -15,18 +14,13 @@ import javax.inject.Inject
  */
 
 @InjectViewState
-class CompaniesPresenter @Inject
-constructor(restApi: RestApi) : BasePresenter<CompaniesView>() {
+class CompaniesPresenter : BasePresenter<CompaniesView>() {
 
     private lateinit var dbReference: DatabaseReference
     private var reviewEventListener: ValueEventListener? = null
     private var companyEventListener: ValueEventListener? = null
 
     private var reviews = ArrayList<Review>()
-
-    init {
-        this.restApi = restApi
-    }
 
     override fun handleError(throwable: Throwable) {
         super.handleError(throwable)
@@ -70,25 +64,25 @@ constructor(restApi: RestApi) : BasePresenter<CompaniesView>() {
     }
 
     private fun getCompanies(review: Review?) {
-            review?.companyId?.let { companyId ->
-                val queryCompanies = FirebaseHelper.getCompany(dbReference, companyId)
-                companyEventListener = object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            val company = dataSnapshot.getValue(Company::class.java)
-                            review.name = company?.name
-                            viewState.updateAdapter()
-                        }
-                    }
-
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        Timber.e(databaseError.message)
-                        viewState.showProgress(false)
+        review?.companyId?.let { companyId ->
+            val queryCompanies = FirebaseHelper.getCompany(dbReference, companyId)
+            companyEventListener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        val company = dataSnapshot.getValue(Company::class.java)
+                        review.name = company?.name
+                        viewState.updateAdapter()
                     }
                 }
-                queryCompanies.addValueEventListener(companyEventListener as ValueEventListener)
-                reviews.add(review)
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Timber.e(databaseError.message)
+                    viewState.showProgress(false)
+                }
             }
+            queryCompanies.addValueEventListener(companyEventListener as ValueEventListener)
+            reviews.add(review)
+        }
     }
 
     override fun onDestroy() {
