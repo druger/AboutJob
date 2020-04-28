@@ -3,7 +3,6 @@ package com.druger.aboutwork.presenters
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import com.druger.aboutwork.App
 import com.druger.aboutwork.BuildConfig
 import com.druger.aboutwork.R
 import com.druger.aboutwork.db.FirebaseHelper
@@ -14,6 +13,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import moxy.InjectViewState
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -22,21 +23,15 @@ import javax.inject.Inject
  */
 
 @InjectViewState
-class AccountPresenter @Inject constructor() : BasePresenter<AccountView>() {
+class AccountPresenter: BasePresenter<AccountView>(), KoinComponent {
 
-    @Inject
-    lateinit var analytics: Analytics
+    private val analytics: Analytics by inject()
 
     private var auth: FirebaseAuth? = null
     private var authListener: FirebaseAuth.AuthStateListener? = null
     private var user: FirebaseUser? = null
     private lateinit var dbReference: DatabaseReference
     private var nameEventListener: ValueEventListener? = null
-
-    override fun onFirstViewAttach() {
-        super.onFirstViewAttach()
-        App.appComponent.inject(this)
-    }
 
     fun getUserInfo() {
         dbReference = FirebaseDatabase.getInstance().reference
