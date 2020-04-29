@@ -23,7 +23,7 @@ import moxy.InjectViewState
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.util.*
-import javax.inject.Inject
+
 
 @InjectViewState
 class AddReviewPresenter: ReviewPresenter<AddReviewView>(), KoinComponent {

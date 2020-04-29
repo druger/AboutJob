@@ -9,7 +9,7 @@ import com.druger.aboutwork.utils.rx.RxUtils
 import moxy.InjectViewState
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import javax.inject.Inject
+
 
 @InjectViewState
 class FilterPresenter: BasePresenter<FilterView>(), KoinComponent {

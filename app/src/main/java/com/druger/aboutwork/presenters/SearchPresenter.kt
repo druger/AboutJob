@@ -7,7 +7,7 @@ import com.druger.aboutwork.utils.rx.RxUtils
 import moxy.InjectViewState
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import javax.inject.Inject
+
 
 /**
  * Created by druger on 01.05.2017.

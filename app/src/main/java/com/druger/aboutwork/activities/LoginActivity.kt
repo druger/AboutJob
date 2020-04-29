@@ -20,7 +20,6 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import timber.log.Timber
-import javax.inject.Inject
 
 class LoginActivity : AppCompatActivity(), KoinComponent {
 
