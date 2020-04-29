@@ -15,7 +15,6 @@ import android.widget.ArrayAdapter
 import android.widget.ScrollView
 import android.widget.Toast
 import androidx.recyclerview.widget.DefaultItemAnimator
-import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.interfaces.view.AddReviewView
@@ -37,9 +36,7 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
     private lateinit var datePicker: DatePickerFragment
 
     @ProvidePresenter
-    fun provideAddReviewPresenter(): AddReviewPresenter {
-        return App.appComponent.addReviewPresenter
-    }
+    fun provideAddReviewPresenter() = AddReviewPresenter()
 
     companion object{
 

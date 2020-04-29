@@ -1,7 +1,5 @@
 package com.druger.aboutwork.presenters
 
-import com.druger.aboutwork.rest.RestApi
-
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import moxy.MvpPresenter
@@ -13,8 +11,6 @@ import timber.log.Timber
  */
 
 open class BasePresenter<View : MvpView> : MvpPresenter<View>() {
-
-    protected lateinit var restApi: RestApi
 
     private val compositeDisposable = CompositeDisposable()
 

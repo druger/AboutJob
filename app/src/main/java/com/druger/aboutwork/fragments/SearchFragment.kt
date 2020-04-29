@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.druger.aboutwork.App
 import com.druger.aboutwork.Const.Bundles.DEBOUNCE_SEARCH
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
@@ -41,9 +40,7 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     private var inputMode: Int = 0
 
     @ProvidePresenter
-    internal fun provideSearchPresenter(): SearchPresenter {
-        return App.appComponent.searchPresenter
-    }
+    internal fun provideSearchPresenter() = SearchPresenter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

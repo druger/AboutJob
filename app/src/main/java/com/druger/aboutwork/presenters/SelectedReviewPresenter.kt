@@ -1,6 +1,5 @@
 package com.druger.aboutwork.presenters
 
-import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.db.FirebaseHelper.getComments
@@ -19,15 +18,16 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import moxy.InjectViewState
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import timber.log.Timber
 import java.util.*
-import javax.inject.Inject
+
 
 @InjectViewState
-class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListener {
+class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListener, KoinComponent {
 
-    @Inject
-    lateinit var analytics: Analytics
+    private val analytics: Analytics by inject()
 
     var user: FirebaseUser? = null
     private var dbReference = FirebaseDatabase.getInstance().reference
@@ -40,7 +40,6 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        App.appComponent.inject(this)
         user = FirebaseAuth.getInstance().currentUser
     }
 

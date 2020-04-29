@@ -12,17 +12,20 @@ import com.druger.aboutwork.utils.rx.RxUtils
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import moxy.InjectViewState
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import timber.log.Timber
 import java.util.*
-import javax.inject.Inject
+
 
 /**
  * Created by druger on 01.05.2017.
  */
 
 @InjectViewState
-class CompanyDetailPresenter @Inject
-constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventListener {
+class CompanyDetailPresenter: BasePresenter<CompanyDetailView>(), ValueEventListener, KoinComponent {
+
+    private val restApi: RestApi by inject()
 
     private lateinit var auth: FirebaseAuth
     private var authListener: FirebaseAuth.AuthStateListener? = null
@@ -34,10 +37,6 @@ constructor(restApi: RestApi) : BasePresenter<CompanyDetailView>(), ValueEventLi
     private var position: String = ""
     private var city: String = ""
     private var filterType = FilterType.RATING
-
-    init {
-        this.restApi = restApi
-    }
 
     fun getReviews(companyID: String) {
         viewState.showProgress(true)

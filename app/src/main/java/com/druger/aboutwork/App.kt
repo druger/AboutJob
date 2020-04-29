@@ -2,10 +2,7 @@ package com.druger.aboutwork
 
 import android.app.Application
 import android.content.Context
-import com.druger.aboutwork.di.components.AppComponent
-import com.druger.aboutwork.di.components.DaggerAppComponent
-import com.druger.aboutwork.di.modules.AppModule
-import com.druger.aboutwork.di.modules.NetworkModule
+import com.druger.aboutwork.di.modules.appModule
 import com.google.firebase.FirebaseApp
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.microsoft.appcenter.AppCenter
@@ -15,6 +12,8 @@ import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
 import com.yandex.metrica.YandexMetrica
 import com.yandex.metrica.YandexMetricaConfig
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 import timber.log.Timber
 
 
@@ -26,7 +25,6 @@ class App : Application() {
     private lateinit var refWatcher: RefWatcher
 
     companion object {
-        lateinit var appComponent: AppComponent
 
         fun getRefWatcher(context: Context): RefWatcher {
             val app: App = context.applicationContext as App
@@ -38,12 +36,19 @@ class App : Application() {
         super.onCreate()
 //        setupLeakCanary()
         FirebaseApp.initializeApp(this)
-        setupDagger2()
         AndroidThreeTen.init(this)
         setupTimber()
         if (!BuildConfig.DEBUG) {
             setupAppCenter()
             setupAppMetrica()
+        }
+        setupKoin()
+    }
+
+    private fun setupKoin() {
+        startKoin {
+            androidContext(this@App)
+            modules(appModule)
         }
     }
 
@@ -65,13 +70,6 @@ class App : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
-    }
-
-    private fun setupDagger2() {
-        appComponent = DaggerAppComponent.builder()
-                .appModule(AppModule(this))
-                .networkModule(NetworkModule())
-                .build()
     }
 
     private fun setupLeakCanary() {
