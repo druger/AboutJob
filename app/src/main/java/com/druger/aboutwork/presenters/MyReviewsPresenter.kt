@@ -12,7 +12,7 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 import timber.log.Timber
 import java.util.*
-import javax.inject.Inject
+
 
 /**
  * Created by druger on 09.05.2017.

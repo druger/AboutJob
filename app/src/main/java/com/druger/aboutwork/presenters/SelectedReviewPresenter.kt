@@ -22,7 +22,7 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 import timber.log.Timber
 import java.util.*
-import javax.inject.Inject
+
 
 @InjectViewState
 class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListener, KoinComponent {

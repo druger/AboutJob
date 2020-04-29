@@ -7,7 +7,7 @@ import com.druger.aboutwork.model.Review
 import com.google.firebase.database.*
 import moxy.InjectViewState
 import timber.log.Timber
-import javax.inject.Inject
+
 
 /**
  * Created by druger on 01.05.2017.
