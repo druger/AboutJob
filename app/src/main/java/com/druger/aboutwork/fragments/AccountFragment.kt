@@ -10,41 +10,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
-import com.druger.aboutwork.App
 import com.druger.aboutwork.BuildConfig
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.interfaces.view.AccountView
 import com.druger.aboutwork.presenters.AccountPresenter
-import com.druger.aboutwork.utils.PreferencesHelper
 import com.firebase.ui.auth.AuthUI
 import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import timber.log.Timber
-import javax.inject.Inject
 
 
 class AccountFragment : BaseSupportFragment(), AccountView {
 
     @InjectPresenter
     lateinit var accountPresenter: AccountPresenter
-    @Inject
-    lateinit var preferencesHelper: PreferencesHelper
 
     private var name: String? = null
 
     @ProvidePresenter
-    internal fun getAccountPresenter(): AccountPresenter {
-        return App.appComponent.accountPresenter
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        App.appComponent.inject(this)
-    }
+    internal fun getAccountPresenter() = AccountPresenter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

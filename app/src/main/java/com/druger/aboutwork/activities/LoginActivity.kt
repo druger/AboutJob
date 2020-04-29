@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.druger.aboutwork.App
 import com.druger.aboutwork.BuildConfig
 import com.druger.aboutwork.R
 import com.druger.aboutwork.db.FirebaseHelper
@@ -18,13 +17,13 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import timber.log.Timber
-import javax.inject.Inject
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), KoinComponent {
 
-    @Inject
-    internal lateinit var analytics: Analytics
+    private val analytics: Analytics by inject()
 
     private var nextScreen: String? = null
     private var companyId: String? = null
@@ -33,7 +32,6 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.appComponent.inject(this)
         showAuthUI()
         getExtras()
     }

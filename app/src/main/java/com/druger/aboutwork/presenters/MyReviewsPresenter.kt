@@ -1,6 +1,5 @@
 package com.druger.aboutwork.presenters
 
-import com.druger.aboutwork.App
 import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.interfaces.view.MyReviewsView
 import com.druger.aboutwork.model.Company
@@ -9,29 +8,25 @@ import com.druger.aboutwork.utils.Analytics
 import com.google.firebase.database.*
 import moxy.InjectViewState
 import moxy.MvpPresenter
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import timber.log.Timber
 import java.util.*
-import javax.inject.Inject
+
 
 /**
  * Created by druger on 09.05.2017.
  */
 
 @InjectViewState
-class MyReviewsPresenter @Inject constructor() : MvpPresenter<MyReviewsView>(), ValueEventListener {
+class MyReviewsPresenter: MvpPresenter<MyReviewsView>(), ValueEventListener, KoinComponent {
 
-    @Inject
-    lateinit var analytics: Analytics
+    private val analytics: Analytics by inject()
 
     private lateinit var dbReference: DatabaseReference
     private var valueEventListener: ValueEventListener? = null
 
     private val reviews = ArrayList<Review>()
-
-    override fun onFirstViewAttach() {
-        super.onFirstViewAttach()
-        App.appComponent.inject(this)
-    }
 
     fun fetchReviews(userId: String) {
         viewState.showProgress(true)

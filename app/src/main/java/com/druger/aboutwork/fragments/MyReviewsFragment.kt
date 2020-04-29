@@ -8,7 +8,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.MyReviewAdapter
@@ -37,7 +36,7 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
     lateinit var myReviewsPresenter: MyReviewsPresenter
 
     @ProvidePresenter
-    internal fun provideMyReviewsPresenter() = App.appComponent.myReviewsPresenter
+    internal fun provideMyReviewsPresenter() = MyReviewsPresenter()
 
     private lateinit var reviewAdapter: MyReviewAdapter
     private lateinit var touchHelper: ItemTouchHelper

@@ -15,7 +15,6 @@ import android.widget.ScrollView
 import android.widget.Toast
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.MergeAdapter
-import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.PhotoAdapter
@@ -41,9 +40,7 @@ class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSe
     private lateinit var mergeAdapter: MergeAdapter
 
     @ProvidePresenter
-    fun provideEditReviewPresenter(): EditReviewPresenter {
-        return App.appComponent.editReviewPresenter
-    }
+    fun provideEditReviewPresenter() = EditReviewPresenter()
 
     private lateinit var review: Review
     private lateinit var reviewKey: String
