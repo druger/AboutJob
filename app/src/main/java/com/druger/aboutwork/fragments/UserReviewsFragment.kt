@@ -87,7 +87,6 @@ class UserReviewsFragment : BaseSupportFragment(), UserReviews {
     }
 
     override fun showName(name: String) {
-        tvName.text = name
         actionBar?.title = name
     }
 
