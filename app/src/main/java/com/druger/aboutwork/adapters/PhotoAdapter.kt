@@ -17,6 +17,9 @@ class PhotoAdapter<T>(
     private val canRemovePhoto: Boolean = true
 ): RecyclerView.Adapter<PhotoAdapter.PhotoHolder>() {
 
+    var isFullScreen = false
+    var currentPosition = 0
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_photo, parent, false)
         return PhotoHolder(itemView)
@@ -47,13 +50,19 @@ class PhotoAdapter<T>(
         }
     }
 
-    private fun showFullScreen(context: Context, position: Int, ivPhoto: ImageView) {
+    fun showFullScreen(context: Context, position: Int, ivPhoto: ImageView?) {
         StfalconImageViewer.Builder<T>(context, uri) { imageView, image ->
                 GlideApp.with(context).load(image).into(imageView)
             }
             .withStartPosition(position)
             .withTransitionFrom(ivPhoto)
+            .withImageChangeListener {
+                currentPosition = it
+            }
             .show()
+
+        currentPosition = position
+        isFullScreen = true
     }
 
     class PhotoHolder(view: View): RecyclerView.ViewHolder(view)
