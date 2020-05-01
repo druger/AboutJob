@@ -11,10 +11,27 @@ import pub.devrel.easypermissions.EasyPermissions
 open class ReviewFragment : BaseSupportFragment() {
 
     protected lateinit var uriPhotoAdapter: PhotoAdapter<Uri>
+    protected var isFullScreenShown = false
+    private var currentPhotoPosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         uriPhotoAdapter = PhotoAdapter()
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if (savedInstanceState != null) {
+            currentPhotoPosition = savedInstanceState.getInt(CURRENT_PHOTO_POSITION)
+            isFullScreenShown = savedInstanceState.getBoolean(FULL_SCREEN)
+        }
+        if (isFullScreenShown) uriPhotoAdapter.showFullScreen(requireContext(), currentPhotoPosition, null)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt(CURRENT_PHOTO_POSITION, uriPhotoAdapter.currentPosition)
+        outState.putBoolean(FULL_SCREEN, uriPhotoAdapter.isFullScreen)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -45,5 +62,7 @@ open class ReviewFragment : BaseSupportFragment() {
         private const val RC_FILES = 1111
         const val RC_PICK_IMAGE = 1
         private const val MIME_TYPE = "image/*"
+        const val CURRENT_PHOTO_POSITION = "current_photo_position"
+        const val FULL_SCREEN = "full_screen"
     }
 }

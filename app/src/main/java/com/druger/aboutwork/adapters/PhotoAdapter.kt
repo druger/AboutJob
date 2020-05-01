@@ -13,7 +13,7 @@ import com.stfalcon.imageviewer.StfalconImageViewer
 import kotlinx.android.synthetic.main.item_photo.view.*
 
 class PhotoAdapter<T>(
-    private val uri: MutableList<T?> = mutableListOf(),
+    private var uri: MutableList<T?> = mutableListOf(),
     private val canRemovePhoto: Boolean = true
 ): RecyclerView.Adapter<PhotoAdapter.PhotoHolder>() {
 
@@ -77,5 +77,9 @@ class PhotoAdapter<T>(
         uri.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, uri.size)
+    }
+
+    fun setUri(uri: MutableList<T?>) {
+        this.uri = uri
     }
 }
