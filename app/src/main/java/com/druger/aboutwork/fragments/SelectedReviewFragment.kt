@@ -21,6 +21,8 @@ import com.druger.aboutwork.adapters.CommentAdapter
 import com.druger.aboutwork.adapters.PhotoAdapter
 import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.enums.Screen
+import com.druger.aboutwork.fragments.ReviewFragment.Companion.CURRENT_PHOTO_POSITION
+import com.druger.aboutwork.fragments.ReviewFragment.Companion.FULL_SCREEN
 import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.SelectedReview
 import com.druger.aboutwork.model.Comment
@@ -45,7 +47,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
     lateinit var presenter: SelectedReviewPresenter
 
     private lateinit var commentAdapter: CommentAdapter
-    private var photoAdapter: PhotoAdapter<StorageReference>? = null
+    private lateinit var photoAdapter: PhotoAdapter<StorageReference>
     private var isFullScreenShown = false
     private var currentPhotoPosition = 0
 
@@ -55,6 +57,11 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
     private var editMode: Boolean = false
     private var showUserName: Boolean = false
     private var likesDislikes: MutableMap<String, Boolean>? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        photoAdapter = PhotoAdapter<StorageReference>(mutableListOf(),false)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -85,11 +92,12 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             currentPhotoPosition = savedInstanceState.getInt(CURRENT_PHOTO_POSITION)
             isFullScreenShown = savedInstanceState.getBoolean(FULL_SCREEN)
         }
+        if (isFullScreenShown) photoAdapter.showFullScreen(requireContext(), currentPhotoPosition, null)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        photoAdapter?.currentPosition?.let { outState.putInt(CURRENT_PHOTO_POSITION, it) }
-        photoAdapter?.isFullScreen?.let { outState.putBoolean(FULL_SCREEN, it) }
+        outState.putInt(CURRENT_PHOTO_POSITION, photoAdapter.currentPosition)
+        outState.putBoolean(FULL_SCREEN, photoAdapter.isFullScreen)
         super.onSaveInstanceState(outState)
     }
 
@@ -440,14 +448,12 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
 
     override fun showPhotos(photos: List<StorageReference>) {
         rvPhotos.visibility = View.VISIBLE
-        photoAdapter = PhotoAdapter<StorageReference>(photos.toMutableList(), false).apply {
-            isFullScreen = isFullScreenShown
-        }
+        photoAdapter.isFullScreen = isFullScreenShown
+        photoAdapter.setUri(photos.toMutableList())
         rvPhotos.apply {
             adapter = photoAdapter
             setHasFixedSize(true)
         }
-        if (isFullScreenShown) photoAdapter?.showFullScreen(requireContext(), currentPhotoPosition, null)
     }
 
     companion object {
@@ -457,8 +463,6 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         private const val MESSAGE = "message"
         private const val EDIT_MODE = "editMode"
         private const val SHOW_USER_NAME = "show_user_name"
-        private const val CURRENT_PHOTO_POSITION = "current_photo_position"
-        private const val FULL_SCREEN = "full_screen"
 
         fun newInstance(reviewKey: String, editMode: Boolean, message: String? = null): SelectedReviewFragment {
 
