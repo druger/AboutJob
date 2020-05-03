@@ -56,9 +56,8 @@ class PhotoAdapter<T>(
             }
             .withStartPosition(position)
             .withTransitionFrom(ivPhoto)
-            .withImageChangeListener {
-                currentPosition = it
-            }
+            .withImageChangeListener { currentPosition = it }
+            .withDismissListener { isFullScreen = false }
             .show()
 
         currentPosition = position

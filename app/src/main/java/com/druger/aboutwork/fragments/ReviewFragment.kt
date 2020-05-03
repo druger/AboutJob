@@ -5,32 +5,42 @@ import android.net.Uri
 import android.os.Bundle
 import com.druger.aboutwork.R
 import com.druger.aboutwork.adapters.PhotoAdapter
+import com.google.firebase.storage.StorageReference
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 
 open class ReviewFragment : BaseSupportFragment() {
 
     protected lateinit var uriPhotoAdapter: PhotoAdapter<Uri>
+    protected lateinit var storageRefPhotoAdapter: PhotoAdapter<StorageReference>
     protected var isFullScreenShown = false
+    private var isFullScreenStorageShown = false
     private var currentPhotoPosition = 0
+    private var currentPhotoPositionStorage = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         uriPhotoAdapter = PhotoAdapter()
+        storageRefPhotoAdapter = PhotoAdapter()
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         if (savedInstanceState != null) {
             currentPhotoPosition = savedInstanceState.getInt(CURRENT_PHOTO_POSITION)
-            isFullScreenShown = savedInstanceState.getBoolean(FULL_SCREEN)
+            currentPhotoPositionStorage = savedInstanceState.getInt(CURRENT_PHOTO_POSITION_STORAGE)
+            isFullScreenShown = savedInstanceState.getBoolean(FULL_SCREEN_URI)
+            isFullScreenStorageShown = savedInstanceState.getBoolean(FULL_SCREEN_STORAGE)
         }
         if (isFullScreenShown) uriPhotoAdapter.showFullScreen(requireContext(), currentPhotoPosition, null)
+        else if (isFullScreenStorageShown) storageRefPhotoAdapter.showFullScreen(requireContext(), currentPhotoPositionStorage, null)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putInt(CURRENT_PHOTO_POSITION, uriPhotoAdapter.currentPosition)
-        outState.putBoolean(FULL_SCREEN, uriPhotoAdapter.isFullScreen)
+        outState.putInt(CURRENT_PHOTO_POSITION_STORAGE, storageRefPhotoAdapter.currentPosition)
+        outState.putBoolean(FULL_SCREEN_URI, uriPhotoAdapter.isFullScreen)
+        outState.putBoolean(FULL_SCREEN_STORAGE, storageRefPhotoAdapter.isFullScreen)
         super.onSaveInstanceState(outState)
     }
 
@@ -63,6 +73,8 @@ open class ReviewFragment : BaseSupportFragment() {
         const val RC_PICK_IMAGE = 1
         private const val MIME_TYPE = "image/*"
         const val CURRENT_PHOTO_POSITION = "current_photo_position"
-        const val FULL_SCREEN = "full_screen"
+        private const val CURRENT_PHOTO_POSITION_STORAGE = "current_photo_position_storage"
+        const val FULL_SCREEN_URI = "full_screen_uri"
+        const val FULL_SCREEN_STORAGE = "full_screen_storage"
     }
 }
