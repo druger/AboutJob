@@ -290,6 +290,7 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
     override fun showPhotos(uri: List<Uri?>) {
         scrollContent.post { scrollContent.fullScroll(ScrollView.FOCUS_DOWN) }
         rvPhotos.visibility = View.VISIBLE
-        uriPhotoAdapter?.addPhotos(uri)
+        uriPhotoAdapter.isFullScreen = isFullScreenShown
+        uriPhotoAdapter.addPhotos(uri)
     }
 }

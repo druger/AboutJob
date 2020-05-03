@@ -13,9 +13,12 @@ import com.stfalcon.imageviewer.StfalconImageViewer
 import kotlinx.android.synthetic.main.item_photo.view.*
 
 class PhotoAdapter<T>(
-    private val uri: MutableList<T?> = mutableListOf(),
+    private var uri: MutableList<T?> = mutableListOf(),
     private val canRemovePhoto: Boolean = true
 ): RecyclerView.Adapter<PhotoAdapter.PhotoHolder>() {
+
+    var isFullScreen = false
+    var currentPosition = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_photo, parent, false)
@@ -47,13 +50,18 @@ class PhotoAdapter<T>(
         }
     }
 
-    private fun showFullScreen(context: Context, position: Int, ivPhoto: ImageView) {
+    fun showFullScreen(context: Context, position: Int, ivPhoto: ImageView?) {
         StfalconImageViewer.Builder<T>(context, uri) { imageView, image ->
                 GlideApp.with(context).load(image).into(imageView)
             }
             .withStartPosition(position)
             .withTransitionFrom(ivPhoto)
+            .withImageChangeListener { currentPosition = it }
+            .withDismissListener { isFullScreen = false }
             .show()
+
+        currentPosition = position
+        isFullScreen = true
     }
 
     class PhotoHolder(view: View): RecyclerView.ViewHolder(view)
@@ -68,5 +76,9 @@ class PhotoAdapter<T>(
         uri.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, uri.size)
+    }
+
+    fun setUri(uri: MutableList<T?>) {
+        this.uri = uri
     }
 }
