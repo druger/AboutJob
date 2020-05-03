@@ -22,7 +22,7 @@ import com.druger.aboutwork.adapters.PhotoAdapter
 import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.fragments.ReviewFragment.Companion.CURRENT_PHOTO_POSITION
-import com.druger.aboutwork.fragments.ReviewFragment.Companion.FULL_SCREEN
+import com.druger.aboutwork.fragments.ReviewFragment.Companion.FULL_SCREEN_STORAGE
 import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.SelectedReview
 import com.druger.aboutwork.model.Comment
@@ -90,14 +90,14 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         super.onViewStateRestored(savedInstanceState)
         if (savedInstanceState != null) {
             currentPhotoPosition = savedInstanceState.getInt(CURRENT_PHOTO_POSITION)
-            isFullScreenShown = savedInstanceState.getBoolean(FULL_SCREEN)
+            isFullScreenShown = savedInstanceState.getBoolean(FULL_SCREEN_STORAGE)
         }
         if (isFullScreenShown) photoAdapter.showFullScreen(requireContext(), currentPhotoPosition, null)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putInt(CURRENT_PHOTO_POSITION, photoAdapter.currentPosition)
-        outState.putBoolean(FULL_SCREEN, photoAdapter.isFullScreen)
+        outState.putBoolean(FULL_SCREEN_STORAGE, photoAdapter.isFullScreen)
         super.onSaveInstanceState(outState)
     }
 

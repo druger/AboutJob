@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.MergeAdapter
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
-import com.druger.aboutwork.adapters.PhotoAdapter
 import com.druger.aboutwork.interfaces.view.EditReviewView
 import com.druger.aboutwork.model.City
 import com.druger.aboutwork.model.MarkCompany
@@ -36,7 +35,6 @@ class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSe
     @InjectPresenter
     lateinit var presenter: EditReviewPresenter
 
-    private lateinit var storageRefPhotoAdapter: PhotoAdapter<StorageReference>
     private lateinit var mergeAdapter: MergeAdapter
 
     @ProvidePresenter
@@ -84,7 +82,6 @@ class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSe
     }
 
     private fun setupRecycler() {
-        storageRefPhotoAdapter = PhotoAdapter()
         mergeAdapter = MergeAdapter(uriPhotoAdapter, storageRefPhotoAdapter)
         rvPhotos.apply {
             adapter = mergeAdapter
