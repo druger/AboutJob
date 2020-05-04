@@ -24,13 +24,14 @@ import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.model.Vacancy
 import com.druger.aboutwork.presenters.EditReviewPresenter
 import com.druger.aboutwork.utils.Utils
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.content_review.*
 import kotlinx.android.synthetic.main.toolbar_review.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
-class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSelectedListener {
+class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemSelectedListener {
 
     @InjectPresenter
     lateinit var presenter: EditReviewPresenter
@@ -44,7 +45,7 @@ class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSe
     private lateinit var reviewKey: String
     private lateinit var datePicker: DatePickerFragment
 
-    companion object{
+    companion object {
         private const val REVIEW_KEY = "review_key"
 
         fun newInstance(reviewKey: String): EditReviewFragment {
@@ -90,8 +91,8 @@ class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSe
     }
 
     private fun setupListeners() {
-        etEmploymentDate.setOnClickListener{employmentDateClick()}
-        etDismissalDate.setOnClickListener{dismissalDateClick()}
+        etEmploymentDate.setOnClickListener { employmentDateClick() }
+        etDismissalDate.setOnClickListener { dismissalDateClick() }
         cityChanges()
         positionChanges()
         spinnerStatus.onItemSelectedListener = this
@@ -150,7 +151,7 @@ class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSe
     private fun setupWorkStatus() {
         context?.let {
             val adapter = ArrayAdapter.createFromResource(it,
-                    R.array.work_status, R.layout.simple_spinner_item)
+                R.array.work_status, R.layout.simple_spinner_item)
             adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
             spinnerStatus.adapter = adapter
         }
@@ -167,8 +168,15 @@ class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSe
         etPluses.setText(review.pluses)
         etMinuses.setText(review.minuses)
         etCity.setText(review.city)
-        etEmploymentDate.setText(review.employmentDate.let { Utils.getDate(it) })
-        etDismissalDate.setText(review.dismissalDate.let { Utils.getDate(it) })
+        setDate(review.employmentDate, etEmploymentDate)
+        setDate(review.dismissalDate, etDismissalDate)
+    }
+
+    private fun setDate(date: Long, etDate: TextInputEditText) {
+        if (date != 0L) {
+            etDate.setText(date.let { Utils.getDate(it) })
+            etDate.background = null
+        }
     }
 
     private fun getBundles() {
@@ -189,12 +197,12 @@ class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSe
     }
 
     private fun setupRecommendation(review: Review) {
-        review.recommended?.let {recommendation ->
+        review.recommended?.let { recommendation ->
             if (recommendation) rbRecommended.isChecked = true
             else rbNotRecommended.isChecked = true
         }
         rgRecommended.setOnCheckedChangeListener { _, checkedId ->
-            when(checkedId) {
+            when (checkedId) {
                 R.id.rbRecommended -> presenter.setRecommendedReview()
                 R.id.rbNotRecommended -> presenter.setNotRecommendedReview()
                 -1 -> presenter.clearRecommended()
@@ -203,8 +211,8 @@ class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSe
     }
 
     private fun setupToolbar() {
-        ivDone.setOnClickListener{doneClick()}
-        ivClose.setOnClickListener{closeClick()}
+        ivDone.setOnClickListener { doneClick() }
+        ivClose.setOnClickListener { closeClick() }
         tvTitle.setText(R.string.edit_review)
     }
 
@@ -272,7 +280,8 @@ class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSe
             0 -> presenter.onSelectedWorkingStatus(position)
             1 -> presenter.onSelectedWorkedStatus(position)
             2 -> presenter.onSelectedInterviewStatus(position)
-            else -> { }
+            else -> {
+            }
         }
     }
 
@@ -315,13 +324,13 @@ class EditReviewFragment: ReviewFragment(), EditReviewView, AdapterView.OnItemSe
 
     override fun successfulEditing() {
         Toast.makeText(activity?.applicationContext, R.string.review_edited,
-                Toast.LENGTH_SHORT).show()
+            Toast.LENGTH_SHORT).show()
         fragmentManager?.popBackStackImmediate()
     }
 
     override fun showErrorEditing() {
         Toast.makeText(activity?.applicationContext, R.string.error_review_edit,
-                Toast.LENGTH_SHORT).show()
+            Toast.LENGTH_SHORT).show()
     }
 
     override fun showPhotos(uri: List<Uri?>) {
