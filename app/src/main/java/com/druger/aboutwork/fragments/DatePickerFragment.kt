@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.widget.DatePicker
-import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.utils.Utils
@@ -13,7 +12,7 @@ import java.util.*
 
 class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
-    companion object{
+    companion object {
         const val TAG = "DatePickerDialog"
         const val EMPLOYMENT_DATE = 0
         const val DISMISSAL_DATE = 1
@@ -21,10 +20,10 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
 
     var flag = -1
 
-    private var etDate: EditText? = null
+    private var etDate: TextInputEditText? = null
     private var review: Review? = null
 
-    internal var c = Calendar.getInstance()
+    private var c = Calendar.getInstance()
 
     fun setData(date: TextInputEditText, review: Review) {
         this.etDate = date
@@ -42,18 +41,19 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
     }
 
     override fun onDateSet(view: DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int) {
-        val date: Long
 
         c.set(Calendar.YEAR, year)
         c.set(Calendar.MONTH, monthOfYear)
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-        date = c.timeInMillis
-        etDate!!.setText(Utils.getDate(date))
+        val date: Long = c.timeInMillis
+        etDate?.setText(Utils.getDate(date))
+        etDate?.background = null
 
         when (flag) {
-            EMPLOYMENT_DATE -> review!!.employmentDate = date
-            DISMISSAL_DATE -> review!!.dismissalDate = date
-            else -> { }
+            EMPLOYMENT_DATE -> review?.employmentDate = date
+            DISMISSAL_DATE -> review?.dismissalDate = date
+            else -> {
+            }
         }
     }
 }
