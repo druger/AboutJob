@@ -8,10 +8,9 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import timber.log.Timber
 
-open class ReviewPresenter<View: ReviewView>: BasePresenter<View>() {
+open class ReviewPresenter<View : ReviewView> : BasePresenter<View>() {
 
     private var uri: MutableList<Uri?> = mutableListOf()
-    protected var photosCount: Int = 0
 
     fun getUriImages(data: Intent?) {
         val clipData = data?.clipData
@@ -24,19 +23,34 @@ open class ReviewPresenter<View: ReviewView>: BasePresenter<View>() {
     }
 
     protected fun uploadPhotos(reviewKey: String?) {
-        if (photosCount > 0) {
-            val storageRef = Firebase.storage.reference
+        if (uri.isNotEmpty()) {
             for (uri in uri) {
-                val lastPathSegment = uri?.lastPathSegment
-                val photoRef = storageRef.child("${FirebaseHelper.REVIEW_PHOTOS}$reviewKey/$lastPathSegment")
-                uri?.let { u ->
-                    photoRef.putFile(u).apply {
-                        addOnSuccessListener { snapshot ->
-                            Timber.d(snapshot.metadata.toString())
-                        }
-                        addOnFailureListener { Timber.e(it) }
-                    }
+                uploadPhoto(uri, reviewKey)
+            }
+        }
+    }
+
+    /**
+     * upload after deleting photos
+     */
+    protected fun uploadPhotos(reviewKey: String?, uri: MutableList<Uri?>) {
+        if (uri.isNotEmpty()) {
+            for (u in uri) {
+                uploadPhoto(u, reviewKey)
+            }
+        }
+    }
+
+    private fun uploadPhoto(uri: Uri?, reviewKey: String?) {
+        val storageRef = Firebase.storage.reference
+        val lastPathSegment = uri?.lastPathSegment
+        val photoRef = storageRef.child("${FirebaseHelper.REVIEW_PHOTOS}$reviewKey/$lastPathSegment")
+        uri?.let { u ->
+            photoRef.putFile(u).apply {
+                addOnSuccessListener { snapshot ->
+                    Timber.d(snapshot.metadata.toString())
                 }
+                addOnFailureListener { Timber.e(it) }
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.druger.aboutwork.presenters
 
+import android.net.Uri
 import android.text.TextUtils
 import com.druger.aboutwork.Const.ReviewStatus.INTERVIEW_STATUS
 import com.druger.aboutwork.Const.ReviewStatus.NOT_SELECTED_STATUS
@@ -51,20 +52,20 @@ class AddReviewPresenter: ReviewPresenter<AddReviewView>(), KoinComponent {
         review.markCompany = mark
     }
 
-    fun doneClick(photosCount: Int) {
+    fun doneClick(photos: MutableList<Uri?>, wasPhotoRemoved: Boolean) {
         analytics.logEvent(Analytics.ADD_REVIEW_CLICK)
-        super.photosCount = photosCount
         val company = companyId?.let { companyId -> companyName?.let { name -> Company(companyId, name) } }
-        company?.let { addReview(it) }
+        company?.let { addReview(it, photos, wasPhotoRemoved) }
     }
 
-    private fun addReview(company: Company) {
+    private fun addReview(company: Company, photos: MutableList<Uri?>, wasPhotoRemoved: Boolean) {
         if (isCorrectStatus() && isCorrectReview(review)) {
             review.status = status
-            if (photosCount > 0) review.hasPhotos = true
+            if (photos.isNotEmpty()) review.hasPhotos = true
             val reviewKey = FirebaseHelper.addReview(review)
             FirebaseHelper.addCompany(company)
-            uploadPhotos(reviewKey)
+            if (wasPhotoRemoved) uploadPhotos(reviewKey, photos)
+            else uploadPhotos(reviewKey)
             viewState.successfulAddition()
         } else {
             viewState.showErrorAdding()
