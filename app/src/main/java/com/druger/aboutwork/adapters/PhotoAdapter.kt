@@ -19,6 +19,7 @@ class PhotoAdapter<T>(
 
     var isFullScreen = false
     var currentPosition = 0
+    var wasPhotoRemoved = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_photo, parent, false)
@@ -73,6 +74,7 @@ class PhotoAdapter<T>(
     }
 
     private fun removePhoto(position: Int) {
+        if (!wasPhotoRemoved) wasPhotoRemoved = true
         uri.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, uri.size)
@@ -81,4 +83,6 @@ class PhotoAdapter<T>(
     fun setUri(uri: MutableList<T?>) {
         this.uri = uri
     }
+
+    fun getItems() = uri
 }
