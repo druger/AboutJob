@@ -49,8 +49,7 @@ class EditReviewPresenter: ReviewPresenter<EditReviewView>(), KoinComponent {
         mark?.let { viewState.setupCompanyRating(it) }
     }
 
-    fun doneClick(photosCount: Int) {
-        super.photosCount = photosCount
+    fun doneClick() {
         updateReview()
     }
 
