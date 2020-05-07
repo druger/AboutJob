@@ -219,7 +219,7 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
         presenter.review.position = etPosition.text.toString().trim()
         presenter.review.city = etCity.text.toString().trim()
 
-        presenter.doneClick(uriPhotoAdapter.itemCount)
+        presenter.doneClick(uriPhotoAdapter.getItems(), uriPhotoAdapter.wasPhotoRemoved)
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {

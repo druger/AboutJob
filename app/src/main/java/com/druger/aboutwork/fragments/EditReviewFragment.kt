@@ -224,7 +224,7 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
         review.position = etPosition.text.toString().trim()
         review.city = etCity.text.toString().trim()
 
-        presenter.doneClick(mergeAdapter.itemCount)
+        presenter.doneClick()
     }
 
     private fun setStatus() =
