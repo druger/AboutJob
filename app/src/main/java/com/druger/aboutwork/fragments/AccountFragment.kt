@@ -124,11 +124,13 @@ class AccountFragment : BaseSupportFragment(), AccountView {
 
     override fun showEmail(email: String) {
         ltEmail.visibility = View.VISIBLE
+        line2.visibility = View.VISIBLE
         tvEmail.text = email
     }
 
     override fun showPhone(phone: String) {
         ltPhone.visibility = View.VISIBLE
+        line3.visibility = View.VISIBLE
         tvPhone.text = phone
     }
 
