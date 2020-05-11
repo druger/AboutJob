@@ -49,7 +49,8 @@ class LoginActivity : AppCompatActivity(), KoinComponent {
                 .createSignInIntentBuilder()
                 .setAvailableProviders(listOf(
                     AuthUI.IdpConfig.PhoneBuilder().build(),
-                    AuthUI.IdpConfig.GoogleBuilder().build()
+                    AuthUI.IdpConfig.GoogleBuilder().build(),
+                    AuthUI.IdpConfig.AnonymousBuilder().build()
                 ))
                 .setLogo(R.drawable.ic_logo)
                 .setIsSmartLockEnabled(!BuildConfig.DEBUG, false)

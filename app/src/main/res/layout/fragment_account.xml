@@ -89,9 +89,11 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginStart="16dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ltEmail" />
+            app:layout_constraintTop_toBottomOf="@+id/ltEmail"
+            tools:visibility="visible" />
 
         <LinearLayout
             android:id="@+id/ltPhone"
@@ -99,11 +101,11 @@
             android:layout_height="60dp"
             android:layout_marginTop="1dp"
             android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
             android:orientation="vertical"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:visibility="gone"
-            android:clickable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line2"
@@ -130,9 +132,11 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginStart="16dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ltPhone" />
+            app:layout_constraintTop_toBottomOf="@+id/ltPhone"
+            tools:visibilty="visible" />
 
         <LinearLayout
             android:id="@+id/cvRemoveAcc"
