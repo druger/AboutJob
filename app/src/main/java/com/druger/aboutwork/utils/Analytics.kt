@@ -36,5 +36,7 @@ class Analytics(val firebase: FirebaseAnalytics) {
         const val SCREEN = "screen"
         const val ADD_REVIEW = "add_review"
         const val EDIT_REVIEW = "edit_review"
+
+        const val SIGN_IN_TYPE = "sign_in_type"
     }
 }

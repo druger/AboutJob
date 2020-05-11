@@ -63,30 +63,36 @@ class LoginActivity : AppCompatActivity(), KoinComponent {
             val idpResponse = IdpResponse.fromResultIntent(data)
 
             if (resultCode == Activity.RESULT_OK) {
-                analytics.logEvent(FirebaseAnalytics.Event.LOGIN)
-                if (isNewUser()) {
-                    saveNewUser()
-                }
-                val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    putExtra(MainActivity.NEXT_SCREEN, nextScreen)
-                    putExtra(MainActivity.COMPANY_ID, companyId)
-                    putExtra(MainActivity.REVIEW_ID, reviewId)
-                    putExtra(MainActivity.MESSAGE, message)
-                }
-                startActivity(intent)
+                sendAnalytics(idpResponse)
+                if (isNewUser()) saveNewUser()
+                startMainActivity()
                 finish()
             } else {
-
                 if (idpResponse?.error?.errorCode == ErrorCodes.NO_NETWORK) {
                     Toast.makeText(this, R.string.no_internet_connection, Toast.LENGTH_SHORT).show()
                     return
                 }
-
                 Toast.makeText(this, R.string.unknown_error, Toast.LENGTH_SHORT).show()
                 Timber.e(idpResponse?.error, "Sign-in error: ")
             }
         }
+    }
+
+    private fun sendAnalytics(idpResponse: IdpResponse?) {
+        analytics.logEvent(FirebaseAnalytics.Event.LOGIN)
+        val type = idpResponse?.providerType
+        type?.let { analytics.logEvent(Analytics.SIGN_IN_TYPE, it) }
+    }
+
+    private fun startMainActivity() {
+        val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            putExtra(MainActivity.NEXT_SCREEN, nextScreen)
+            putExtra(MainActivity.COMPANY_ID, companyId)
+            putExtra(MainActivity.REVIEW_ID, reviewId)
+            putExtra(MainActivity.MESSAGE, message)
+        }
+        startActivity(intent)
     }
 
     private fun isNewUser(): Boolean {
