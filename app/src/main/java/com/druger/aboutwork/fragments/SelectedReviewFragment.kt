@@ -29,6 +29,7 @@ import com.druger.aboutwork.model.Comment
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.SelectedReviewPresenter
 import com.druger.aboutwork.utils.Utils
+import com.google.android.material.transition.MaterialContainerTransform
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.content_selected_review.*
@@ -60,6 +61,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = MaterialContainerTransform()
         photoAdapter = PhotoAdapter<StorageReference>(mutableListOf(),false)
     }
 

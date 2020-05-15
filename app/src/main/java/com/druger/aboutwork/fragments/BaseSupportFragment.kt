@@ -72,8 +72,14 @@ abstract class BaseSupportFragment : MvpAppCompatFragment(), NetworkView {
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
     }
 
-    protected fun replaceFragment(fragment: Fragment, @IdRes container: Int, addToBackStack: Boolean = false) {
+    protected fun replaceFragment(
+        fragment: Fragment,
+        @IdRes container: Int,
+        addToBackStack: Boolean = false,
+        view: View? = null
+    ) {
         fragmentManager?.beginTransaction()?.apply {
+            view?.let { addSharedElement(it, "shared_element_container") }
             replace(container, fragment)
             if (addToBackStack) addToBackStack(null)
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
