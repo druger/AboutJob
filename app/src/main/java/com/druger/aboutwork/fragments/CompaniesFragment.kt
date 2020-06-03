@@ -13,6 +13,7 @@ import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.CompaniesView
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.CompaniesPresenter
+import com.google.android.material.transition.Hold
 import kotlinx.android.synthetic.main.fragment_companies.*
 import kotlinx.android.synthetic.main.network_error.*
 import kotlinx.android.synthetic.main.no_reviews.*
@@ -33,6 +34,11 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
 
     @ProvidePresenter
     internal fun provideCompaniesPresenter() = CompaniesPresenter()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        exitTransition = Hold()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

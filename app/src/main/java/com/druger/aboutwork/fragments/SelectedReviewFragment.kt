@@ -61,7 +61,9 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedElementEnterTransition = MaterialContainerTransform()
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            duration = 450
+        }
         photoAdapter = PhotoAdapter<StorageReference>(mutableListOf(),false)
     }
 
