@@ -6,8 +6,7 @@
     android:id="@+id/content_review"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="?attr/actionBarSize"
-    android:transitionName="shared_element_container">
+    android:layout_marginTop="?attr/actionBarSize">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

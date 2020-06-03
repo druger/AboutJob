@@ -6,8 +6,7 @@
     android:id="@+id/content_review"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="?attr/actionBarSize"
-    android:transitionName="shared_element_container">
+    android:layout_marginTop="?attr/actionBarSize">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -45,7 +44,7 @@
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="Google" />
+                        android:text="Google" />
 
                     <TextView
                         android:id="@+id/tvDate"
@@ -54,7 +53,7 @@
                         android:layout_marginBottom="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/tvMinuses"
-                        tools:text="06.08.2018" />
+                        android:text="06.08.2018" />
 
                     <TextView
                         android:id="@+id/tvPosition"
@@ -64,7 +63,7 @@
                         android:layout_marginTop="8dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvName"
-                        tools:text="developer"
+                        android:text="developer"
                         android:textColor="@android:color/black"/>
 
                     <TextView
@@ -75,7 +74,7 @@
                         android:layout_marginTop="8dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvPosition"
-                        tools:text="@string/working" />
+                        android:text="@string/working" />
 
                     <ImageView
                         android:id="@+id/ivRecommendation"
@@ -97,7 +96,7 @@
                         app:layout_constraintBottom_toBottomOf="@+id/ivRecommendation"
                         app:layout_constraintStart_toEndOf="@+id/ivRecommendation"
                         app:layout_constraintTop_toTopOf="@+id/ivRecommendation"
-                        tools:text="@string/recommended"
+                        android:text="@string/recommended"
                         tools:visibility="visible" />
 
                     <TextView
@@ -245,7 +244,7 @@
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/tvPlusesDesc"
                         app:layout_constraintTop_toBottomOf="@+id/tvPlusesDesc"
-                        tools:text="какие-то плюсы" />
+                        android:text="какие-то плюсы" />
 
                     <TextView
                         android:id="@+id/tvPlusesDesc"
@@ -268,7 +267,7 @@
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/tvMinusesDescp"
                         app:layout_constraintTop_toBottomOf="@+id/tvMinusesDescp"
-                        tools:text="какие-то минусы" />
+                        android:text="какие-то минусы" />
 
                     <TextView
                         android:id="@+id/tvMinusesDescp"
