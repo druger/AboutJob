@@ -21,6 +21,7 @@ import com.druger.aboutwork.interfaces.view.CompanyDetailView
 import com.druger.aboutwork.model.CompanyDetail
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.CompanyDetailPresenter
+import com.google.android.material.transition.Hold
 import com.thefinestartist.finestwebview.FinestWebView
 import kotlinx.android.synthetic.main.content_company_detail.*
 import kotlinx.android.synthetic.main.fragment_company_detail.*
@@ -43,6 +44,11 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
 
     @ProvidePresenter
     internal fun provideCompanyDetailPresenter() = CompanyDetailPresenter()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        exitTransition = Hold()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -135,7 +141,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
         companyDetail?.id?.let { id ->
             companyDetail?.name?.let { name ->
                 val review = AddReviewFragment.newInstance(id, name)
-                replaceFragment(review, R.id.main_container, true)
+                replaceFragment(review, R.id.main_container, true, fabAddReview)
             }
         }
     }
