@@ -29,10 +29,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@drawable/ic_add"
-            app:tint="@null"
+            android:transitionName="shared_element_container"
             app:backgroundTint="@color/colorAccent"
-            app:layout_behavior=".utils.recycler.ScrollAwareFABBehavior"/>
+            app:layout_behavior=".utils.recycler.ScrollAwareFABBehavior"
+            app:srcCompat="@drawable/ic_add"
+            app:tint="@null" />
 
         <include layout="@layout/content_company_detail" />
 
