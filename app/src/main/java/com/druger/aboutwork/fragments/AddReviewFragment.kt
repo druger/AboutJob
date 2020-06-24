@@ -23,8 +23,6 @@ import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.model.Vacancy
 import com.druger.aboutwork.presenters.AddReviewPresenter
 import com.druger.aboutwork.utils.Utils
-import com.google.android.material.transition.MaterialArcMotion
-import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.android.synthetic.main.content_review.*
 import kotlinx.android.synthetic.main.toolbar_review.*
 import moxy.presenter.InjectPresenter
@@ -55,13 +53,6 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
 
         private const val COMPANY_ID = "companyId"
         private const val COMPANY_NAME = "companyName"
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        sharedElementEnterTransition = MaterialContainerTransform().apply {
-            setPathMotion(MaterialArcMotion())
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

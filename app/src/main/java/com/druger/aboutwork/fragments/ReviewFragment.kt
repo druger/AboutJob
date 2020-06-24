@@ -5,6 +5,8 @@ import android.net.Uri
 import android.os.Bundle
 import com.druger.aboutwork.R
 import com.druger.aboutwork.adapters.PhotoAdapter
+import com.google.android.material.transition.MaterialArcMotion
+import com.google.android.material.transition.MaterialContainerTransform
 import com.google.firebase.storage.StorageReference
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
@@ -20,8 +22,16 @@ open class ReviewFragment : BaseSupportFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupMotion()
         uriPhotoAdapter = PhotoAdapter()
         storageRefPhotoAdapter = PhotoAdapter()
+    }
+
+    private fun setupMotion() {
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            setPathMotion(MaterialArcMotion())
+            fadeMode = MaterialContainerTransform.FADE_MODE_OUT
+        }
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
