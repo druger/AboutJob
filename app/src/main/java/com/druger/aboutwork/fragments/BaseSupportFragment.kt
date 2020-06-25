@@ -76,10 +76,11 @@ abstract class BaseSupportFragment : MvpAppCompatFragment(), NetworkView {
         fragment: Fragment,
         @IdRes container: Int,
         addToBackStack: Boolean = false,
-        view: View? = null
+        view: View? = null,
+        transitionName: String = ""
     ) {
         fragmentManager?.beginTransaction()?.apply {
-            view?.let { addSharedElement(it, "shared_element_container") }
+            view?.let { addSharedElement(it, transitionName) }
             replace(container, fragment)
             if (addToBackStack) addToBackStack(null)
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
