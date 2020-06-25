@@ -3,6 +3,7 @@ package com.druger.aboutwork.fragments
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -23,6 +24,8 @@ import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.model.Vacancy
 import com.druger.aboutwork.presenters.AddReviewPresenter
 import com.druger.aboutwork.utils.Utils
+import com.google.android.material.transition.MaterialArcMotion
+import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.android.synthetic.main.content_review.*
 import kotlinx.android.synthetic.main.toolbar_review.*
 import moxy.presenter.InjectPresenter
@@ -53,6 +56,20 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
 
         private const val COMPANY_ID = "companyId"
         private const val COMPANY_NAME = "companyName"
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setupMotion()
+    }
+
+    private fun setupMotion() {
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            setPathMotion(MaterialArcMotion())
+            fadeMode = MaterialContainerTransform.FADE_MODE_OUT
+            startContainerColor = Color.WHITE
+            endContainerColor = Color.WHITE
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

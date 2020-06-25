@@ -135,7 +135,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
         companyDetail?.id?.let { id ->
             companyDetail?.name?.let { name ->
                 val review = AddReviewFragment.newInstance(id, name)
-                replaceFragment(review, R.id.main_container, true, fabAddReview)
+                replaceFragment(review, R.id.main_container, true, fabAddReview, "fab_transform")
             }
         }
     }
