@@ -22,6 +22,7 @@ import com.druger.aboutwork.utils.Analytics
 import com.druger.aboutwork.utils.recycler.RecyclerItemTouchHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.transition.MaterialFadeThrough
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_my_reviews.*
 import kotlinx.android.synthetic.main.network_error.*
@@ -48,6 +49,12 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
     private var bottomNavigation: BottomNavigationView? = null
 
     private var userId: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = MaterialFadeThrough()
+        exitTransition = MaterialFadeThrough()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -95,6 +102,7 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
         mToolbar = toolbar
         mToolbar?.let { setActionBar(it) }
         actionBar?.setTitle(R.string.my_reviews)
+        (activity as MainActivity).hideSearchIcon()
     }
 
     private fun setupRecycler() {
