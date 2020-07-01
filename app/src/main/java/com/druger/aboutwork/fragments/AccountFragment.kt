@@ -17,6 +17,7 @@ import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.interfaces.view.AccountView
 import com.druger.aboutwork.presenters.AccountPresenter
 import com.firebase.ui.auth.AuthUI
+import com.google.android.material.transition.MaterialFadeThrough
 import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
@@ -33,6 +34,12 @@ class AccountFragment : BaseSupportFragment(), AccountView {
 
     @ProvidePresenter
     internal fun getAccountPresenter() = AccountPresenter()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = MaterialFadeThrough()
+        exitTransition = MaterialFadeThrough()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -61,6 +68,7 @@ class AccountFragment : BaseSupportFragment(), AccountView {
         mToolbar = toolbar
         mToolbar?.let { setActionBar(it) }
         actionBar?.setTitle(R.string.settings)
+        (activity as MainActivity).hideSearchIcon()
     }
 
     private fun setupListeners() {

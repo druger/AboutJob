@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -52,6 +53,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ReviewVH reviewVH = (ReviewVH) holder;
         if (!reviews.isEmpty()) {
+            reviewVH.ltDelete.setVisibility(View.VISIBLE);
             final Review review = reviews.get(position);
             reviewVH.clReviewCard.setBackgroundColor(isSelected(position)
                     ? ContextCompat.getColor(reviewVH.clReviewCard.getContext(), R.color.selected_review) : Color.WHITE);
@@ -129,6 +131,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     public static class ReviewVH extends BaseViewHolder {
         public CardView cvContent;
         ConstraintLayout clReviewCard;
+        RelativeLayout ltDelete;
         TextView tvStatus;
         TextView tvPluses;
         TextView tvMinuses;
@@ -145,6 +148,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
             super(itemView);
             cvContent = bindView(R.id.cvContent);
             clReviewCard = bindView(R.id.clReviewCard);
+            ltDelete = bindView(R.id.ltDelete);
             tvStatus = bindView(R.id.tvStatus);
             tvPluses = bindView(R.id.tvPluses);
             tvMinuses = bindView(R.id.tvMinuses);
