@@ -81,6 +81,14 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
         ivSearch.visibility = View.GONE
     }
 
+    fun hideToolbar() {
+        toolbarLt.visibility = View.GONE
+    }
+
+    fun showToolbar() {
+        toolbarLt.visibility = View.VISIBLE
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         //        initRefWatcher();

@@ -25,6 +25,7 @@ import com.thefinestartist.finestwebview.FinestWebView
 import kotlinx.android.synthetic.main.content_company_detail.*
 import kotlinx.android.synthetic.main.fragment_company_detail.*
 import kotlinx.android.synthetic.main.network_error.*
+import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 

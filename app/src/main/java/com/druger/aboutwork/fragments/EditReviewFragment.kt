@@ -69,6 +69,7 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
         super.onViewCreated(view, savedInstanceState)
         getBundles()
         getReview()
+        (activity as MainActivity).hideToolbar()
         setupToolbar()
         setDateVisibility()
         setupListeners()
