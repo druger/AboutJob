@@ -53,7 +53,7 @@ class ChangeNameFragment : BaseSupportFragment(), ChangeNameView {
 
     private fun setupToolbar() {
         mToolbar = toolbar
-        setActionBar(toolbar)
+        mToolbar?.let { setActionBar(it) }
         actionBar?.setTitle(R.string.change_name)
         actionBar?.setDisplayHomeAsUpEnabled(true)
     }

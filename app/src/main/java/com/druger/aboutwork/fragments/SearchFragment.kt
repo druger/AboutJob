@@ -46,6 +46,7 @@ class SearchFragment : BaseSupportFragment(), SearchView {
                               savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_search, container, false)
         setInputMode()
+        (activity as MainActivity).hideToolbar()
         return rootView
     }
 
@@ -138,6 +139,7 @@ class SearchFragment : BaseSupportFragment(), SearchView {
         searchView.setOnQueryTextListener(null)
         rvCompanies.removeOnScrollListener(scrollListener)
         adapter.setOnItemClickListener(null)
+        (activity as MainActivity).showToolbar()
     }
 
     override fun showCompanies(companies: List<Company>, pages: Int) {

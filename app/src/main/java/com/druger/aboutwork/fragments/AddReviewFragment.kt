@@ -82,6 +82,7 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).hideToolbar()
         setupToolbar()
         setDateVisibility()
         setupWorkStatus()
