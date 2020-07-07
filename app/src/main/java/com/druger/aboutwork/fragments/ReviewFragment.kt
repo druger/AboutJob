@@ -3,13 +3,16 @@ package com.druger.aboutwork.fragments
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import com.druger.aboutwork.R
+import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.PhotoAdapter
 import com.google.firebase.storage.StorageReference
+import kotlinx.android.synthetic.main.toolbar.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 
-open class ReviewFragment : BaseSupportFragment() {
+abstract class ReviewFragment : BaseSupportFragment() {
 
     protected lateinit var uriPhotoAdapter: PhotoAdapter<Uri>
     protected lateinit var storageRefPhotoAdapter: PhotoAdapter<StorageReference>
@@ -23,6 +26,30 @@ open class ReviewFragment : BaseSupportFragment() {
         uriPhotoAdapter = PhotoAdapter()
         storageRefPhotoAdapter = PhotoAdapter()
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupToolbar()
+    }
+
+    private fun setupToolbar() {
+        mToolbar = toolbar
+        mToolbar?.let { setActionBar(it) }
+        actionBar?.title = null
+        actionBar?.setDisplayHomeAsUpEnabled(false)
+        setToolbarTitle()
+        (activity as MainActivity).showDoneIcon()
+        (activity as MainActivity).showCloseIcon()
+        (activity as MainActivity).showToolbarTitle()
+        (activity as MainActivity).getDoneImageView().setOnClickListener { doneClick() }
+        (activity as MainActivity).getCloseImageView().setOnClickListener { closeClick() }
+    }
+
+    abstract fun setToolbarTitle()
+
+    abstract fun closeClick()
+
+    abstract fun doneClick()
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
@@ -47,6 +74,13 @@ open class ReviewFragment : BaseSupportFragment() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (activity as MainActivity).hideDoneIcon()
+        (activity as MainActivity).hideCloseIcon()
+        (activity as MainActivity).hideToolbarTitle()
     }
 
     @AfterPermissionGranted(RC_FILES)
