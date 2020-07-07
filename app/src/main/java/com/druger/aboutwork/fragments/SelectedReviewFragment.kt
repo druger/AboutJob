@@ -173,7 +173,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         ivLike.setOnClickListener { presenter.clickLike() }
         ivDislike.setOnClickListener { presenter.clickDislike() }
         if (editMode) {
-            ivEdit.setOnClickListener { showEditReview() }
+            (activity as MainActivity).getEditImageView().setOnClickListener { showEditReview() }
         }
         tvName.setOnClickListener { presenter.onClickName(showUserName) }
     }
@@ -183,8 +183,8 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         mToolbar?.let { setActionBar(it) }
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.setTitle(R.string.review)
-        if (editMode) ivEdit.visibility = View.VISIBLE
-        else ivEdit.visibility = View.GONE
+        if (editMode) (activity as MainActivity).showEditIcon()
+        else (activity as MainActivity).hideEditIcon()
     }
 
     private fun getReview() {
@@ -385,7 +385,9 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         super.onDestroyView()
         if (editMode) {
             (activity as MainActivity).showBottomNavigation()
+            (activity as MainActivity).hideEditIcon()
         }
+        actionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     override fun onDestroy() {

@@ -73,6 +73,7 @@ class ChangeNameFragment : BaseSupportFragment(), ChangeNameView {
         super.onDestroyView()
         Utils.hideKeyboard(requireContext(), etName)
         activity?.window?.setSoftInputMode(inputMode)
+        actionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     override fun showSuccessMessage() {

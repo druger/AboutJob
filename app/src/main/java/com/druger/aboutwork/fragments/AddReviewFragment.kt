@@ -27,7 +27,6 @@ import com.druger.aboutwork.utils.Utils
 import com.google.android.material.transition.MaterialArcMotion
 import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.android.synthetic.main.content_review.*
-import kotlinx.android.synthetic.main.toolbar_review.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
@@ -82,8 +81,6 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).hideToolbar()
-        setupToolbar()
         setDateVisibility()
         setupWorkStatus()
         setupCompanyRating()
@@ -219,19 +216,16 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
         presenter.companyName = bundle?.getString(COMPANY_NAME)
     }
 
-    private fun setupToolbar() {
-        tvTitle.setText(R.string.add_review)
-
-        ivDone.setOnClickListener{ doneClick() }
-        ivClose.setOnClickListener{ closeClick() }
+    override fun setToolbarTitle() {
+        (requireActivity() as MainActivity).setToolbarTitle(R.string.add_review)
     }
 
-    private fun closeClick() {
+    override fun closeClick() {
         presenter.closeClick()
         fragmentManager?.popBackStackImmediate()
     }
 
-    private fun doneClick() {
+    override fun doneClick() {
         presenter.review.pluses = etPluses.text.toString().trim()
         presenter.review.minuses = etMinuses.text.toString().trim()
         presenter.review.position = etPosition.text.toString().trim()

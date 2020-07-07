@@ -44,6 +44,7 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
         rootView = inflater.inflate(R.layout.fragment_companies, container, false)
         setInputMode()
         (activity as MainActivity).showBottomNavigation()
+        (activity as MainActivity).showSearchIcon()
         return rootView
     }
 
@@ -104,6 +105,7 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     override fun onDestroyView() {
         super.onDestroyView()
         activity?.window?.setSoftInputMode(inputMode)
+        (activity as MainActivity).hideSearchIcon()
     }
 
     override fun showReviews(reviews: List<Review>) {
