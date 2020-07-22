@@ -53,7 +53,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ReviewVH reviewVH = (ReviewVH) holder;
         if (!reviews.isEmpty()) {
-            reviewVH.ltDelete.setVisibility(View.VISIBLE);
+//            reviewVH.ltDelete.setVisibility(View.VISIBLE); // TODO проблема с отображением при анимации
             final Review review = reviews.get(position);
             reviewVH.clReviewCard.setBackgroundColor(isSelected(position)
                     ? ContextCompat.getColor(reviewVH.clReviewCard.getContext(), R.color.selected_review) : Color.WHITE);
