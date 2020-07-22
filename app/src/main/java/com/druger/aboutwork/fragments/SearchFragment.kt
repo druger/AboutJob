@@ -21,7 +21,6 @@ import com.druger.aboutwork.utils.rx.RxSearch
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.network_error.*
-import kotlinx.android.synthetic.main.toolbar_search.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import java.util.concurrent.TimeUnit
@@ -46,14 +45,12 @@ class SearchFragment : BaseSupportFragment(), SearchView {
                               savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_search, container, false)
         setInputMode()
-        (activity as MainActivity).hideToolbar()
         return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
-        setupToolbar()
         setupRecycler()
         setupListeners()
         setupSearch()
@@ -72,12 +69,6 @@ class SearchFragment : BaseSupportFragment(), SearchView {
                 window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
             }
         }
-    }
-
-    private fun setupToolbar() {
-        mToolbar = toolbar
-        mToolbar?.let { setActionBar(it) }
-        actionBar?.setTitle(R.string.search)
     }
 
     private fun setupRecycler() {
@@ -114,10 +105,10 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     }
 
     private fun setupSearch() {
-        searchView.queryHint = resources.getString(R.string.query_hint)
-        searchView.isIconified = false
+        (activity as MainActivity).getSearchView().queryHint = resources.getString(R.string.query_hint)
+        (activity as MainActivity).getSearchView().isIconified = false
 
-        RxSearch.fromSearchView(searchView)
+        RxSearch.fromSearchView( (activity as MainActivity).getSearchView())
             .debounce(DEBOUNCE_SEARCH.toLong(), TimeUnit.MILLISECONDS)
             .filter { item -> item.length >= 2 }
             .observeOn(AndroidSchedulers.mainThread())
@@ -136,10 +127,9 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     override fun onDestroyView() {
         super.onDestroyView()
         activity?.window?.setSoftInputMode(inputMode)
-        searchView.setOnQueryTextListener(null)
+        (activity as MainActivity).getSearchView().setOnQueryTextListener(null)
         rvCompanies.removeOnScrollListener(scrollListener)
         adapter.setOnItemClickListener(null)
-        (activity as MainActivity).showToolbar()
     }
 
     override fun showCompanies(companies: List<Company>, pages: Int) {
@@ -154,7 +144,7 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     }
 
     private fun showCompanyDetail(id: String) {
-        Utils.hideKeyboard(requireContext(), searchView)
+        Utils.hideKeyboard(requireContext(),  (activity as MainActivity).getSearchView())
         replaceFragment(CompanyDetailFragment.newInstance(id), R.id.main_container, true)
     }
 
