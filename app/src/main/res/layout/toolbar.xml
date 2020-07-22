@@ -54,15 +54,15 @@
             app:srcCompat="@drawable/ic_edit_white"
             tools:visibility="visible" />
 
-        <ImageView
-            android:id="@+id/ivSearch"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginEnd="16dp"
-            android:visibility="gone"
-            app:srcCompat="@drawable/ic_search"
-            tools:visibility="visible" />
+            android:imeOptions="actionSearch|flagNoExtractUi|flagNoFullscreen"
+            app:theme="@style/Theme.AppCompat.NoActionBar" />
+
     </androidx.appcompat.widget.Toolbar>
 
 </com.google.android.material.appbar.AppBarLayout>

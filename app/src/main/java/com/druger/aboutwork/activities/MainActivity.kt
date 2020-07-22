@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.druger.aboutwork.App
@@ -73,18 +74,18 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
 
     fun setupSearchToolbar() {
         actionBar?.setTitle(R.string.search)
-        ivSearch.visibility = View.VISIBLE
-        ivSearch.setOnClickListener {
+        searchView.visibility = View.VISIBLE
+        searchView.setOnClickListener {
             replaceFragment(SearchFragment(), R.id.main_container, true)
         }
     }
 
     fun hideSearchIcon() {
-        ivSearch.visibility = View.GONE
+        searchView.visibility = View.GONE
     }
 
     fun showSearchIcon() {
-        ivSearch.visibility = View.VISIBLE
+        searchView.visibility = View.VISIBLE
     }
 
     fun hideToolbar() {
@@ -136,6 +137,8 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
     fun getDoneImageView(): ImageView = ivDone
 
     fun getCloseImageView(): ImageView = ivClose
+
+    fun getSearchView(): SearchView = searchView
 
     override fun onDestroy() {
         super.onDestroy()
