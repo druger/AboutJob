@@ -72,28 +72,12 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
         mainPresenter.checkAuthUser()
     }
 
-    fun setupSearchToolbar() {
-        actionBar?.setTitle(R.string.search)
-        searchView.visibility = View.VISIBLE
-        searchView.setOnClickListener {
-            replaceFragment(SearchFragment(), R.id.main_container, true)
-        }
-    }
-
     fun hideSearchIcon() {
         searchView.visibility = View.GONE
     }
 
     fun showSearchIcon() {
         searchView.visibility = View.VISIBLE
-    }
-
-    fun hideToolbar() {
-        toolbarLt.visibility = View.GONE
-    }
-
-    fun showToolbar() {
-        toolbarLt.visibility = View.VISIBLE
     }
 
     fun showEditIcon() {
