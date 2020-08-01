@@ -130,7 +130,7 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
 
     private fun showSelectedReview(id: String) {
         val fragment = SelectedReviewFragment.newInstance(id, false)
-        replaceFragment(fragment, R.id.main_container, true)
+        replaceFragment(fragment, R.id.main_container, true, rvLastReviews, "detail_transform")
     }
 
     override fun showProgress(show: Boolean) {

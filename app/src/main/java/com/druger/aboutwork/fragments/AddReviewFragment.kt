@@ -68,6 +68,7 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
             fadeMode = MaterialContainerTransform.FADE_MODE_OUT
             startContainerColor = Color.WHITE
             endContainerColor = Color.WHITE
+            scrimColor = Color.TRANSPARENT
         }
     }
 
