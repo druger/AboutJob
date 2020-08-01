@@ -105,9 +105,8 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     }
 
     private fun setupSearch() {
-        (activity as MainActivity).getSearchView().queryHint = resources.getString(R.string.query_hint)
-        (activity as MainActivity).getSearchView().isIconified = false
-
+        actionBar?.setDisplayHomeAsUpEnabled(false)
+        actionBar?.setDisplayShowTitleEnabled(false)
         RxSearch.fromSearchView( (activity as MainActivity).getSearchView())
             .debounce(DEBOUNCE_SEARCH.toLong(), TimeUnit.MILLISECONDS)
             .filter { item -> item.length >= 2 }
@@ -122,14 +121,21 @@ class SearchFragment : BaseSupportFragment(), SearchView {
             adapter.clear()
             scrollListener.resetPageCount()
         }
+        (activity as MainActivity).getSearchView().setOnCloseListener {
+            requireFragmentManager().popBackStackImmediate()
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         activity?.window?.setSoftInputMode(inputMode)
-        (activity as MainActivity).getSearchView().setOnQueryTextListener(null)
         rvCompanies.removeOnScrollListener(scrollListener)
         adapter.setOnItemClickListener(null)
+        (activity as MainActivity).getSearchView().apply {
+            setOnQueryTextListener(null)
+            setOnCloseListener(null)
+            if (!isIconified) isIconified = true
+        }
     }
 
     override fun showCompanies(companies: List<Company>, pages: Int) {

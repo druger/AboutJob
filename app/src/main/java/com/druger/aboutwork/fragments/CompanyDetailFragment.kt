@@ -88,6 +88,8 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
         mToolbar = toolbar
         mToolbar?.let { setActionBar(it) }
         actionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as MainActivity).hideSearchIcon()
+        actionBar?.setDisplayShowTitleEnabled(true)
     }
 
     private fun setupRecycler() {
@@ -150,6 +152,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
         super.onDestroyView()
         reviewAdapter.setOnClickListener(null)
         presenter.removeAuthListener()
+        (activity as MainActivity).showSearchIcon()
     }
 
     override fun updateAdapter() {

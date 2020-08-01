@@ -43,6 +43,7 @@ abstract class ReviewFragment : BaseSupportFragment() {
         (activity as MainActivity).showToolbarTitle()
         (activity as MainActivity).getDoneImageView().setOnClickListener { doneClick() }
         (activity as MainActivity).getCloseImageView().setOnClickListener { closeClick() }
+        (activity as MainActivity).hideSearchIcon()
     }
 
     abstract fun setToolbarTitle()

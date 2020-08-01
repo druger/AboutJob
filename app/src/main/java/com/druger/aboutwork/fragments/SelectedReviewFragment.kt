@@ -185,6 +185,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         actionBar?.setTitle(R.string.review)
         if (editMode) (activity as MainActivity).showEditIcon()
         else (activity as MainActivity).hideEditIcon()
+        (activity as MainActivity).hideSearchIcon()
     }
 
     private fun getReview() {
