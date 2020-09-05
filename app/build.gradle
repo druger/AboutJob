@@ -130,6 +130,7 @@ dependencies {
     implementation 'com.github.stfalcon:stfalcon-imageviewer:1.0.1'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation "org.koin:koin-android:2.1.5"
+    implementation 'com.airbnb.android:lottie:3.4.2'
 }
 
 
