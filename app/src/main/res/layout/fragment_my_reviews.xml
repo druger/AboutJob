@@ -5,23 +5,15 @@
     android:layout_height="match_parent"
     android:paddingBottom="?attr/actionBarSize">
 
-    <include
-        android:id="@+id/bar"
-        layout="@layout/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/tvCountReviews"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bar"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="10 reviews" />
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvReviews"
@@ -29,6 +21,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:scrollbars="vertical"
+        android:transitionName="detail_transform"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,7 +37,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bar"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
         <include layout="@layout/shimmer_content_companies" />
@@ -68,18 +61,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <include
         layout="@layout/network_error"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="?attr/actionBarSize"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bar"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

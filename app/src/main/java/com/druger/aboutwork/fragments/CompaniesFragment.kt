@@ -13,11 +13,11 @@ import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.CompaniesView
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.CompaniesPresenter
+import com.google.android.material.transition.MaterialFadeThrough
 import kotlinx.android.synthetic.main.fragment_companies.*
 import kotlinx.android.synthetic.main.network_error.*
 import kotlinx.android.synthetic.main.no_reviews.*
 import kotlinx.android.synthetic.main.shimmer_content_companies.*
-import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
@@ -33,6 +33,11 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
 
     @ProvidePresenter
     internal fun provideCompaniesPresenter() = CompaniesPresenter()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        exitTransition = MaterialFadeThrough()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -70,12 +75,14 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     }
 
     private fun setupToolbar() {
-        mToolbar = toolbar
-        mToolbar?.let { setActionBar(it) }
+        actionBar?.setDisplayShowTitleEnabled(true)
+        (activity as MainActivity).showSearchIcon()
         actionBar?.setTitle(R.string.search)
-        ivSearch.visibility = View.VISIBLE
-        ivSearch.setOnClickListener {
-            replaceFragment(SearchFragment(), R.id.main_container, true)
+        (activity as MainActivity).getSearchView().apply {
+            setOnSearchClickListener {
+                replaceFragment(SearchFragment(), R.id.main_container, true)
+                queryHint = resources.getString(R.string.query_hint)
+            }
         }
     }
 
@@ -123,7 +130,7 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
 
     private fun showSelectedReview(id: String) {
         val fragment = SelectedReviewFragment.newInstance(id, false)
-        replaceFragment(fragment, R.id.main_container, true)
+        replaceFragment(fragment, R.id.main_container, true, rvLastReviews, "detail_transform")
     }
 
     override fun showProgress(show: Boolean) {

@@ -7,13 +7,6 @@
     android:animateLayoutChanges="true"
     android:paddingBottom="?attr/actionBarSize">
 
-    <include
-        android:id="@+id/tbSearch"
-        layout="@layout/toolbar_search"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <CheckBox
         android:id="@+id/cbMoreCompanies"
         android:layout_width="wrap_content"
@@ -25,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tbSearch"
+        app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -53,7 +46,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tbSearch" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <include
         layout="@layout/network_error"
@@ -63,7 +56,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tbSearch"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         tools:visibility="visible" />
 

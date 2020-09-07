@@ -25,6 +25,7 @@ import com.thefinestartist.finestwebview.FinestWebView
 import kotlinx.android.synthetic.main.content_company_detail.*
 import kotlinx.android.synthetic.main.fragment_company_detail.*
 import kotlinx.android.synthetic.main.network_error.*
+import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
@@ -87,6 +88,8 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
         mToolbar = toolbar
         mToolbar?.let { setActionBar(it) }
         actionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as MainActivity).hideSearchIcon()
+        actionBar?.setDisplayShowTitleEnabled(true)
     }
 
     private fun setupRecycler() {
@@ -135,7 +138,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
         companyDetail?.id?.let { id ->
             companyDetail?.name?.let { name ->
                 val review = AddReviewFragment.newInstance(id, name)
-                replaceFragment(review, R.id.main_container, true)
+                replaceFragment(review, R.id.main_container, true, fabAddReview, "fab_transform")
             }
         }
     }
@@ -149,6 +152,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
         super.onDestroyView()
         reviewAdapter.setOnClickListener(null)
         presenter.removeAuthListener()
+        (activity as MainActivity).showSearchIcon()
     }
 
     override fun updateAdapter() {
