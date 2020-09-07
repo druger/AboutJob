@@ -3,6 +3,7 @@ package com.druger.aboutwork.fragments
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -23,8 +24,9 @@ import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.model.Vacancy
 import com.druger.aboutwork.presenters.AddReviewPresenter
 import com.druger.aboutwork.utils.Utils
+import com.google.android.material.transition.MaterialArcMotion
+import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.android.synthetic.main.content_review.*
-import kotlinx.android.synthetic.main.toolbar_review.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
@@ -55,6 +57,21 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
         private const val COMPANY_NAME = "companyName"
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setupMotion()
+    }
+
+    private fun setupMotion() {
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            setPathMotion(MaterialArcMotion())
+            fadeMode = MaterialContainerTransform.FADE_MODE_OUT
+            startContainerColor = Color.WHITE
+            endContainerColor = Color.WHITE
+            scrimColor = Color.TRANSPARENT
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_review, container, false)
         getData(savedInstanceState)
@@ -65,7 +82,6 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbar()
         setDateVisibility()
         setupWorkStatus()
         setupCompanyRating()
@@ -201,19 +217,16 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
         presenter.companyName = bundle?.getString(COMPANY_NAME)
     }
 
-    private fun setupToolbar() {
-        tvTitle.setText(R.string.add_review)
-
-        ivDone.setOnClickListener{ doneClick() }
-        ivClose.setOnClickListener{ closeClick() }
+    override fun setToolbarTitle() {
+        (requireActivity() as MainActivity).setToolbarTitle(R.string.add_review)
     }
 
-    private fun closeClick() {
+    override fun closeClick() {
         presenter.closeClick()
         fragmentManager?.popBackStackImmediate()
     }
 
-    private fun doneClick() {
+    override fun doneClick() {
         presenter.review.pluses = etPluses.text.toString().trim()
         presenter.review.minuses = etMinuses.text.toString().trim()
         presenter.review.position = etPosition.text.toString().trim()

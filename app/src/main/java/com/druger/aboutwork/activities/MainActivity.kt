@@ -3,8 +3,12 @@ package com.druger.aboutwork.activities
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.widget.Toolbar
+import android.widget.ImageView
+import androidx.annotation.IdRes
+import androidx.annotation.StringRes
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.druger.aboutwork.App
 import com.druger.aboutwork.R
 import com.druger.aboutwork.enums.Screen
@@ -13,6 +17,7 @@ import com.druger.aboutwork.interfaces.view.MainView
 import com.druger.aboutwork.presenters.MainPresenter
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.toolbar.*
 import moxy.MvpAppCompatActivity
 import moxy.presenter.InjectPresenter
 
@@ -30,7 +35,7 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setupToolbar()
+        setSupportActionBar(toolbar)
         checkAuthUser()
         setupUI()
         bottomNavigation.setOnNavigationItemSelectedListener(this)
@@ -67,10 +72,57 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
         mainPresenter.checkAuthUser()
     }
 
-    private fun setupToolbar() {
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
+    fun hideSearchIcon() {
+        searchView.visibility = View.GONE
     }
+
+    fun showSearchIcon() {
+        searchView.visibility = View.VISIBLE
+    }
+
+    fun showEditIcon() {
+        ivEdit.visibility = View.VISIBLE
+    }
+
+    fun hideEditIcon() {
+        ivEdit.visibility = View.GONE
+    }
+
+    fun showCloseIcon() {
+        ivClose.visibility = View.VISIBLE
+    }
+
+    fun hideCloseIcon() {
+        ivClose.visibility = View.GONE
+    }
+
+    fun showDoneIcon() {
+        ivDone.visibility = View.VISIBLE
+    }
+
+    fun hideDoneIcon() {
+        ivDone.visibility = View.GONE
+    }
+
+    fun setToolbarTitle(@StringRes resId: Int) {
+        tvTitle.setText(resId)
+    }
+
+    fun hideToolbarTitle() {
+        tvTitle.visibility = View.GONE
+    }
+
+    fun showToolbarTitle() {
+        tvTitle.visibility = View.VISIBLE
+    }
+
+    fun getEditImageView(): ImageView = ivEdit
+
+    fun getDoneImageView(): ImageView = ivDone
+
+    fun getCloseImageView(): ImageView = ivClose
+
+    fun getSearchView(): SearchView = searchView
 
     override fun onDestroy() {
         super.onDestroy()
@@ -115,6 +167,22 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
         val transaction = supportFragmentManager.beginTransaction()
         fragment?.let { transaction.replace(R.id.main_container, it) }
         transaction.commit()
+    }
+
+    private fun replaceFragment(
+        fragment: Fragment,
+        @IdRes container: Int,
+        addToBackStack: Boolean = false,
+        view: View? = null,
+        transitionName: String = ""
+    ) {
+        supportFragmentManager.beginTransaction().apply {
+            view?.let { addSharedElement(it, transitionName) }
+            replace(container, fragment)
+            if (addToBackStack) addToBackStack(null)
+            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            commit()
+        }
     }
 
     fun hideBottomNavigation() {
