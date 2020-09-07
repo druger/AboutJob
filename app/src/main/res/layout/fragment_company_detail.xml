@@ -10,29 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?android:attr/actionBarSize"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-        </com.google.android.material.appbar.AppBarLayout>
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabAddReview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@drawable/ic_add"
-            app:tint="@null"
+            android:transitionName="fab_transform"
             app:backgroundTint="@color/colorAccent"
-            app:layout_behavior=".utils.recycler.ScrollAwareFABBehavior"/>
+            app:layout_behavior=".utils.recycler.ScrollAwareFABBehavior"
+            app:srcCompat="@drawable/ic_add"
+            app:tint="@null" />
 
         <include layout="@layout/content_company_detail" />
 

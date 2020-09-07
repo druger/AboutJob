@@ -8,8 +8,10 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
+        android:id="@+id/ltDelete"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -18,8 +20,7 @@
             android:layout_marginRight="3dp"
             card_view:cardBackgroundColor="@color/bg_deleted_review"
             card_view:cardCornerRadius="3dp"
-            card_view:cardUseCompatPadding="true"
-            tools:visibility="gone">
+            card_view:cardUseCompatPadding="true">
 
             <LinearLayout
                 android:layout_width="wrap_content"

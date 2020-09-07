@@ -29,6 +29,7 @@ import com.druger.aboutwork.model.Comment
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.SelectedReviewPresenter
 import com.druger.aboutwork.utils.Utils
+import com.google.android.material.transition.MaterialContainerTransform
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.content_selected_review.*
@@ -60,6 +61,11 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            startContainerColor = Color.WHITE
+            endContainerColor = Color.WHITE
+            scrimColor = Color.TRANSPARENT
+        }
         photoAdapter = PhotoAdapter<StorageReference>(mutableListOf(),false)
     }
 
@@ -173,7 +179,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         ivLike.setOnClickListener { presenter.clickLike() }
         ivDislike.setOnClickListener { presenter.clickDislike() }
         if (editMode) {
-            ivEdit.setOnClickListener { showEditReview() }
+            (activity as MainActivity).getEditImageView().setOnClickListener { showEditReview() }
         }
         tvName.setOnClickListener { presenter.onClickName(showUserName) }
     }
@@ -183,8 +189,9 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         mToolbar?.let { setActionBar(it) }
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.setTitle(R.string.review)
-        if (editMode) ivEdit.visibility = View.VISIBLE
-        else ivEdit.visibility = View.GONE
+        if (editMode) (activity as MainActivity).showEditIcon()
+        else (activity as MainActivity).hideEditIcon()
+        (activity as MainActivity).hideSearchIcon()
     }
 
     private fun getReview() {
@@ -385,7 +392,9 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         super.onDestroyView()
         if (editMode) {
             (activity as MainActivity).showBottomNavigation()
+            (activity as MainActivity).hideEditIcon()
         }
+        actionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     override fun onDestroy() {

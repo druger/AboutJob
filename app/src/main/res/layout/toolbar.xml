@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="@style/AppTheme.AppBarOverlay">
 
     <androidx.appcompat.widget.Toolbar
@@ -13,22 +14,55 @@
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
         <ImageView
+            android:id="@+id/ivClose"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="start"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_close"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            tools:text="@string/add_review" />
+
+        <ImageView
+            android:id="@+id/ivDone"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:layout_marginEnd="10dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_done"
+            tools:visibility="visible" />
+
+        <ImageView
             android:id="@+id/ivEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginEnd="15dp"
+            android:visibility="gone"
             app:srcCompat="@drawable/ic_edit_white"
-            android:visibility="gone"/>
+            tools:visibility="visible" />
 
-        <ImageView
-            android:id="@+id/ivSearch"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginEnd="16dp"
-            app:srcCompat="@drawable/ic_search"
-            android:visibility="gone"/>
+            android:imeOptions="actionSearch|flagNoExtractUi|flagNoFullscreen"
+            app:theme="@style/Theme.AppCompat.NoActionBar" />
+
     </androidx.appcompat.widget.Toolbar>
 
 </com.google.android.material.appbar.AppBarLayout>
