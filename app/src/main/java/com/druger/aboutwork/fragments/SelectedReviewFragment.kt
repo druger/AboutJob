@@ -274,7 +274,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             }
             Review.INTERVIEW -> {
                 tvStatus.setText(R.string.interview)
-                groupInterview.visibility = View.GONE
+                markCompany.visibility = View.GONE
             }
         }
     }
