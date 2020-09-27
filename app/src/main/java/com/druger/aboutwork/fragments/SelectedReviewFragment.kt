@@ -153,7 +153,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         commentAdapter.setOnItemClickListener(object : OnItemClickListener<Comment> {
             override fun onClick(item: Comment, position: Int) {}
 
-            override fun onLongClick(position: Int): Boolean {
+            override fun onLongClick(item: Comment, position: Int): Boolean {
                 return presenter.onLongClick(position)
             }
         })

@@ -6,5 +6,5 @@ package com.druger.aboutwork.interfaces
 
 interface OnItemClickListener<T> {
     fun onClick(item: T, position: Int)
-    fun onLongClick(position: Int): Boolean
+    fun onLongClick(item: T, position: Int): Boolean
 }
