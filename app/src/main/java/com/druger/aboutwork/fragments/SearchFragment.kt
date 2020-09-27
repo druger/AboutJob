@@ -88,11 +88,11 @@ class SearchFragment : BaseSupportFragment(), SearchView {
         rvCompanies.addOnScrollListener(scrollListener)
 
         adapter.setOnItemClickListener(object : OnItemClickListener<Company> {
-            override fun onClick(company: Company, position: Int) {
-                showCompanyDetail(company.id)
+            override fun onClick(item: Company, position: Int) {
+                showCompanyDetail(item.id)
             }
 
-            override fun onLongClick(position: Int): Boolean {
+            override fun onLongClick(item: Company, position: Int): Boolean {
                 return false
             }
         })
