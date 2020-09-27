@@ -94,17 +94,37 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
 
     private fun setupListeners() {
         itemClickListener = object : OnItemClickListener<Review> {
-            override fun onClick(review: Review, position: Int) {
-                review.firebaseKey?.let { showSelectedReview(it) }
+            override fun onClick(item: Review, position: Int) {
+                item.firebaseKey?.let { showSelectedReview(it) }
             }
 
-            override fun onLongClick(position: Int): Boolean {
-                return false
+            override fun onLongClick(item: Review, position: Int): Boolean {
+                showDetailMarkCompany(item)
+                return true
             }
         }
         btnRetry.setOnClickListener {
             showErrorScreen(false)
             fetchReviews()
+        }
+    }
+
+    private fun showDetailMarkCompany(review: Review) {
+        requireFragmentManager().beginTransaction().apply {
+            val prevFragment = requireFragmentManager().findFragmentByTag(DETAIL_MARK_DIALOG_TAG)
+            if (prevFragment != null) remove(prevFragment)
+            addToBackStack(null)
+            val markCompany = review.markCompany
+            markCompany?.let { mark ->
+                DetailMarkCompanyDialog.newInstance(
+                    mark.salary,
+                    mark.chief,
+                    mark.workplace,
+                    mark.career,
+                    mark.collective,
+                    mark.socialPackage
+                ).show(this, DETAIL_MARK_DIALOG_TAG)
+            }
         }
     }
 
@@ -142,5 +162,9 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
             reviewPlaceholder.stopShimmer()
             reviewPlaceholder.visibility = View.GONE
         }
+    }
+
+    companion object {
+        private const val DETAIL_MARK_DIALOG_TAG = "mark_company"
     }
 }

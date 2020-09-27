@@ -76,7 +76,7 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
 
             holder.itemView.setOnClickListener(v -> itemClick(reviewVH, review));
             holder.itemView.setOnLongClickListener(v ->
-                    clickListener != null && clickListener.onLongClick(reviewVH.getAdapterPosition()));
+                    clickListener != null && clickListener.onLongClick(review, reviewVH.getAdapterPosition()));
             setRecommendation(review, reviewVH);
             if (review.getHasPhotos()) reviewVH.ivPhotos.setVisibility(View.VISIBLE);
         }
