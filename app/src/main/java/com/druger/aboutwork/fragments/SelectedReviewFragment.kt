@@ -33,6 +33,7 @@ import com.google.android.material.transition.MaterialContainerTransform
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.content_selected_review.*
+import kotlinx.android.synthetic.main.mark_company_info.*
 import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 import org.threeten.bp.Instant
