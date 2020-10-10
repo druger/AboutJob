@@ -13,8 +13,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ScrollView
 import android.widget.Toast
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.MergeAdapter
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.interfaces.view.EditReviewView
@@ -35,7 +35,7 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
     @InjectPresenter
     lateinit var presenter: EditReviewPresenter
 
-    private lateinit var mergeAdapter: MergeAdapter
+    private lateinit var mergeAdapter: ConcatAdapter
 
     @ProvidePresenter
     fun provideEditReviewPresenter() = EditReviewPresenter()
@@ -81,7 +81,7 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
     }
 
     private fun setupRecycler() {
-        mergeAdapter = MergeAdapter(uriPhotoAdapter, storageRefPhotoAdapter)
+        mergeAdapter = ConcatAdapter(uriPhotoAdapter, storageRefPhotoAdapter)
         rvPhotos.apply {
             adapter = mergeAdapter
             itemAnimator = DefaultItemAnimator()
