@@ -56,8 +56,8 @@ class App : Application() {
         YandexMetricaConfig
             .newConfigBuilder("246ea65a-18fd-4e97-b275-7c81f74e43b2")
             .build().apply {
-            YandexMetrica.activate(applicationContext, this)
-        }
+                YandexMetrica.activate(applicationContext, this)
+            }
         YandexMetrica.enableActivityAutoTracking(this)
     }
 
