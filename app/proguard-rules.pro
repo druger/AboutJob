@@ -57,11 +57,7 @@
 -keepattributes SourceFile,LineNumberTable
 -keep public class * extends java.lang.Exception
 
--keep class com.crashlytics.** { *; }
--dontwarn com.crashlytics.**
-
 -keepclassmembers class com.druger.aboutwork.model.** { *; }
--keepclassmembers class com.druger.aboutwork.model.realm.** { *; }
 -keepclassmembers class com.druger.aboutwork.rest.models.** { *; }
 
 -keepclassmembers class * implements android.text.ParcelableSpan {
@@ -72,19 +68,6 @@
 -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
    long producerIndex;
    long consumerIndex;
-}
-
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-   long producerNode;
-   long consumerNode;
-}
-
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode consumerNode;
-}
-
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode producerNode;
 }
 
 -dontwarn sun.misc.**
