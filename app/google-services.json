@@ -15,22 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "603766486213-mjk6fesuk92vvga7qa8r3qnphimh08sa.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.druger.aboutwork",
-            "certificate_hash": "e63ee8d15e1ce5923bb93c081a4ce67f0bee5efe"
-          }
-        },
-        {
-          "client_id": "603766486213-rb89rndksdje4ff84ehjpfsa8cd08139.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.druger.aboutwork",
-            "certificate_hash": "e65304260ed04c3e609c0f55b7b859f198c51635"
-          }
-        },
-        {
           "client_id": "603766486213-7jhndchnofplp0r9eu50etl0orpqqpjg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
