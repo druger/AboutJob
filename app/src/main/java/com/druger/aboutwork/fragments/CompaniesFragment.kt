@@ -110,8 +110,8 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     }
 
     private fun showDetailMarkCompany(review: Review) {
-        requireFragmentManager().beginTransaction().apply {
-            val prevFragment = requireFragmentManager().findFragmentByTag(DETAIL_MARK_DIALOG_TAG)
+        parentFragmentManager.beginTransaction().apply {
+            val prevFragment = parentFragmentManager.findFragmentByTag(DETAIL_MARK_DIALOG_TAG)
             if (prevFragment != null) remove(prevFragment)
             addToBackStack(null)
             val markCompany = review.markCompany

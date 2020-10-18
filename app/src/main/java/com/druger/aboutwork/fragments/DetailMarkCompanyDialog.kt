@@ -19,6 +19,7 @@ class DetailMarkCompanyDialog : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, android.R.style.Theme_Material_Light_Dialog)
         salary = arguments?.getFloat(SALARY_KEY) ?: 0.0f
         chief = arguments?.getFloat(CHIEF_KEY) ?: 0.0f
         workplace = arguments?.getFloat(WORKPLACE_KEY) ?: 0.0f
