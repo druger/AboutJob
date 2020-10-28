@@ -99,7 +99,9 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
             }
 
             override fun onLongClick(item: Review, position: Int): Boolean {
-                showDetailMarkCompany(item)
+                if (item.status != Review.INTERVIEW) {
+                    showDetailMarkCompany(item)
+                }
                 return true
             }
         }
