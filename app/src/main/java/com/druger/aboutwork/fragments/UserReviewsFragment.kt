@@ -53,8 +53,8 @@ class UserReviewsFragment : BaseSupportFragment(), UserReviews {
         rvReviews.adapter = reviewAdapter
 
         reviewAdapter?.setOnClickListener(object : OnItemClickListener<Review> {
-            override fun onClick(review: Review, position: Int) {
-                review.firebaseKey?.let {
+            override fun onClick(item: Review, position: Int) {
+                item.firebaseKey?.let {
                     val reviewFragment = SelectedReviewFragment.newInstance(it, false)
 
                     fragmentManager?.beginTransaction()?.apply {
@@ -65,7 +65,7 @@ class UserReviewsFragment : BaseSupportFragment(), UserReviews {
                 }
             }
 
-            override fun onLongClick(position: Int): Boolean {
+            override fun onLongClick(item: Review, position: Int): Boolean {
                 return false
             }
         })
