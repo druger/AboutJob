@@ -13,7 +13,6 @@ import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.CompaniesView
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.CompaniesPresenter
-import com.druger.aboutwork.utils.ImagePreviewUtils
 import com.google.android.material.transition.MaterialFadeThrough
 import kotlinx.android.synthetic.main.fragment_companies.*
 import kotlinx.android.synthetic.main.network_error.*
@@ -100,7 +99,6 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
             }
 
             override fun onLongClick(item: Review, position: Int): Boolean {
-                blurScreen()
                 showDetailMarkCompany(item)
                 return true
             }
@@ -109,12 +107,6 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
             showErrorScreen(false)
             fetchReviews()
         }
-    }
-
-    private fun blurScreen() {
-        val content = requireActivity().findViewById<View>(android.R.id.content).rootView
-        val blurImage = ImagePreviewUtils.getBlurredScreenDrawable(content)
-        requireActivity().window.setBackgroundDrawable(blurImage)
     }
 
     private fun showDetailMarkCompany(review: Review) {
