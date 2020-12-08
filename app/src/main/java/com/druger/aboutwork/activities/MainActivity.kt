@@ -3,10 +3,7 @@ package com.druger.aboutwork.activities
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
 import androidx.annotation.IdRes
-import androidx.annotation.StringRes
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.druger.aboutwork.App
@@ -72,57 +69,17 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
         mainPresenter.checkAuthUser()
     }
 
+    fun setupSearchToolbar() {
+        actionBar?.setTitle(R.string.search)
+        ivSearch.visibility = View.VISIBLE
+        ivSearch.setOnClickListener {
+            replaceFragment(SearchFragment(), R.id.main_container, true)
+        }
+    }
+
     fun hideSearchIcon() {
-        searchView.visibility = View.GONE
+        ivSearch.visibility = View.GONE
     }
-
-    fun showSearchIcon() {
-        searchView.visibility = View.VISIBLE
-    }
-
-    fun showEditIcon() {
-        ivEdit.visibility = View.VISIBLE
-    }
-
-    fun hideEditIcon() {
-        ivEdit.visibility = View.GONE
-    }
-
-    fun showCloseIcon() {
-        ivClose.visibility = View.VISIBLE
-    }
-
-    fun hideCloseIcon() {
-        ivClose.visibility = View.GONE
-    }
-
-    fun showDoneIcon() {
-        ivDone.visibility = View.VISIBLE
-    }
-
-    fun hideDoneIcon() {
-        ivDone.visibility = View.GONE
-    }
-
-    fun setToolbarTitle(@StringRes resId: Int) {
-        tvTitle.setText(resId)
-    }
-
-    fun hideToolbarTitle() {
-        tvTitle.visibility = View.GONE
-    }
-
-    fun showToolbarTitle() {
-        tvTitle.visibility = View.VISIBLE
-    }
-
-    fun getEditImageView(): ImageView = ivEdit
-
-    fun getDoneImageView(): ImageView = ivDone
-
-    fun getCloseImageView(): ImageView = ivClose
-
-    fun getSearchView(): SearchView = searchView
 
     override fun onDestroy() {
         super.onDestroy()
