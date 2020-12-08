@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvSalary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/salary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvCareer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/career"
+        app:layout_constraintStart_toStartOf="@+id/rbCareer"
+        app:layout_constraintTop_toTopOf="@+id/tvSalary" />
+
+    <TextView
+        android:id="@+id/tvCollective"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/collective"
+        app:layout_constraintStart_toStartOf="@+id/rbCollective"
+        app:layout_constraintTop_toBottomOf="@+id/rbCareer" />
+
+    <TextView
+        android:id="@+id/tvSocialPackage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/social_package"
+        app:layout_constraintStart_toStartOf="@+id/rbSocialPackage"
+        app:layout_constraintTop_toBottomOf="@+id/rbCollective" />
+
+    <RatingBar
+        android:id="@+id/rbSalary"
+        style="@style/reviewRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:isIndicator="true"
+        android:stepSize="1"
+        app:layout_constraintStart_toStartOf="@+id/tvSalary"
+        app:layout_constraintTop_toBottomOf="@+id/tvSalary" />
+
+    <RatingBar
+        android:id="@+id/rbCareer"
+        style="@style/reviewRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:isIndicator="true"
+        android:stepSize="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCareer" />
+
+    <RatingBar
+        android:id="@+id/rbCollective"
+        style="@style/reviewRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:isIndicator="true"
+        android:stepSize="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCollective" />
+
+    <RatingBar
+        android:id="@+id/rbSocialPackage"
+        style="@style/reviewRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:isIndicator="true"
+        android:stepSize="1"
+        app:layout_constraintBottom_toBottomOf="@+id/rbWorkplace"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSocialPackage" />
+
+    <RatingBar
+        android:id="@+id/rbChief"
+        style="@style/reviewRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:isIndicator="true"
+        android:stepSize="1"
+        app:layout_constraintStart_toStartOf="@+id/tvChief"
+        app:layout_constraintTop_toBottomOf="@+id/tvChief" />
+
+    <RatingBar
+        android:id="@+id/rbWorkplace"
+        style="@style/reviewRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:isIndicator="true"
+        android:stepSize="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvWorkplace" />
+
+    <TextView
+        android:id="@+id/tvChief"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/chief"
+        app:layout_constraintStart_toStartOf="@+id/rbSalary"
+        app:layout_constraintTop_toBottomOf="@+id/rbSalary" />
+
+    <TextView
+        android:id="@+id/tvWorkplace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/workplace"
+        app:layout_constraintStart_toStartOf="@+id/rbChief"
+        app:layout_constraintTop_toBottomOf="@+id/rbChief" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
