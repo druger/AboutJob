@@ -12,23 +12,12 @@
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
-        <ImageView
-            android:id="@+id/ivEdit"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginEnd="15dp"
-            app:srcCompat="@drawable/ic_edit_white"
-            android:visibility="gone"/>
-
-        <ImageView
-            android:id="@+id/ivSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="16dp"
-            app:srcCompat="@drawable/ic_search"
-            android:visibility="gone"/>
+            android:imeOptions="actionSearch|flagNoExtractUi|flagNoFullscreen"
+            app:theme="@style/Theme.AppCompat.NoActionBar" />
     </androidx.appcompat.widget.Toolbar>
-
 </com.google.android.material.appbar.AppBarLayout>

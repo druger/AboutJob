@@ -27,6 +27,7 @@ import com.druger.aboutwork.utils.Utils
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.content_review.*
+import kotlinx.android.synthetic.main.toolbar_review.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
@@ -208,8 +209,10 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
         }
     }
 
-    override fun setToolbarTitle() {
-        (activity as MainActivity).setToolbarTitle(R.string.edit_review)
+    override fun setToolbar() {
+        ivDone.setOnClickListener { doneClick() }
+        ivClose.setOnClickListener { closeClick() }
+        tvTitle.setText(R.string.edit_review)
     }
 
     override fun closeClick() {

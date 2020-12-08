@@ -7,9 +7,7 @@
     android:orientation="vertical"
     android:fitsSystemWindows="true">
 
-    <include
-        android:id="@+id/toolbarLt"
-        layout="@layout/toolbar" />
+    <include layout="@layout/toolbar" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator"
