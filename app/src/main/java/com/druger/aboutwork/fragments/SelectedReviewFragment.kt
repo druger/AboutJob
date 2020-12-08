@@ -33,6 +33,7 @@ import com.google.android.material.transition.MaterialContainerTransform
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.content_selected_review.*
+import kotlinx.android.synthetic.main.mark_company_info.*
 import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 import org.threeten.bp.Instant
@@ -152,7 +153,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         commentAdapter.setOnItemClickListener(object : OnItemClickListener<Comment> {
             override fun onClick(item: Comment, position: Int) {}
 
-            override fun onLongClick(position: Int): Boolean {
+            override fun onLongClick(item: Comment, position: Int): Boolean {
                 return presenter.onLongClick(position)
             }
         })
@@ -274,7 +275,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             }
             Review.INTERVIEW -> {
                 tvStatus.setText(R.string.interview)
-                groupInterview.visibility = View.GONE
+                markCompany.visibility = View.GONE
             }
         }
     }
