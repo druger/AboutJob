@@ -76,14 +76,8 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
 
     private fun setupToolbar() {
         actionBar?.setDisplayShowTitleEnabled(true)
-        (activity as MainActivity).showSearchIcon()
+        (activity as MainActivity).setupSearchToolbar()
         actionBar?.setTitle(R.string.search)
-        (activity as MainActivity).getSearchView().apply {
-            setOnSearchClickListener {
-                replaceFragment(SearchFragment(), R.id.main_container, true)
-                queryHint = resources.getString(R.string.query_hint)
-            }
-        }
     }
 
     private fun setupRecycler() {

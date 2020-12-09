@@ -3,6 +3,8 @@
     android:layout_height="match_parent"
     android:transitionName="detail_transform">
 
+    <include layout="@layout/toolbar" />
+
     <include layout="@layout/content_selected_review" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
