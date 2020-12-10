@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_companies.*
 import kotlinx.android.synthetic.main.network_error.*
 import kotlinx.android.synthetic.main.no_reviews.*
 import kotlinx.android.synthetic.main.shimmer_content_companies.*
+import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
@@ -75,9 +76,13 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     }
 
     private fun setupToolbar() {
-        actionBar?.setDisplayShowTitleEnabled(true)
-        (activity as MainActivity).setupSearchToolbar()
+        mToolbar = toolbar
+        mToolbar?.let { setActionBar(it) }
         actionBar?.setTitle(R.string.search)
+        ivSearch.visibility = View.VISIBLE
+        ivSearch.setOnClickListener {
+            replaceFragment(SearchFragment(), R.id.main_container, true)
+        }
     }
 
     private fun setupRecycler() {

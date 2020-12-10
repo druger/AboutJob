@@ -113,8 +113,10 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     }
 
     private fun setupSearch() {
+//        actionBar?.setDisplayHomeAsUpEnabled(false)
+//        actionBar?.setDisplayShowTitleEnabled(false)
         searchView.queryHint = resources.getString(R.string.query_hint)
-        searchView.isIconified = false
+//        searchView.isIconified = false
 
         RxSearch.fromSearchView(searchView)
             .debounce(DEBOUNCE_SEARCH.toLong(), TimeUnit.MILLISECONDS)
