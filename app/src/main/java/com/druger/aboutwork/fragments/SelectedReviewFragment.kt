@@ -192,7 +192,6 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         actionBar?.setTitle(R.string.review)
         if (editMode) ivEdit.visibility = View.VISIBLE
         else ivEdit.visibility = View.GONE
-        (activity as MainActivity).hideSearchIcon()
     }
 
     private fun getReview() {

@@ -88,7 +88,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
         mToolbar = toolbar
         mToolbar?.let { setActionBar(it) }
         actionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as MainActivity).hideSearchIcon()
+        ivSearch.visibility = View.VISIBLE
         actionBar?.setDisplayShowTitleEnabled(true)
     }
 

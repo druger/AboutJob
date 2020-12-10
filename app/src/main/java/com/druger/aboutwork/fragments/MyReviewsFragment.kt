@@ -103,7 +103,6 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
         mToolbar = toolbar
         mToolbar?.let { setActionBar(it) }
         actionBar?.setTitle(R.string.my_reviews)
-        (activity as MainActivity).hideSearchIcon()
     }
 
     private fun setupRecycler() {
