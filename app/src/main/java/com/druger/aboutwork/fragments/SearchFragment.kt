@@ -76,7 +76,6 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     private fun setupToolbar() {
         mToolbar = toolbar
         mToolbar?.let { setActionBar(it) }
-        actionBar?.setTitle(R.string.search)
     }
 
     private fun setupRecycler() {
@@ -104,7 +103,6 @@ class SearchFragment : BaseSupportFragment(), SearchView {
                 return false
             }
         })
-
         btnRetry.setOnClickListener { getCompanies(page) }
     }
 
@@ -113,10 +111,17 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     }
 
     private fun setupSearch() {
-//        actionBar?.setDisplayHomeAsUpEnabled(false)
-//        actionBar?.setDisplayShowTitleEnabled(false)
         searchView.queryHint = resources.getString(R.string.query_hint)
-//        searchView.isIconified = false
+        searchView.isIconified = false
+        searchView.setOnCloseListener(object : androidx.appcompat.widget.SearchView.OnCloseListener {
+            override fun onClose(): Boolean {
+                if (searchView.query.isBlank()) {
+                    parentFragmentManager.popBackStackImmediate()
+                    return false
+                }
+                return true
+            }
+        })
 
         RxSearch.fromSearchView(searchView)
             .debounce(DEBOUNCE_SEARCH.toLong(), TimeUnit.MILLISECONDS)
