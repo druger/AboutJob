@@ -52,7 +52,7 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
-        setupToolbar()
+        setActionBar(toolbar)
         setupRecycler()
         setupListeners()
         setupSearch()
@@ -71,11 +71,6 @@ class SearchFragment : BaseSupportFragment(), SearchView {
                 window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
             }
         }
-    }
-
-    private fun setupToolbar() {
-        mToolbar = toolbar
-        mToolbar?.let { setActionBar(it) }
     }
 
     private fun setupRecycler() {
