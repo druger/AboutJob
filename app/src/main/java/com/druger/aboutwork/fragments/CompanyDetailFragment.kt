@@ -85,8 +85,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
     }
 
     private fun setupToolbar() {
-        mToolbar = toolbar
-        mToolbar?.let { setActionBar(it) }
+        setActionBar(toolbar)
         actionBar?.setDisplayHomeAsUpEnabled(true)
         ivSearch.visibility = View.VISIBLE
         actionBar?.setDisplayShowTitleEnabled(true)

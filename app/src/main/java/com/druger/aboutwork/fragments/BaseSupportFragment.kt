@@ -27,7 +27,6 @@ import moxy.MvpAppCompatFragment
 abstract class BaseSupportFragment : MvpAppCompatFragment(), NetworkView {
     protected var rootView: View? = null
     protected var mProgressBar: ProgressBar? = null
-    protected var mToolbar: Toolbar? = null
     protected var mLtError: ConstraintLayout? = null
 
     protected val actionBar: ActionBar?

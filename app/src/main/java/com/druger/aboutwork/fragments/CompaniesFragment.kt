@@ -76,8 +76,7 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     }
 
     private fun setupToolbar() {
-        mToolbar = toolbar
-        mToolbar?.let { setActionBar(it) }
+        setActionBar(toolbar)
         actionBar?.setTitle(R.string.search)
         ivSearch.visibility = View.VISIBLE
         ivSearch.setOnClickListener {
