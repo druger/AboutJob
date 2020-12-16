@@ -5,12 +5,14 @@
     android:id="@+id/ltAccount"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone"
-    tools:visibility="visible">
+    android:visibility="gone">
+
+    <include layout="@layout/toolbar" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
         android:layout_marginBottom="?attr/actionBarSize">
 
         <androidx.constraintlayout.widget.ConstraintLayout
