@@ -42,8 +42,7 @@ class UserReviewsFragment : BaseSupportFragment(), UserReviews {
     }
 
     private fun setupToolbar() {
-        mToolbar = toolbar
-        mToolbar?.let { setActionBar(it) }
+        setActionBar(toolbar)
         actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 

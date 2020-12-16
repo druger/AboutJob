@@ -3,10 +3,7 @@ package com.druger.aboutwork.activities
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
 import androidx.annotation.IdRes
-import androidx.annotation.StringRes
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.druger.aboutwork.App
@@ -17,7 +14,6 @@ import com.druger.aboutwork.interfaces.view.MainView
 import com.druger.aboutwork.presenters.MainPresenter
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.toolbar.*
 import moxy.MvpAppCompatActivity
 import moxy.presenter.InjectPresenter
 
@@ -35,7 +31,6 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
         checkAuthUser()
         setupUI()
         bottomNavigation.setOnNavigationItemSelectedListener(this)
@@ -71,58 +66,6 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
     private fun checkAuthUser() {
         mainPresenter.checkAuthUser()
     }
-
-    fun hideSearchIcon() {
-        searchView.visibility = View.GONE
-    }
-
-    fun showSearchIcon() {
-        searchView.visibility = View.VISIBLE
-    }
-
-    fun showEditIcon() {
-        ivEdit.visibility = View.VISIBLE
-    }
-
-    fun hideEditIcon() {
-        ivEdit.visibility = View.GONE
-    }
-
-    fun showCloseIcon() {
-        ivClose.visibility = View.VISIBLE
-    }
-
-    fun hideCloseIcon() {
-        ivClose.visibility = View.GONE
-    }
-
-    fun showDoneIcon() {
-        ivDone.visibility = View.VISIBLE
-    }
-
-    fun hideDoneIcon() {
-        ivDone.visibility = View.GONE
-    }
-
-    fun setToolbarTitle(@StringRes resId: Int) {
-        tvTitle.setText(resId)
-    }
-
-    fun hideToolbarTitle() {
-        tvTitle.visibility = View.GONE
-    }
-
-    fun showToolbarTitle() {
-        tvTitle.visibility = View.VISIBLE
-    }
-
-    fun getEditImageView(): ImageView = ivEdit
-
-    fun getDoneImageView(): ImageView = ivDone
-
-    fun getCloseImageView(): ImageView = ivClose
-
-    fun getSearchView(): SearchView = searchView
 
     override fun onDestroy() {
         super.onDestroy()

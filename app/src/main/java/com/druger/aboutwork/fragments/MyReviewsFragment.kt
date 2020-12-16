@@ -100,10 +100,8 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
 
     private fun setupToolbar() {
         actionBar?.setDisplayShowTitleEnabled(true)
-        mToolbar = toolbar
-        mToolbar?.let { setActionBar(it) }
+        setActionBar(toolbar)
         actionBar?.setTitle(R.string.my_reviews)
-        (activity as MainActivity).hideSearchIcon()
     }
 
     private fun setupRecycler() {

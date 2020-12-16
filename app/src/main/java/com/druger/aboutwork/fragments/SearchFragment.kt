@@ -21,6 +21,7 @@ import com.druger.aboutwork.utils.rx.RxSearch
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.network_error.*
+import kotlinx.android.synthetic.main.toolbar_search.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import java.util.concurrent.TimeUnit
@@ -51,6 +52,7 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
+        setActionBar(toolbar)
         setupRecycler()
         setupListeners()
         setupSearch()
@@ -96,7 +98,6 @@ class SearchFragment : BaseSupportFragment(), SearchView {
                 return false
             }
         })
-
         btnRetry.setOnClickListener { getCompanies(page) }
     }
 
@@ -105,9 +106,19 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     }
 
     private fun setupSearch() {
-        actionBar?.setDisplayHomeAsUpEnabled(false)
-        actionBar?.setDisplayShowTitleEnabled(false)
-        RxSearch.fromSearchView( (activity as MainActivity).getSearchView())
+        searchView.queryHint = resources.getString(R.string.query_hint)
+        searchView.isIconified = false
+        searchView.setOnCloseListener(object : androidx.appcompat.widget.SearchView.OnCloseListener {
+            override fun onClose(): Boolean {
+                if (searchView.query.isBlank()) {
+                    parentFragmentManager.popBackStackImmediate()
+                    return false
+                }
+                return true
+            }
+        })
+
+        RxSearch.fromSearchView(searchView)
             .debounce(DEBOUNCE_SEARCH.toLong(), TimeUnit.MILLISECONDS)
             .filter { item -> item.length >= 2 }
             .observeOn(AndroidSchedulers.mainThread())
@@ -121,21 +132,14 @@ class SearchFragment : BaseSupportFragment(), SearchView {
             adapter.clear()
             scrollListener.resetPageCount()
         }
-        (activity as MainActivity).getSearchView().setOnCloseListener {
-            requireFragmentManager().popBackStackImmediate()
-        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         activity?.window?.setSoftInputMode(inputMode)
+        searchView.setOnQueryTextListener(null)
         rvCompanies.removeOnScrollListener(scrollListener)
         adapter.setOnItemClickListener(null)
-        (activity as MainActivity).getSearchView().apply {
-            setOnQueryTextListener(null)
-            setOnCloseListener(null)
-            if (!isIconified) isIconified = true
-        }
     }
 
     override fun showCompanies(companies: List<Company>, pages: Int) {
@@ -150,7 +154,7 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     }
 
     private fun showCompanyDetail(id: String) {
-        Utils.hideKeyboard(requireContext(),  (activity as MainActivity).getSearchView())
+        Utils.hideKeyboard(requireContext(), searchView)
         replaceFragment(CompanyDetailFragment.newInstance(id), R.id.main_container, true)
     }
 
