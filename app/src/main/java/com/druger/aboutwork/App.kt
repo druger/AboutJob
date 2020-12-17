@@ -2,6 +2,7 @@ package com.druger.aboutwork
 
 import android.app.Application
 import android.content.Context
+import androidx.appcompat.app.AppCompatDelegate
 import com.druger.aboutwork.di.modules.appModule
 import com.google.firebase.FirebaseApp
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -34,6 +35,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 //        setupLeakCanary()
         FirebaseApp.initializeApp(this)
         AndroidThreeTen.init(this)

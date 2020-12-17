@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#B39DDB</color>
+    <color name="colorPrimaryDark">#B39DDB</color>
+    <color name="colorPrimaryLight">#D1C4E9</color>
+    <color name="colorAccent">#B39DDB</color>
+
+    <color name="bottom_navigation">#B39DDB</color>
+
+    <color name="color_separate_line">#EEEEEE</color>
+
+    <color name="review_positive">#A5D6A7</color>
+    <color name="review_negative">#EF9A9A</color>
+    <color name="star">#FFE082</color>
+
+    <color name="bg_general">#FFEBEE</color>
+    <color name="remove">#EF9A9A</color>
+    <color name="ic_reply">#B39DDB</color>
+    <color name="selected_review">#B39DDB</color>
+    <color name="bg_deleted_review">#fa315b</color>
+
+    <color name="recommended">#C5E1A5</color>
+    <color name="not_recommended">#F48FB1</color>
+
+    <color name="shimmer_bg">#D1C4E9</color>
+</resources>
