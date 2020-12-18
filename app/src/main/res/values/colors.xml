@@ -5,6 +5,8 @@
     <color name="colorPrimaryLight">#D1C4E9</color>
     <color name="colorAccent">#7C4DFF</color>
 
+    <color name="toolbar_color">@color/colorPrimary</color>
+    <color name="status_bar_color">@color/colorPrimaryDark</color>
     <color name="bottom_navigation">#7953D2</color>
 
     <color name="color_separate_line">#EEEEEE</color>
