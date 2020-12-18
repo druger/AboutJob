@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_companies.*
 import kotlinx.android.synthetic.main.network_error.*
 import kotlinx.android.synthetic.main.no_reviews.*
 import kotlinx.android.synthetic.main.shimmer_content_companies.*
+import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
@@ -75,14 +76,11 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     }
 
     private fun setupToolbar() {
-        actionBar?.setDisplayShowTitleEnabled(true)
-        (activity as MainActivity).showSearchIcon()
+        setActionBar(toolbar)
         actionBar?.setTitle(R.string.search)
-        (activity as MainActivity).getSearchView().apply {
-            setOnSearchClickListener {
-                replaceFragment(SearchFragment(), R.id.main_container, true)
-                queryHint = resources.getString(R.string.query_hint)
-            }
+        ivSearch.visibility = View.VISIBLE
+        ivSearch.setOnClickListener {
+            replaceFragment(SearchFragment(), R.id.main_container, true)
         }
     }
 
@@ -94,17 +92,39 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
 
     private fun setupListeners() {
         itemClickListener = object : OnItemClickListener<Review> {
-            override fun onClick(review: Review, position: Int) {
-                review.firebaseKey?.let { showSelectedReview(it) }
+            override fun onClick(item: Review, position: Int) {
+                item.firebaseKey?.let { showSelectedReview(it) }
             }
 
-            override fun onLongClick(position: Int): Boolean {
-                return false
+            override fun onLongClick(item: Review, position: Int): Boolean {
+                if (item.status != Review.INTERVIEW) {
+                    showDetailMarkCompany(item)
+                }
+                return true
             }
         }
         btnRetry.setOnClickListener {
             showErrorScreen(false)
             fetchReviews()
+        }
+    }
+
+    private fun showDetailMarkCompany(review: Review) {
+        parentFragmentManager.beginTransaction().apply {
+            val prevFragment = parentFragmentManager.findFragmentByTag(DETAIL_MARK_DIALOG_TAG)
+            if (prevFragment != null) remove(prevFragment)
+            addToBackStack(null)
+            val markCompany = review.markCompany
+            markCompany?.let { mark ->
+                DetailMarkCompanyDialog.newInstance(
+                    mark.salary,
+                    mark.chief,
+                    mark.workplace,
+                    mark.career,
+                    mark.collective,
+                    mark.socialPackage
+                ).show(this, DETAIL_MARK_DIALOG_TAG)
+            }
         }
     }
 
@@ -142,5 +162,9 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
             reviewPlaceholder.stopShimmer()
             reviewPlaceholder.visibility = View.GONE
         }
+    }
+
+    companion object {
+        private const val DETAIL_MARK_DIALOG_TAG = "mark_company"
     }
 }

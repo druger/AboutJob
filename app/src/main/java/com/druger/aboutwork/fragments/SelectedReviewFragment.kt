@@ -33,6 +33,7 @@ import com.google.android.material.transition.MaterialContainerTransform
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.content_selected_review.*
+import kotlinx.android.synthetic.main.mark_company_info.*
 import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 import org.threeten.bp.Instant
@@ -152,7 +153,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         commentAdapter.setOnItemClickListener(object : OnItemClickListener<Comment> {
             override fun onClick(item: Comment, position: Int) {}
 
-            override fun onLongClick(position: Int): Boolean {
+            override fun onLongClick(item: Comment, position: Int): Boolean {
                 return presenter.onLongClick(position)
             }
         })
@@ -179,19 +180,17 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         ivLike.setOnClickListener { presenter.clickLike() }
         ivDislike.setOnClickListener { presenter.clickDislike() }
         if (editMode) {
-            (activity as MainActivity).getEditImageView().setOnClickListener { showEditReview() }
+            ivEdit.setOnClickListener { showEditReview() }
         }
         tvName.setOnClickListener { presenter.onClickName(showUserName) }
     }
 
     private fun setupToolbar() {
-        mToolbar = toolbar
-        mToolbar?.let { setActionBar(it) }
+        setActionBar(toolbar)
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.setTitle(R.string.review)
-        if (editMode) (activity as MainActivity).showEditIcon()
-        else (activity as MainActivity).hideEditIcon()
-        (activity as MainActivity).hideSearchIcon()
+        if (editMode) ivEdit.visibility = View.VISIBLE
+        else ivEdit.visibility = View.GONE
     }
 
     private fun getReview() {
@@ -274,7 +273,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             }
             Review.INTERVIEW -> {
                 tvStatus.setText(R.string.interview)
-                groupInterview.visibility = View.GONE
+                markCompany.visibility = View.GONE
             }
         }
     }
@@ -392,7 +391,6 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         super.onDestroyView()
         if (editMode) {
             (activity as MainActivity).showBottomNavigation()
-            (activity as MainActivity).hideEditIcon()
         }
         actionBar?.setDisplayHomeAsUpEnabled(false)
     }

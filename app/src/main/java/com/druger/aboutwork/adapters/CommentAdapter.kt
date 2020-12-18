@@ -39,7 +39,7 @@ class CommentAdapter(private val user: FirebaseUser?) : BaseRecyclerViewAdapter<
         holder.tvCountLikes.text = comment.like.toString()
         holder.tvCountDislikes.text = comment.dislike.toString()
 
-        holder.itemView.setOnLongClickListener { longItemClick(holder) }
+        holder.itemView.setOnLongClickListener { longItemClick(comment, holder) }
         holder.ivLike.setOnClickListener { likeClick(holder, comment) }
         holder.ivDislike.setOnClickListener { dislikeClick(holder, comment) }
         holder.tvUserName.setOnClickListener { nameClickListener?.onClick(comment) }
@@ -124,11 +124,11 @@ class CommentAdapter(private val user: FirebaseUser?) : BaseRecyclerViewAdapter<
         }
     }
 
-    private fun longItemClick(holder: CommentVH): Boolean {
+    private fun longItemClick(comment: Comment, holder: CommentVH): Boolean {
         if (clickListener != null) {
             val pos = holder.adapterPosition
             if (pos != RecyclerView.NO_POSITION) {
-                clickListener?.onLongClick(pos)
+                clickListener?.onLongClick(comment, pos)
                 return true
             }
         }

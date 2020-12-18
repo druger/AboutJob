@@ -100,10 +100,8 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
 
     private fun setupToolbar() {
         actionBar?.setDisplayShowTitleEnabled(true)
-        mToolbar = toolbar
-        mToolbar?.let { setActionBar(it) }
+        setActionBar(toolbar)
         actionBar?.setTitle(R.string.my_reviews)
-        (activity as MainActivity).hideSearchIcon()
     }
 
     private fun setupRecycler() {
@@ -112,11 +110,11 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
         rvReviews.adapter = reviewAdapter
 
         reviewAdapter.setOnClickListener(object : OnItemClickListener<Review> {
-            override fun onClick(review: Review, position: Int) {
-                actionMode?.let { toggleSelection(position) } ?: showSelectedReview(review)
+            override fun onClick(item: Review, position: Int) {
+                actionMode?.let { toggleSelection(position) } ?: showSelectedReview(item)
             }
 
-            override fun onLongClick(position: Int): Boolean {
+            override fun onLongClick(item: Review, position: Int): Boolean {
                 if (actionMode == null) {
                     actionMode = (activity as MainActivity).startSupportActionMode(actionModeCallback)
                     simpleCallback.itemSwipe = false

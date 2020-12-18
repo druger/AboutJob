@@ -66,10 +66,8 @@ class AccountFragment : BaseSupportFragment(), AccountView {
 
     private fun setupToolbar() {
         actionBar?.setDisplayShowTitleEnabled(true)
-        mToolbar = toolbar
-        mToolbar?.let { setActionBar(it) }
+        setActionBar(toolbar)
         actionBar?.setTitle(R.string.settings)
-        (activity as MainActivity).hideSearchIcon()
     }
 
     private fun setupListeners() {

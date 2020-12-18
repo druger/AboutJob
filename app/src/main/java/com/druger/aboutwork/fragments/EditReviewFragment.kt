@@ -13,8 +13,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ScrollView
 import android.widget.Toast
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.MergeAdapter
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.interfaces.view.EditReviewView
@@ -27,6 +27,7 @@ import com.druger.aboutwork.utils.Utils
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.content_review.*
+import kotlinx.android.synthetic.main.toolbar_review.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
@@ -35,7 +36,7 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
     @InjectPresenter
     lateinit var presenter: EditReviewPresenter
 
-    private lateinit var mergeAdapter: MergeAdapter
+    private lateinit var mergeAdapter: ConcatAdapter
 
     @ProvidePresenter
     fun provideEditReviewPresenter() = EditReviewPresenter()
@@ -81,7 +82,7 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
     }
 
     private fun setupRecycler() {
-        mergeAdapter = MergeAdapter(uriPhotoAdapter, storageRefPhotoAdapter)
+        mergeAdapter = ConcatAdapter(uriPhotoAdapter, storageRefPhotoAdapter)
         rvPhotos.apply {
             adapter = mergeAdapter
             itemAnimator = DefaultItemAnimator()
@@ -208,8 +209,10 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
         }
     }
 
-    override fun setToolbarTitle() {
-        (activity as MainActivity).setToolbarTitle(R.string.edit_review)
+    override fun setToolbar() {
+        ivDone.setOnClickListener { doneClick() }
+        ivClose.setOnClickListener { closeClick() }
+        tvTitle.setText(R.string.edit_review)
     }
 
     override fun closeClick() {
