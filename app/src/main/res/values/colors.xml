@@ -5,6 +5,10 @@
     <color name="colorPrimaryLight">#D1C4E9</color>
     <color name="colorAccent">#7C4DFF</color>
 
+    <color name="white">#FFFFFF</color>
+    <color name="black">#ff111111</color>
+    <color name="gray_800">#424242</color>
+
     <color name="toolbar_color">@color/colorPrimary</color>
     <color name="status_bar_color">@color/colorPrimaryDark</color>
     <color name="bottom_navigation">#7953D2</color>
@@ -27,5 +31,7 @@
     <color name="shimmer_bg">#D1C4E9</color>
 
     <color name="primary_text_color">#000000</color>
+
+    <color name="dialog_bg_color">@color/white</color>
 </resources>
 
