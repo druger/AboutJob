@@ -91,7 +91,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Moscow"
                     app:layout_constrainedWidth="true"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/primary_text_color"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -119,7 +119,7 @@
                     app:layout_constrainedWidth="true"
                     android:lines="1"
                     android:ellipsize="end"
-                    android:textColor="@android:color/black"/>
+                    android:textColor="@color/primary_text_color"/>
 
                 <TextView
                     android:id="@+id/tvStatus"
