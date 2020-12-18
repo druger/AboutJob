@@ -23,5 +23,7 @@
     <color name="not_recommended">#ef5350</color>
 
     <color name="shimmer_bg">#D1C4E9</color>
+
+    <color name="primary_text_color">#000000</color>
 </resources>
 
