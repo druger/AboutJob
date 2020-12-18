@@ -25,6 +25,7 @@
     <style name="AppTheme.Dialog" parent="Theme.MaterialComponents.Dialog">
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/primary_text_color</item>
+        <item name="android:background">@color/dialog_bg_color</item>
     </style>
 
     <style name="BottomSheetDialogStyle" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
