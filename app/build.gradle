@@ -114,7 +114,7 @@ dependencies {
     implementation 'com.thefinestartist:finestwebview:1.2.7'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.jakewharton.threetenabp:threetenabp:1.1.2'
-    implementation 'androidx.recyclerview:recyclerview:1.2.0-beta01'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha06'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'com.google.firebase:firebase-analytics:17.6.0'

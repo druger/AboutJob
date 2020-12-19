@@ -1,6 +1,5 @@
 package com.druger.aboutwork.adapters;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +55,8 @@ public class ReviewAdapter extends SelectableAdapter<RecyclerView.ViewHolder> {
 //            reviewVH.ltDelete.setVisibility(View.VISIBLE); // TODO проблема с отображением при анимации
             final Review review = reviews.get(position);
             reviewVH.clReviewCard.setBackgroundColor(isSelected(position)
-                    ? ContextCompat.getColor(reviewVH.clReviewCard.getContext(), R.color.selected_review) : Color.WHITE);
+                    ? ContextCompat.getColor(reviewVH.clReviewCard.getContext(), R.color.selected_review) :
+                ContextCompat.getColor(reviewVH.clReviewCard.getContext(), R.color.review_bg));
 
             setStatus(reviewVH, review);
             reviewVH.tvPluses.setText(Utils.getQuoteSpan(reviewVH.itemView.getContext(),
