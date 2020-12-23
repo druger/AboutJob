@@ -36,5 +36,9 @@
     <color name="dialog_bg_color">@color/white</color>
 
     <color name="review_bg">@color/white</color>
+
+    <color name="like">#3F2B96</color>
+    <color name="like_disable">@color/black</color>
+    <color name="dislike">#EB5757</color>
 </resources>
 
