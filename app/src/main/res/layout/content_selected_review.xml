@@ -242,7 +242,7 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        android:background="@android:color/white"
+        android:background="@color/colorSurface"
         android:weightSum="1">
 
         <EditText
@@ -251,7 +251,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="0.9"
-            android:background="@android:color/white"
+            android:background="@android:color/transparent"
             android:hint="@string/your_message"
             android:inputType="textMultiLine"
             android:maxHeight="80dp"

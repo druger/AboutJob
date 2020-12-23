@@ -9,12 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.collection.ArrayMap
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.druger.aboutwork.Const.Colors.BLACK
 import com.druger.aboutwork.Const.Colors.DISLIKE
 import com.druger.aboutwork.Const.Colors.LIKE
-import com.druger.aboutwork.Const.Colors.PURPLE_100
-import com.druger.aboutwork.Const.Colors.PURPLE_500
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.CommentAdapter
@@ -133,10 +132,14 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.toString().trim().isNotEmpty()) {
                     ivSend.isClickable = true
-                    ivSend.setColorFilter(Color.parseColor(PURPLE_500))
+                    ivSend.setColorFilter(ResourcesCompat.getColor(
+                        resources, R.color.colorPrimary, null
+                    ))
                 } else {
                     ivSend.isClickable = false
-                    ivSend.setColorFilter(Color.parseColor(PURPLE_100))
+                    ivSend.setColorFilter(ResourcesCompat.getColor(
+                        resources, R.color.colorPrimaryLight, null
+                    ))
                 }
             }
 
