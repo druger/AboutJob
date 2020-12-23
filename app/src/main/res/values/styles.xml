@@ -44,6 +44,9 @@
     <style name="DatePickerCustom" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorSurface</item>
+        <item name="android:textColorPrimary">@color/primary_text_color</item>
+        <item name="android:textColorSecondary">@color/colorAccent</item>
     </style>
 
     <style name="WebViewRedTheme" parent="Theme.AppCompat.Light.NoActionBar">
