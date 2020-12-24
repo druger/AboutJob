@@ -28,7 +28,7 @@
         <item name="android:background">@color/dialog_bg_color</item>
     </style>
 
-    <style name="BottomSheetDialogStyle" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+    <style name="BottomSheetDialogStyle" parent="Theme.MaterialComponents.DayNight.BottomSheetDialog">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:windowIsFloating">false</item>
@@ -64,6 +64,7 @@
     <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
         <item name="android:layout_height">50dp</item>
         <item name="android:gravity">center</item>
+        <item name="android:background">@color/colorSurface</item>
     </style>
 
     <style name="CheckBoxCustom" parent="Theme.AppCompat.Light">
