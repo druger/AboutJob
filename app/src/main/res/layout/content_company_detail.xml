@@ -12,8 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
-        android:background="@color/bg_general">
+        android:animateLayoutChanges="true">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/content"
