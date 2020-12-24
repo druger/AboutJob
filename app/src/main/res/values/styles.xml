@@ -71,4 +71,15 @@
         <item name="colorControlNormal">@color/colorPrimary</item>
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
+
+    <style name="AuthTheme" parent="FirebaseUI">
+        <item name="android:textColor">@color/primary_text_color</item>
+        <item name="toolbarStyle">@style/AuthToolbar</item>
+    </style>
+
+    <style name="AuthToolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:popupTheme">@style/AppTheme.PopupOverlay</item>
+        <item name="android:background">@color/toolbar_color</item>
+        <item name="titleTextColor">@color/primary_text_color</item>
+    </style>
 </resources>
