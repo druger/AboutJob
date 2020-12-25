@@ -39,7 +39,7 @@ class AccountPresenter: BasePresenter<AccountView>(), KoinComponent {
             user = auth.currentUser
             if (user != null) {
                 Timber.d("onAuthStateChanged:signed_in:%s", user?.uid)
-                viewState.showContent()
+                viewState.showAuthSetting()
 
                 val email = user?.email
                 val phone = user?.phoneNumber
@@ -48,7 +48,7 @@ class AccountPresenter: BasePresenter<AccountView>(), KoinComponent {
                 email?.let { if (it.isNotEmpty()) viewState.showEmail(it) }
                 phone?.let { if (it.isNotEmpty()) viewState.showPhone(it) }
             } else {
-                viewState.showAuthAccess()
+                viewState.showNotAuthSetting()
             }
         }
         authListener?.let { auth?.addAuthStateListener(it) }
