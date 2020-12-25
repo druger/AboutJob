@@ -10,10 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.core.view.isVisible
 import com.druger.aboutwork.BuildConfig
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
-import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.interfaces.view.AccountView
 import com.druger.aboutwork.presenters.AccountPresenter
 import com.firebase.ui.auth.AuthUI
@@ -130,25 +130,27 @@ class AccountFragment : BaseSupportFragment(), AccountView {
     }
 
     override fun showEmail(email: String) {
-        ltEmail.visibility = View.VISIBLE
-        line2.visibility = View.VISIBLE
+        ltEmail.isVisible = true
+        line2.isVisible = true
         tvEmail.text = email
     }
 
     override fun showPhone(phone: String) {
-        ltPhone.visibility = View.VISIBLE
-        line3.visibility = View.VISIBLE
+        ltPhone.isVisible = true
+        line3.isVisible = true
         tvPhone.text = phone
     }
 
-    override fun showAuthAccess() {
-        replaceFragment(
-            AuthFragment.newInstance(getString(R.string.account_login), Screen.SETTINGS.name),
-            R.id.main_container)
+    override fun showNotAuthSetting() {
+        authGroup.isVisible = false
+        ltPhone.isVisible = false
+        line3.isVisible = false
+        ltEmail.isVisible = false
+        line2.isVisible = false
     }
 
-    override fun showContent() {
-        ltAccount.visibility = View.VISIBLE
+    override fun showAuthSetting() {
+        authGroup.isVisible = true
     }
 
     override fun sendEmail(emailIntent: Intent) {
