@@ -9,12 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.collection.ArrayMap
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DefaultItemAnimator
-import com.druger.aboutwork.Const.Colors.BLACK
-import com.druger.aboutwork.Const.Colors.DISLIKE
-import com.druger.aboutwork.Const.Colors.LIKE
-import com.druger.aboutwork.Const.Colors.PURPLE_100
-import com.druger.aboutwork.Const.Colors.PURPLE_500
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.CommentAdapter
@@ -67,7 +63,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             endContainerColor = Color.WHITE
             scrimColor = Color.TRANSPARENT
         }
-        photoAdapter = PhotoAdapter<StorageReference>(mutableListOf(),false)
+        photoAdapter = PhotoAdapter<StorageReference>(mutableListOf(), false)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -133,10 +129,14 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.toString().trim().isNotEmpty()) {
                     ivSend.isClickable = true
-                    ivSend.setColorFilter(Color.parseColor(PURPLE_500))
+                    ivSend.setColorFilter(ResourcesCompat.getColor(
+                        resources, R.color.colorPrimary, null
+                    ))
                 } else {
                     ivSend.isClickable = false
-                    ivSend.setColorFilter(Color.parseColor(PURPLE_100))
+                    ivSend.setColorFilter(ResourcesCompat.getColor(
+                        resources, R.color.colorPrimaryLight, null
+                    ))
                 }
             }
 
@@ -218,15 +218,21 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
     }
 
     private fun setMyLikeDislike(review: Review) {
-        ivLike.setColorFilter(Color.parseColor(BLACK))
-        ivDislike.setColorFilter(Color.parseColor(BLACK))
+        ivLike.setColorFilter(ResourcesCompat.getColor(
+            requireContext().resources, R.color.like_disable, null
+        ))
+        ivDislike.setColorFilter(ResourcesCompat.getColor(
+            requireContext().resources, R.color.like_disable, null
+        ))
         likesDislikes = review.likesDislikes
         likesDislikes?.let { likes ->
             likes[presenter.user?.uid]?.let { myLike ->
                 if (myLike) {
-                    ivLike.setColorFilter(Color.parseColor(LIKE))
+                    ivLike.setColorFilter(ResourcesCompat.getColor(
+                        requireContext().resources, R.color.like, null))
                 } else {
-                    ivDislike.setColorFilter(Color.parseColor(DISLIKE))
+                    ivDislike.setColorFilter(ResourcesCompat.getColor(
+                        requireContext().resources, R.color.dislike, null))
                 }
             }
         }

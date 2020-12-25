@@ -60,7 +60,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/primary_text_color"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvName"
                         tools:text="developer" />
@@ -123,7 +123,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/primary_text_color"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/tvPlusesDesc"
@@ -145,7 +145,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/primary_text_color"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/tvMinusesDescp"
@@ -242,7 +242,7 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        android:background="@android:color/white"
+        android:background="@color/colorSurface"
         android:weightSum="1">
 
         <EditText
@@ -251,7 +251,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="0.9"
-            android:background="@android:color/white"
+            android:background="@android:color/transparent"
             android:hint="@string/your_message"
             android:inputType="textMultiLine"
             android:maxHeight="80dp"

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#B39DDB</color>
+    <color name="colorPrimaryDark">#B39DDB</color>
+    <color name="colorPrimaryLight">#D1C4E9</color>
+    <color name="colorAccent">#B39DDB</color>
+    <color name="colorSurface">@color/gray_800</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#ff111111</color>
+    <color name="gray_800">#424242</color>
+
+    <color name="toolbar_color">@color/bottom_navigation</color>
+    <color name="status_bar_color">@color/bottom_navigation</color>
+    <color name="bottom_navigation">#262833</color>
+
+    <color name="color_separate_line">#EEEEEE</color>
+
+    <color name="review_positive">#A5D6A7</color>
+    <color name="review_negative">#EF9A9A</color>
+    <color name="star">#FFE082</color>
+
+    <color name="remove">#EF9A9A</color>
+    <color name="ic_reply">#B39DDB</color>
+    <color name="selected_review">#B39DDB</color>
+    <color name="bg_deleted_review">#fa315b</color>
+
+    <color name="recommended">#C5E1A5</color>
+    <color name="not_recommended">#F48FB1</color>
+
+    <color name="shimmer_bg">#D1C4E9</color>
+
+    <color name="primary_text_color">@color/white</color>
+    <color name="dialog_bg_color">@color/gray_800</color>
+
+    <color name="review_bg">@color/gray_800</color>
+
+    <color name="like">#B39DDB</color>
+    <color name="like_disable">@color/black</color>
+    <color name="dislike">#EF9A9A</color>
+</resources>
