@@ -1,15 +1,12 @@
 package com.druger.aboutwork.adapters
 
-import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.collection.ArrayMap
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.druger.aboutwork.Const.Colors.BLACK
-import com.druger.aboutwork.Const.Colors.DISLIKE
-import com.druger.aboutwork.Const.Colors.LIKE
 import com.druger.aboutwork.R
 import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.model.Comment
@@ -48,15 +45,23 @@ class CommentAdapter(private val user: FirebaseUser?) : BaseRecyclerViewAdapter<
     }
 
     private fun setColorLikeDislike(comment: Comment, holder: CommentVH) {
-        holder.ivLike.setColorFilter(Color.parseColor(BLACK))
-        holder.ivDislike.setColorFilter(Color.parseColor(BLACK))
+        holder.ivLike.setColorFilter(ResourcesCompat.getColor(
+            holder.itemView.context.resources, R.color.like_disable, null))
+        holder.ivDislike.setColorFilter(ResourcesCompat.getColor(
+            holder.itemView.context.resources, R.color.like_disable, null))
         likesDislikes = comment.likesDislikes
         likesDislikes?.let { likes ->
             likes[user?.uid]?.let { myLike ->
                 if (myLike) {
-                    holder.ivLike.setColorFilter(Color.parseColor(LIKE))
+                    holder.ivLike.setColorFilter(
+                        ResourcesCompat.getColor(
+                            holder.itemView.context.resources, R.color.like, null
+                        ))
                 } else {
-                    holder.ivDislike.setColorFilter(Color.parseColor(DISLIKE))
+                    holder.ivDislike.setColorFilter(
+                        ResourcesCompat.getColor(
+                            holder.itemView.context.resources, R.color.dislike, null
+                    ))
                 }
             }
         }

@@ -244,7 +244,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/review_date_info"
-            android:textColor="@android:color/black"
+            android:textColor="@color/primary_text_color"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/tilCity"

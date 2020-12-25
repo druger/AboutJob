@@ -52,6 +52,7 @@ class LoginActivity : AppCompatActivity(), KoinComponent {
                     AuthUI.IdpConfig.GoogleBuilder().build(),
                     AuthUI.IdpConfig.AnonymousBuilder().build()
                 ))
+                .setTheme(R.style.AuthTheme)
                 .setLogo(R.drawable.ic_logo)
                 .setIsSmartLockEnabled(!BuildConfig.DEBUG, false)
                 .build(), RC_SIGN_IN)
