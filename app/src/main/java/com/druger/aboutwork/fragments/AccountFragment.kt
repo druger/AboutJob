@@ -4,12 +4,14 @@ package com.druger.aboutwork.fragments
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import com.druger.aboutwork.BuildConfig
 import com.druger.aboutwork.R
@@ -50,9 +52,31 @@ class AccountFragment : BaseSupportFragment(), AccountView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        checkDarkMode()
         setupToolbar()
         setupListeners()
         showVersion()
+        darkModeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            changeTheme(isChecked)
+        }
+    }
+
+    private fun checkDarkMode() {
+        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_NO -> darkModeSwitch.isChecked = false
+            Configuration.UI_MODE_NIGHT_YES -> darkModeSwitch.isChecked = true
+            Configuration.UI_MODE_NIGHT_UNDEFINED -> darkModeSwitch.isChecked = false
+        }
+    }
+
+    private fun changeTheme(dark: Boolean) {
+        if (dark) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            darkModeSwitch.isChecked = true
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            darkModeSwitch.isChecked = false
+        }
     }
 
     override fun onDestroyView() {
