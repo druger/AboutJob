@@ -2,10 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ltAccount"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:visibility="gone">
+    android:layout_height="match_parent">
 
     <include layout="@layout/toolbar" />
 
@@ -192,7 +190,6 @@
             android:id="@+id/cvLogout"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginBottom="?attr/actionBarSize"
             android:background="?android:attr/selectableItemBackground"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
@@ -215,28 +212,49 @@
                 android:textColor="@color/primary_text_color" />
         </LinearLayout>
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvWriteToDev"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:drawableStart="@drawable/ic_help"
             android:drawablePadding="8dp"
             android:gravity="center"
             android:text="@string/write_to_developers"
             android:textColor="@color/primary_text_color"
-            app:layout_constraintStart_toStartOf="@+id/line6"
+            app:drawableStartCompat="@drawable/ic_help"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line6" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/darkModeSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/dark_mode"
+            android:textColor="@color/primary_text_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvWriteToDev" />
 
         <TextView
             android:id="@+id/tvVersion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/version"
             app:layout_constraintBottom_toTopOf="@+id/include3"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/authGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="cvName,line,cvRemoveAcc,line6,cvLogout,include3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

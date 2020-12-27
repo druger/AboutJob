@@ -2,8 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="?attr/actionBarSize">
+    android:layout_height="match_parent">
 
     <include
         android:id="@+id/bar"
@@ -74,7 +73,6 @@
         layout="@layout/network_error"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="?attr/actionBarSize"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
