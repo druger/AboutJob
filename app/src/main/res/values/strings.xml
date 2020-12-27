@@ -118,6 +118,7 @@
     <string name="add_photo">Add photo</string>
     <string name="permision_read_files">Allow to add photos</string>
     <string name="select_photo">Select photo</string>
+    <string name="dark_mode">Dark mode</string>
 
     <string-array name="work_status">
         <item>@string/working</item>
