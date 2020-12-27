@@ -3,7 +3,9 @@ package com.druger.aboutwork.fragments
 
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +20,10 @@ import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.interfaces.view.AccountView
 import com.druger.aboutwork.presenters.AccountPresenter
+import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_FOLLOW_SYSTEM
+import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_KEY
+import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_NO
+import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_YES
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.transition.MaterialFadeThrough
 import kotlinx.android.synthetic.main.fragment_account.*
@@ -32,6 +38,7 @@ class AccountFragment : BaseSupportFragment(), AccountView {
     @InjectPresenter
     lateinit var accountPresenter: AccountPresenter
 
+    private lateinit var sharedPref: SharedPreferences
     private var name: String? = null
 
     @ProvidePresenter
@@ -41,6 +48,7 @@ class AccountFragment : BaseSupportFragment(), AccountView {
         super.onCreate(savedInstanceState)
         enterTransition = MaterialFadeThrough()
         exitTransition = MaterialFadeThrough()
+        sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -62,20 +70,42 @@ class AccountFragment : BaseSupportFragment(), AccountView {
     }
 
     private fun checkDarkMode() {
-        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-            Configuration.UI_MODE_NIGHT_NO -> darkModeSwitch.isChecked = false
-            Configuration.UI_MODE_NIGHT_YES -> darkModeSwitch.isChecked = true
-            Configuration.UI_MODE_NIGHT_UNDEFINED -> darkModeSwitch.isChecked = false
+        val darkMode = sharedPref.getInt(DARK_MODE_KEY, DARK_MODE_FOLLOW_SYSTEM)
+        when (darkMode) {
+            DARK_MODE_FOLLOW_SYSTEM -> checkConfiguration()
+            DARK_MODE_YES -> switchDarkMode(true)
+            DARK_MODE_NO -> switchDarkMode(false)
         }
+    }
+
+    private fun checkConfiguration() {
+        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_NO -> switchDarkMode(false)
+            Configuration.UI_MODE_NIGHT_YES -> switchDarkMode(true)
+            Configuration.UI_MODE_NIGHT_UNDEFINED -> switchDarkMode(false)
+        }
+    }
+
+    private fun switchDarkMode(checked: Boolean) {
+        darkModeSwitch.isChecked = checked
     }
 
     private fun changeTheme(dark: Boolean) {
         if (dark) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            darkModeSwitch.isChecked = true
+            switchDarkMode(true)
+            saveDarkMode(DARK_MODE_YES)
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            darkModeSwitch.isChecked = false
+            switchDarkMode(false)
+            saveDarkMode(DARK_MODE_NO)
+        }
+    }
+
+    private fun saveDarkMode(darkMode: Int) {
+        with(sharedPref.edit()) {
+            putInt(DARK_MODE_KEY, darkMode)
+            apply()
         }
     }
 
