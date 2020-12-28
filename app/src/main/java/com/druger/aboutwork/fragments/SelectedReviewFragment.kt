@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.collection.ArrayMap
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.druger.aboutwork.R
@@ -59,8 +60,8 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = MaterialContainerTransform().apply {
-            startContainerColor = Color.WHITE
-            endContainerColor = Color.WHITE
+            startContainerColor = ContextCompat.getColor(requireContext(), R.color.colorSurface)
+            endContainerColor = ContextCompat.getColor(requireContext(), R.color.colorSurface)
             scrimColor = Color.TRANSPARENT
         }
         photoAdapter = PhotoAdapter<StorageReference>(mutableListOf(), false)
