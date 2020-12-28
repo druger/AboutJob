@@ -73,7 +73,7 @@
     <string name="error_review_edit">@string/error_review_add</string>
     <string name="review">Review</string>
     <string name="no_reviews">There\'re no reviews about this company yet. Your review may be first</string>
-    <string name="no_my_reviews">You don\'t add any reviews yet. \n\n To add review find company that you\'re working in or you worked in</string>
+    <string name="no_my_reviews">You don\'t add any reviews yet</string>
     <string name="no_recent_reviews">Nobody add no reviews yet. Your review may be first</string>
     <string name="profile_updated">"Profile updated</string>
     <string name="updating_error">"Updating failed"</string>

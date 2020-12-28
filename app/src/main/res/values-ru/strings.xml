@@ -57,7 +57,7 @@
     <string name="error_review_edit">@string/error_review_add</string>
     <string name="review">Отзыв</string>
     <string name="no_reviews">Об этой компании пока нет отзывов. Ваш отзыв может стать первым</string>
-    <string name="no_my_reviews">Вы еще не оставили ни одного отзыва. \n\n Чтобы добавить отзыв, найдите компанию, в которой Вы работаете или работали</string>
+    <string name="no_my_reviews">Вы еще не оставили ни одного отзыва</string>
     <string name="no_recent_reviews">Никто еще не оставил отзывов. Ваш отзыв может стать первым</string>
 
     <plurals name="year">
