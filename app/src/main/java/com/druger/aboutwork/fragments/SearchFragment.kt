@@ -165,6 +165,7 @@ class SearchFragment : BaseSupportFragment(), SearchView {
 
     private fun showCompanyDetail(id: String) {
         Utils.hideKeyboard(requireContext(), searchView)
+        searchView.setOnQueryTextFocusChangeListener(null)
         replaceFragment(CompanyDetailFragment.newInstance(id), R.id.main_container, true)
     }
 
