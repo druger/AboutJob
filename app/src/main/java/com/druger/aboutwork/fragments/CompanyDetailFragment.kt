@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -87,7 +88,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
     private fun setupToolbar() {
         setActionBar(toolbar)
         actionBar?.setDisplayHomeAsUpEnabled(true)
-        ivSearch.visibility = View.VISIBLE
+        ivSearch.isVisible = false
         actionBar?.setDisplayShowTitleEnabled(true)
     }
 
