@@ -52,7 +52,6 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enterTransition = MaterialFadeThrough()
         exitTransition = MaterialFadeThrough()
     }
 

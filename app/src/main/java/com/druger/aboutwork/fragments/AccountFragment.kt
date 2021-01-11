@@ -46,7 +46,6 @@ class AccountFragment : BaseSupportFragment(), AccountView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enterTransition = MaterialFadeThrough()
         exitTransition = MaterialFadeThrough()
         sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE)
     }
