@@ -41,6 +41,9 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
         checkAuthUser()
         setupUI()
         bottomNavigation.setOnNavigationItemSelectedListener(this)
+        bottomNavigation.setOnNavigationItemReselectedListener {
+            // needs in order to disable flicker
+        }
         if (savedInstanceState == null) checkNextScreen()
     }
 
