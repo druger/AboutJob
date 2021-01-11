@@ -72,7 +72,7 @@
     <string name="review_edited">Review edited</string>
     <string name="error_review_edit">@string/error_review_add</string>
     <string name="review">Review</string>
-    <string name="no_reviews">There\'re no reviews about this company yet. Your review may be first</string>
+    <string name="no_reviews">There\'re no reviews about this company. Your review may be first</string>
     <string name="no_my_reviews">You don\'t add any reviews yet</string>
     <string name="no_recent_reviews">Nobody add no reviews yet. Your review may be first</string>
     <string name="profile_updated">"Profile updated</string>
@@ -96,7 +96,7 @@
     <string name="send_email">Send email</string>
     <string name="no_email_apps">There are no email clients installed</string>
     <string name="version">Version: %s</string>
-    <string name="review_date_info">The exact date won\'t be shown but only the total numbers of days</string>
+    <string name="review_date_info">Only the total number of days will be shown</string>
     <string name="recommended">I recommend for employment</string>
     <string name="not_recommended">I don\'t recommend for employment</string>
     <string name="show_more_companies">Show more companies</string>
