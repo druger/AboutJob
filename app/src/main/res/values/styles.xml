@@ -73,13 +73,14 @@
     </style>
 
     <style name="AuthTheme" parent="FirebaseUI">
-        <item name="android:textColor">@color/primary_text_color</item>
         <item name="toolbarStyle">@style/AuthToolbar</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/status_bar_color</item>
     </style>
 
     <style name="AuthToolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
         <item name="android:popupTheme">@style/AppTheme.PopupOverlay</item>
         <item name="android:background">@color/toolbar_color</item>
-        <item name="titleTextColor">@color/primary_text_color</item>
+        <item name="titleTextColor">@color/white</item>
     </style>
 </resources>
