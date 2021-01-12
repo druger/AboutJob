@@ -56,7 +56,6 @@ class SearchFragment : BaseSupportFragment(), SearchView {
         setupRecycler()
         setupListeners()
         setupSearch()
-        (activity as MainActivity).showBottomNavigation()
     }
 
     private fun setupUI() {
@@ -106,17 +105,28 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     }
 
     private fun setupSearch() {
-        searchView.queryHint = resources.getString(R.string.query_hint)
-        searchView.isIconified = false
-        searchView.setOnCloseListener(object : androidx.appcompat.widget.SearchView.OnCloseListener {
-            override fun onClose(): Boolean {
-                if (searchView.query.isBlank()) {
-                    parentFragmentManager.popBackStackImmediate()
-                    return false
+        searchView.apply {
+            queryHint = resources.getString(R.string.query_hint)
+            isIconified = false
+            setOnCloseListener(object : androidx.appcompat.widget.SearchView.OnCloseListener {
+                override fun onClose(): Boolean {
+                    if (searchView.query.isBlank()) {
+                        parentFragmentManager.popBackStackImmediate()
+                        return false
+                    }
+                    return true
                 }
-                return true
+            })
+            setOnQueryTextFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    Utils.showKeyboard(v.context)
+                    (activity as MainActivity).hideBottomNavigation()
+                } else {
+                    Utils.hideKeyboard(v.context, v)
+                    (activity as MainActivity).showBottomNavigation()
+                }
             }
-        })
+        }
 
         RxSearch.fromSearchView(searchView)
             .debounce(DEBOUNCE_SEARCH.toLong(), TimeUnit.MILLISECONDS)
@@ -155,6 +165,7 @@ class SearchFragment : BaseSupportFragment(), SearchView {
 
     private fun showCompanyDetail(id: String) {
         Utils.hideKeyboard(requireContext(), searchView)
+        searchView.setOnQueryTextFocusChangeListener(null)
         replaceFragment(CompanyDetailFragment.newInstance(id), R.id.main_container, true)
     }
 
