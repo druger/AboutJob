@@ -396,9 +396,6 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        if (editMode) {
-            (activity as MainActivity).showBottomNavigation()
-        }
         actionBar?.setDisplayHomeAsUpEnabled(false)
     }
 

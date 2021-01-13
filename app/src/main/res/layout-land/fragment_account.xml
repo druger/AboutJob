@@ -251,7 +251,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="visible"
-                app:constraint_referenced_ids="cvName,line,cvRemoveAcc,line6,cvLogout,include3" />
+                app:constraint_referenced_ids="cvName,line,cvRemoveAcc,line6,cvLogout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
