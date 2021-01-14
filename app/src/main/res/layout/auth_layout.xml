@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="?attr/actionBarSize"
-    android:background="@android:color/white">
+    android:background="@color/colorSurface"
+    android:paddingBottom="?attr/actionBarSize">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/ivAuth"
@@ -28,7 +28,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/primary_text_color"
         app:layout_constraintEnd_toEndOf="@+id/ivAuth"
         app:layout_constraintStart_toStartOf="@+id/ivAuth"
         app:layout_constraintTop_toBottomOf="@+id/ivAuth"

@@ -52,7 +52,6 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enterTransition = MaterialFadeThrough()
         exitTransition = MaterialFadeThrough()
     }
 
@@ -60,6 +59,7 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
                               savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_my_reviews, container, false)
         getData(savedInstanceState)
+        (activity as MainActivity).showBottomNavigation()
         return rootView
     }
 

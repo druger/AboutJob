@@ -150,21 +150,11 @@
             app:layout_constraintStart_toStartOf="@+id/rbChief"
             app:layout_constraintTop_toBottomOf="@+id/rbChief" />
 
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/color_separate_line"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rbSocialPackage" />
-
         <androidx.constraintlayout.widget.Group
             android:id="@+id/groupInterview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="rbCollective,rbSocialPackage,tvWorkplace,tvCollective,tvSalary,tvChief,rbChief,tvSocialPackage,tvCareer,rbSalary,rbWorkplace,rbCareer,view,rgRecommended,tvDateInfo,ivAddPhoto,tvAddPhoto,rvPhotos" />
+            app:constraint_referenced_ids="rbCollective,rbSocialPackage,tvWorkplace,tvCollective,tvSalary,tvChief,rbChief,tvSocialPackage,tvCareer,rbSalary,rbWorkplace,rbCareer,rgRecommended,tvDateInfo,ivAddPhoto,tvAddPhoto,rvPhotos" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/position"
@@ -175,7 +165,7 @@
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view">
+            app:layout_constraintTop_toBottomOf="@id/rbWorkplace">
 
             <AutoCompleteTextView
                 android:id="@+id/etPosition"
@@ -244,13 +234,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/review_date_info"
-            android:textColor="@android:color/black"
+            android:textColor="@color/primary_text_color"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/tilCity"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/tilCity"
-            app:layout_constraintTop_toBottomOf="@+id/tilCity" />
+            app:layout_constraintStart_toStartOf="@+id/ltEmploymentDate"
+            app:layout_constraintTop_toBottomOf="@+id/ltEmploymentDate" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ltEmploymentDate"
@@ -258,7 +248,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDateInfo">
+            app:layout_constraintTop_toBottomOf="@+id/tilCity">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etEmploymentDate"
@@ -280,7 +270,7 @@
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/ltEmploymentDate"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDateInfo">
+            app:layout_constraintTop_toBottomOf="@+id/tilCity">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etDismissalDate"
@@ -296,9 +286,10 @@
             android:id="@+id/rgRecommended"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="@+id/ltEmploymentDate"
-            app:layout_constraintTop_toBottomOf="@+id/ltEmploymentDate">
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDateInfo">
 
             <RadioButton
                 android:id="@+id/rbRecommended"

@@ -20,8 +20,8 @@ interface AccountView : MvpView {
     fun showToast(@StringRes resId: Int)
 
     fun showEmail(email: String)
-    fun showAuthAccess()
+    fun showNotAuthSetting()
     fun showPhone(phone: String)
     fun sendEmail(emailIntent: Intent)
-    fun showContent()
+    fun showAuthSetting()
 }

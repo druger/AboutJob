@@ -15,6 +15,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ScrollView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
@@ -67,8 +68,8 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             setPathMotion(MaterialArcMotion())
             fadeMode = MaterialContainerTransform.FADE_MODE_OUT
-            startContainerColor = Color.WHITE
-            endContainerColor = Color.WHITE
+            startContainerColor = ContextCompat.getColor(requireContext(), R.color.colorSurface)
+            endContainerColor = ContextCompat.getColor(requireContext(), R.color.colorSurface)
             scrimColor = Color.TRANSPARENT
         }
     }

@@ -2,18 +2,16 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ltAccount"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone">
+    android:layout_marginBottom="?attr/actionBarSize">
 
     <include layout="@layout/toolbar" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:layout_marginBottom="?attr/actionBarSize">
+        android:layout_marginTop="?attr/actionBarSize">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/content_account"
@@ -39,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/name"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@color/primary_text_color" />
 
                 <TextView
                     android:id="@+id/tvName"
@@ -78,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/email"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@color/primary_text_color" />
 
                 <TextView
                     android:id="@+id/tvEmail"
@@ -120,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/phone"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@color/primary_text_color" />
 
                 <TextView
                     android:id="@+id/tvPhone"
@@ -185,28 +183,41 @@
                 android:id="@+id/tvWriteToDev"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:drawableStart="@drawable/ic_help"
                 android:drawablePadding="8dp"
                 android:gravity="center"
                 android:text="@string/write_to_developers"
-                android:textColor="@android:color/black"
-                app:layout_constraintBottom_toTopOf="@+id/cvLogout"
-                app:layout_constraintStart_toStartOf="@+id/line6"
+                android:textColor="@color/primary_text_color"
+                app:layout_constraintBottom_toTopOf="@+id/darkModeSwitch"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/line6"
                 app:layout_constraintVertical_bias="0.0" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/darkModeSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/dark_mode"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvWriteToDev"/>
 
             <LinearLayout
                 android:id="@+id/cvLogout"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:layout_marginTop="8dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvWriteToDev"
-                app:layout_constraintVertical_bias="1.0">
+                app:layout_constraintTop_toBottomOf="@+id/darkModeSwitch">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -220,7 +231,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="8dp"
                     android:text="@string/log_out"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@color/primary_text_color" />
             </LinearLayout>
 
             <TextView
@@ -228,13 +239,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/version"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cvLogout"
                 app:layout_constraintVertical_bias="0.0" />
 
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/authGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:constraint_referenced_ids="cvName,line,cvRemoveAcc,line6,cvLogout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
