@@ -7,3 +7,6 @@
 app/src/main/res/xml/
 /.idea/
 /projectFilesBackup/
+*.jks
+*.keystore
+/keystore.properties
