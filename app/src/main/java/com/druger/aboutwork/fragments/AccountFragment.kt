@@ -18,6 +18,7 @@ import androidx.core.view.isVisible
 import com.druger.aboutwork.BuildConfig
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
+import com.druger.aboutwork.databinding.FragmentAccountBinding
 import com.druger.aboutwork.interfaces.view.AccountView
 import com.druger.aboutwork.presenters.AccountPresenter
 import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_FOLLOW_SYSTEM
@@ -26,8 +27,6 @@ import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_NO
 import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_YES
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.transition.MaterialFadeThrough
-import kotlinx.android.synthetic.main.fragment_account.*
-import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import timber.log.Timber
@@ -41,6 +40,9 @@ class AccountFragment : BaseSupportFragment(), AccountView {
     private lateinit var sharedPref: SharedPreferences
     private var name: String? = null
 
+    private var _binding: FragmentAccountBinding? = null
+    private val binding get() = _binding!!
+
     @ProvidePresenter
     internal fun getAccountPresenter() = AccountPresenter()
 
@@ -50,11 +52,13 @@ class AccountFragment : BaseSupportFragment(), AccountView {
         sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        rootView = inflater.inflate(R.layout.fragment_account, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentAccountBinding.inflate(inflater, container, false)
         accountPresenter.getUserInfo()
-        return rootView
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,7 +67,7 @@ class AccountFragment : BaseSupportFragment(), AccountView {
         setupToolbar()
         setupListeners()
         showVersion()
-        darkModeSwitch.setOnCheckedChangeListener { _, isChecked ->
+        binding.darkModeSwitch.setOnCheckedChangeListener { _, isChecked ->
             changeTheme(isChecked)
         }
     }
@@ -86,7 +90,7 @@ class AccountFragment : BaseSupportFragment(), AccountView {
     }
 
     private fun switchDarkMode(checked: Boolean) {
-        darkModeSwitch.isChecked = checked
+        binding.darkModeSwitch.isChecked = checked
     }
 
     private fun changeTheme(dark: Boolean) {
@@ -109,25 +113,28 @@ class AccountFragment : BaseSupportFragment(), AccountView {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
+        _binding = null
         accountPresenter.removeAuthListener()
+        super.onDestroyView()
     }
 
     private fun showVersion() {
-        tvVersion.text = getString(R.string.version, BuildConfig.VERSION_NAME)
+        binding.tvVersion.text = getString(R.string.version, BuildConfig.VERSION_NAME)
     }
 
     private fun setupToolbar() {
         actionBar?.setDisplayShowTitleEnabled(true)
-        setActionBar(toolbar)
+        binding.toolbar?.toolbar?.let { setActionBar(it) }
         actionBar?.setTitle(R.string.settings)
     }
 
     private fun setupListeners() {
-        cvLogout.setOnClickListener { showLogoutDialog() }
-        cvName.setOnClickListener { showChangeName() }
-        cvRemoveAcc.setOnClickListener { showRemoveDialog() }
-        tvWriteToDev.setOnClickListener { accountPresenter.writeToDevelopers(getString(R.string.email_support)) }
+        binding.apply {
+            cvLogout.setOnClickListener { showLogoutDialog() }
+            cvName.setOnClickListener { showChangeName() }
+            cvRemoveAcc.setOnClickListener { showRemoveDialog() }
+            tvWriteToDev.setOnClickListener { accountPresenter.writeToDevelopers(getString(R.string.email_support)) }
+        }
     }
 
     private fun showRemoveDialog() {
@@ -177,33 +184,39 @@ class AccountFragment : BaseSupportFragment(), AccountView {
     override fun showName(name: String?) {
         this.name = name
         if (name.isNullOrEmpty()) {
-            tvName.setText(R.string.add_name)
+            binding.tvName.setText(R.string.add_name)
         } else
-            tvName.text = name
+            binding.tvName.text = name
     }
 
     override fun showEmail(email: String) {
-        ltEmail.isVisible = true
-        line2.isVisible = true
-        tvEmail.text = email
+        binding.apply {
+            ltEmail.isVisible = true
+            line2.root.isVisible = true
+            tvEmail.text = email
+        }
     }
 
     override fun showPhone(phone: String) {
-        ltPhone.isVisible = true
-        line3.isVisible = true
-        tvPhone.text = phone
+        binding.apply {
+            ltPhone.isVisible = true
+            line3.root.isVisible = true
+            tvPhone.text = phone
+        }
     }
 
     override fun showNotAuthSetting() {
-        authGroup.isVisible = false
-        ltPhone.isVisible = false
-        line3.isVisible = false
-        ltEmail.isVisible = false
-        line2.isVisible = false
+        binding.apply {
+            authGroup.isVisible = false
+            ltPhone.isVisible = false
+            line3.root.isVisible = false
+            ltEmail.isVisible = false
+            line2.root.isVisible = false
+        }
     }
 
     override fun showAuthSetting() {
-        authGroup.isVisible = true
+        binding.authGroup.isVisible = true
     }
 
     override fun sendEmail(emailIntent: Intent) {

@@ -10,6 +10,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
 import com.druger.aboutwork.R
+import com.druger.aboutwork.databinding.FragmentFilterReviewBinding
 import com.druger.aboutwork.enums.FilterType
 import com.druger.aboutwork.interfaces.view.FilterView
 import com.druger.aboutwork.model.City
@@ -18,15 +19,18 @@ import com.druger.aboutwork.presenters.FilterPresenter
 import com.druger.aboutwork.utils.Utils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.fragment_filter_review.*
 import moxy.MvpBottomSheetDialogFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
-class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView, AdapterView.OnItemSelectedListener {
+class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView,
+    AdapterView.OnItemSelectedListener {
 
     @InjectPresenter
     lateinit var presenter: FilterPresenter
+
+    private var _binding: FragmentFilterReviewBinding? = null
+    private val binding get() = _binding!!
 
     private var filterListener: OnFilterListener? = null
 
@@ -39,29 +43,41 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView, Adapter
         filterListener = parentFragment as? OnFilterListener
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.fragment_filter_review, container, false)
+        _binding = FragmentFilterReviewBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        showBottomSheetAboveKeyboard()
-        setupSpinnerFilter()
-        getPositions()
-        getCities()
-        btnApply.setOnClickListener {
-            val position = etPosition.text.toString().trim()
-            val city = etCity.text.toString().trim()
-            presenter.applyFilter(position, city)
+        with(binding) {
+            showBottomSheetAboveKeyboard()
+            setupSpinnerFilter()
+            getPositions()
+            getCities()
+            btnApply.setOnClickListener {
+                val position = etPosition.text.toString().trim()
+                val city = etCity.text.toString().trim()
+                presenter.applyFilter(position, city)
+            }
+            tvClear.setOnClickListener { presenter.clearFilter() }
+            setupFilters()
         }
-        tvClear.setOnClickListener { presenter.clearFilter() }
-        setupFilters()
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
     private fun setupFilters() {
-        etPosition.setText(arguments?.getString(POSITION_KEY))
-        etCity.setText(arguments?.getString(CITY_KEY))
+        binding.etPosition.setText(arguments?.getString(POSITION_KEY))
+        binding.etCity.setText(arguments?.getString(CITY_KEY))
     }
 
     private fun showBottomSheetAboveKeyboard() {
@@ -76,7 +92,7 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView, Adapter
     }
 
     private fun getPositions() {
-        etPosition.addTextChangedListener(object : TextWatcher {
+        binding.etPosition.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -88,7 +104,7 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView, Adapter
     }
 
     private fun getCities() {
-        etCity.addTextChangedListener(object : TextWatcher {
+        binding.etCity.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -101,14 +117,16 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView, Adapter
     }
 
     private fun setupSpinnerFilter() {
-        spinnerFilter.onItemSelectedListener = this
-        ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.filter_reviews,
-            R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-            spinnerFilter.adapter = adapter
+        with(binding) {
+            spinnerFilter.onItemSelectedListener = this@FilterDialogFragment
+            ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.filter_reviews,
+                R.layout.simple_spinner_item
+            ).also { adapter ->
+                adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+                spinnerFilter.adapter = adapter
+            }
         }
     }
 
@@ -130,11 +148,11 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView, Adapter
     }
 
     override fun showPositions(positions: List<Vacancy>) {
-        Utils.showSuggestions(requireContext(), positions, etPosition)
+        Utils.showSuggestions(requireContext(), positions, binding.etPosition)
     }
 
     override fun showCities(cities: List<City>) {
-        Utils.showSuggestions(requireContext(), cities, etCity)
+        Utils.showSuggestions(requireContext(), cities, binding.etCity)
     }
 
     override fun applyFilter(filterType: FilterType, position: String, city: String) {
@@ -143,8 +161,8 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView, Adapter
     }
 
     override fun clearClick() {
-        etPosition.setText("")
-        etCity.setText("")
+        binding.etPosition.setText("")
+        binding.etCity.setText("")
     }
 
     interface OnFilterListener {

@@ -5,18 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.druger.aboutwork.Const.Bundles.USER_ID
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.MyReviewAdapter
+import com.druger.aboutwork.databinding.FragmentUserReviewsBinding
 import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.UserReviews
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.UserReviewsPresenter
-import kotlinx.android.synthetic.main.fragment_user_reviews.*
-import kotlinx.android.synthetic.main.no_reviews.*
-import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 
 class UserReviewsFragment : BaseSupportFragment(), UserReviews {
@@ -24,15 +23,20 @@ class UserReviewsFragment : BaseSupportFragment(), UserReviews {
     @InjectPresenter
     lateinit var reviewsPresenter: UserReviewsPresenter
 
+    private var _binding: FragmentUserReviewsBinding? = null
+    private val binding get() = _binding!!
+
     private var reviewAdapter: MyReviewAdapter? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        rootView = inflater.inflate(R.layout.fragment_user_reviews, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentUserReviewsBinding.inflate(inflater, container, false)
         arguments?.getString(USER_ID)?.let { reviewsPresenter.fetchReviews(it) }
         arguments?.getString(USER_ID)?.let { reviewsPresenter.getUserName(it) }
         (activity as MainActivity).hideBottomNavigation()
-        return rootView
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,14 +46,14 @@ class UserReviewsFragment : BaseSupportFragment(), UserReviews {
     }
 
     private fun setupToolbar() {
-        setActionBar(toolbar)
+        setActionBar(binding.toolbar.toolbar)
         actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun setupRecycler() {
         reviewAdapter = MyReviewAdapter()
-        rvReviews.itemAnimator = DefaultItemAnimator()
-        rvReviews.adapter = reviewAdapter
+        binding.rvReviews.itemAnimator = DefaultItemAnimator()
+        binding.rvReviews.adapter = reviewAdapter
 
         reviewAdapter?.setOnClickListener(object : OnItemClickListener<Review> {
             override fun onClick(item: Review, position: Int) {
@@ -75,13 +79,16 @@ class UserReviewsFragment : BaseSupportFragment(), UserReviews {
     }
 
     override fun showReviews(reviews: List<Review>) {
-        if (reviews.isNotEmpty()) {
-            reviewAdapter?.addReviews(reviews)
-            tvCountReviews.text = resources.getQuantityString(R.plurals.reviews, reviews.size, reviews.size)
-        } else {
-            groupReviews.visibility = View.GONE
-            ltNoReviews.visibility = View.VISIBLE
-            tvNoReviews.text = getString(R.string.user_no_reviews)
+        with(binding) {
+            if (reviews.isNotEmpty()) {
+                reviewAdapter?.addReviews(reviews)
+                tvCountReviews.text =
+                    resources.getQuantityString(R.plurals.reviews, reviews.size, reviews.size)
+            } else {
+                groupReviews.isVisible = false
+                ltNoReviews.root.isVisible = true
+                ltNoReviews.tvNoReviews.text = getString(R.string.user_no_reviews)
+            }
         }
     }
 

@@ -2,14 +2,18 @@ package com.druger.aboutwork.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.LoginActivity
 import com.druger.aboutwork.activities.MainActivity
-import kotlinx.android.synthetic.main.auth_layout.*
+import com.druger.aboutwork.databinding.AuthLayoutBinding
 
-class AuthFragment : Fragment(R.layout.auth_layout) {
+class AuthFragment : Fragment() {
+
+    private var _binding: AuthLayoutBinding? = null
+    private val binding get() = _binding!!
 
     private var nextScreen: String? = null
     private var companyId: String? = null
@@ -26,8 +30,22 @@ class AuthFragment : Fragment(R.layout.auth_layout) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        tvAuth.text = arguments?.getString(AUTH_TEXT)
-        btnLogin.setOnClickListener { showLoginActivity() }
+        binding.tvAuth.text = arguments?.getString(AUTH_TEXT)
+        binding.btnLogin.setOnClickListener { showLoginActivity() }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = AuthLayoutBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
     private fun showLoginActivity() {
@@ -47,11 +65,12 @@ class AuthFragment : Fragment(R.layout.auth_layout) {
         private const val REVIEW_ID = "review_id"
         private const val MESSAGE = "message"
 
-        fun newInstance(authText: String,
-                        nextScreen: String,
-                        companyId: String? = null,
-                        reviewId: String? = null,
-                        message: String? = null
+        fun newInstance(
+            authText: String,
+            nextScreen: String,
+            companyId: String? = null,
+            reviewId: String? = null,
+            message: String? = null
         ): AuthFragment {
             return AuthFragment().apply {
                 arguments = Bundle().apply {

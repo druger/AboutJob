@@ -18,8 +18,8 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import moxy.InjectViewState
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import timber.log.Timber
 import java.util.*
 
@@ -144,8 +144,9 @@ class SelectedReviewPresenter : BasePresenter<SelectedReview>(), ValueEventListe
     private fun getCompany() {
         val queryCompany = review?.let { review ->
             review.companyId?.let { id ->
-            FirebaseHelper.getCompany(dbReference, id)
-        } }
+                FirebaseHelper.getCompany(dbReference, id)
+            }
+        }
         nameListener = object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {
                 Timber.e(databaseError.message)

@@ -5,8 +5,8 @@ import com.druger.aboutwork.rest.RestApi
 import com.druger.aboutwork.rest.models.CompanyResponse
 import com.druger.aboutwork.utils.rx.RxUtils
 import moxy.InjectViewState
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 
 /**

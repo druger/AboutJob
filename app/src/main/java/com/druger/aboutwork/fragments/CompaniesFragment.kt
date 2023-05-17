@@ -6,19 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.view.isVisible
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.ReviewAdapter
+import com.druger.aboutwork.databinding.FragmentCompaniesBinding
 import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.CompaniesView
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.CompaniesPresenter
 import com.google.android.material.transition.MaterialFadeThrough
-import kotlinx.android.synthetic.main.fragment_companies.*
-import kotlinx.android.synthetic.main.network_error.*
-import kotlinx.android.synthetic.main.no_reviews.*
-import kotlinx.android.synthetic.main.shimmer_content_companies.*
-import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
@@ -26,6 +23,9 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
 
     @InjectPresenter
     lateinit var companiesPresenter: CompaniesPresenter
+
+    private var _binding: FragmentCompaniesBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var reviewAdapter: ReviewAdapter
     private lateinit var itemClickListener: OnItemClickListener<Review>
@@ -40,12 +40,14 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
         exitTransition = MaterialFadeThrough()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        rootView = inflater.inflate(R.layout.fragment_companies, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentCompaniesBinding.inflate(inflater, container, false)
         setInputMode()
         (activity as MainActivity).showBottomNavigation()
-        return rootView
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,7 +65,7 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     }
 
     private fun setupUI() {
-        mLtError = ltError
+        mLtError = binding.ltError.root
     }
 
     private fun setInputMode() {
@@ -76,17 +78,19 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     }
 
     private fun setupToolbar() {
-        setActionBar(toolbar)
-        actionBar?.setTitle(R.string.search)
-        ivSearch.visibility = View.VISIBLE
-        ivSearch.setOnClickListener {
-            replaceFragment(SearchFragment(), R.id.main_container, true)
+        binding.mToolbar.apply {
+            setActionBar(toolbar)
+            actionBar?.setTitle(R.string.search)
+            ivSearch.isVisible = true
+            ivSearch.setOnClickListener {
+                replaceFragment(SearchFragment(), R.id.main_container, true)
+            }
         }
     }
 
     private fun setupRecycler() {
         reviewAdapter = ReviewAdapter()
-        rvLastReviews.adapter = reviewAdapter
+        binding.rvLastReviews.adapter = reviewAdapter
         reviewAdapter.setOnClickListener(itemClickListener)
     }
 
@@ -103,7 +107,7 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
                 return true
             }
         }
-        btnRetry.setOnClickListener {
+        binding.ltError.btnRetry.setOnClickListener {
             showErrorScreen(false)
             fetchReviews()
         }
@@ -131,17 +135,20 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     override fun onDestroyView() {
         super.onDestroyView()
         activity?.window?.setSoftInputMode(inputMode)
+        _binding = null
     }
 
     override fun showReviews(reviews: List<Review>) {
-        groupReviews.visibility = View.VISIBLE
+        binding.groupReviews.isVisible = true
         reviewAdapter.addReviews(reviews)
     }
 
     override fun showEmptyReviews() {
-        groupReviews.visibility = View.GONE
-        ltNoReviews.visibility = View.VISIBLE
-        tvNoReviews.text = getString(R.string.no_recent_reviews)
+        binding.apply {
+            groupReviews.isVisible = false
+            ltNoReviews.root.isVisible = true
+            ltNoReviews.tvNoReviews.text = getString(R.string.no_recent_reviews)
+        }
     }
 
     override fun updateAdapter() {
@@ -150,17 +157,25 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
 
     private fun showSelectedReview(id: String) {
         val fragment = SelectedReviewFragment.newInstance(id, false)
-        replaceFragment(fragment, R.id.main_container, true, rvLastReviews, "detail_transform")
+        replaceFragment(
+            fragment,
+            R.id.main_container,
+            true,
+            binding.rvLastReviews,
+            "detail_transform"
+        )
     }
 
     override fun showProgress(show: Boolean) {
-        if (show) {
-            reviewPlaceholder.visibility = View.VISIBLE
-            shimmerText.visibility = View.VISIBLE
-            reviewPlaceholder.startShimmer()
-        } else {
-            reviewPlaceholder.stopShimmer()
-            reviewPlaceholder.visibility = View.GONE
+        binding.apply {
+            if (show) {
+                reviewPlaceholder.isVisible = true
+                binding.shimmerContent.shimmerText.isVisible = true
+                reviewPlaceholder.startShimmer()
+            } else {
+                reviewPlaceholder.stopShimmer()
+                reviewPlaceholder.isVisible = false
+            }
         }
     }
 

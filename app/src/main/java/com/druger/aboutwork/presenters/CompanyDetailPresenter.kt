@@ -12,10 +12,9 @@ import com.druger.aboutwork.utils.rx.RxUtils
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import moxy.InjectViewState
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import timber.log.Timber
-import java.util.*
 
 
 /**
@@ -23,7 +22,9 @@ import java.util.*
  */
 
 @InjectViewState
-class CompanyDetailPresenter: BasePresenter<CompanyDetailView>(), ValueEventListener, KoinComponent {
+class CompanyDetailPresenter : BasePresenter<CompanyDetailView>(),
+    ValueEventListener,
+    KoinComponent {
 
     private val restApi: RestApi by inject()
 

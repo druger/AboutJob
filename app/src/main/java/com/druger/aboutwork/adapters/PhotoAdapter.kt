@@ -2,45 +2,53 @@ package com.druger.aboutwork.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.druger.aboutwork.GlideApp
 import com.druger.aboutwork.R
+import com.druger.aboutwork.databinding.ItemPhotoBinding
 import com.stfalcon.imageviewer.StfalconImageViewer
-import kotlinx.android.synthetic.main.item_photo.view.*
 
 class PhotoAdapter<T>(
     private var uri: MutableList<T?> = mutableListOf(),
     private val canRemovePhoto: Boolean = true
-): RecyclerView.Adapter<PhotoAdapter.PhotoHolder>() {
+) : RecyclerView.Adapter<PhotoAdapter.PhotoHolder>() {
 
     var isFullScreen = false
     var currentPosition = 0
     var wasPhotoRemoved = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_photo, parent, false)
-        return PhotoHolder(itemView)
+        val binding = ItemPhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return PhotoHolder(binding)
     }
 
     override fun getItemCount(): Int = uri.size
 
     override fun onBindViewHolder(holder: PhotoHolder, position: Int) {
-        GlideApp.with(holder.itemView)
-            .load(uri[position])
-            .centerCrop()
-            .placeholder(startProgressDrawable(holder.itemView.context))
-            .error(R.drawable.ic_broken_image)
-            .into(holder.itemView.ivPhoto)
-        if (canRemovePhoto) {
-            holder.itemView.ivRemove.setOnClickListener { removePhoto(position) }
-        } else {
-            holder.itemView.ivRemove.visibility = View.GONE
+        with(holder.binding) {
+            GlideApp.with(holder.itemView)
+                .load(uri[position])
+                .centerCrop()
+                .placeholder(startProgressDrawable(holder.itemView.context))
+                .error(R.drawable.ic_broken_image)
+                .into(ivPhoto)
+            if (canRemovePhoto) {
+                ivRemove.setOnClickListener { removePhoto(position) }
+            } else {
+                ivRemove.isVisible = false
+            }
+            ivPhoto.setOnClickListener {
+                showFullScreen(
+                    holder.itemView.context,
+                    position,
+                    ivPhoto
+                )
+            }
         }
-        holder.itemView.ivPhoto.setOnClickListener { showFullScreen(holder.itemView.context, position, holder.itemView.ivPhoto) }
     }
 
     private fun startProgressDrawable(context: Context): CircularProgressDrawable {
@@ -53,8 +61,8 @@ class PhotoAdapter<T>(
 
     fun showFullScreen(context: Context, position: Int, ivPhoto: ImageView?) {
         StfalconImageViewer.Builder<T>(context, uri) { imageView, image ->
-                GlideApp.with(context).load(image).into(imageView)
-            }
+            GlideApp.with(context).load(image).into(imageView)
+        }
             .withStartPosition(position)
             .withTransitionFrom(ivPhoto)
             .withImageChangeListener { currentPosition = it }
@@ -65,7 +73,7 @@ class PhotoAdapter<T>(
         isFullScreen = true
     }
 
-    class PhotoHolder(view: View): RecyclerView.ViewHolder(view)
+    class PhotoHolder(val binding: ItemPhotoBinding) : RecyclerView.ViewHolder(binding.root)
 
     fun addPhotos(uri: List<T?>) {
         this.uri.clear()

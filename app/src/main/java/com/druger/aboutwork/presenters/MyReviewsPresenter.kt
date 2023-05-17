@@ -8,10 +8,9 @@ import com.druger.aboutwork.utils.Analytics
 import com.google.firebase.database.*
 import moxy.InjectViewState
 import moxy.MvpPresenter
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import timber.log.Timber
-import java.util.*
 
 
 /**

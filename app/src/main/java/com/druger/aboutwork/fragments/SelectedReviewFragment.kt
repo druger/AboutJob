@@ -11,11 +11,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.CommentAdapter
 import com.druger.aboutwork.adapters.PhotoAdapter
+import com.druger.aboutwork.databinding.FragmentSelectedReviewBinding
 import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.fragments.ReviewFragment.Companion.CURRENT_PHOTO_POSITION
@@ -29,9 +31,6 @@ import com.druger.aboutwork.utils.Utils
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.StorageReference
-import kotlinx.android.synthetic.main.content_selected_review.*
-import kotlinx.android.synthetic.main.mark_company_info.*
-import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 import org.threeten.bp.Instant
 import org.threeten.bp.Period
@@ -44,6 +43,9 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
 
     @InjectPresenter
     lateinit var presenter: SelectedReviewPresenter
+
+    private var _binding: FragmentSelectedReviewBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var commentAdapter: CommentAdapter
     private lateinit var photoAdapter: PhotoAdapter<StorageReference>
@@ -67,12 +69,15 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         photoAdapter = PhotoAdapter<StorageReference>(mutableListOf(), false)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         getBundles()
-        setView(inflater, container)
+        _binding = FragmentSelectedReviewBinding.inflate(inflater, container, false)
+        (activity as MainActivity).hideBottomNavigation()
         getReview()
-        return rootView
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -96,7 +101,11 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             currentPhotoPosition = savedInstanceState.getInt(CURRENT_PHOTO_POSITION)
             isFullScreenShown = savedInstanceState.getBoolean(FULL_SCREEN_STORAGE)
         }
-        if (isFullScreenShown) photoAdapter.showFullScreen(requireContext(), currentPhotoPosition, null)
+        if (isFullScreenShown) photoAdapter.showFullScreen(
+            requireContext(),
+            currentPhotoPosition,
+            null
+        )
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -107,8 +116,10 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
 
     override fun setupComments(user: FirebaseUser?) {
         commentAdapter = CommentAdapter(presenter.user)
-        rvComments.itemAnimator = DefaultItemAnimator()
-        rvComments.adapter = commentAdapter
+        with(binding.ltContent.rvComments) {
+            itemAnimator = DefaultItemAnimator()
+            adapter = commentAdapter
+        }
         commentAdapter.setOnNameClickListener(object : CommentAdapter.OnNameClickListener {
             override fun onClick(comment: Comment) {
                 showReviews(comment.userId)
@@ -124,30 +135,42 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
     }
 
     private fun setupListeners() {
-        etMessage.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.toString().trim().isNotEmpty()) {
-                    ivSend.isClickable = true
-                    ivSend.setColorFilter(ResourcesCompat.getColor(
-                        resources, R.color.colorPrimary, null
-                    ))
-                } else {
-                    ivSend.isClickable = false
-                    ivSend.setColorFilter(ResourcesCompat.getColor(
-                        resources, R.color.colorPrimaryLight, null
-                    ))
+        with(binding.ltContent) {
+            etMessage.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
                 }
-            }
 
-            override fun afterTextChanged(s: Editable) {}
-        })
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    if (s.toString().trim().isNotEmpty()) {
+                        ivSend.isClickable = true
+                        ivSend.setColorFilter(
+                            ResourcesCompat.getColor(
+                                resources, R.color.colorPrimary, null
+                            )
+                        )
+                    } else {
+                        ivSend.isClickable = false
+                        ivSend.setColorFilter(
+                            ResourcesCompat.getColor(
+                                resources, R.color.colorPrimaryLight, null
+                            )
+                        )
+                    }
+                }
 
-        ivSend.setOnClickListener {
-            when (type) {
-                NEW -> sendMessage(etMessage.text.toString().trim(), NEW)
-                UPDATE -> sendMessage(etMessage.text.toString().trim(), UPDATE)
+                override fun afterTextChanged(s: Editable) {}
+            })
+
+            ivSend.setOnClickListener {
+                when (type) {
+                    NEW -> sendMessage(etMessage.text.toString().trim(), NEW)
+                    UPDATE -> sendMessage(etMessage.text.toString().trim(), UPDATE)
+                }
             }
         }
 
@@ -166,32 +189,30 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
                 review?.firebaseKey?.let { presenter.addComment(message, it) }
             } else if (type == UPDATE) {
                 presenter.updateComment(message)
-                Utils.hideKeyboard(requireContext(), etMessage)
+                Utils.hideKeyboard(requireContext(), binding.ltContent.etMessage)
                 this.type = NEW
             }
         }
     }
 
-    private fun setView(inflater: LayoutInflater, container: ViewGroup?) {
-        rootView = inflater.inflate(R.layout.fragment_selected_review, container, false)
-        (activity as MainActivity).hideBottomNavigation()
-    }
-
     private fun setUX() {
-        ivLike.setOnClickListener { presenter.clickLike() }
-        ivDislike.setOnClickListener { presenter.clickDislike() }
-        if (editMode) {
-            ivEdit.setOnClickListener { showEditReview() }
+        with(binding.ltContent) {
+            ivLike.setOnClickListener { presenter.clickLike() }
+            ivDislike.setOnClickListener { presenter.clickDislike() }
+            if (editMode) {
+                binding.toolbar.ivEdit.setOnClickListener { showEditReview() }
+            }
+            tvName.setOnClickListener { presenter.onClickName(showUserName) }
         }
-        tvName.setOnClickListener { presenter.onClickName(showUserName) }
     }
 
     private fun setupToolbar() {
-        setActionBar(toolbar)
-        actionBar?.setDisplayHomeAsUpEnabled(true)
-        actionBar?.setTitle(R.string.review)
-        if (editMode) ivEdit.visibility = View.VISIBLE
-        else ivEdit.visibility = View.GONE
+        with(binding.toolbar) {
+            setActionBar(toolbar)
+            actionBar?.setDisplayHomeAsUpEnabled(true)
+            actionBar?.setTitle(R.string.review)
+            ivEdit.isVisible = editMode
+        }
     }
 
     private fun getReview() {
@@ -202,16 +223,20 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         review?.let {
             this.review = review
             setMyLikeDislike(review)
-            tvPluses.text = Utils.getQuoteSpan(requireContext(), review.pluses, R.color.review_positive)
-            tvMinuses.text = Utils.getQuoteSpan(requireContext(), review.minuses, R.color.review_negative)
-            tvName.text = review.name
-            tvDate.text = Utils.getDate(review.date)
-            tvPosition.text = review.position
-            tvDislike.text = review.dislike.toString()
-            tvLike.text = review.like.toString()
+            with(binding.ltContent) {
+                tvPluses.text =
+                    Utils.getQuoteSpan(requireContext(), review.pluses, R.color.review_positive)
+                tvMinuses.text =
+                    Utils.getQuoteSpan(requireContext(), review.minuses, R.color.review_negative)
+                tvName.text = review.name
+                tvDate.text = Utils.getDate(review.date)
+                tvPosition.text = review.position
+                tvDislike.text = review.dislike.toString()
+                tvLike.text = review.like.toString()
+                message?.let { etMessage.setText(it) }
+            }
             setMarkCompany(review)
             setExperience(review)
-            message?.let { etMessage.setText(it) }
             checkMessage()
             setRecommendation(review)
             presenter.getPhotos(review.firebaseKey)
@@ -219,47 +244,63 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
     }
 
     private fun setMyLikeDislike(review: Review) {
-        ivLike.setColorFilter(ResourcesCompat.getColor(
-            requireContext().resources, R.color.like_disable, null
-        ))
-        ivDislike.setColorFilter(ResourcesCompat.getColor(
-            requireContext().resources, R.color.like_disable, null
-        ))
-        likesDislikes = review.likesDislikes
-        likesDislikes?.let { likes ->
-            likes[presenter.user?.uid]?.let { myLike ->
-                if (myLike) {
-                    ivLike.setColorFilter(ResourcesCompat.getColor(
-                        requireContext().resources, R.color.like, null))
-                } else {
-                    ivDislike.setColorFilter(ResourcesCompat.getColor(
-                        requireContext().resources, R.color.dislike, null))
+        with(binding.ltContent) {
+            ivLike.setColorFilter(
+                ResourcesCompat.getColor(
+                    requireContext().resources, R.color.like_disable, null
+                )
+            )
+            ivDislike.setColorFilter(
+                ResourcesCompat.getColor(
+                    requireContext().resources, R.color.like_disable, null
+                )
+            )
+            likesDislikes = review.likesDislikes
+            likesDislikes?.let { likes ->
+                likes[presenter.user?.uid]?.let { myLike ->
+                    if (myLike) {
+                        ivLike.setColorFilter(
+                            ResourcesCompat.getColor(
+                                requireContext().resources, R.color.like, null
+                            )
+                        )
+                    } else {
+                        ivDislike.setColorFilter(
+                            ResourcesCompat.getColor(
+                                requireContext().resources, R.color.dislike, null
+                            )
+                        )
+                    }
                 }
             }
         }
     }
 
     private fun setMarkCompany(review: Review) {
-        review.markCompany?.let { mark ->
-            rbSalary.rating = mark.salary
-            rbCareer.rating = mark.career
-            rbCollective.rating = mark.collective
-            rbSocialPackage.rating = mark.socialPackage
-            rbChief.rating = mark.chief
-            rbWorkplace.rating = mark.workplace
+        with(binding.ltContent.markCompany) {
+            review.markCompany?.let { mark ->
+                rbSalary.rating = mark.salary
+                rbCareer.rating = mark.career
+                rbCollective.rating = mark.collective
+                rbSocialPackage.rating = mark.socialPackage
+                rbChief.rating = mark.chief
+                rbWorkplace.rating = mark.workplace
+            }
         }
     }
 
     private fun setRecommendation(review: Review) {
-        review.recommended?.let { recommended ->
-            ivRecommendation.visibility = View.VISIBLE
-            tvRecommendation.visibility = View.VISIBLE
-            if (recommended) {
-                ivRecommendation.setImageResource(R.drawable.ic_recommended)
-                tvRecommendation.text = getString(R.string.recommended)
-            } else {
-                ivRecommendation.setImageResource(R.drawable.ic_not_recommended)
-                tvRecommendation.text = getString(R.string.not_recommended)
+        with(binding.ltContent) {
+            review.recommended?.let { recommended ->
+                ivRecommendation.isVisible = true
+                tvRecommendation.isVisible = true
+                if (recommended) {
+                    ivRecommendation.setImageResource(R.drawable.ic_recommended)
+                    tvRecommendation.text = getString(R.string.recommended)
+                } else {
+                    ivRecommendation.setImageResource(R.drawable.ic_not_recommended)
+                    tvRecommendation.text = getString(R.string.not_recommended)
+                }
             }
         }
     }
@@ -269,18 +310,20 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
     }
 
     private fun setExperience(review: Review) {
-        when (review.status) {
-            Review.WORKING -> {
-                tvStatus.setText(R.string.working)
-                setWorkingDays(review.employmentDate, Calendar.getInstance().timeInMillis)
-            }
-            Review.WORKED -> {
-                tvStatus.setText(R.string.worked)
-                setWorkingDays(review.employmentDate, review.dismissalDate)
-            }
-            Review.INTERVIEW -> {
-                tvStatus.setText(R.string.interview)
-                markCompany.visibility = View.GONE
+        with(binding.ltContent) {
+            when (review.status) {
+                Review.WORKING -> {
+                    tvStatus.setText(R.string.working)
+                    setWorkingDays(review.employmentDate, Calendar.getInstance().timeInMillis)
+                }
+                Review.WORKED -> {
+                    tvStatus.setText(R.string.worked)
+                    setWorkingDays(review.employmentDate, review.dismissalDate)
+                }
+                Review.INTERVIEW -> {
+                    tvStatus.setText(R.string.interview)
+                    markCompany.root.isVisible = false
+                }
             }
         }
     }
@@ -299,17 +342,38 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             val months = period.months
             val days = period.days
             val res = resources
-            if (years > 0 && months > 0 && days > 0) {
-                tvDescriptionStatus.text = res.getQuantityString(R.plurals.year, years, years)
-                tvDescriptionStatus.append(" " + res.getQuantityString(R.plurals.month, months, months))
-                tvDescriptionStatus.append(" " + res.getQuantityString(R.plurals.day, days, days))
-            } else if (years >= 0 && months <= 0 && days <= 0) {
-                tvDescriptionStatus.text = res.getQuantityString(R.plurals.year, years, years)
-            } else if (years <= 0 && months > 0 && days >= 0) {
-                tvDescriptionStatus.text = res.getQuantityString(R.plurals.month, months, months)
-                tvDescriptionStatus.append(" " + res.getQuantityString(R.plurals.day, days, days))
-            } else if (years <= 0 && months <= 0) {
-                tvDescriptionStatus.text = res.getQuantityString(R.plurals.day, days, days)
+            with(binding.ltContent) {
+                if (years > 0 && months > 0 && days > 0) {
+                    tvDescriptionStatus.text = res.getQuantityString(R.plurals.year, years, years)
+                    tvDescriptionStatus.append(
+                        " " + res.getQuantityString(
+                            R.plurals.month,
+                            months,
+                            months
+                        )
+                    )
+                    tvDescriptionStatus.append(
+                        " " + res.getQuantityString(
+                            R.plurals.day,
+                            days,
+                            days
+                        )
+                    )
+                } else if (years >= 0 && months <= 0 && days <= 0) {
+                    tvDescriptionStatus.text = res.getQuantityString(R.plurals.year, years, years)
+                } else if (years <= 0 && months > 0 && days >= 0) {
+                    tvDescriptionStatus.text =
+                        res.getQuantityString(R.plurals.month, months, months)
+                    tvDescriptionStatus.append(
+                        " " + res.getQuantityString(
+                            R.plurals.day,
+                            days,
+                            days
+                        )
+                    )
+                } else if (years <= 0 && months <= 0) {
+                    tvDescriptionStatus.text = res.getQuantityString(R.plurals.day, days, days)
+                }
             }
         }
     }
@@ -328,24 +392,26 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             var dislikes = review.dislike
             val userId = presenter.user?.uid
             val myLikeDislike = likesDislikes?.get(userId)
-            myLikeDislike?.let { likeDislike ->
-                if (likeDislike) {
-                    review.like = --likes
-                    tvLike.text = likes.toString()
-                    likesDislikes?.remove(userId)
-                } else {
-                    review.dislike = --dislikes
-                    tvDislike.text = dislikes.toString()
+            with(binding.ltContent) {
+                myLikeDislike?.let { likeDislike ->
+                    if (likeDislike) {
+                        review.like = --likes
+                        tvLike.text = likes.toString()
+                        likesDislikes?.remove(userId)
+                    } else {
+                        review.dislike = --dislikes
+                        tvDislike.text = dislikes.toString()
+                        review.like = ++likes
+                        tvLike.text = likes.toString()
+
+                        userId?.let { likesDislikes?.put(it, true) }
+                    }
+
+                } ?: run {
                     review.like = ++likes
                     tvLike.text = likes.toString()
-
                     userId?.let { likesDislikes?.put(it, true) }
                 }
-
-            } ?: run {
-                review.like = ++likes
-                tvLike.text = likes.toString()
-                userId?.let { likesDislikes?.put(it, true) }
             }
             review.likesDislikes = this.likesDislikes
             FirebaseHelper.likeOrDislikeReview(review)
@@ -360,24 +426,26 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             val userId = presenter.user?.uid
             val myLikeDislike = likesDislikes?.get(userId)
 
-            myLikeDislike?.let { likeDislike ->
-                if (!likeDislike) {
-                    review.dislike = --dislikes
-                    tvDislike.text = dislikes.toString()
-                    likesDislikes?.remove(userId)
-                } else {
-                    review.like = --likes
-                    tvLike.text = likes.toString()
+            with(binding.ltContent) {
+                myLikeDislike?.let { likeDislike ->
+                    if (!likeDislike) {
+                        review.dislike = --dislikes
+                        tvDislike.text = dislikes.toString()
+                        likesDislikes?.remove(userId)
+                    } else {
+                        review.like = --likes
+                        tvLike.text = likes.toString()
+                        review.dislike = ++dislikes
+                        tvDislike.text = dislikes.toString()
+
+                        userId?.let { likesDislikes?.put(it, false) }
+                    }
+
+                } ?: run {
                     review.dislike = ++dislikes
                     tvDislike.text = dislikes.toString()
-
                     userId?.let { likesDislikes?.put(it, false) }
                 }
-
-            } ?: run {
-                review.dislike = ++dislikes
-                tvDislike.text = dislikes.toString()
-                userId?.let { likesDislikes?.put(it, false) }
             }
             review.likesDislikes = this.likesDislikes
             FirebaseHelper.likeOrDislikeReview(review)
@@ -407,14 +475,16 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
     override fun showChangeDialog(position: Int) {
         val builder = AlertDialog.Builder(requireContext())
         builder.setItems(R.array.comments_change) { _, which ->
-            when (which) {
-                0 -> presenter.deleteComment(position)
-                1 -> {
-                    etMessage.setText(presenter.comment.message)
-                    Utils.showKeyboard(requireContext())
-                    etMessage.isFocusableInTouchMode = true
-                    presenter.comment.message?.length?.let { etMessage.setSelection(it) }
-                    type = UPDATE
+            with(binding.ltContent) {
+                when (which) {
+                    0 -> presenter.deleteComment(position)
+                    1 -> {
+                        etMessage.setText(presenter.comment.message)
+                        Utils.showKeyboard(requireContext())
+                        etMessage.isFocusableInTouchMode = true
+                        presenter.comment.message?.length?.let { etMessage.setSelection(it) }
+                        type = UPDATE
+                    }
                 }
             }
         }
@@ -432,19 +502,23 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
     }
 
     override fun showAuth(title: Int) {
-        Utils.hideKeyboard(requireContext(), etMessage)
-        replaceFragment(
-            AuthFragment.newInstance(
-                getString(title),
-                Screen.REVIEW.name,
-                null,
-                reviewKey,
-                etMessage.text.toString().trim()),
-            R.id.content_review)
+        with(binding.ltContent) {
+            Utils.hideKeyboard(requireContext(), etMessage)
+            replaceFragment(
+                AuthFragment.newInstance(
+                    getString(title),
+                    Screen.REVIEW.name,
+                    null,
+                    reviewKey,
+                    etMessage.text.toString().trim()
+                ),
+                R.id.content_review
+            )
+        }
     }
 
     override fun clearMessage() {
-        etMessage.text = null
+        binding.ltContent.etMessage.text = null
     }
 
     override fun showCompanyDetail(companyId: String?) {
@@ -454,16 +528,24 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
     }
 
     override fun showUserReviews(userId: String?) {
-        userId?.let { replaceFragment(UserReviewsFragment.newInstance(userId), R.id.main_container, true) }
+        userId?.let {
+            replaceFragment(
+                UserReviewsFragment.newInstance(userId),
+                R.id.main_container,
+                true
+            )
+        }
     }
 
     override fun showPhotos(photos: List<StorageReference>) {
-        rvPhotos.visibility = View.VISIBLE
-        photoAdapter.isFullScreen = isFullScreenShown
-        photoAdapter.setUri(photos.toMutableList())
-        rvPhotos.apply {
-            adapter = photoAdapter
-            setHasFixedSize(true)
+        with(binding.ltContent) {
+            rvPhotos.isVisible = true
+            photoAdapter.isFullScreen = isFullScreenShown
+            photoAdapter.setUri(photos.toMutableList())
+            rvPhotos.apply {
+                adapter = photoAdapter
+                setHasFixedSize(true)
+            }
         }
     }
 
@@ -475,7 +557,11 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         private const val EDIT_MODE = "editMode"
         private const val SHOW_USER_NAME = "show_user_name"
 
-        fun newInstance(reviewKey: String, editMode: Boolean, message: String? = null): SelectedReviewFragment {
+        fun newInstance(
+            reviewKey: String,
+            editMode: Boolean,
+            message: String? = null
+        ): SelectedReviewFragment {
 
             val args = Bundle().apply {
                 putString(REVIEW_KEY, reviewKey)

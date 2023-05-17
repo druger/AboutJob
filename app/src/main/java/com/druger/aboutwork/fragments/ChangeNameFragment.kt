@@ -9,11 +9,10 @@ import android.view.WindowManager
 import android.widget.Toast
 import com.druger.aboutwork.Const.Bundles.NAME
 import com.druger.aboutwork.R
+import com.druger.aboutwork.databinding.FragmentChangeNameBinding
 import com.druger.aboutwork.interfaces.view.ChangeNameView
 import com.druger.aboutwork.presenters.ChangeNamePresenter
 import com.druger.aboutwork.utils.Utils
-import kotlinx.android.synthetic.main.fragment_change_name.*
-import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 
 class ChangeNameFragment : BaseSupportFragment(), ChangeNameView {
@@ -21,23 +20,32 @@ class ChangeNameFragment : BaseSupportFragment(), ChangeNameView {
     @InjectPresenter
     lateinit var presenter: ChangeNamePresenter
 
+    private var _binding: FragmentChangeNameBinding? = null
+    private val binding get() = _binding!!
+
     private var name: String? = null
 
     private var inputMode: Int = 0
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        rootView = inflater.inflate(R.layout.fragment_change_name, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentChangeNameBinding.inflate(inflater, container, false)
         setInputMode()
-        return rootView
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
-        mProgressBar = progressBar
+        mProgressBar = binding.progressBar
         showName()
-        btnChangeName.setOnClickListener { presenter.changeName(etName.text.toString().trim()) }
+        binding.btnChangeName.setOnClickListener {
+            presenter.changeName(
+                binding.etName.text.toString().trim()
+            )
+        }
         Utils.showKeyboard(requireContext())
     }
 
@@ -52,27 +60,30 @@ class ChangeNameFragment : BaseSupportFragment(), ChangeNameView {
 
 
     private fun setupToolbar() {
-        setActionBar(toolbar)
+        setActionBar(binding.toolbar.toolbar)
         actionBar?.setTitle(R.string.change_name)
         actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun showName() {
         name = arguments?.getString(NAME)
-        etName.setText(name)
+        binding.etName.setText(name)
         setCursorToEnd()
     }
 
     private fun setCursorToEnd() {
-        etName.requestFocus()
-        etName.setSelection(etName.text.length)
+        binding.apply {
+            etName.requestFocus()
+            etName.setSelection(etName.text.length)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Utils.hideKeyboard(requireContext(), etName)
+        Utils.hideKeyboard(requireContext(), binding.etName)
         activity?.window?.setSoftInputMode(inputMode)
         actionBar?.setDisplayHomeAsUpEnabled(false)
+        _binding = null
     }
 
     override fun showSuccessMessage() {
@@ -81,16 +92,18 @@ class ChangeNameFragment : BaseSupportFragment(), ChangeNameView {
     }
 
     override fun showErrorMessage() =
-            Toast.makeText(activity, R.string.updating_error, Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, R.string.updating_error, Toast.LENGTH_SHORT).show()
 
     override fun showProgress(show: Boolean) {
         super.showProgress(show)
-        if (show) {
-            etName.visibility = View.INVISIBLE
-            btnChangeName.visibility = View.INVISIBLE
-        } else {
-            etName.visibility = View.VISIBLE
-            btnChangeName.visibility = View.VISIBLE
+        binding.apply {
+            if (show) {
+                etName.visibility = View.INVISIBLE
+                btnChangeName.visibility = View.INVISIBLE
+            } else {
+                etName.visibility = View.VISIBLE
+                btnChangeName.visibility = View.VISIBLE
+            }
         }
     }
 

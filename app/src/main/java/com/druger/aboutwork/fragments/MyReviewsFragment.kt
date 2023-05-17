@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.view.ActionMode
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +13,7 @@ import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.MyReviewAdapter
 import com.druger.aboutwork.adapters.ReviewAdapter
+import com.druger.aboutwork.databinding.FragmentMyReviewsBinding
 import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.interfaces.OnItemClickListener
@@ -23,21 +25,20 @@ import com.druger.aboutwork.utils.recycler.RecyclerItemTouchHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_my_reviews.*
-import kotlinx.android.synthetic.main.network_error.*
-import kotlinx.android.synthetic.main.no_reviews.*
-import kotlinx.android.synthetic.main.toolbar.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
-class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
+class MyReviewsFragment : BaseSupportFragment(), MyReviewsView,
+    RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
     @InjectPresenter
     lateinit var myReviewsPresenter: MyReviewsPresenter
 
     @ProvidePresenter
     internal fun provideMyReviewsPresenter() = MyReviewsPresenter()
+
+    private var _binding: FragmentMyReviewsBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var reviewAdapter: MyReviewAdapter
     private lateinit var touchHelper: ItemTouchHelper
@@ -55,12 +56,14 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
         exitTransition = MaterialFadeThrough()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        rootView = inflater.inflate(R.layout.fragment_my_reviews, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentMyReviewsBinding.inflate(inflater, container, false)
         getData(savedInstanceState)
         (activity as MainActivity).showBottomNavigation()
-        return rootView
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,15 +73,20 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
         initSwipe()
         setupRecycler()
         fetchReviews()
-        btnRetry.setOnClickListener {
+        binding.ltError.btnRetry.setOnClickListener {
             showErrorScreen(false)
             fetchReviews()
         }
-        btnFind.setOnClickListener { goToSearch() }
+        binding.ltNoReviews.btnFind.setOnClickListener { goToSearch() }
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
     private fun goToSearch() {
-        (activity as MainActivity).bottomNavigation.selectedItemId = R.id.action_search
+        (activity as MainActivity).setBottomItemId(R.id.action_search)
     }
 
     private fun fetchReviews() {
@@ -95,19 +103,22 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
     private fun showAuthAccess() {
         addFragment(
             AuthFragment.newInstance(getString(R.string.reviews_login), Screen.MY_REVIEWS.name),
-            R.id.main_container, false)
+            R.id.main_container, false
+        )
     }
 
     private fun setupToolbar() {
         actionBar?.setDisplayShowTitleEnabled(true)
-        setActionBar(toolbar)
+        setActionBar(binding.toolbar.toolbar)
         actionBar?.setTitle(R.string.my_reviews)
     }
 
     private fun setupRecycler() {
         reviewAdapter = MyReviewAdapter()
-        rvReviews.itemAnimator = DefaultItemAnimator()
-        rvReviews.adapter = reviewAdapter
+        with(binding.rvReviews) {
+            itemAnimator = DefaultItemAnimator()
+            adapter = reviewAdapter
+        }
 
         reviewAdapter.setOnClickListener(object : OnItemClickListener<Review> {
             override fun onClick(item: Review, position: Int) {
@@ -116,7 +127,8 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
 
             override fun onLongClick(item: Review, position: Int): Boolean {
                 if (actionMode == null) {
-                    actionMode = (activity as MainActivity).startSupportActionMode(actionModeCallback)
+                    actionMode =
+                        (activity as MainActivity).startSupportActionMode(actionModeCallback)
                     simpleCallback.itemSwipe = false
                 }
                 toggleSelection(position)
@@ -129,19 +141,25 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
     private fun showSelectedReview(review: Review) {
         review.firebaseKey?.let {
             val reviewFragment = SelectedReviewFragment.newInstance(it, true)
-            replaceFragment(reviewFragment, R.id.main_container, true, rvReviews, "detail_transform")
+            replaceFragment(
+                reviewFragment,
+                R.id.main_container,
+                true,
+                binding.rvReviews,
+                "detail_transform"
+            )
         }
     }
 
     private fun setupUI() {
         bottomNavigation = activity?.findViewById(R.id.bottomNavigation)
-        mLtError = ltError
+        mLtError = binding.ltError.root
     }
 
     private fun initSwipe() {
         simpleCallback = RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this)
         touchHelper = ItemTouchHelper(simpleCallback)
-        touchHelper.attachToRecyclerView(rvReviews)
+        touchHelper.attachToRecyclerView(binding.rvReviews)
     }
 
     /**
@@ -166,17 +184,22 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
     }
 
     override fun showReviews(reviews: List<Review>) {
-        groupReviews.visibility = View.VISIBLE
-        ltNoReviews.visibility = View.GONE
-        tvCountReviews.text = resources.getQuantityString(R.plurals.reviews, reviews.size, reviews.size)
+        with(binding) {
+            groupReviews.isVisible = true
+            ltNoReviews.root.isVisible = false
+            tvCountReviews.text =
+                resources.getQuantityString(R.plurals.reviews, reviews.size, reviews.size)
+        }
         reviewAdapter.addReviews(reviews)
     }
 
     override fun showEmptyReviews() {
-        groupReviews.visibility = View.GONE
-        ltNoReviews.visibility = View.VISIBLE
-        tvNoReviews.text = getString(R.string.no_my_reviews)
-        btnFind.visibility = View.VISIBLE
+        with(binding) {
+            groupReviews.isVisible = false
+            ltNoReviews.root.isVisible = true
+            ltNoReviews.tvNoReviews.text = getString(R.string.no_my_reviews)
+            ltNoReviews.btnFind.isVisible = true
+        }
     }
 
     override fun updateAdapter() {
@@ -184,12 +207,14 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
     }
 
     override fun showProgress(show: Boolean) {
-        if (show) {
-            reviewPlaceholder.visibility = View.VISIBLE
-            reviewPlaceholder.startShimmer()
-        } else {
-            reviewPlaceholder.stopShimmer()
-            reviewPlaceholder.visibility = View.GONE
+        with(binding) {
+            if (show) {
+                reviewPlaceholder.isVisible = true
+                reviewPlaceholder.startShimmer()
+            } else {
+                reviewPlaceholder.stopShimmer()
+                reviewPlaceholder.isVisible = false
+            }
         }
     }
 
@@ -200,11 +225,15 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
 
             activity?.let {
                 val snackbar = Snackbar
-                    .make(it.findViewById(R.id.coordinator), R.string.review_deleted, Snackbar.LENGTH_LONG)
+                    .make(
+                        it.findViewById(R.id.coordinator),
+                        R.string.review_deleted,
+                        Snackbar.LENGTH_LONG
+                    )
                     .setAction(R.string.undo) {
                         reviewAdapter.addReview(review, position)
                         myReviewsPresenter.addReview(position, review)
-                        rvReviews.scrollToPosition(position)
+                        binding.rvReviews.scrollToPosition(position)
                     }
                 showSnackbar(snackbar)
             }
@@ -256,7 +285,11 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView, RecyclerItemTouc
         private fun makeSnackbar(deletedReviews: List<Review>): Snackbar? {
             return activity?.let {
                 Snackbar
-                    .make(it.findViewById(R.id.coordinator), R.string.review_deleted, Snackbar.LENGTH_LONG)
+                    .make(
+                        it.findViewById(R.id.coordinator),
+                        R.string.review_deleted,
+                        Snackbar.LENGTH_LONG
+                    )
                     .setAction(R.string.undo) {
                         myReviewsPresenter.addDeletedReviews(deletedReviews)
                         reviewAdapter.notifyDataSetChanged()

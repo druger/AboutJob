@@ -6,11 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.druger.aboutwork.Const.Bundles.DEBOUNCE_SEARCH
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.CompanyAdapter
+import com.druger.aboutwork.databinding.FragmentSearchBinding
 import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.SearchView
 import com.druger.aboutwork.model.Company
@@ -19,9 +22,6 @@ import com.druger.aboutwork.utils.Utils
 import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener
 import com.druger.aboutwork.utils.rx.RxSearch
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.fragment_search.*
-import kotlinx.android.synthetic.main.network_error.*
-import kotlinx.android.synthetic.main.toolbar_search.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import java.util.concurrent.TimeUnit
@@ -30,6 +30,9 @@ class SearchFragment : BaseSupportFragment(), SearchView {
 
     @InjectPresenter
     lateinit var presenter: SearchPresenter
+
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var adapter: CompanyAdapter
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
@@ -42,25 +45,27 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     @ProvidePresenter
     internal fun provideSearchPresenter() = SearchPresenter()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        rootView = inflater.inflate(R.layout.fragment_search, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         setInputMode()
-        return rootView
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
-        setActionBar(toolbar)
+        setActionBar(binding.tbSearch.toolbar)
         setupRecycler()
         setupListeners()
         setupSearch()
     }
 
     private fun setupUI() {
-        mProgressBar = progressBar
-        mLtError = ltError
+        mProgressBar = binding.progressBar
+        mLtError = binding.ltError.root
     }
 
     private fun setInputMode() {
@@ -74,19 +79,20 @@ class SearchFragment : BaseSupportFragment(), SearchView {
 
     private fun setupRecycler() {
         adapter = CompanyAdapter()
-        rvCompanies?.adapter = adapter
+        binding.rvCompanies.adapter = adapter
     }
 
     private fun setupListeners() {
         scrollListener = object : EndlessRecyclerViewScrollListener(
-            rvCompanies.layoutManager as LinearLayoutManager) {
+            binding.rvCompanies.layoutManager as LinearLayoutManager
+        ) {
             override fun onLoadMore(page: Int) {
                 this@SearchFragment.page = page
                 if (page > 0) adapter.addLoading()
                 getCompanies(page)
             }
         }
-        rvCompanies.addOnScrollListener(scrollListener)
+        binding.rvCompanies.addOnScrollListener(scrollListener)
 
         adapter.setOnItemClickListener(object : OnItemClickListener<Company> {
             override fun onClick(item: Company, position: Int) {
@@ -97,20 +103,20 @@ class SearchFragment : BaseSupportFragment(), SearchView {
                 return false
             }
         })
-        btnRetry.setOnClickListener { getCompanies(page) }
+        binding.ltError.btnRetry.setOnClickListener { getCompanies(page) }
     }
 
     private fun getCompanies(page: Int) {
-        query?.let { presenter.getCompanies(it, page, !cbMoreCompanies.isChecked) }
+        query?.let { presenter.getCompanies(it, page, !binding.cbMoreCompanies.isChecked) }
     }
 
     private fun setupSearch() {
-        searchView.apply {
+        binding.tbSearch.searchView.apply {
             queryHint = resources.getString(R.string.query_hint)
             isIconified = false
             setOnCloseListener(object : androidx.appcompat.widget.SearchView.OnCloseListener {
                 override fun onClose(): Boolean {
-                    if (searchView.query.isBlank()) {
+                    if (binding.tbSearch.searchView.query.isBlank()) {
                         parentFragmentManager.popBackStackImmediate()
                         return false
                     }
@@ -128,7 +134,7 @@ class SearchFragment : BaseSupportFragment(), SearchView {
             }
         }
 
-        RxSearch.fromSearchView(searchView)
+        RxSearch.fromSearchView(binding.tbSearch.searchView)
             .debounce(DEBOUNCE_SEARCH.toLong(), TimeUnit.MILLISECONDS)
             .filter { item -> item.length >= 2 }
             .observeOn(AndroidSchedulers.mainThread())
@@ -138,7 +144,7 @@ class SearchFragment : BaseSupportFragment(), SearchView {
                 scrollListener.resetPageCount()
             }
 
-        cbMoreCompanies.setOnCheckedChangeListener { _, _ ->
+        binding.cbMoreCompanies.setOnCheckedChangeListener { _, _ ->
             adapter.clear()
             scrollListener.resetPageCount()
         }
@@ -147,34 +153,35 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     override fun onDestroyView() {
         super.onDestroyView()
         activity?.window?.setSoftInputMode(inputMode)
-        searchView.setOnQueryTextListener(null)
-        rvCompanies.removeOnScrollListener(scrollListener)
+        binding.tbSearch.searchView.setOnQueryTextListener(null)
+        binding.rvCompanies.removeOnScrollListener(scrollListener)
         adapter.setOnItemClickListener(null)
+        _binding = null
     }
 
     override fun showCompanies(companies: List<Company>, pages: Int) {
-        cbMoreCompanies.visibility = View.VISIBLE
+        binding.cbMoreCompanies.isVisible = true
         adapter.removeLoading()
         scrollListener.setLoaded()
         scrollListener.setPages(pages)
         if (companies.isNotEmpty()) {
-            rvCompanies.visibility = View.VISIBLE
+            binding.rvCompanies.isVisible = true
             adapter.addItems(companies)
         }
     }
 
     private fun showCompanyDetail(id: String) {
-        Utils.hideKeyboard(requireContext(), searchView)
-        searchView.setOnQueryTextFocusChangeListener(null)
+        Utils.hideKeyboard(requireContext(), binding.tbSearch.searchView)
+        binding.tbSearch.searchView.setOnQueryTextFocusChangeListener(null)
         replaceFragment(CompanyDetailFragment.newInstance(id), R.id.main_container, true)
     }
 
     override fun showProgress(show: Boolean) {
         if (show) {
-            rvCompanies.visibility = View.INVISIBLE
+            binding.rvCompanies.isInvisible = true
         } else {
             adapter.removeLoading()
-            rvCompanies.visibility = View.VISIBLE
+            binding.rvCompanies.isVisible = true
         }
     }
 }

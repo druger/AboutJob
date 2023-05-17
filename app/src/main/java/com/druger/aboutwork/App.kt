@@ -1,15 +1,14 @@
 package com.druger.aboutwork
 
+//import com.squareup.leakcanary.LeakCanary
+//import com.squareup.leakcanary.RefWatcher
 import android.app.Application
-import android.content.Context
 import com.druger.aboutwork.di.modules.appModule
 import com.google.firebase.FirebaseApp
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.microsoft.appcenter.AppCenter
 import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
-import com.squareup.leakcanary.LeakCanary
-import com.squareup.leakcanary.RefWatcher
 import com.yandex.metrica.YandexMetrica
 import com.yandex.metrica.YandexMetricaConfig
 import org.koin.android.ext.koin.androidContext
@@ -22,14 +21,14 @@ import timber.log.Timber
  */
 class App : Application() {
 
-    private lateinit var refWatcher: RefWatcher
+//    private lateinit var refWatcher: RefWatcher
 
     companion object {
 
-        fun getRefWatcher(context: Context): RefWatcher {
-            val app: App = context.applicationContext as App
-            return app.refWatcher
-        }
+//        fun getRefWatcher(context: Context): RefWatcher {
+//            val app: App = context.applicationContext as App
+//            return app.refWatcher
+//        }
     }
 
     override fun onCreate() {
@@ -73,11 +72,11 @@ class App : Application() {
     }
 
     private fun setupLeakCanary() {
-        if (BuildConfig.DEBUG) {
-            if (LeakCanary.isInAnalyzerProcess(this)) {
-                return
-            }
-            refWatcher = LeakCanary.install(this)
-        }
+//        if (BuildConfig.DEBUG) {
+//            if (LeakCanary.isInAnalyzerProcess(this)) {
+//                return
+//            }
+//            refWatcher = LeakCanary.install(this)
+//        }
     }
 }

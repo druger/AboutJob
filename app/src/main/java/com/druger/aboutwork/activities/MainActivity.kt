@@ -8,8 +8,8 @@ import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatDelegate.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.druger.aboutwork.App
 import com.druger.aboutwork.R
+import com.druger.aboutwork.databinding.ActivityMainBinding
 import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.fragments.*
 import com.druger.aboutwork.interfaces.view.MainView
@@ -19,14 +19,16 @@ import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_KEY
 import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_NO
 import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_YES
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_main.*
 import moxy.MvpAppCompatActivity
 import moxy.presenter.InjectPresenter
 
-class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNavigationItemSelectedListener {
+class MainActivity : MvpAppCompatActivity(), MainView,
+    BottomNavigationView.OnNavigationItemSelectedListener {
 
     @InjectPresenter
     internal lateinit var mainPresenter: MainPresenter
+
+    private lateinit var binding: ActivityMainBinding
 
     private var fragment: Fragment? = null
     private var nextScreen: String? = null
@@ -36,12 +38,13 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setupDarkMode()
         checkAuthUser()
         setupUI()
-        bottomNavigation.setOnNavigationItemSelectedListener(this)
-        bottomNavigation.setOnNavigationItemReselectedListener {
+        binding.bottomNavigation.setOnNavigationItemSelectedListener(this)
+        binding.bottomNavigation.setOnNavigationItemReselectedListener {
             // needs in order to disable flicker
         }
         if (savedInstanceState == null) checkNextScreen()
@@ -71,10 +74,10 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
                     }
                 }
                 Screen.MY_REVIEWS -> {
-                    bottomNavigation.selectedItemId = R.id.action_my_reviews
+                    binding.bottomNavigation.selectedItemId = R.id.action_my_reviews
                 }
                 Screen.SETTINGS -> {
-                    bottomNavigation.selectedItemId = R.id.action_setting
+                    binding.bottomNavigation.selectedItemId = R.id.action_setting
                 }
             }
         }
@@ -102,8 +105,8 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
     }
 
     private fun initRefWatcher() {
-        val refWatcher = App.getRefWatcher(this)
-        refWatcher.watch(this)
+//        val refWatcher = App.getRefWatcher(this)
+//        refWatcher.watch(this)
     }
 
     private fun setupUI() {
@@ -153,11 +156,15 @@ class MainActivity : MvpAppCompatActivity(), MainView, BottomNavigationView.OnNa
     }
 
     fun hideBottomNavigation() {
-        bottomNavigation.visibility = View.GONE
+        binding.bottomNavigation.visibility = View.GONE
     }
 
     fun showBottomNavigation() {
-        bottomNavigation.visibility = View.VISIBLE
+        binding.bottomNavigation.visibility = View.VISIBLE
+    }
+
+    fun setBottomItemId(@IdRes itemId: Int) {
+        binding.bottomNavigation.selectedItemId = itemId
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

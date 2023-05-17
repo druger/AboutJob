@@ -10,7 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/toolbar" />
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabAddReview"
@@ -24,11 +26,14 @@
             app:srcCompat="@drawable/ic_add"
             app:tint="@null" />
 
-        <include layout="@layout/content_company_detail" />
+        <include
+            android:id="@+id/contentDetail"
+            layout="@layout/content_company_detail" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <include
+        android:id="@+id/ltError"
         layout="@layout/network_error"
         android:visibility="gone" />
 </FrameLayout>

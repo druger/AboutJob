@@ -21,8 +21,8 @@ import com.druger.aboutwork.utils.Analytics.Companion.SCREEN
 import com.druger.aboutwork.utils.rx.RxUtils
 import com.google.firebase.auth.FirebaseAuth
 import moxy.InjectViewState
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.util.*
 
 
