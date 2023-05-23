@@ -27,14 +27,15 @@ import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_NO
 import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_YES
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.transition.MaterialFadeThrough
-import moxy.presenter.InjectPresenter
-import moxy.presenter.ProvidePresenter
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import javax.inject.Inject
 
 
+@AndroidEntryPoint
 class AccountFragment : BaseSupportFragment(), AccountView {
 
-    @InjectPresenter
+    @Inject
     lateinit var accountPresenter: AccountPresenter
 
     private lateinit var sharedPref: SharedPreferences
@@ -42,9 +43,6 @@ class AccountFragment : BaseSupportFragment(), AccountView {
 
     private var _binding: FragmentAccountBinding? = null
     private val binding get() = _binding!!
-
-    @ProvidePresenter
-    internal fun getAccountPresenter() = AccountPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

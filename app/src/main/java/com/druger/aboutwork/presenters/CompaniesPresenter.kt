@@ -7,6 +7,7 @@ import com.druger.aboutwork.model.Review
 import com.google.firebase.database.*
 import moxy.InjectViewState
 import timber.log.Timber
+import javax.inject.Inject
 
 
 /**
@@ -14,7 +15,7 @@ import timber.log.Timber
  */
 
 @InjectViewState
-class CompaniesPresenter : BasePresenter<CompaniesView>() {
+class CompaniesPresenter @Inject constructor() : BasePresenter<CompaniesView>() {
 
     private lateinit var dbReference: DatabaseReference
     private var reviewEventListener: ValueEventListener? = null

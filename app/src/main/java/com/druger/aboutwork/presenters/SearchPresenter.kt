@@ -5,8 +5,9 @@ import com.druger.aboutwork.rest.RestApi
 import com.druger.aboutwork.rest.models.CompanyResponse
 import com.druger.aboutwork.utils.rx.RxUtils
 import moxy.InjectViewState
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+
+
+import javax.inject.Inject
 
 
 /**
@@ -14,9 +15,9 @@ import org.koin.core.component.inject
  */
 
 @InjectViewState
-class SearchPresenter: BasePresenter<SearchView>(), KoinComponent {
-
-    private val restApi: RestApi by inject()
+class SearchPresenter @Inject constructor(
+    private val restApi: RestApi
+) : BasePresenter<SearchView>() {
 
     fun getCompanies(query: String, page: Int, withVacancies: Boolean) {
         viewState.showErrorScreen(false)

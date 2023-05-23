@@ -21,16 +21,17 @@ import com.druger.aboutwork.utils.Analytics.Companion.SCREEN
 import com.druger.aboutwork.utils.rx.RxUtils
 import com.google.firebase.auth.FirebaseAuth
 import moxy.InjectViewState
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+
+
 import java.util.*
+import javax.inject.Inject
 
 
 @InjectViewState
-class AddReviewPresenter: ReviewPresenter<AddReviewView>(), KoinComponent {
-
-    private val analytics: Analytics by inject()
-    private val restApi: RestApi by inject()
+class AddReviewPresenter @Inject constructor(
+    private val analytics: Analytics,
+    private val restApi: RestApi
+) : ReviewPresenter<AddReviewView>() {
 
     private var status = NOT_SELECTED_STATUS
 
@@ -54,7 +55,8 @@ class AddReviewPresenter: ReviewPresenter<AddReviewView>(), KoinComponent {
 
     fun doneClick(photos: MutableList<Uri?>, wasPhotoRemoved: Boolean) {
         analytics.logEvent(Analytics.ADD_REVIEW_CLICK)
-        val company = companyId?.let { companyId -> companyName?.let { name -> Company(companyId, name) } }
+        val company =
+            companyId?.let { companyId -> companyName?.let { name -> Company(companyId, name) } }
         company?.let { addReview(it, photos, wasPhotoRemoved) }
     }
 

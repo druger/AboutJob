@@ -29,21 +29,19 @@ import com.druger.aboutwork.presenters.AddReviewPresenter
 import com.druger.aboutwork.utils.Utils
 import com.google.android.material.transition.MaterialArcMotion
 import com.google.android.material.transition.MaterialContainerTransform
-import moxy.presenter.InjectPresenter
-import moxy.presenter.ProvidePresenter
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, AddReviewView {
 
-    @InjectPresenter
+    @Inject
     lateinit var presenter: AddReviewPresenter
 
     private lateinit var datePicker: DatePickerFragment
 
     private var _binding: FragmentReviewBinding? = null
     private val binding get() = _binding!!
-
-    @ProvidePresenter
-    fun provideAddReviewPresenter() = AddReviewPresenter()
 
     companion object {
 

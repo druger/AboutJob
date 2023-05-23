@@ -28,21 +28,19 @@ import com.druger.aboutwork.presenters.EditReviewPresenter
 import com.druger.aboutwork.utils.Utils
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.storage.StorageReference
-import moxy.presenter.InjectPresenter
-import moxy.presenter.ProvidePresenter
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemSelectedListener {
 
-    @InjectPresenter
+    @Inject
     lateinit var presenter: EditReviewPresenter
 
     private var _binding: FragmentReviewBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var mergeAdapter: ConcatAdapter
-
-    @ProvidePresenter
-    fun provideEditReviewPresenter() = EditReviewPresenter()
 
     private lateinit var review: Review
     private lateinit var reviewKey: String

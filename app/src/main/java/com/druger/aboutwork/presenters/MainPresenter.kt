@@ -5,13 +5,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import moxy.InjectViewState
 import moxy.MvpPresenter
+import javax.inject.Inject
 
 /**
  * Created by druger on 30.04.2017.
  */
 
 @InjectViewState
-class MainPresenter : MvpPresenter<MainView>() {
+class MainPresenter @Inject constructor(): MvpPresenter<MainView>() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var authListener: FirebaseAuth.AuthStateListener

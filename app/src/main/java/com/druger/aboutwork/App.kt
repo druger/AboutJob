@@ -3,7 +3,6 @@ package com.druger.aboutwork
 //import com.squareup.leakcanary.LeakCanary
 //import com.squareup.leakcanary.RefWatcher
 import android.app.Application
-import com.druger.aboutwork.di.modules.appModule
 import com.google.firebase.FirebaseApp
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.microsoft.appcenter.AppCenter
@@ -11,14 +10,14 @@ import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
 import com.yandex.metrica.YandexMetrica
 import com.yandex.metrica.YandexMetricaConfig
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.startKoin
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
 
 /**
  * Created by druger on 26.07.2016.
  */
+@HiltAndroidApp
 class App : Application() {
 
 //    private lateinit var refWatcher: RefWatcher
@@ -40,14 +39,6 @@ class App : Application() {
         if (!BuildConfig.DEBUG) {
             setupAppCenter()
             setupAppMetrica()
-        }
-        setupKoin()
-    }
-
-    private fun setupKoin() {
-        startKoin {
-            androidContext(this@App)
-            modules(appModule)
         }
     }
 

@@ -7,9 +7,10 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import moxy.InjectViewState
 import timber.log.Timber
+import javax.inject.Inject
 
 @InjectViewState
-class ChangeNamePresenter : BasePresenter<ChangeNameView>() {
+class ChangeNamePresenter @Inject constructor() : BasePresenter<ChangeNameView>() {
 
     private val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
 

@@ -31,17 +31,19 @@ import com.druger.aboutwork.utils.Utils
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.StorageReference
-import moxy.presenter.InjectPresenter
+import dagger.hilt.android.AndroidEntryPoint
 import org.threeten.bp.Instant
 import org.threeten.bp.Period
 import org.threeten.bp.ZoneId
 import java.util.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
 
     private var type = NEW
 
-    @InjectPresenter
+    @Inject
     lateinit var presenter: SelectedReviewPresenter
 
     private var _binding: FragmentSelectedReviewBinding? = null

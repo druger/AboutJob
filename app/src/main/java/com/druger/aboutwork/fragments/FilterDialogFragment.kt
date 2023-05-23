@@ -19,23 +19,21 @@ import com.druger.aboutwork.presenters.FilterPresenter
 import com.druger.aboutwork.utils.Utils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import dagger.hilt.android.AndroidEntryPoint
 import moxy.MvpBottomSheetDialogFragment
-import moxy.presenter.InjectPresenter
-import moxy.presenter.ProvidePresenter
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView,
     AdapterView.OnItemSelectedListener {
 
-    @InjectPresenter
+    @Inject
     lateinit var presenter: FilterPresenter
 
     private var _binding: FragmentFilterReviewBinding? = null
     private val binding get() = _binding!!
 
     private var filterListener: OnFilterListener? = null
-
-    @ProvidePresenter
-    fun provideFilterPresenter() = FilterPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

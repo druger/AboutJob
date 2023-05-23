@@ -24,15 +24,16 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import moxy.InjectViewState
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+
+
 import timber.log.Timber
+import javax.inject.Inject
 
 @InjectViewState
-class EditReviewPresenter: ReviewPresenter<EditReviewView>(), KoinComponent {
-
-    private val analytics: Analytics by inject()
-    private val restApi: RestApi by inject()
+class EditReviewPresenter @Inject constructor(
+    private val analytics: Analytics,
+    private val restApi: RestApi
+) : ReviewPresenter<EditReviewView>() {
 
     private var status: Int = NOT_SELECTED_STATUS
 
@@ -160,7 +161,7 @@ class EditReviewPresenter: ReviewPresenter<EditReviewView>(), KoinComponent {
     }
 
     fun setRecommendedReview() {
-       review?.recommended = true
+        review?.recommended = true
     }
 
     fun setNotRecommendedReview() {
@@ -175,7 +176,8 @@ class EditReviewPresenter: ReviewPresenter<EditReviewView>(), KoinComponent {
         val storageRef = Firebase.storage.reference
         val path = FirebaseHelper.REVIEW_PHOTOS + reviewId
         storageRef.child(path).listAll()
-            .addOnSuccessListener { if (it.items.isNotEmpty()) viewState.showDownloadedPhotos(it.items)
+            .addOnSuccessListener {
+                if (it.items.isNotEmpty()) viewState.showDownloadedPhotos(it.items)
             }
             .addOnFailureListener { Timber.e(it) }
     }

@@ -1,5 +1,6 @@
 package com.druger.aboutwork.presenters
 
+
 import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.interfaces.view.MyReviewsView
 import com.druger.aboutwork.model.Company
@@ -8,9 +9,8 @@ import com.druger.aboutwork.utils.Analytics
 import com.google.firebase.database.*
 import moxy.InjectViewState
 import moxy.MvpPresenter
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import timber.log.Timber
+import javax.inject.Inject
 
 
 /**
@@ -18,9 +18,9 @@ import timber.log.Timber
  */
 
 @InjectViewState
-class MyReviewsPresenter: MvpPresenter<MyReviewsView>(), ValueEventListener, KoinComponent {
-
-    private val analytics: Analytics by inject()
+class MyReviewsPresenter @Inject constructor(
+    private val analytics: Analytics
+) : MvpPresenter<MyReviewsView>(), ValueEventListener {
 
     private lateinit var dbReference: DatabaseReference
     private var valueEventListener: ValueEventListener? = null

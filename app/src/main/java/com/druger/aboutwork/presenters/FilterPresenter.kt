@@ -7,14 +7,15 @@ import com.druger.aboutwork.rest.models.CityResponse
 import com.druger.aboutwork.rest.models.VacancyResponse
 import com.druger.aboutwork.utils.rx.RxUtils
 import moxy.InjectViewState
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+
+
+import javax.inject.Inject
 
 
 @InjectViewState
-class FilterPresenter: BasePresenter<FilterView>(), KoinComponent {
-
-    private val restApi: RestApi by inject()
+class FilterPresenter @Inject constructor(
+    private val restApi: RestApi
+) : BasePresenter<FilterView>() {
 
     private var filterType = FilterType.RATING
 

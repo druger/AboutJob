@@ -25,13 +25,14 @@ import com.druger.aboutwork.model.CompanyDetail
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.CompanyDetailPresenter
 import com.thefinestartist.finestwebview.FinestWebView
-import moxy.presenter.InjectPresenter
-import moxy.presenter.ProvidePresenter
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
     FilterDialogFragment.OnFilterListener {
 
-    @InjectPresenter
+    @Inject
     lateinit var presenter: CompanyDetailPresenter
 
     private var descriptionShow: Boolean = false
@@ -40,9 +41,6 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
 
     private var companyDetail: CompanyDetail? = null
     private var companyId: String? = null
-
-    @ProvidePresenter
-    internal fun provideCompanyDetailPresenter() = CompanyDetailPresenter()
 
     private var _binding: FragmentCompanyDetailBinding? = null
     private val binding get() = _binding!!

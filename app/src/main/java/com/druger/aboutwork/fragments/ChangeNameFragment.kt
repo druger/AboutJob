@@ -13,11 +13,13 @@ import com.druger.aboutwork.databinding.FragmentChangeNameBinding
 import com.druger.aboutwork.interfaces.view.ChangeNameView
 import com.druger.aboutwork.presenters.ChangeNamePresenter
 import com.druger.aboutwork.utils.Utils
-import moxy.presenter.InjectPresenter
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ChangeNameFragment : BaseSupportFragment(), ChangeNameView {
 
-    @InjectPresenter
+    @Inject
     lateinit var presenter: ChangeNamePresenter
 
     private var _binding: FragmentChangeNameBinding? = null
@@ -30,7 +32,7 @@ class ChangeNameFragment : BaseSupportFragment(), ChangeNameView {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentChangeNameBinding.inflate(inflater, container, false)
         setInputMode()
         return binding.root

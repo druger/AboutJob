@@ -16,12 +16,13 @@ import com.druger.aboutwork.interfaces.view.CompaniesView
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.CompaniesPresenter
 import com.google.android.material.transition.MaterialFadeThrough
-import moxy.presenter.InjectPresenter
-import moxy.presenter.ProvidePresenter
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class CompaniesFragment : BaseSupportFragment(), CompaniesView {
 
-    @InjectPresenter
+    @Inject
     lateinit var companiesPresenter: CompaniesPresenter
 
     private var _binding: FragmentCompaniesBinding? = null
@@ -31,9 +32,6 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     private lateinit var itemClickListener: OnItemClickListener<Review>
 
     private var inputMode: Int = 0
-
-    @ProvidePresenter
-    internal fun provideCompaniesPresenter() = CompaniesPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

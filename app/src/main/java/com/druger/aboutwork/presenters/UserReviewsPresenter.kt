@@ -8,14 +8,14 @@ import com.druger.aboutwork.model.User
 import com.google.firebase.database.*
 import moxy.InjectViewState
 import timber.log.Timber
-import java.util.*
+import javax.inject.Inject
 
 /**
  * Created by druger on 31.01.2018.
  */
 
 @InjectViewState
-class UserReviewsPresenter : BasePresenter<UserReviews>(), ValueEventListener {
+class UserReviewsPresenter @Inject constructor() : BasePresenter<UserReviews>(), ValueEventListener {
 
     private lateinit var dbReference: DatabaseReference
     private var valueEventListener: ValueEventListener? = null

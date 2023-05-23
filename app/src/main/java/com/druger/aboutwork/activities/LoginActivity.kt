@@ -17,13 +17,15 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import javax.inject.Inject
 
-class LoginActivity : AppCompatActivity(), KoinComponent {
+@AndroidEntryPoint
+class LoginActivity : AppCompatActivity() {
 
-    private val analytics: Analytics by inject()
+    @Inject
+    lateinit var analytics: Analytics
 
     private var nextScreen: String? = null
     private var companyId: String? = null

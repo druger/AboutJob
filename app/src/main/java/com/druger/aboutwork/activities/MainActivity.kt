@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.annotation.IdRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -19,14 +20,15 @@ import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_KEY
 import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_NO
 import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_YES
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import moxy.MvpAppCompatActivity
-import moxy.presenter.InjectPresenter
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class MainActivity : MvpAppCompatActivity(), MainView,
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity(), MainView,
     BottomNavigationView.OnNavigationItemSelectedListener {
 
-    @InjectPresenter
-    internal lateinit var mainPresenter: MainPresenter
+    @Inject
+    lateinit var mainPresenter: MainPresenter
 
     private lateinit var binding: ActivityMainBinding
 

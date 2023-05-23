@@ -13,18 +13,17 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import moxy.InjectViewState
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * Created by druger on 09.05.2017.
  */
 
 @InjectViewState
-class AccountPresenter: BasePresenter<AccountView>(), KoinComponent {
-
-    private val analytics: Analytics by inject()
+class AccountPresenter @Inject constructor(
+    private val analytics: Analytics
+): BasePresenter<AccountView>() {
 
     private var auth: FirebaseAuth? = null
     private var authListener: FirebaseAuth.AuthStateListener? = null

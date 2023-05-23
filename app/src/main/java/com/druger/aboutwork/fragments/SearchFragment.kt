@@ -21,14 +21,15 @@ import com.druger.aboutwork.presenters.SearchPresenter
 import com.druger.aboutwork.utils.Utils
 import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener
 import com.druger.aboutwork.utils.rx.RxSearch
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.android.schedulers.AndroidSchedulers
-import moxy.presenter.InjectPresenter
-import moxy.presenter.ProvidePresenter
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SearchFragment : BaseSupportFragment(), SearchView {
 
-    @InjectPresenter
+    @Inject
     lateinit var presenter: SearchPresenter
 
     private var _binding: FragmentSearchBinding? = null
@@ -41,9 +42,6 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     private var page = 0
 
     private var inputMode: Int = 0
-
-    @ProvidePresenter
-    internal fun provideSearchPresenter() = SearchPresenter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

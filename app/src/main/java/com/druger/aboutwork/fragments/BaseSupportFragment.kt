@@ -18,13 +18,12 @@ import androidx.fragment.app.FragmentTransaction
 import com.druger.aboutwork.R
 import com.druger.aboutwork.enums.TypeMessage
 import com.druger.aboutwork.interfaces.view.NetworkView
-import moxy.MvpAppCompatFragment
 
 /**
  * Created by druger on 06.08.2017.
  */
 
-abstract class BaseSupportFragment : MvpAppCompatFragment(), NetworkView {
+abstract class BaseSupportFragment : Fragment(), NetworkView {
     protected var rootView: View? = null
     protected var mProgressBar: ProgressBar? = null
     protected var mLtError: ConstraintLayout? = null

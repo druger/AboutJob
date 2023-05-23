@@ -16,11 +16,13 @@ import com.druger.aboutwork.interfaces.OnItemClickListener
 import com.druger.aboutwork.interfaces.view.UserReviews
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.presenters.UserReviewsPresenter
-import moxy.presenter.InjectPresenter
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class UserReviewsFragment : BaseSupportFragment(), UserReviews {
 
-    @InjectPresenter
+    @Inject
     lateinit var reviewsPresenter: UserReviewsPresenter
 
     private var _binding: FragmentUserReviewsBinding? = null
@@ -31,7 +33,7 @@ class UserReviewsFragment : BaseSupportFragment(), UserReviews {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentUserReviewsBinding.inflate(inflater, container, false)
         arguments?.getString(USER_ID)?.let { reviewsPresenter.fetchReviews(it) }
         arguments?.getString(USER_ID)?.let { reviewsPresenter.getUserName(it) }

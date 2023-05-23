@@ -25,17 +25,15 @@ import com.druger.aboutwork.utils.recycler.RecyclerItemTouchHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
-import moxy.presenter.InjectPresenter
-import moxy.presenter.ProvidePresenter
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MyReviewsFragment : BaseSupportFragment(), MyReviewsView,
     RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
-    @InjectPresenter
+    @Inject
     lateinit var myReviewsPresenter: MyReviewsPresenter
-
-    @ProvidePresenter
-    internal fun provideMyReviewsPresenter() = MyReviewsPresenter()
 
     private var _binding: FragmentMyReviewsBinding? = null
     private val binding get() = _binding!!
