@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.viewModels
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate.*
@@ -13,22 +14,19 @@ import com.druger.aboutwork.R
 import com.druger.aboutwork.databinding.ActivityMainBinding
 import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.fragments.*
-import com.druger.aboutwork.interfaces.view.MainView
-import com.druger.aboutwork.presenters.MainPresenter
 import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_FOLLOW_SYSTEM
 import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_KEY
 import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_NO
 import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_YES
+import com.druger.aboutwork.viewmodels.MainViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), MainView,
+class MainActivity : AppCompatActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener {
 
-    @Inject
-    lateinit var mainPresenter: MainPresenter
+    private val viewModel: MainViewModel by viewModels()
 
     private lateinit var binding: ActivityMainBinding
 
@@ -50,6 +48,7 @@ class MainActivity : AppCompatActivity(), MainView,
             // needs in order to disable flicker
         }
         if (savedInstanceState == null) checkNextScreen()
+        observeMyReviews()
     }
 
     private fun setupDarkMode() {
@@ -93,7 +92,7 @@ class MainActivity : AppCompatActivity(), MainView,
     }
 
     private fun checkAuthUser() {
-        mainPresenter.checkAuthUser()
+        viewModel.checkAuthUser()
     }
 
     override fun onDestroy() {
@@ -103,7 +102,7 @@ class MainActivity : AppCompatActivity(), MainView,
     }
 
     private fun removeAuthListener() {
-        mainPresenter.removeAuthListener()
+        viewModel.removeAuthListener()
     }
 
     private fun initRefWatcher() {
@@ -125,7 +124,13 @@ class MainActivity : AppCompatActivity(), MainView,
         replaceFragment(fragment)
     }
 
-    override fun showMyReviews(userId: String?) {
+    private fun observeMyReviews() {
+        viewModel.userId.observe(this) { userId ->
+            showMyReviews(userId)
+        }
+    }
+
+    private fun showMyReviews(userId: String?) {
         fragment = MyReviewsFragment.newInstance(userId)
         replaceFragment(fragment)
     }
@@ -182,7 +187,7 @@ class MainActivity : AppCompatActivity(), MainView,
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_search -> showCompanies()
-            R.id.action_my_reviews -> mainPresenter.onClickMyReviews()
+            R.id.action_my_reviews -> viewModel.onClickMyReviews()
             R.id.action_setting -> showAccount()
         }
         return true

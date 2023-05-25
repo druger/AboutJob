@@ -1,22 +1,19 @@
-package com.druger.aboutwork.presenters
+package com.druger.aboutwork.viewmodels
 
-import com.druger.aboutwork.interfaces.view.MainView
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import moxy.InjectViewState
-import moxy.MvpPresenter
-import javax.inject.Inject
 
-/**
- * Created by druger on 30.04.2017.
- */
-
-@InjectViewState
-class MainPresenter @Inject constructor(): MvpPresenter<MainView>() {
+class MainViewModel : ViewModel() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var authListener: FirebaseAuth.AuthStateListener
     private var user: FirebaseUser? = null
+
+    val userId: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
 
     fun checkAuthUser() {
         auth = FirebaseAuth.getInstance()
@@ -38,7 +35,6 @@ class MainPresenter @Inject constructor(): MvpPresenter<MainView>() {
     }
 
     fun onClickMyReviews() {
-        val userId = user?.uid
-        viewState.showMyReviews(userId)
+        userId.value = user?.uid
     }
 }
