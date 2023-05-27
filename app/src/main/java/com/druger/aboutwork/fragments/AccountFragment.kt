@@ -15,28 +15,26 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import com.druger.aboutwork.BuildConfig
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.databinding.FragmentAccountBinding
-import com.druger.aboutwork.interfaces.view.AccountView
-import com.druger.aboutwork.presenters.AccountPresenter
 import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_FOLLOW_SYSTEM
 import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_KEY
 import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_NO
 import com.druger.aboutwork.utils.PreferenceHelper.Companion.DARK_MODE_YES
+import com.druger.aboutwork.viewmodels.AccountViewModel
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class AccountFragment : BaseSupportFragment(), AccountView {
+class AccountFragment : BaseSupportFragment() {
 
-    @Inject
-    lateinit var accountPresenter: AccountPresenter
+    private val viewModel: AccountViewModel by viewModels()
 
     private lateinit var sharedPref: SharedPreferences
     private var name: String? = null
@@ -48,6 +46,12 @@ class AccountFragment : BaseSupportFragment(), AccountView {
         super.onCreate(savedInstanceState)
         exitTransition = MaterialFadeThrough()
         sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE)
+        observeAuthSetting()
+        observeEmail()
+        observeName()
+        observePhone()
+        observeSendEmail()
+        observeRemoveAccount()
     }
 
     override fun onCreateView(
@@ -55,7 +59,7 @@ class AccountFragment : BaseSupportFragment(), AccountView {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAccountBinding.inflate(inflater, container, false)
-        accountPresenter.getUserInfo()
+        viewModel.getUserInfo()
         return binding.root
     }
 
@@ -112,7 +116,7 @@ class AccountFragment : BaseSupportFragment(), AccountView {
 
     override fun onDestroyView() {
         _binding = null
-        accountPresenter.removeAuthListener()
+        viewModel.removeAuthListener()
         super.onDestroyView()
     }
 
@@ -131,7 +135,7 @@ class AccountFragment : BaseSupportFragment(), AccountView {
             cvLogout.setOnClickListener { showLogoutDialog() }
             cvName.setOnClickListener { showChangeName() }
             cvRemoveAcc.setOnClickListener { showRemoveDialog() }
-            tvWriteToDev.setOnClickListener { accountPresenter.writeToDevelopers(getString(R.string.email_support)) }
+            tvWriteToDev.setOnClickListener { viewModel.writeToDevelopers(getString(R.string.email_support)) }
         }
     }
 
@@ -139,7 +143,7 @@ class AccountFragment : BaseSupportFragment(), AccountView {
         val builder = AlertDialog.Builder(activity, R.style.AppTheme_Dialog)
         builder.setTitle(R.string.remove_account_ask)
         builder.setPositiveButton(R.string.yes) { dialog, _ ->
-            accountPresenter.removeAccount()
+            viewModel.removeAccount()
             dialog.dismiss()
         }
         builder.setNegativeButton(R.string.no) { dialog, _ -> dialog.dismiss() }
@@ -171,15 +175,50 @@ class AccountFragment : BaseSupportFragment(), AccountView {
         builder.create().show()
     }
 
-    override fun showToast(@StringRes resId: Int) {
+    private fun showToast(@StringRes resId: Int) {
         Toast.makeText(activity, resId, Toast.LENGTH_SHORT).show()
     }
 
-    override fun showMainActivity() {
+    private fun showMainActivity() {
         startActivity(Intent(activity, MainActivity::class.java))
     }
 
-    override fun showName(name: String?) {
+    private fun observeName() {
+        viewModel.name.observe(this) {
+            showName(it)
+        }
+    }
+
+    private fun observeEmail() {
+        viewModel.email.observe(this) {
+            showEmail(it)
+        }
+    }
+
+    private fun observePhone() {
+        viewModel.phone.observe(this) {
+            showPhone(it)
+        }
+    }
+
+    private fun observeRemoveAccount() {
+        viewModel.removeAccountState.observe(this) { state ->
+            if (state) {
+                showToast(R.string.profile_deleted)
+                showMainActivity()
+            } else {
+                showToast(R.string.failed_delete_user)
+            }
+        }
+    }
+
+    private fun observeSendEmail() {
+        viewModel.sendEmailState.observe(this) {
+            sendEmail(it)
+        }
+    }
+
+    private fun showName(name: String?) {
         this.name = name
         if (name.isNullOrEmpty()) {
             binding.tvName.setText(R.string.add_name)
@@ -187,7 +226,7 @@ class AccountFragment : BaseSupportFragment(), AccountView {
             binding.tvName.text = name
     }
 
-    override fun showEmail(email: String) {
+    private fun showEmail(email: String) {
         binding.apply {
             ltEmail.isVisible = true
             line2.root.isVisible = true
@@ -195,7 +234,7 @@ class AccountFragment : BaseSupportFragment(), AccountView {
         }
     }
 
-    override fun showPhone(phone: String) {
+    private fun showPhone(phone: String) {
         binding.apply {
             ltPhone.isVisible = true
             line3.root.isVisible = true
@@ -203,7 +242,13 @@ class AccountFragment : BaseSupportFragment(), AccountView {
         }
     }
 
-    override fun showNotAuthSetting() {
+    private fun observeAuthSetting() {
+        viewModel.authSetting.observe(this) { auth ->
+            if (auth) showAuthSetting() else showNotAuthSetting()
+        }
+    }
+
+    private fun showNotAuthSetting() {
         binding.apply {
             authGroup.isVisible = false
             ltPhone.isVisible = false
@@ -213,11 +258,11 @@ class AccountFragment : BaseSupportFragment(), AccountView {
         }
     }
 
-    override fun showAuthSetting() {
+    private fun showAuthSetting() {
         binding.authGroup.isVisible = true
     }
 
-    override fun sendEmail(emailIntent: Intent) {
+    private fun sendEmail(emailIntent: Intent) {
         try {
             startActivity(Intent.createChooser(emailIntent, getString(R.string.send_email)))
         } catch (e: ActivityNotFoundException) {
