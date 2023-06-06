@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.core.content.ContextCompat
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -50,7 +51,8 @@ object Utils {
         val padding = 5
         val density = context.resources.displayMetrics.density
 
-        val arcStroke = Paint(Paint.FILTER_BITMAP_FLAG or Paint.DITHER_FLAG or Paint.ANTI_ALIAS_FLAG)
+        val arcStroke =
+            Paint(Paint.FILTER_BITMAP_FLAG or Paint.DITHER_FLAG or Paint.ANTI_ALIAS_FLAG)
         arcStroke.strokeWidth = stroke
         arcStroke.style = Paint.Style.STROKE
         arcStroke.strokeCap = Paint.Cap.ROUND
@@ -61,9 +63,11 @@ object Utils {
         text.textAlign = Paint.Align.CENTER
 
         val arc = RectF()
-        arc.set(stroke / 2 + padding, stroke / 2 + padding,
-                width - padding - stroke / 2,
-                height - padding - stroke / 2)
+        arc.set(
+            stroke / 2 + padding, stroke / 2 + padding,
+            width - padding - stroke / 2,
+            height - padding - stroke / 2
+        )
 
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
@@ -72,24 +76,35 @@ object Utils {
         arcStroke.color = Color.BLUE
         canvas.drawArc(arc, 135f, 200f, false, arcStroke)
         text.textSize = 180 / density
-        canvas.drawText(percent.toString() + "/5", (bitmap.width / 2).toFloat(),
-                (bitmap.height - text.ascent()) / 2,
-                text)
+        canvas.drawText(
+            percent.toString() + "/5", (bitmap.width / 2).toFloat(),
+            (bitmap.height - text.ascent()) / 2,
+            text
+        )
         return bitmap
     }
 
     @JvmStatic
     fun getQuoteSpan(context: Context, text: String?, color: Int): SpannableString {
         val string = SpannableString(text)
-        string.setSpan(MyQuoteSpan(ContextCompat.getColor(context, color),
-            5, 20),
-            0, text?.length ?: 0, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        string.setSpan(
+            MyQuoteSpan(
+                ContextCompat.getColor(context, color),
+                5, 20
+            ),
+            0, text?.length ?: 0, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         return string
     }
 
     fun showSuggestions(context: Context, items: List<Any>, view: AutoCompleteTextView) {
         val arrayAdapter = ArrayAdapter<Any>(
-            context, R.layout.simple_dropdown_item_1line, items)
+            context, R.layout.simple_dropdown_item_1line, items
+        )
         view.setAdapter<ArrayAdapter<*>>(arrayAdapter)
+    }
+
+    fun handleError(throwable: Throwable) {
+        Timber.e(throwable)
     }
 }

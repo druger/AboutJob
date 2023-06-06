@@ -41,7 +41,7 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCompaniesBinding.inflate(inflater, container, false)
         setInputMode()
         (activity as MainActivity).showBottomNavigation()

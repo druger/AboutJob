@@ -17,52 +17,85 @@ import android.widget.ScrollView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.databinding.FragmentReviewBinding
-import com.druger.aboutwork.interfaces.view.AddReviewView
 import com.druger.aboutwork.model.City
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.model.Vacancy
-import com.druger.aboutwork.presenters.AddReviewPresenter
+import com.druger.aboutwork.utils.UploadPhotoHelper
 import com.druger.aboutwork.utils.Utils
+import com.druger.aboutwork.viewmodels.AddReviewVieModel
 import com.google.android.material.transition.MaterialArcMotion
 import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, AddReviewView {
+class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener {
 
-    @Inject
-    lateinit var presenter: AddReviewPresenter
+    private val viewModel: AddReviewVieModel by viewModels()
 
     private lateinit var datePicker: DatePickerFragment
 
     private var _binding: FragmentReviewBinding? = null
     private val binding get() = _binding!!
 
-    companion object {
-
-        fun newInstance(companyId: String, companyName: String): AddReviewFragment {
-
-            val args = Bundle()
-            args.putString(COMPANY_ID, companyId)
-            args.putString(COMPANY_NAME, companyName)
-
-            val fragment = AddReviewFragment()
-            fragment.arguments = args
-            return fragment
-        }
-
-        private const val COMPANY_ID = "companyId"
-        private const val COMPANY_NAME = "companyName"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupMotion()
+        observeSuccessState()
+        observeErrorState()
+        observeVacancies()
+        observeCities()
+        observeWorkingDate()
+        observeWorkedDate()
+        observeInterviewDate()
+    }
+
+    private fun observeInterviewDate() {
+        viewModel.interviewDate.observe(this) {
+            showInterviewDate()
+        }
+    }
+
+    private fun observeWorkedDate() {
+        viewModel.workedDate.observe(this) {
+            showWorkedDate()
+            setIsIndicatorRatingBar(false)
+        }
+    }
+
+    private fun observeWorkingDate() {
+        viewModel.workingDate.observe(this) {
+            showWorkingDate()
+            setIsIndicatorRatingBar(false)
+        }
+    }
+
+    private fun observeCities() {
+        viewModel.cities.observe(this) {
+            showCities(it)
+        }
+    }
+
+    private fun observeVacancies() {
+        viewModel.vacancies.observe(this) {
+            showVacancies(it)
+        }
+    }
+
+    private fun observeErrorState() {
+        viewModel.errorState.observe(this) {
+            showErrorAdding()
+        }
+    }
+
+    private fun observeSuccessState() {
+        viewModel.successState.observe(this) {
+            successfulAddition()
+        }
     }
 
     private fun setupMotion() {
@@ -79,7 +112,7 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentReviewBinding.inflate(inflater, container, false)
         getData(savedInstanceState)
         datePicker = DatePickerFragment()
@@ -111,8 +144,8 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(COMPANY_ID, presenter.companyId)
-        outState.putString(COMPANY_NAME, presenter.companyName)
+        outState.putString(COMPANY_ID, viewModel.companyId)
+        outState.putString(COMPANY_NAME, viewModel.companyName)
     }
 
     private fun unbindDrawables(view: View) {
@@ -137,7 +170,7 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
             setupRatingChanges()
             radioGroupRecommendedListener()
             ivAddPhoto.setOnClickListener {
-                presenter.sendAnalytics()
+                viewModel.sendAnalytics()
                 checkPermission()
             }
         }
@@ -146,33 +179,35 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == RC_PICK_IMAGE) {
-            presenter.getUriImages(data)
+            UploadPhotoHelper.getUriImages(data) { uri ->
+                showPhotos(uri)
+            }
         }
     }
 
     private fun radioGroupRecommendedListener() {
         binding.contentDetail.rgRecommended.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
-                R.id.rbRecommended -> presenter.setRecommendedReview()
-                R.id.rbNotRecommended -> presenter.setNotRecommendedReview()
-                -1 -> presenter.clearRecommended()
+                R.id.rbRecommended -> viewModel.setRecommendedReview()
+                R.id.rbNotRecommended -> viewModel.setNotRecommendedReview()
+                -1 -> viewModel.clearRecommended()
             }
         }
     }
 
     private fun setupRatingChanges() {
         with(binding.contentDetail) {
-            rbSalary.setOnRatingBarChangeListener { _, rating, _ -> presenter.setSalary(rating) }
-            rbChief.setOnRatingBarChangeListener { _, rating, _ -> presenter.setChief(rating) }
-            rbWorkplace.setOnRatingBarChangeListener { _, rating, _ -> presenter.setWorkplace(rating) }
-            rbCareer.setOnRatingBarChangeListener { _, rating, _ -> presenter.setCareer(rating) }
+            rbSalary.setOnRatingBarChangeListener { _, rating, _ -> viewModel.setSalary(rating) }
+            rbChief.setOnRatingBarChangeListener { _, rating, _ -> viewModel.setChief(rating) }
+            rbWorkplace.setOnRatingBarChangeListener { _, rating, _ -> viewModel.setWorkplace(rating) }
+            rbCareer.setOnRatingBarChangeListener { _, rating, _ -> viewModel.setCareer(rating) }
             rbCollective.setOnRatingBarChangeListener { _, rating, _ ->
-                presenter.setCollective(
+                viewModel.setCollective(
                     rating
                 )
             }
             rbSocialPackage.setOnRatingBarChangeListener { _, rating, _ ->
-                presenter.setSocialPackage(
+                viewModel.setSocialPackage(
                     rating
                 )
             }
@@ -184,7 +219,7 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                presenter.getVacancies(s.toString())
+                viewModel.getVacancies(s.toString())
             }
 
             override fun afterTextChanged(s: Editable) {}
@@ -196,7 +231,7 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                presenter.getCities(s.toString())
+                viewModel.getCities(s.toString())
             }
 
             override fun afterTextChanged(s: Editable) {}
@@ -204,14 +239,14 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
     }
 
     private fun dismissalDateClick() {
-        presenter.dismissalDateClick()
+        viewModel.dismissalDateClick()
         datePicker.flag = DatePickerFragment.DISMISSAL_DATE
         fragmentManager?.let { datePicker.show(it, DatePickerFragment.TAG) }
         datePicker.setData(binding.contentDetail.etDismissalDate, getReview())
     }
 
     private fun employmentDateClick() {
-        presenter.employmentDateClick()
+        viewModel.employmentDateClick()
         datePicker.flag = DatePickerFragment.EMPLOYMENT_DATE
         fragmentManager?.let { datePicker.show(it, DatePickerFragment.TAG) }
         datePicker.setData(binding.contentDetail.etEmploymentDate, getReview())
@@ -237,8 +272,8 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
 
     private fun getData(savedInstanceState: Bundle?) {
         val bundle = savedInstanceState ?: arguments
-        presenter.companyId = bundle?.getString(COMPANY_ID)
-        presenter.companyName = bundle?.getString(COMPANY_NAME)
+        viewModel.companyId = bundle?.getString(COMPANY_ID)
+        viewModel.companyName = bundle?.getString(COMPANY_NAME)
     }
 
     override fun setToolbar() {
@@ -250,37 +285,37 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
     }
 
     override fun closeClick() {
-        presenter.closeClick()
+        viewModel.closeClick()
         fragmentManager?.popBackStackImmediate()
     }
 
     override fun doneClick() {
         with(binding.contentDetail) {
-            presenter.review.pluses = etPluses.text.toString().trim()
-            presenter.review.minuses = etMinuses.text.toString().trim()
-            presenter.review.position = etPosition.text.toString().trim()
-            presenter.review.city = etCity.text.toString().trim()
+            viewModel.review.pluses = etPluses.text.toString().trim()
+            viewModel.review.minuses = etMinuses.text.toString().trim()
+            viewModel.review.position = etPosition.text.toString().trim()
+            viewModel.review.city = etCity.text.toString().trim()
         }
 
-        presenter.doneClick(uriPhotoAdapter.getItems(), uriPhotoAdapter.wasPhotoRemoved)
+        viewModel.doneClick(uriPhotoAdapter.getItems(), uriPhotoAdapter.wasPhotoRemoved)
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
         when (position) {
-            0 -> presenter.onSelectedWorkingStatus(position)
-            1 -> presenter.onSelectedWorkedStatus(position)
-            2 -> presenter.onSelectedInterviewStatus(position)
+            0 -> viewModel.onSelectedWorkingStatus(position)
+            1 -> viewModel.onSelectedWorkedStatus(position)
+            2 -> viewModel.onSelectedInterviewStatus(position)
             else -> {
-                presenter.onSelectedWorkingStatus(position)
+                viewModel.onSelectedWorkingStatus(position)
             }
         }
     }
 
     override fun onNothingSelected(parent: AdapterView<*>) {
-        setIsIndicator(true)
+        setIsIndicatorRatingBar(true)
     }
 
-    private fun setIsIndicator(indicator: Boolean) {
+    private fun setIsIndicatorRatingBar(indicator: Boolean) {
         with(binding.contentDetail) {
             rbSalary.setIsIndicator(indicator)
             rbChief.setIsIndicator(indicator)
@@ -291,19 +326,19 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
         }
     }
 
-    private fun setupCompanyRating() = presenter.setupReview()
+    private fun setupCompanyRating() = viewModel.setupReview()
 
-    fun getReview(): Review = presenter.review
+    fun getReview(): Review = viewModel.review
 
-    override fun showVacancies(vacancies: List<Vacancy>) {
+    private fun showVacancies(vacancies: List<Vacancy>) {
         Utils.showSuggestions(requireContext(), vacancies, binding.contentDetail.etPosition)
     }
 
-    override fun showCities(cities: List<City>) {
+    private fun showCities(cities: List<City>) {
         Utils.showSuggestions(requireContext(), cities, binding.contentDetail.etCity)
     }
 
-    override fun successfulAddition() {
+    private fun successfulAddition() {
         Toast.makeText(
             activity?.applicationContext, R.string.review_added,
             Toast.LENGTH_SHORT
@@ -311,14 +346,14 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
         fragmentManager?.popBackStackImmediate()
     }
 
-    override fun showErrorAdding() {
+    private fun showErrorAdding() {
         Toast.makeText(
             activity?.applicationContext, R.string.error_review_add,
             Toast.LENGTH_SHORT
         ).show()
     }
 
-    override fun showWorkingDate() {
+    private fun showWorkingDate() {
         with(binding.contentDetail) {
             ltEmploymentDate.visibility = View.VISIBLE
             ltDismissalDate.visibility = View.GONE
@@ -326,9 +361,7 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
         }
     }
 
-    override fun setIsIndicatorRatingBar(indicator: Boolean) = setIsIndicator(indicator)
-
-    override fun showWorkedDate() {
+    private fun showWorkedDate() {
         with(binding.contentDetail) {
             ltEmploymentDate.isVisible = true
             ltDismissalDate.isVisible = true
@@ -336,7 +369,7 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
         }
     }
 
-    override fun showInterviewDate() {
+    private fun showInterviewDate() {
         with(binding.contentDetail) {
             ltEmploymentDate.isVisible = false
             ltDismissalDate.isVisible = false
@@ -344,12 +377,28 @@ class AddReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener, 
         }
     }
 
-    override fun showPhotos(uri: List<Uri?>) {
+    private fun showPhotos(uri: List<Uri?>) {
         with(binding.contentDetail) {
             scrollContent.post { scrollContent.fullScroll(ScrollView.FOCUS_DOWN) }
             rvPhotos.visibility = View.VISIBLE
         }
         uriPhotoAdapter.isFullScreen = isFullScreenShown
         uriPhotoAdapter.addPhotos(uri)
+    }
+
+    companion object {
+        private const val COMPANY_ID = "companyId"
+        private const val COMPANY_NAME = "companyName"
+
+        fun newInstance(companyId: String, companyName: String): AddReviewFragment {
+
+            val args = Bundle()
+            args.putString(COMPANY_ID, companyId)
+            args.putString(COMPANY_NAME, companyName)
+
+            val fragment = AddReviewFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }
