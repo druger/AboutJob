@@ -7,20 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import com.druger.aboutwork.Const.Bundles.NAME
 import com.druger.aboutwork.R
 import com.druger.aboutwork.databinding.FragmentChangeNameBinding
-import com.druger.aboutwork.interfaces.view.ChangeNameView
-import com.druger.aboutwork.presenters.ChangeNamePresenter
 import com.druger.aboutwork.utils.Utils
+import com.druger.aboutwork.viewmodels.ChangeNameViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class ChangeNameFragment : BaseSupportFragment(), ChangeNameView {
+class ChangeNameFragment : BaseSupportFragment() {
 
-    @Inject
-    lateinit var presenter: ChangeNamePresenter
+    private val viewModel: ChangeNameViewModel by viewModels()
 
     private var _binding: FragmentChangeNameBinding? = null
     private val binding get() = _binding!!
@@ -28,6 +26,31 @@ class ChangeNameFragment : BaseSupportFragment(), ChangeNameView {
     private var name: String? = null
 
     private var inputMode: Int = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        observeLoading()
+        observeSuccess()
+        observeError()
+    }
+
+    private fun observeError() {
+        viewModel.errorState.observe(this) {
+            showErrorMessage()
+        }
+    }
+
+    private fun observeSuccess() {
+        viewModel.successState.observe(this) {
+            showSuccessMessage()
+        }
+    }
+
+    private fun observeLoading() {
+        viewModel.progressState.observe(this) {
+            showProgress(it)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +67,7 @@ class ChangeNameFragment : BaseSupportFragment(), ChangeNameView {
         mProgressBar = binding.progressBar
         showName()
         binding.btnChangeName.setOnClickListener {
-            presenter.changeName(
+            viewModel.changeName(
                 binding.etName.text.toString().trim()
             )
         }
@@ -88,12 +111,12 @@ class ChangeNameFragment : BaseSupportFragment(), ChangeNameView {
         _binding = null
     }
 
-    override fun showSuccessMessage() {
+    private fun showSuccessMessage() {
         Toast.makeText(activity, R.string.profile_updated, Toast.LENGTH_SHORT).show()
         fragmentManager?.popBackStackImmediate()
     }
 
-    override fun showErrorMessage() =
+    private fun showErrorMessage() =
         Toast.makeText(activity, R.string.updating_error, Toast.LENGTH_SHORT).show()
 
     override fun showProgress(show: Boolean) {
