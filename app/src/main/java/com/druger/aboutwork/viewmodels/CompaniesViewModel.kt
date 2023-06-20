@@ -1,36 +1,32 @@
-package com.druger.aboutwork.presenters
+package com.druger.aboutwork.viewmodels
 
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.druger.aboutwork.db.FirebaseHelper
-import com.druger.aboutwork.interfaces.view.CompaniesView
 import com.druger.aboutwork.model.Company
 import com.druger.aboutwork.model.Review
-import com.google.firebase.database.*
-import moxy.InjectViewState
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import timber.log.Timber
-import javax.inject.Inject
 
-
-/**
- * Created by druger on 01.05.2017.
- */
-
-@InjectViewState
-class CompaniesPresenter @Inject constructor() : BasePresenter<CompaniesView>() {
-
+class CompaniesViewModel: ViewModel() {
     private lateinit var dbReference: DatabaseReference
     private var reviewEventListener: ValueEventListener? = null
     private var companyEventListener: ValueEventListener? = null
 
     private var reviews = ArrayList<Review>()
 
-    override fun handleError(throwable: Throwable) {
-        super.handleError(throwable)
-        viewState.showProgress(false)
-    }
+    val progress: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    val emptyReviews: MutableLiveData<Unit> = MutableLiveData<Unit>()
+    val updateAdapter: MutableLiveData<Unit> = MutableLiveData<Unit>()
+    val reviewsState: MutableLiveData<List<Review>> = MutableLiveData<List<Review>>()
 
     fun fetchReviews() {
         dbReference = FirebaseDatabase.getInstance().reference
-        viewState.showProgress(true)
+        progress.value = true
         reviews.clear()
         getReviews()
     }
@@ -39,7 +35,7 @@ class CompaniesPresenter @Inject constructor() : BasePresenter<CompaniesView>() 
         val reviewsQuery = FirebaseHelper.getLastReviews(dbReference)
         reviewEventListener = object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {
-                viewState.showProgress(false)
+                progress.value = false
                 Timber.e(databaseError.toException())
             }
 
@@ -52,12 +48,12 @@ class CompaniesPresenter @Inject constructor() : BasePresenter<CompaniesView>() 
                             getCompanies(it)
                         }
                     }
-                    viewState.showProgress(false)
+                    progress.value = false
                     reviews.reverse()
-                    viewState.showReviews(reviews)
+                    reviewsState.value = reviews
                 } else {
-                    viewState.showProgress(false)
-                    viewState.showEmptyReviews()
+                    progress.value = false
+                    emptyReviews.value = Unit
                 }
             }
         }
@@ -72,13 +68,13 @@ class CompaniesPresenter @Inject constructor() : BasePresenter<CompaniesView>() 
                     if (dataSnapshot.exists()) {
                         val company = dataSnapshot.getValue(Company::class.java)
                         review.name = company?.name
-                        viewState.updateAdapter()
+                        updateAdapter.value = Unit
                     }
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
                     Timber.e(databaseError.message)
-                    viewState.showProgress(false)
+                    progress.value = false
                 }
             }
             queryCompanies.addValueEventListener(companyEventListener as ValueEventListener)
@@ -86,8 +82,8 @@ class CompaniesPresenter @Inject constructor() : BasePresenter<CompaniesView>() 
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onCleared() {
+        super.onCleared()
         reviewEventListener?.let { dbReference.removeEventListener(it) }
         companyEventListener?.let { dbReference.removeEventListener(it) }
     }

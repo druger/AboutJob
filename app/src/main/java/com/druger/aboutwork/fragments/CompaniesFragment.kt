@@ -7,23 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.ReviewAdapter
 import com.druger.aboutwork.databinding.FragmentCompaniesBinding
 import com.druger.aboutwork.interfaces.OnItemClickListener
-import com.druger.aboutwork.interfaces.view.CompaniesView
 import com.druger.aboutwork.model.Review
-import com.druger.aboutwork.presenters.CompaniesPresenter
+import com.druger.aboutwork.viewmodels.CompaniesViewModel
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class CompaniesFragment : BaseSupportFragment(), CompaniesView {
+class CompaniesFragment : BaseSupportFragment(){
 
-    @Inject
-    lateinit var companiesPresenter: CompaniesPresenter
+    private val viewModel: CompaniesViewModel by viewModels()
 
     private var _binding: FragmentCompaniesBinding? = null
     private val binding get() = _binding!!
@@ -36,6 +34,26 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         exitTransition = MaterialFadeThrough()
+        observeProgress()
+        observeReviews()
+        observeEmptyReviews()
+        observeAdapter()
+    }
+
+    private fun observeAdapter() {
+        viewModel.updateAdapter.observe(this) { updateAdapter() }
+    }
+
+    private fun observeProgress() {
+        viewModel.progress.observe(this) { showProgress(it) }
+    }
+
+    private fun observeEmptyReviews() {
+        viewModel.emptyReviews.observe(this) { showEmptyReviews() }
+    }
+
+    private fun observeReviews() {
+        viewModel.reviewsState.observe(this) { showReviews(it) }
     }
 
     override fun onCreateView(
@@ -58,7 +76,7 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
     }
 
     private fun fetchReviews() {
-        if (isInternetAvailable(requireContext())) companiesPresenter.fetchReviews()
+        if (isInternetAvailable(requireContext())) viewModel.fetchReviews()
         else showErrorScreen(true)
     }
 
@@ -136,12 +154,12 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
         _binding = null
     }
 
-    override fun showReviews(reviews: List<Review>) {
+    private fun showReviews(reviews: List<Review>) {
         binding.groupReviews.isVisible = true
         reviewAdapter.addReviews(reviews)
     }
 
-    override fun showEmptyReviews() {
+    private fun showEmptyReviews() {
         binding.apply {
             groupReviews.isVisible = false
             ltNoReviews.root.isVisible = true
@@ -149,7 +167,7 @@ class CompaniesFragment : BaseSupportFragment(), CompaniesView {
         }
     }
 
-    override fun updateAdapter() {
+    private fun updateAdapter() {
         reviewAdapter.notifyDataSetChanged()
     }
 
