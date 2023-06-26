@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -20,20 +21,16 @@ import com.druger.aboutwork.databinding.FragmentCompanyDetailBinding
 import com.druger.aboutwork.enums.FilterType
 import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.interfaces.OnItemClickListener
-import com.druger.aboutwork.interfaces.view.CompanyDetailView
 import com.druger.aboutwork.model.CompanyDetail
 import com.druger.aboutwork.model.Review
-import com.druger.aboutwork.presenters.CompanyDetailPresenter
+import com.druger.aboutwork.viewmodels.CompanyDetailViewModel
 import com.thefinestartist.finestwebview.FinestWebView
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
-    FilterDialogFragment.OnFilterListener {
+class CompanyDetailFragment : BaseSupportFragment(), FilterDialogFragment.OnFilterListener {
 
-    @Inject
-    lateinit var presenter: CompanyDetailPresenter
+    private val viewModel: CompanyDetailViewModel by viewModels()
 
     private var descriptionShow: Boolean = false
 
@@ -45,12 +42,86 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
     private var _binding: FragmentCompanyDetailBinding? = null
     private val binding get() = _binding!!
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        observeProgress()
+        observeError()
+        observeAdapter()
+        observeReview()
+        observeEmptyReview()
+        observeEmptyFilteredReview()
+        observeFilterIcon()
+        observeAuth()
+        observeAddReview()
+        observeCompanyDetail()
+        observeFilter()
+    }
+
+    private fun observeFilter() {
+        viewModel.filterState.observe(this) {
+            showFilterDialog(it.position, it.city)
+        }
+    }
+
+    private fun observeCompanyDetail() {
+        viewModel.companyDetailState.observe(this) {
+            showCompanyDetail(it)
+        }
+    }
+
+    private fun observeAddReview() {
+        viewModel.addReviewState.observe(this) {
+            addReview()
+        }
+    }
+
+    private fun observeAuth() {
+        viewModel.authState.observe(this) {
+            showAuth()
+        }
+    }
+
+    private fun observeFilterIcon() {
+        viewModel.filterIconState.observe(this) {
+            setFilterIcon(it)
+        }
+    }
+
+    private fun observeEmptyFilteredReview() {
+        viewModel.emptyFilteredReviewsState.observe(this) {
+            showEmptyReviews(true)
+        }
+    }
+
+    private fun observeEmptyReview() {
+        viewModel.emptyReviewsState.observe(this) {
+            showEmptyReviews()
+        }
+    }
+
+    private fun observeReview() {
+        viewModel.reviewState.observe(this) {
+            showReviews(it)
+        }
+    }
+
+    private fun observeAdapter() {
+        viewModel.adapterState.observe(this) { updateAdapter() }
+    }
+
+    private fun observeError() {
+        viewModel.errorState.observe(this) { showErrorScreen(it) }
+    }
+
+    private fun observeProgress() {
+        viewModel.progressState.observe(this) { showProgress(it) }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCompanyDetailBinding.inflate(inflater, container, false)
-
         getData(savedInstanceState)
         (activity as MainActivity).hideBottomNavigation()
         return binding.root
@@ -71,7 +142,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
     private fun getData(savedInstanceState: Bundle?) {
         val bundle = savedInstanceState ?: arguments
         companyId = bundle?.getString(COMPANY_ID)
-        companyId?.let { presenter.getCompanyDetail(it) }
+        companyId?.let { viewModel.getCompanyDetail(it) }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -80,11 +151,11 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
     }
 
     private fun setupUX() {
-        binding.fabAddReview.setOnClickListener { presenter.checkAuthUser() }
-        binding.ltError.btnRetry.setOnClickListener { companyId?.let { presenter.getCompanyDetail(it) } }
+        binding.fabAddReview.setOnClickListener { viewModel.checkAuthUser() }
+        binding.ltError.btnRetry.setOnClickListener { companyId?.let { viewModel.getCompanyDetail(it) } }
         binding.contentDetail.apply {
             tvShowDescription.setOnClickListener { showDescription() }
-            ivFilter.setOnClickListener { presenter.filterClick() }
+            ivFilter.setOnClickListener { viewModel.filterClick() }
         }
     }
 
@@ -145,7 +216,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
             .show(site)
     }
 
-    override fun addReview() {
+    private fun addReview() {
         companyDetail?.id?.let { id ->
             companyDetail?.name?.let { name ->
                 val review = AddReviewFragment.newInstance(id, name)
@@ -162,21 +233,21 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
 
     override fun onStop() {
         super.onStop()
-        presenter.removeListeners()
+        viewModel.removeListeners()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         reviewAdapter.setOnClickListener(null)
-        presenter.removeAuthListener()
+        viewModel.removeAuthListener()
         _binding = null
     }
 
-    override fun updateAdapter() {
+    private fun updateAdapter() {
         reviewAdapter.notifyDataSetChanged()
     }
 
-    override fun showReviews(reviews: List<Review>, isFilter: Boolean) {
+    private fun showReviews(reviews: List<Review>) {
         reviewAdapter.addReviews(reviews)
         binding.contentDetail.apply {
             groupReviews.isVisible = true
@@ -188,7 +259,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
         }
     }
 
-    override fun showEmptyReviews(isFilter: Boolean) {
+    private fun showEmptyReviews(isFilter: Boolean = false) {
         binding.contentDetail.apply {
             if (isFilter) {
                 filterEmpty.root.isVisible = true
@@ -200,9 +271,9 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
         }
     }
 
-    override fun showCompanyDetail(company: CompanyDetail) {
+    private fun showCompanyDetail(company: CompanyDetail) {
         companyDetail = company
-        company.id?.let { presenter.getReviews(it) }
+        company.id?.let { viewModel.getReviews(it) }
         setSite()
         binding.contentDetail.tvCity.text = companyDetail?.area?.name
         setCompanyName(companyDetail?.name)
@@ -213,7 +284,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
     private fun setDescription() {
         binding.contentDetail.apply {
             val description = companyDetail?.description
-            if (description != null && description.isNotEmpty()) {
+            if (!description.isNullOrEmpty()) {
                 tvDescription.text = description
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
                     tvDescription.text = Html.fromHtml(description, Html.FROM_HTML_MODE_LEGACY)
@@ -276,7 +347,7 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
         }
     }
 
-    override fun showAuth() {
+    private fun showAuth() {
         replaceFragment(
             AuthFragment.newInstance(
                 getString(R.string.company_login),
@@ -287,16 +358,16 @@ class CompanyDetailFragment : BaseSupportFragment(), CompanyDetailView,
         )
     }
 
-    override fun showFilterDialog(position: String, city: String) {
+    private fun showFilterDialog(position: String, city: String) {
         val filter = FilterDialogFragment.newInstance(position, city)
         filter.show(childFragmentManager, null)
     }
 
     override fun onFilter(filterType: FilterType, position: String, city: String) {
-        presenter.filterReviews(filterType, position, city)
+        viewModel.filterReviews(filterType, position, city)
     }
 
-    override fun setFilterIcon(icFilter: Int) {
+    private fun setFilterIcon(icFilter: Int) {
         binding.contentDetail.ivFilter.setImageResource(icFilter)
     }
 
