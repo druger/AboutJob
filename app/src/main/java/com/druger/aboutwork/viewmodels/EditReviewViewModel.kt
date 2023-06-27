@@ -1,41 +1,40 @@
-package com.druger.aboutwork.presenters
+package com.druger.aboutwork.viewmodels
 
 import android.text.TextUtils
-import com.druger.aboutwork.Const.ReviewStatus.INTERVIEW_STATUS
-import com.druger.aboutwork.Const.ReviewStatus.NOT_SELECTED_STATUS
-import com.druger.aboutwork.Const.ReviewStatus.WORKED_STATUS
-import com.druger.aboutwork.Const.ReviewStatus.WORKING_STATUS
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.druger.aboutwork.Const
 import com.druger.aboutwork.db.FirebaseHelper
-import com.druger.aboutwork.interfaces.view.EditReviewView
+import com.druger.aboutwork.model.City
 import com.druger.aboutwork.model.MarkCompany
 import com.druger.aboutwork.model.Review
+import com.druger.aboutwork.model.Vacancy
 import com.druger.aboutwork.rest.RestApi
 import com.druger.aboutwork.rest.models.CityResponse
 import com.druger.aboutwork.rest.models.VacancyResponse
 import com.druger.aboutwork.utils.Analytics
-import com.druger.aboutwork.utils.Analytics.Companion.ADD_PHOTO_CLICK
-import com.druger.aboutwork.utils.Analytics.Companion.EDIT_REVIEW
-import com.druger.aboutwork.utils.Analytics.Companion.SCREEN
+import com.druger.aboutwork.utils.UploadPhotoHelper.uploadPhotos
+import com.druger.aboutwork.utils.Utils
 import com.druger.aboutwork.utils.rx.RxUtils
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import moxy.InjectViewState
-
-
+import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 import javax.inject.Inject
 
-@InjectViewState
-class EditReviewPresenter @Inject constructor(
+@HiltViewModel
+class EditReviewViewModel @Inject constructor(
     private val analytics: Analytics,
     private val restApi: RestApi
-) : ReviewPresenter<EditReviewView>() {
+) : ViewModel() {
 
-    private var status: Int = NOT_SELECTED_STATUS
+    private var status: Int = Const.ReviewStatus.NOT_SELECTED_STATUS
 
     private var review: Review? = null
     private var mark: MarkCompany? = null
@@ -43,11 +42,26 @@ class EditReviewPresenter @Inject constructor(
     private val dbReference = FirebaseDatabase.getInstance().reference
     private lateinit var reviewListener: ValueEventListener
 
+    private val compositeDisposable = CompositeDisposable()
+
+    val companyRatingState: MutableLiveData<MarkCompany> = MutableLiveData<MarkCompany>()
+    val successEditing: MutableLiveData<Unit> = MutableLiveData<Unit>()
+    val errorEditing: MutableLiveData<Unit> = MutableLiveData<Unit>()
+    val vacanciesState: MutableLiveData<List<Vacancy>> = MutableLiveData<List<Vacancy>>()
+    val citiesState: MutableLiveData<List<City>> = MutableLiveData<List<City>>()
+    val workingDate: MutableLiveData<Unit> = MutableLiveData<Unit>()
+    val workedDate: MutableLiveData<Unit> = MutableLiveData<Unit>()
+    val interviewDate: MutableLiveData<Unit> = MutableLiveData<Unit>()
+    val reviewState: MutableLiveData<Review> = MutableLiveData<Review>()
+    val photosState: MutableLiveData<List<StorageReference>> =
+        MutableLiveData<List<StorageReference>>()
+    val indicatorRatingBar: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+
     fun setupRating(review: Review) {
         this.review = review
         mark = review.markCompany
         this.review?.markCompany = mark
-        mark?.let { viewState.setupCompanyRating(it) }
+        mark?.let { companyRatingState.value = it }
     }
 
     fun doneClick() {
@@ -60,16 +74,16 @@ class EditReviewPresenter @Inject constructor(
                 it.status = status
                 FirebaseHelper.updateReview(it)
                 uploadPhotos(it.firebaseKey)
-                viewState.successfulEditing()
+                successEditing.value = Unit
             } else {
-                viewState.showErrorEditing()
+                errorEditing.value = Unit
             }
         }
     }
 
     private fun isCorrectStatus(): Boolean =
-        (status == WORKING_STATUS || status == WORKED_STATUS) &&
-            mark?.averageMark != 0f || status == INTERVIEW_STATUS && mark?.averageMark == 0f
+        (status == Const.ReviewStatus.WORKING_STATUS || status == Const.ReviewStatus.WORKED_STATUS) &&
+            mark?.averageMark != 0f || status == Const.ReviewStatus.INTERVIEW_STATUS && mark?.averageMark == 0f
 
 
     private fun isCorrectReview(review: Review): Boolean {
@@ -104,41 +118,39 @@ class EditReviewPresenter @Inject constructor(
     fun getCities(city: String) {
         val request = restApi.cities.getCities(city)
             .compose(RxUtils.observableTransformer())
-            .subscribe({ this.successGetCities(it) }, { this.handleError(it) })
-        unSubscribeOnDestroy(request)
+            .subscribe({ this.successGetCities(it) }, { Utils.handleError(it) })
+        compositeDisposable.add(request)
     }
 
     fun getVacancies(vacancy: String) {
         val request = restApi.vacancies.getVacancies(vacancy)
             .compose(RxUtils.observableTransformer())
-            .subscribe({ this.successGetVacancies(it) }, { this.handleError(it) })
-        unSubscribeOnDestroy(request)
+            .subscribe({ this.successGetVacancies(it) }, { Utils.handleError(it) })
+        compositeDisposable.add(request)
     }
 
     private fun successGetVacancies(vacancyResponse: VacancyResponse) {
-        vacancyResponse.items?.let { viewState.showVacancies(vacancyResponse.items) }
+        vacancyResponse.items?.let { vacanciesState.value = it }
     }
 
     private fun successGetCities(cityResponse: CityResponse) {
-        cityResponse.items?.let { viewState.showCities(cityResponse.items) }
+        cityResponse.items?.let { citiesState.value = it }
     }
 
     fun onSelectedWorkingStatus(position: Int) {
-        viewState.showWorkingDate()
-
+        workingDate.value = Unit
         status = position
-        viewState.setIsIndicatorRatingBar(false)
+        indicatorRatingBar.value = false
     }
 
     fun onSelectedWorkedStatus(position: Int) {
-        viewState.showWorkedDate()
-
+        workedDate.value = Unit
         status = position
-        viewState.setIsIndicatorRatingBar(false)
+        indicatorRatingBar.value = false
     }
 
     fun onSelectedInterviewStatus(position: Int) {
-        viewState.showInterviewDate()
+        interviewDate.value = Unit
         status = position
     }
 
@@ -149,7 +161,7 @@ class EditReviewPresenter @Inject constructor(
                 review = dataSnapshot.getValue(Review::class.java)
                 review?.let {
                     it.firebaseKey = dataSnapshot.key
-                    viewState.setReview(it)
+                    reviewState.value = it
                 }
             }
 
@@ -177,12 +189,17 @@ class EditReviewPresenter @Inject constructor(
         val path = FirebaseHelper.REVIEW_PHOTOS + reviewId
         storageRef.child(path).listAll()
             .addOnSuccessListener {
-                if (it.items.isNotEmpty()) viewState.showDownloadedPhotos(it.items)
+                if (it.items.isNotEmpty()) photosState.value = it.items
             }
             .addOnFailureListener { Timber.e(it) }
     }
 
     fun sendAnalytics() {
-        analytics.logEvent(ADD_PHOTO_CLICK, SCREEN, EDIT_REVIEW)
+        analytics.logEvent(Analytics.ADD_PHOTO_CLICK, Analytics.SCREEN, Analytics.EDIT_REVIEW)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.clear()
     }
 }

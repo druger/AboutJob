@@ -14,28 +14,27 @@ import android.widget.ArrayAdapter
 import android.widget.ScrollView
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.databinding.FragmentReviewBinding
-import com.druger.aboutwork.interfaces.view.EditReviewView
 import com.druger.aboutwork.model.City
 import com.druger.aboutwork.model.MarkCompany
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.model.Vacancy
-import com.druger.aboutwork.presenters.EditReviewPresenter
+import com.druger.aboutwork.utils.UploadPhotoHelper
 import com.druger.aboutwork.utils.Utils
+import com.druger.aboutwork.viewmodels.EditReviewViewModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemSelectedListener {
+class EditReviewFragment : ReviewFragment(), AdapterView.OnItemSelectedListener {
 
-    @Inject
-    lateinit var presenter: EditReviewPresenter
+    private val viewModel: EditReviewViewModel by viewModels()
 
     private var _binding: FragmentReviewBinding? = null
     private val binding get() = _binding!!
@@ -46,17 +45,23 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
     private lateinit var reviewKey: String
     private lateinit var datePicker: DatePickerFragment
 
-    companion object {
-        private const val REVIEW_KEY = "review_key"
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        observeStates()
+    }
 
-        fun newInstance(reviewKey: String): EditReviewFragment {
-            val args = Bundle()
-
-            val fragment = EditReviewFragment()
-            args.putString(REVIEW_KEY, reviewKey)
-            fragment.arguments = args
-            return fragment
-        }
+    private fun observeStates() {
+        viewModel.companyRatingState.observe(this) { setupCompanyRating(it) }
+        viewModel.successEditing.observe(this) { successfulEditing() }
+        viewModel.errorEditing.observe(this) { showErrorEditing() }
+        viewModel.vacanciesState.observe(this) { showVacancies(it) }
+        viewModel.citiesState.observe(this) { showCities(it) }
+        viewModel.workingDate.observe(this) { showWorkingDate() }
+        viewModel.workedDate.observe(this) { showWorkedDate() }
+        viewModel.interviewDate.observe(this) { showInterviewDate() }
+        viewModel.reviewState.observe(this) { setReview(it) }
+        viewModel.photosState.observe(this) { showDownloadedPhotos(it) }
+        viewModel.indicatorRatingBar.observe(this) { setIsIndicator(it) }
     }
 
     override fun onCreateView(
@@ -82,7 +87,9 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == RC_PICK_IMAGE) {
-            presenter.getUriImages(data)
+            UploadPhotoHelper.getUriImages(data) { uri ->
+                showPhotos(uri)
+            }
         }
     }
 
@@ -103,7 +110,7 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
             spinnerStatus.onItemSelectedListener = this@EditReviewFragment
             setupRatingChanges()
             ivAddPhoto.setOnClickListener {
-                presenter.sendAnalytics()
+                viewModel.sendAnalytics()
                 checkPermission()
             }
         }
@@ -111,17 +118,17 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
 
     private fun setupRatingChanges() {
         with(binding.contentDetail) {
-            rbSalary.setOnRatingBarChangeListener { _, rating, _ -> presenter.setSalary(rating) }
-            rbChief.setOnRatingBarChangeListener { _, rating, _ -> presenter.setChief(rating) }
-            rbWorkplace.setOnRatingBarChangeListener { _, rating, _ -> presenter.setWorkplace(rating) }
-            rbCareer.setOnRatingBarChangeListener { _, rating, _ -> presenter.setCareer(rating) }
+            rbSalary.setOnRatingBarChangeListener { _, rating, _ -> viewModel.setSalary(rating) }
+            rbChief.setOnRatingBarChangeListener { _, rating, _ -> viewModel.setChief(rating) }
+            rbWorkplace.setOnRatingBarChangeListener { _, rating, _ -> viewModel.setWorkplace(rating) }
+            rbCareer.setOnRatingBarChangeListener { _, rating, _ -> viewModel.setCareer(rating) }
             rbCollective.setOnRatingBarChangeListener { _, rating, _ ->
-                presenter.setCollective(
+                viewModel.setCollective(
                     rating
                 )
             }
             rbSocialPackage.setOnRatingBarChangeListener { _, rating, _ ->
-                presenter.setSocialPackage(
+                viewModel.setSocialPackage(
                     rating
                 )
             }
@@ -133,7 +140,7 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                presenter.getVacancies(s.toString())
+                viewModel.getVacancies(s.toString())
             }
 
             override fun afterTextChanged(s: Editable) {}
@@ -145,7 +152,7 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                presenter.getCities(s.toString())
+                viewModel.getCities(s.toString())
             }
 
             override fun afterTextChanged(s: Editable) {}
@@ -206,16 +213,16 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
     }
 
     private fun getReview() {
-        presenter.getReview(reviewKey)
+        viewModel.getReview(reviewKey)
     }
 
-    override fun setReview(review: Review) {
+    private fun setReview(review: Review) {
         this.review = review
         setUI()
         setupWorkStatus()
-        presenter.setupRating(review)
+        viewModel.setupRating(review)
         setupRecommendation(review)
-        review.firebaseKey?.let { presenter.getPhotos(it) }
+        review.firebaseKey?.let { viewModel.getPhotos(it) }
     }
 
     private fun setupRecommendation(review: Review) {
@@ -226,9 +233,9 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
             }
             rgRecommended.setOnCheckedChangeListener { _, checkedId ->
                 when (checkedId) {
-                    R.id.rbRecommended -> presenter.setRecommendedReview()
-                    R.id.rbNotRecommended -> presenter.setNotRecommendedReview()
-                    -1 -> presenter.clearRecommended()
+                    R.id.rbRecommended -> viewModel.setRecommendedReview()
+                    R.id.rbNotRecommended -> viewModel.setNotRecommendedReview()
+                    -1 -> viewModel.clearRecommended()
                 }
             }
         }
@@ -253,7 +260,7 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
             review.position = etPosition.text.toString().trim()
             review.city = etCity.text.toString().trim()
 
-            presenter.doneClick()
+            viewModel.doneClick()
         }
     }
 
@@ -265,7 +272,7 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
             else -> null
         }
 
-    override fun setupCompanyRating(mark: MarkCompany) {
+    private fun setupCompanyRating(mark: MarkCompany) {
         with(binding.contentDetail) {
             rbSalary.rating = mark.salary
             rbChief.rating = mark.chief
@@ -315,23 +322,23 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (position) {
-            0 -> presenter.onSelectedWorkingStatus(position)
-            1 -> presenter.onSelectedWorkedStatus(position)
-            2 -> presenter.onSelectedInterviewStatus(position)
+            0 -> viewModel.onSelectedWorkingStatus(position)
+            1 -> viewModel.onSelectedWorkedStatus(position)
+            2 -> viewModel.onSelectedInterviewStatus(position)
             else -> {
             }
         }
     }
 
-    override fun showVacancies(vacancies: List<Vacancy>) {
+    private fun showVacancies(vacancies: List<Vacancy>) {
         Utils.showSuggestions(requireContext(), vacancies, binding.contentDetail.etPosition)
     }
 
-    override fun showCities(cities: List<City>) {
+    private fun showCities(cities: List<City>) {
         Utils.showSuggestions(requireContext(), cities, binding.contentDetail.etCity)
     }
 
-    override fun showWorkingDate() {
+    private fun showWorkingDate() {
         with(binding.contentDetail) {
             ltEmploymentDate.isVisible = true
             ltDismissalDate.isVisible = false
@@ -339,9 +346,7 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
         }
     }
 
-    override fun setIsIndicatorRatingBar(indicator: Boolean) = setIsIndicator(indicator)
-
-    override fun showWorkedDate() {
+    private fun showWorkedDate() {
         with(binding.contentDetail) {
             ltEmploymentDate.isVisible = true
             ltDismissalDate.isVisible = true
@@ -349,7 +354,7 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
         }
     }
 
-    override fun showInterviewDate() {
+    private fun showInterviewDate() {
         with(binding.contentDetail) {
             ltEmploymentDate.isVisible = false
             ltDismissalDate.isVisible = false
@@ -357,7 +362,7 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
         }
     }
 
-    override fun clearRatingBar() {
+    private fun clearRatingBar() {
         with(binding.contentDetail) {
             rbSalary.rating = 0f
             rbChief.rating = 0f
@@ -368,7 +373,7 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
         }
     }
 
-    override fun successfulEditing() {
+    private fun successfulEditing() {
         Toast.makeText(
             activity?.applicationContext, R.string.review_edited,
             Toast.LENGTH_SHORT
@@ -376,14 +381,14 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
         fragmentManager?.popBackStackImmediate()
     }
 
-    override fun showErrorEditing() {
+    private fun showErrorEditing() {
         Toast.makeText(
             activity?.applicationContext, R.string.error_review_edit,
             Toast.LENGTH_SHORT
         ).show()
     }
 
-    override fun showPhotos(uri: List<Uri?>) {
+    private fun showPhotos(uri: List<Uri?>) {
         with(binding.contentDetail) {
             scrollContent.post { scrollContent.fullScroll(ScrollView.FOCUS_DOWN) }
             rvPhotos.isVisible = true
@@ -391,8 +396,21 @@ class EditReviewFragment : ReviewFragment(), EditReviewView, AdapterView.OnItemS
         }
     }
 
-    override fun showDownloadedPhotos(photos: List<StorageReference>) {
+    private fun showDownloadedPhotos(photos: List<StorageReference>) {
         binding.contentDetail.rvPhotos.isVisible = true
         storageRefPhotoAdapter.addPhotos(photos)
+    }
+
+    companion object {
+        private const val REVIEW_KEY = "review_key"
+
+        fun newInstance(reviewKey: String): EditReviewFragment {
+            val args = Bundle()
+
+            val fragment = EditReviewFragment()
+            args.putString(REVIEW_KEY, reviewKey)
+            fragment.arguments = args
+            return fragment
+        }
     }
 }
