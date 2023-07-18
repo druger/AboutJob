@@ -9,26 +9,24 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
 import com.druger.aboutwork.R
 import com.druger.aboutwork.databinding.FragmentFilterReviewBinding
 import com.druger.aboutwork.enums.FilterType
-import com.druger.aboutwork.interfaces.view.FilterView
 import com.druger.aboutwork.model.City
 import com.druger.aboutwork.model.Vacancy
-import com.druger.aboutwork.presenters.FilterPresenter
 import com.druger.aboutwork.utils.Utils
+import com.druger.aboutwork.viewmodels.FilterViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import moxy.MvpBottomSheetDialogFragment
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView,
+class FilterDialogFragment : MvpBottomSheetDialogFragment(),
     AdapterView.OnItemSelectedListener {
 
-    @Inject
-    lateinit var presenter: FilterPresenter
+    private val viewModel: FilterViewModel by viewModels()
 
     private var _binding: FragmentFilterReviewBinding? = null
     private val binding get() = _binding!!
@@ -39,6 +37,34 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView,
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogStyle)
         filterListener = parentFragment as? OnFilterListener
+        observeCities()
+        observePositions()
+        observeFilter()
+        observeClearClick()
+    }
+
+    private fun observeClearClick() {
+        viewModel.clearState.observe(this) {
+            clearClick()
+        }
+    }
+
+    private fun observeFilter() {
+        viewModel.filterState.observe(this) {
+            applyFilter(it)
+        }
+    }
+
+    private fun observePositions() {
+        viewModel.positionsState.observe(this) {
+            showPositions(it)
+        }
+    }
+
+    private fun observeCities() {
+        viewModel.citiesState.observe(this) {
+            showCities(it)
+        }
     }
 
     override fun onCreateView(
@@ -61,9 +87,9 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView,
             btnApply.setOnClickListener {
                 val position = etPosition.text.toString().trim()
                 val city = etCity.text.toString().trim()
-                presenter.applyFilter(position, city)
+                viewModel.applyFilter(position, city)
             }
-            tvClear.setOnClickListener { presenter.clearFilter() }
+            tvClear.setOnClickListener { viewModel.clearFilter() }
             setupFilters()
         }
     }
@@ -94,7 +120,7 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView,
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                presenter.getPositions(s.toString())
+                viewModel.getPositions(s.toString())
             }
 
             override fun afterTextChanged(s: Editable) {}
@@ -106,7 +132,7 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView,
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                presenter.getCities(s.toString())
+                viewModel.getCities(s.toString())
             }
 
             override fun afterTextChanged(s: Editable) {}
@@ -134,31 +160,31 @@ class FilterDialogFragment : MvpBottomSheetDialogFragment(), FilterView,
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (position) {
-            0 -> presenter.setFilterType(FilterType.RATING)
-            1 -> presenter.setFilterType(FilterType.SALARY)
-            2 -> presenter.setFilterType(FilterType.CHIEF)
-            3 -> presenter.setFilterType(FilterType.WORKPLACE)
-            4 -> presenter.setFilterType(FilterType.CAREER)
-            5 -> presenter.setFilterType(FilterType.COLLECTIVE)
-            6 -> presenter.setFilterType(FilterType.BENEFITS)
-            7 -> presenter.setFilterType(FilterType.POPULARITY)
+            0 -> viewModel.setFilterType(FilterType.RATING)
+            1 -> viewModel.setFilterType(FilterType.SALARY)
+            2 -> viewModel.setFilterType(FilterType.CHIEF)
+            3 -> viewModel.setFilterType(FilterType.WORKPLACE)
+            4 -> viewModel.setFilterType(FilterType.CAREER)
+            5 -> viewModel.setFilterType(FilterType.COLLECTIVE)
+            6 -> viewModel.setFilterType(FilterType.BENEFITS)
+            7 -> viewModel.setFilterType(FilterType.POPULARITY)
         }
     }
 
-    override fun showPositions(positions: List<Vacancy>) {
+    private fun showPositions(positions: List<Vacancy>) {
         Utils.showSuggestions(requireContext(), positions, binding.etPosition)
     }
 
-    override fun showCities(cities: List<City>) {
+    private fun showCities(cities: List<City>) {
         Utils.showSuggestions(requireContext(), cities, binding.etCity)
     }
 
-    override fun applyFilter(filterType: FilterType, position: String, city: String) {
+    private fun applyFilter(filter: FilterViewModel.Filter) {
         dismiss()
-        filterListener?.onFilter(filterType, position, city)
+        filterListener?.onFilter(filter.filterType, filter.position, filter.city)
     }
 
-    override fun clearClick() {
+    private fun clearClick() {
         binding.etPosition.setText("")
         binding.etCity.setText("")
     }
