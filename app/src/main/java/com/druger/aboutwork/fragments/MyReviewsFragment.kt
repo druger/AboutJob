@@ -2,10 +2,15 @@ package com.druger.aboutwork.fragments
 
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.view.ActionMode
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -17,23 +22,20 @@ import com.druger.aboutwork.databinding.FragmentMyReviewsBinding
 import com.druger.aboutwork.db.FirebaseHelper
 import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.interfaces.OnItemClickListener
-import com.druger.aboutwork.interfaces.view.MyReviewsView
 import com.druger.aboutwork.model.Review
-import com.druger.aboutwork.presenters.MyReviewsPresenter
 import com.druger.aboutwork.utils.Analytics
 import com.druger.aboutwork.utils.recycler.RecyclerItemTouchHelper
+import com.druger.aboutwork.viewmodels.MyReviewsViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class MyReviewsFragment : BaseSupportFragment(), MyReviewsView,
+class MyReviewsFragment : BaseSupportFragment(),
     RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
-    @Inject
-    lateinit var myReviewsPresenter: MyReviewsPresenter
+    private val viewModel: MyReviewsViewModel by viewModels()
 
     private var _binding: FragmentMyReviewsBinding? = null
     private val binding get() = _binding!!
@@ -52,6 +54,10 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         exitTransition = MaterialFadeThrough()
+        observeProgress()
+        observeReview()
+        observeAdapter()
+        observeEmptyReviews()
     }
 
     override fun onCreateView(
@@ -83,13 +89,37 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView,
         super.onDestroyView()
     }
 
+    private fun observeProgress() {
+        viewModel.progressState.observe(this) {
+            showProgress(it)
+        }
+    }
+
+    private fun observeReview() {
+        viewModel.reviewState.observe(this) {
+            showReviews(it)
+        }
+    }
+
+    private fun observeAdapter() {
+        viewModel.adapterState.observe(this) {
+            updateAdapter()
+        }
+    }
+
+    private fun observeEmptyReviews() {
+        viewModel.emptyReviewsState.observe(this) {
+            showEmptyReviews()
+        }
+    }
+
     private fun goToSearch() {
         (activity as MainActivity).setBottomItemId(R.id.action_search)
     }
 
     private fun fetchReviews() {
         if (isInternetAvailable(requireContext())) {
-            userId?.let { myReviewsPresenter.fetchReviews(it) } ?: showAuthAccess()
+            userId?.let { viewModel.fetchReviews(it) } ?: showAuthAccess()
         } else showErrorScreen(true)
     }
 
@@ -130,7 +160,7 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView,
                     simpleCallback.itemSwipe = false
                 }
                 toggleSelection(position)
-                myReviewsPresenter.logEvent(Analytics.LONG_CLICK_MY_REVIEW)
+                viewModel.logEvent(Analytics.LONG_CLICK_MY_REVIEW)
                 return true
             }
         })
@@ -181,7 +211,7 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView,
         }
     }
 
-    override fun showReviews(reviews: List<Review>) {
+    private fun showReviews(reviews: List<Review>) {
         with(binding) {
             groupReviews.isVisible = true
             ltNoReviews.root.isVisible = false
@@ -191,7 +221,7 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView,
         reviewAdapter.addReviews(reviews)
     }
 
-    override fun showEmptyReviews() {
+    private fun showEmptyReviews() {
         with(binding) {
             groupReviews.isVisible = false
             ltNoReviews.root.isVisible = true
@@ -200,7 +230,7 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView,
         }
     }
 
-    override fun updateAdapter() {
+    private fun updateAdapter() {
         reviewAdapter.notifyDataSetChanged()
     }
 
@@ -219,7 +249,7 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView,
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         if (viewHolder is ReviewAdapter.ReviewVH) {
             val position = viewHolder.getAdapterPosition()
-            val review = myReviewsPresenter.getReview(position)
+            val review = viewModel.getReview(position)
 
             activity?.let {
                 val snackbar = Snackbar
@@ -230,14 +260,14 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView,
                     )
                     .setAction(R.string.undo) {
                         reviewAdapter.addReview(review, position)
-                        myReviewsPresenter.addReview(position, review)
+                        viewModel.addReview(position, review)
                         binding.rvReviews.scrollToPosition(position)
                     }
                 showSnackbar(snackbar)
             }
             reviewAdapter.removeReview(position)
-            myReviewsPresenter.removeReview(position)
-            myReviewsPresenter.logEvent(Analytics.SWIPE_MY_REVIEW)
+            viewModel.removeReview(position)
+            viewModel.logEvent(Analytics.SWIPE_MY_REVIEW)
         }
     }
 
@@ -289,10 +319,10 @@ class MyReviewsFragment : BaseSupportFragment(), MyReviewsView,
                         Snackbar.LENGTH_LONG
                     )
                     .setAction(R.string.undo) {
-                        myReviewsPresenter.addDeletedReviews(deletedReviews)
+                        viewModel.addDeletedReviews(deletedReviews)
                         reviewAdapter.notifyDataSetChanged()
                         for (review in deletedReviews) {
-                            myReviewsPresenter.addToFirebase(review)
+                            viewModel.addToFirebase(review)
                         }
                     }
             }
