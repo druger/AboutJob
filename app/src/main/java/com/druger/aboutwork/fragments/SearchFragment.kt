@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.druger.aboutwork.Const.Bundles.DEBOUNCE_SEARCH
 import com.druger.aboutwork.R
@@ -15,22 +16,19 @@ import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.CompanyAdapter
 import com.druger.aboutwork.databinding.FragmentSearchBinding
 import com.druger.aboutwork.interfaces.OnItemClickListener
-import com.druger.aboutwork.interfaces.view.SearchView
 import com.druger.aboutwork.model.Company
-import com.druger.aboutwork.presenters.SearchPresenter
 import com.druger.aboutwork.utils.Utils
 import com.druger.aboutwork.utils.recycler.EndlessRecyclerViewScrollListener
 import com.druger.aboutwork.utils.rx.RxSearch
+import com.druger.aboutwork.viewmodels.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class SearchFragment : BaseSupportFragment(), SearchView {
+class SearchFragment : BaseSupportFragment() {
 
-    @Inject
-    lateinit var presenter: SearchPresenter
+    private val viewModel: SearchViewModel by viewModels()
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
@@ -43,10 +41,17 @@ class SearchFragment : BaseSupportFragment(), SearchView {
 
     private var inputMode: Int = 0
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        observeProgress()
+        observeError()
+        observeCompanies()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         setInputMode()
         return binding.root
@@ -59,6 +64,18 @@ class SearchFragment : BaseSupportFragment(), SearchView {
         setupRecycler()
         setupListeners()
         setupSearch()
+    }
+
+    private fun observeProgress() {
+        viewModel.progressState.observe(this) { showProgress(it) }
+    }
+
+    private fun observeError() {
+        viewModel.errorState.observe(this) { showErrorScreen(it) }
+    }
+
+    private fun observeCompanies() {
+        viewModel.companiesState.observe(this) { showCompanies(it.companies, it.pages) }
     }
 
     private fun setupUI() {
@@ -105,7 +122,7 @@ class SearchFragment : BaseSupportFragment(), SearchView {
     }
 
     private fun getCompanies(page: Int) {
-        query?.let { presenter.getCompanies(it, page, !binding.cbMoreCompanies.isChecked) }
+        query?.let { viewModel.getCompanies(it, page, !binding.cbMoreCompanies.isChecked) }
     }
 
     private fun setupSearch() {
@@ -157,7 +174,7 @@ class SearchFragment : BaseSupportFragment(), SearchView {
         _binding = null
     }
 
-    override fun showCompanies(companies: List<Company>, pages: Int) {
+    private fun showCompanies(companies: List<Company>, pages: Int) {
         binding.cbMoreCompanies.isVisible = true
         adapter.removeLoading()
         scrollListener.setLoaded()
