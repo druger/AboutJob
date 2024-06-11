@@ -1,10 +1,9 @@
-package com.druger.aboutwork.presenters
+package com.druger.aboutwork.viewmodels
 
-
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.druger.aboutwork.R
 import com.druger.aboutwork.db.FirebaseHelper
-import com.druger.aboutwork.db.FirebaseHelper.getComments
-import com.druger.aboutwork.interfaces.view.SelectedReview
 import com.druger.aboutwork.model.Comment
 import com.druger.aboutwork.model.Company
 import com.druger.aboutwork.model.Review
@@ -17,35 +16,43 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import moxy.InjectViewState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
-import java.util.*
+import java.util.Calendar
 import javax.inject.Inject
 
-
-@InjectViewState
-class SelectedReviewPresenter @Inject constructor(
+@HiltViewModel
+class SelectedReviewViewModel @Inject constructor(
     private val analytics: Analytics
-) : BasePresenter<SelectedReview>(), ValueEventListener {
+) : ViewModel(), ValueEventListener {
+
+    val clearMessageState: MutableLiveData<Unit> = MutableLiveData()
+    val authState: MutableLiveData<Int> = MutableLiveData()
+    val changeDialogState: MutableLiveData<Int> = MutableLiveData()
+    val deleteCommentState: MutableLiveData<Int> = MutableLiveData()
+    val commentsState: MutableLiveData<List<Comment>> = MutableLiveData()
+    val reviewState: MutableLiveData<Review?> = MutableLiveData()
+    val likeClickState: MutableLiveData<Unit> = MutableLiveData()
+    val dislikeClickState: MutableLiveData<Unit> = MutableLiveData()
+    val userReviewsState: MutableLiveData<String?> = MutableLiveData()
+    val companyDetailsState: MutableLiveData<String?> = MutableLiveData()
+    val photosState: MutableLiveData<List<StorageReference>> = MutableLiveData()
 
     var user: FirebaseUser? = null
     private var dbReference = FirebaseDatabase.getInstance().reference
     private var reviewListener: ValueEventListener? = null
     private var nameListener: ValueEventListener? = null
 
-    private var comments: List<Comment> = emptyList()
+    var comments: List<Comment> = emptyList()
+        private set
+
     lateinit var comment: Comment
     private var review: Review? = null
 
-    override fun onFirstViewAttach() {
-        super.onFirstViewAttach()
+    init {
         user = FirebaseAuth.getInstance().currentUser
-    }
-
-    override fun attachView(view: SelectedReview?) {
-        super.attachView(view)
-        viewState.setupComments(user)
     }
 
     fun addComment(message: String, reviewId: String) {
@@ -56,23 +63,23 @@ class SelectedReviewPresenter @Inject constructor(
             comment.userName = user?.displayName
             comment.reviewId = reviewId
             FirebaseHelper.addComment(comment)
-            viewState.clearMessage()
+            clearMessageState.value = Unit
             analytics.logEvent(Analytics.ADD_COMMENT)
         } else {
-            viewState.showAuth(R.string.comment_login)
+            authState.value = R.string.comment_login
         }
     }
 
     fun updateComment(message: String) {
         FirebaseHelper.updateComment(comment.id, message)
-        viewState.clearMessage()
+        clearMessageState.value = Unit
         analytics.logEvent(Analytics.UPDATE_COMMENT)
     }
 
     fun onLongClick(position: Int): Boolean {
         comment = comments[position]
         if (comment.userId == user?.uid) {
-            viewState.showChangeDialog(position)
+            changeDialogState.value = position
             analytics.logEvent(Analytics.LONG_CLICK_MY_COMMENT)
             return true
         }
@@ -82,12 +89,12 @@ class SelectedReviewPresenter @Inject constructor(
     fun deleteComment(position: Int) {
         FirebaseHelper.deleteComment(comment.id)
         comments = comments.toMutableList().apply { removeAt(position) }
-        viewState.notifyItemRemoved(position, comments.size)
+        deleteCommentState.value = position
         analytics.logEvent(Analytics.DELETE_COMMENT)
     }
 
     fun retrieveComments(reviewId: String) {
-        val commentsQuery = getComments(dbReference, reviewId)
+        val commentsQuery = FirebaseHelper.getComments(dbReference, reviewId)
         commentsQuery.addValueEventListener(this)
     }
 
@@ -98,7 +105,7 @@ class SelectedReviewPresenter @Inject constructor(
             comment?.id = snapshot.key.toString()
             comments = comments.toMutableList().apply { comment?.let { add(it) } }
         }
-        viewState.showComments(comments.reversed())
+        commentsState.value = comments.reversed()
     }
 
     override fun onCancelled(p0: DatabaseError) {}
@@ -130,7 +137,7 @@ class SelectedReviewPresenter @Inject constructor(
                 for (data in dataSnapshot.children) {
                     val user = data.getValue(User::class.java)
                     review?.name = user?.name
-                    viewState.setReview(review)
+                    reviewState.value = review
                 }
             }
 
@@ -155,32 +162,32 @@ class SelectedReviewPresenter @Inject constructor(
             override fun onDataChange(snapshot: DataSnapshot) {
                 val company = snapshot.getValue(Company::class.java)
                 review?.name = company?.name
-                viewState.setReview(review)
+                reviewState.value = review
             }
         }
         queryCompany?.addValueEventListener(nameListener as ValueEventListener)
     }
 
     fun clickLike() {
-        if (user == null) viewState.showAuth(R.string.like_login)
-        else viewState.onLikeClicked()
+        if (user == null) authState.value = R.string.like_login
+        else likeClickState.value = Unit
     }
 
     fun clickDislike() {
-        if (user == null) viewState.showAuth(R.string.dislike_login)
-        else viewState.onDislikeClicked()
+        if (user == null) authState.value = R.string.dislike_login
+        else dislikeClickState.value = Unit
     }
 
     fun onClickName(showUserName: Boolean) {
-        if (showUserName) viewState.showUserReviews(review?.userId)
-        else viewState.showCompanyDetail(review?.companyId)
+        if (showUserName) userReviewsState.value = review?.userId
+        else companyDetailsState.value = review?.companyId
     }
 
     fun getPhotos(reviewId: String?) {
         val storageRef = Firebase.storage.reference
         val path = FirebaseHelper.REVIEW_PHOTOS + reviewId
         storageRef.child(path).listAll()
-            .addOnSuccessListener { if (it.items.isNotEmpty()) viewState.showPhotos(it.items) }
+            .addOnSuccessListener { if (it.items.isNotEmpty()) photosState.value = it.items }
             .addOnFailureListener { Timber.e(it) }
     }
 }

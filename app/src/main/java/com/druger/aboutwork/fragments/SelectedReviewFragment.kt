@@ -12,6 +12,7 @@ import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.druger.aboutwork.R
 import com.druger.aboutwork.activities.MainActivity
@@ -23,11 +24,10 @@ import com.druger.aboutwork.enums.Screen
 import com.druger.aboutwork.fragments.ReviewFragment.Companion.CURRENT_PHOTO_POSITION
 import com.druger.aboutwork.fragments.ReviewFragment.Companion.FULL_SCREEN_STORAGE
 import com.druger.aboutwork.interfaces.OnItemClickListener
-import com.druger.aboutwork.interfaces.view.SelectedReview
 import com.druger.aboutwork.model.Comment
 import com.druger.aboutwork.model.Review
-import com.druger.aboutwork.presenters.SelectedReviewPresenter
 import com.druger.aboutwork.utils.Utils
+import com.druger.aboutwork.viewmodels.SelectedReviewViewModel
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.StorageReference
@@ -35,16 +35,15 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.threeten.bp.Instant
 import org.threeten.bp.Period
 import org.threeten.bp.ZoneId
-import java.util.*
-import javax.inject.Inject
+import java.util.Calendar
+import java.util.Date
 
 @AndroidEntryPoint
-class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
+class SelectedReviewFragment : BaseSupportFragment() {
 
     private var type = NEW
 
-    @Inject
-    lateinit var presenter: SelectedReviewPresenter
+    private val viewModel: SelectedReviewViewModel by viewModels()
 
     private var _binding: FragmentSelectedReviewBinding? = null
     private val binding get() = _binding!!
@@ -68,7 +67,64 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             endContainerColor = ContextCompat.getColor(requireContext(), R.color.colorSurface)
             scrimColor = Color.TRANSPARENT
         }
-        photoAdapter = PhotoAdapter<StorageReference>(mutableListOf(), false)
+        photoAdapter = PhotoAdapter(mutableListOf(), false)
+        observeClearMessage()
+        observeAuth()
+        observeChangeDialog()
+        observeDeleteComment()
+        observeComments()
+        observeReview()
+        observeLikeClick()
+        observeDislikeClick()
+        observeUserReviews()
+        observeCompanyDetails()
+        observePhotos()
+    }
+
+    private fun observePhotos() {
+        viewModel.photosState.observe(this) { showPhotos(it) }
+    }
+
+    private fun observeCompanyDetails() {
+        viewModel.companyDetailsState.observe(this) { showCompanyDetail(it) }
+    }
+
+    private fun observeUserReviews() {
+        viewModel.userReviewsState.observe(this) { showUserReviews(it) }
+    }
+
+    private fun observeDislikeClick() {
+        viewModel.dislikeClickState.observe(this) { onDislikeClicked() }
+    }
+
+    private fun observeLikeClick() {
+        viewModel.likeClickState.observe(this) { onLikeClicked() }
+    }
+
+    private fun observeReview() {
+        viewModel.reviewState.observe(this) { setReview(it) }
+    }
+
+    private fun observeComments() {
+        viewModel.commentsState.observe(this) { showComments(it) }
+    }
+
+    private fun observeDeleteComment() {
+        viewModel.deleteCommentState.observe(this) { position ->
+            notifyItemRemoved(position, viewModel.comments.size)
+        }
+    }
+
+    private fun observeChangeDialog() {
+        viewModel.changeDialogState.observe(this) { showChangeDialog(it) }
+    }
+
+    private fun observeAuth() {
+        viewModel.authState.observe(this) { showAuth(it) }
+    }
+
+    private fun observeClearMessage() {
+        viewModel.clearMessageState.observe(this) { clearMessage() }
     }
 
     override fun onCreateView(
@@ -79,6 +135,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         _binding = FragmentSelectedReviewBinding.inflate(inflater, container, false)
         (activity as MainActivity).hideBottomNavigation()
         getReview()
+        setupComments(viewModel.user)
         return binding.root
     }
 
@@ -116,8 +173,8 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         super.onSaveInstanceState(outState)
     }
 
-    override fun setupComments(user: FirebaseUser?) {
-        commentAdapter = CommentAdapter(presenter.user)
+    private fun setupComments(user: FirebaseUser?) {
+        commentAdapter = CommentAdapter(user)
         with(binding.ltContent.rvComments) {
             itemAnimator = DefaultItemAnimator()
             adapter = commentAdapter
@@ -133,7 +190,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
     }
 
     private fun retrieveComments() {
-        reviewKey?.let { presenter.retrieveComments(it) }
+        reviewKey?.let { viewModel.retrieveComments(it) }
     }
 
     private fun setupListeners() {
@@ -180,7 +237,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             override fun onClick(item: Comment, position: Int) {}
 
             override fun onLongClick(item: Comment, position: Int): Boolean {
-                return presenter.onLongClick(position)
+                return viewModel.onLongClick(position)
             }
         })
     }
@@ -188,9 +245,9 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
     private fun sendMessage(message: String, type: Int) {
         if (message.isNotEmpty()) {
             if (type == NEW) {
-                review?.firebaseKey?.let { presenter.addComment(message, it) }
+                review?.firebaseKey?.let { viewModel.addComment(message, it) }
             } else if (type == UPDATE) {
-                presenter.updateComment(message)
+                viewModel.updateComment(message)
                 Utils.hideKeyboard(requireContext(), binding.ltContent.etMessage)
                 this.type = NEW
             }
@@ -199,12 +256,12 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
 
     private fun setUX() {
         with(binding.ltContent) {
-            ivLike.setOnClickListener { presenter.clickLike() }
-            ivDislike.setOnClickListener { presenter.clickDislike() }
+            ivLike.setOnClickListener { viewModel.clickLike() }
+            ivDislike.setOnClickListener { viewModel.clickDislike() }
             if (editMode) {
                 binding.toolbar.ivEdit.setOnClickListener { showEditReview() }
             }
-            tvName.setOnClickListener { presenter.onClickName(showUserName) }
+            tvName.setOnClickListener { viewModel.onClickName(showUserName) }
         }
     }
 
@@ -218,10 +275,10 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
     }
 
     private fun getReview() {
-        reviewKey?.let { presenter.getReview(it, showUserName) }
+        reviewKey?.let { viewModel.getReview(it, showUserName) }
     }
 
-    override fun setReview(review: Review?) {
+    private fun setReview(review: Review?) {
         review?.let {
             this.review = review
             setMyLikeDislike(review)
@@ -241,7 +298,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             setExperience(review)
             checkMessage()
             setRecommendation(review)
-            presenter.getPhotos(review.firebaseKey)
+            viewModel.getPhotos(review.firebaseKey)
         }
     }
 
@@ -259,7 +316,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
             )
             likesDislikes = review.likesDislikes
             likesDislikes?.let { likes ->
-                likes[presenter.user?.uid]?.let { myLike ->
+                likes[viewModel.user?.uid]?.let { myLike ->
                     if (myLike) {
                         ivLike.setColorFilter(
                             ResourcesCompat.getColor(
@@ -318,10 +375,12 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
                     tvStatus.setText(R.string.working)
                     setWorkingDays(review.employmentDate, Calendar.getInstance().timeInMillis)
                 }
+
                 Review.WORKED -> {
                     tvStatus.setText(R.string.worked)
                     setWorkingDays(review.employmentDate, review.dismissalDate)
                 }
+
                 Review.INTERVIEW -> {
                     tvStatus.setText(R.string.interview)
                     markCompany.root.isVisible = false
@@ -387,12 +446,12 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         }
     }
 
-    override fun onLikeClicked() {
+    private fun onLikeClicked() {
         review?.let { review ->
             if (likesDislikes == null) likesDislikes = ArrayMap<String, Boolean>()
             var likes = review.like
             var dislikes = review.dislike
-            val userId = presenter.user?.uid
+            val userId = viewModel.user?.uid
             val myLikeDislike = likesDislikes?.get(userId)
             with(binding.ltContent) {
                 myLikeDislike?.let { likeDislike ->
@@ -420,12 +479,12 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         }
     }
 
-    override fun onDislikeClicked() {
+    private fun onDislikeClicked() {
         review?.let { review ->
-            if (likesDislikes == null) likesDislikes = ArrayMap<String, Boolean>()
+            if (likesDislikes == null) likesDislikes = ArrayMap()
             var likes = review.like
             var dislikes = review.dislike
-            val userId = presenter.user?.uid
+            val userId = viewModel.user?.uid
             val myLikeDislike = likesDislikes?.get(userId)
 
             with(binding.ltContent) {
@@ -471,20 +530,20 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.removeListeners()
+        viewModel.removeListeners()
     }
 
-    override fun showChangeDialog(position: Int) {
+    private fun showChangeDialog(position: Int) {
         val builder = AlertDialog.Builder(requireContext())
         builder.setItems(R.array.comments_change) { _, which ->
             with(binding.ltContent) {
                 when (which) {
-                    0 -> presenter.deleteComment(position)
+                    0 -> viewModel.deleteComment(position)
                     1 -> {
-                        etMessage.setText(presenter.comment.message)
+                        etMessage.setText(viewModel.comment.message)
                         Utils.showKeyboard(requireContext())
                         etMessage.isFocusableInTouchMode = true
-                        presenter.comment.message?.length?.let { etMessage.setSelection(it) }
+                        viewModel.comment.message?.length?.let { etMessage.setSelection(it) }
                         type = UPDATE
                     }
                 }
@@ -493,17 +552,17 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         builder.show()
     }
 
-    override fun notifyItemRemoved(position: Int, size: Int) {
+    private fun notifyItemRemoved(position: Int, size: Int) {
         commentAdapter.notifyItemRemoved(position)
         commentAdapter.notifyItemRangeChanged(position, size)
     }
 
-    override fun showComments(comments: List<Comment>) {
+    private fun showComments(comments: List<Comment>) {
         commentAdapter.clear()
         commentAdapter.addItems(comments)
     }
 
-    override fun showAuth(title: Int) {
+    private fun showAuth(title: Int) {
         with(binding.ltContent) {
             Utils.hideKeyboard(requireContext(), etMessage)
             replaceFragment(
@@ -519,17 +578,17 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         }
     }
 
-    override fun clearMessage() {
+    private fun clearMessage() {
         binding.ltContent.etMessage.text = null
     }
 
-    override fun showCompanyDetail(companyId: String?) {
+    private fun showCompanyDetail(companyId: String?) {
         companyId?.let {
             replaceFragment(CompanyDetailFragment.newInstance(companyId), R.id.main_container, true)
         }
     }
 
-    override fun showUserReviews(userId: String?) {
+    private fun showUserReviews(userId: String?) {
         userId?.let {
             replaceFragment(
                 UserReviewsFragment.newInstance(userId),
@@ -539,7 +598,7 @@ class SelectedReviewFragment : BaseSupportFragment(), SelectedReview {
         }
     }
 
-    override fun showPhotos(photos: List<StorageReference>) {
+    private fun showPhotos(photos: List<StorageReference>) {
         with(binding.ltContent) {
             rvPhotos.isVisible = true
             photoAdapter.isFullScreen = isFullScreenShown
