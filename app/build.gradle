@@ -73,9 +73,12 @@ apply plugin: 'com.google.dagger.hilt.android'
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    archivesBaseName = "AboutJob"
     namespace 'com.druger.aboutwork'
     return void
+}
+
+tasks.withType(Jar) {
+    archiveBaseName.set('AboutJob')
 }
 
 kapt {
