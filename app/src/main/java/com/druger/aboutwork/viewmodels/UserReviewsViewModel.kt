@@ -1,31 +1,32 @@
-package com.druger.aboutwork.presenters
+package com.druger.aboutwork.viewmodels
 
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.druger.aboutwork.db.FirebaseHelper
-import com.druger.aboutwork.interfaces.view.UserReviews
 import com.druger.aboutwork.model.Company
 import com.druger.aboutwork.model.Review
 import com.druger.aboutwork.model.User
-import com.google.firebase.database.*
-import moxy.InjectViewState
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
 import javax.inject.Inject
 
-/**
- * Created by druger on 31.01.2018.
- */
-
-@InjectViewState
-class UserReviewsPresenter @Inject constructor() : BasePresenter<UserReviews>(), ValueEventListener {
+@HiltViewModel
+class UserReviewsViewModel @Inject constructor() : ViewModel(), ValueEventListener {
 
     private lateinit var dbReference: DatabaseReference
     private var valueEventListener: ValueEventListener? = null
     private var nameEventListener: ValueEventListener? = null
 
-    private val reviews: MutableList<Review>
+    private val reviews: MutableList<Review> = ArrayList()
 
-    init {
-        reviews = ArrayList()
-    }
+    val updateReviewState: MutableLiveData<Unit> = MutableLiveData()
+    val reviewsState: MutableLiveData<List<Review>> = MutableLiveData()
+    val nameState: MutableLiveData<String> = MutableLiveData()
 
     fun fetchReviews(userId: String) {
         dbReference = FirebaseDatabase.getInstance().reference
@@ -54,7 +55,7 @@ class UserReviewsPresenter @Inject constructor() : BasePresenter<UserReviews>(),
                         for (data in dataSnapshot.children) {
                             val company = data.getValue(Company::class.java)
                             review?.name = company?.name
-                            viewState.notifyDataSetChanged()
+                            updateReviewState.value = Unit
                         }
                     }
                 }
@@ -67,7 +68,7 @@ class UserReviewsPresenter @Inject constructor() : BasePresenter<UserReviews>(),
             review?.firebaseKey = snapshot.key
             review?.let { reviews.add(it) }
         }
-        viewState.showReviews(reviews)
+        reviewsState.value = reviews
     }
 
     fun removeListeners() {
@@ -87,7 +88,7 @@ class UserReviewsPresenter @Inject constructor() : BasePresenter<UserReviews>(),
                 if (dataSnapshot.exists()) {
                     for (snapshot in dataSnapshot.children) {
                         val user = snapshot.getValue(User::class.java)
-                        user?.name?.let { viewState.showName(it) }
+                        user?.name?.let { nameState.value = it }
                     }
                 }
             }

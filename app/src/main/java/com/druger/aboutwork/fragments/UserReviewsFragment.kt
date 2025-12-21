@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.druger.aboutwork.Const.Bundles.USER_ID
 import com.druger.aboutwork.R
@@ -13,30 +14,42 @@ import com.druger.aboutwork.activities.MainActivity
 import com.druger.aboutwork.adapters.MyReviewAdapter
 import com.druger.aboutwork.databinding.FragmentUserReviewsBinding
 import com.druger.aboutwork.interfaces.OnItemClickListener
-import com.druger.aboutwork.interfaces.view.UserReviews
 import com.druger.aboutwork.model.Review
-import com.druger.aboutwork.presenters.UserReviewsPresenter
+import com.druger.aboutwork.viewmodels.UserReviewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class UserReviewsFragment : BaseSupportFragment(), UserReviews {
+class UserReviewsFragment : BaseSupportFragment() {
 
-    @Inject
-    lateinit var reviewsPresenter: UserReviewsPresenter
+    private val viewModel: UserReviewsViewModel by viewModels()
 
     private var _binding: FragmentUserReviewsBinding? = null
     private val binding get() = _binding!!
 
     private var reviewAdapter: MyReviewAdapter? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        observeReviewState()
+        observeNameState()
+    }
+
+    private fun observeNameState() {
+        viewModel.nameState.observe(this) { showName(it) }
+    }
+
+    private fun observeReviewState() {
+        viewModel.updateReviewState.observe(this) { notifyDataSetChanged() }
+        viewModel.reviewsState.observe(this) { showReviews(it) }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentUserReviewsBinding.inflate(inflater, container, false)
-        arguments?.getString(USER_ID)?.let { reviewsPresenter.fetchReviews(it) }
-        arguments?.getString(USER_ID)?.let { reviewsPresenter.getUserName(it) }
+        arguments?.getString(USER_ID)?.let { viewModel.fetchReviews(it) }
+        arguments?.getString(USER_ID)?.let { viewModel.getUserName(it) }
         (activity as MainActivity).hideBottomNavigation()
         return binding.root
     }
@@ -76,11 +89,11 @@ class UserReviewsFragment : BaseSupportFragment(), UserReviews {
         })
     }
 
-    override fun notifyDataSetChanged() {
+    private fun notifyDataSetChanged() {
         reviewAdapter?.notifyDataSetChanged()
     }
 
-    override fun showReviews(reviews: List<Review>) {
+    private fun showReviews(reviews: List<Review>) {
         with(binding) {
             if (reviews.isNotEmpty()) {
                 reviewAdapter?.addReviews(reviews)
@@ -94,13 +107,13 @@ class UserReviewsFragment : BaseSupportFragment(), UserReviews {
         }
     }
 
-    override fun showName(name: String) {
+    private fun showName(name: String) {
         actionBar?.title = name
     }
 
     override fun onStop() {
         super.onStop()
-        reviewsPresenter.removeListeners()
+        viewModel.removeListeners()
     }
 
     companion object {
