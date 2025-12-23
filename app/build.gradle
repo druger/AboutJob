@@ -31,15 +31,6 @@ apply plugin: 'com.google.dagger.hilt.android'
         versionName "1.2"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [
-                        disableEmptyStrategyCheck: 'true',
-                        defaultMoxyStrategy: 'moxy.viewstate.strategy.AddToEndSingleStrategy'
-                ]
-            }
-        }
     }
     buildFeatures {
         viewBinding = true
@@ -113,10 +104,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
-    implementation "com.github.moxy-community:moxy:2.2.2"
-    implementation "com.github.moxy-community:moxy-androidx:2.2.2"
-    implementation "com.github.moxy-community:moxy-material:2.2.2"
-    kapt "com.github.moxy-community:moxy-compiler:2.2.2"
     implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.2'

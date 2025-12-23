@@ -19,11 +19,11 @@ import com.druger.aboutwork.utils.Utils
 import com.druger.aboutwork.viewmodels.FilterViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
-import moxy.MvpBottomSheetDialogFragment
 
 @AndroidEntryPoint
-class FilterDialogFragment : MvpBottomSheetDialogFragment(),
+class FilterDialogFragment : BottomSheetDialogFragment(),
     AdapterView.OnItemSelectedListener {
 
     private val viewModel: FilterViewModel by viewModels()

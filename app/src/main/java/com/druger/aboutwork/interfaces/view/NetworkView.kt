@@ -2,8 +2,6 @@ package com.druger.aboutwork.interfaces.view
 
 import androidx.annotation.StringRes
 import com.druger.aboutwork.enums.TypeMessage
-import moxy.viewstate.strategy.OneExecutionStateStrategy
-import moxy.viewstate.strategy.StateStrategyType
 
 /**
  * Created by druger on 06.08.2017.
@@ -17,6 +15,5 @@ interface NetworkView {
 
     fun showMessage(message: String)
 
-    @StateStrategyType(OneExecutionStateStrategy::class)
     fun showErrorScreen(show: Boolean)
 }
